@@ -1,0 +1,408 @@
+// this is the enemies defintion file/**/
+enemies.formulas = {
+	physical.hits	= "(1+attributes.current.hit/32)+attributes.current.hits";
+}
+template.enemy	= {
+	name	= { short = "no.string"; long = "no.string" }
+	filter	= @filter.enemy;
+	attributes	= { maxhp = 8; atk = 4; hit = 5; crt = 1; def = 4; evd = 6; mdef = 16; morale = 106; hits = 1; }
+	rewards		= { gold = 6; xp = 6; }
+	// effective	= { family = @family.none; element = @element.none; }
+	// resists		= { family = @family.none; element = @element.none; }
+	// weakness	= { family	= @family.none; element	= @family.none; }
+	// magic	= { chance }
+	// skill	= { chance }
+	animate	= $link:animate.battler.enemy.attack;
+	formulas	= $link:enemies.formulas;
+	gfx	= {
+		battler		= $icon:gfx_enemy_0,0;
+		palette		= $icon:pal_enemy_0,0;
+		idle	= $link:animate.battler.idle;
+	}
+	size		= 0; // 0 = small, 1 = large, 2 = boss
+}
+enemies	= {
+	$template:template.enemy;
+	imp	= {
+		name	= "names.enemies.imp";
+		weakness.family	= @family.giant; //weakness.element = @element.fire;
+		attributes	= { maxhp = 8; atk = 4; hit = 5; crt = 1; def = 4; evd = 6; mdef = 16; morale = 106; hits = 1; }
+		rewards		= { gold = 6; xp = 6; }
+		gfx	= { battler = $icon:gfx_enemy_0,0; palette = $icon:pal_enemy_0,0; }
+		size	= 0;
+	}
+	grimp:enemies.imp	= {
+		name	= "names.enemies.grimp";
+		attributes	= { maxhp = 16; atk = 8; hit = 4; crt = 1; def = 6; evd = 9; mdef = 23; morale = 120; hits = 1; }
+		rewards		= { gold = 18; xp = 18; }
+		gfx.palette		= $icon:pal_enemy_0,1;
+	}
+	wolf	= {
+		name		= "names.enemies.wolf";
+		attributes	= { maxhp = 20; atk = 8; hit = 5; crt = 1; def = 0; evd = 36; mdef = 28; morale = 105; hits = 1; }
+		rewards		= { gold = 6; xp = 24; }
+		gfx	= { battler = $icon:gfx_enemy_0,1; palette = $icon:pal_enemy_0,0; }
+		size	= 0;
+	}
+	grwolf:enemies.wolf	= {
+		name	= "names.enemies.grwolf";
+		attributes	= { maxhp = 72; atk = 14; hit = 18; crt = 1; def = 0; evd = 54; mdef = 46; morale = 108; hits = 1; }
+		rewards		= { gold = 22; xp = 93; }
+		gfx.palette	= $icon:pal_enemy_0,1;
+	}
+	wrwolf:enemies.wolf	= {
+		name	= "names.enemies.wrwolf";
+		weakness.family	= (family.were+@family.regen;
+		attributes	= { maxhp = 68; atk = 14; hit = 17; crt = 1; def = 6; evd = 42; mdef = 45; morale = 120; hits = 1; }
+		rewards		= { gold = 67; xp = 135; }
+		gfx.palette	= $icon:pal_enemy_0,2;
+	}
+	frwolf:enemies.wolf	= {
+		name	= "names.enemies.frwolf";
+		weakness.element = @element.fire; resists.element = @element.ice;
+		attributes	= { maxhp = 92; atk = 25; crt = 1; hits = 1; hit = 23; def = 0; mdef = 55; morale = 200; evd = 54; }
+		rewards		= { gold = 200; xp = 402; }
+		skill		= { chance = 32; table = $array:"spells.white.frost"; }
+		gfx.palette	= $icon:pal_enemy_1,4;
+	}
+	creep	= {
+		name	= "names.enemies.creep";
+		weakness.element = @element.fire;
+		attributes	= { maxhp = 56; atk = 17; crt = 1; hits = 1; hit = 14; def = 8; mdef = 40; morale = 104; evd = 24; }
+		rewards		= { gold = 15; xp = 63; }
+		gfx	= { battler = $icon:gfx_enemy_0,4; palette = $icon:pal_enemy_0,3; }
+		size	= 0;
+	}
+	crawl:enemies.creep	= {
+		name	= "names.enemies.crawl";
+		attributes	= { maxhp = 84; atk = 1; crt = 1; hits = 8; hit = 21; def = 8; mdef = 51; morale = 106; evd = 42; }
+		rewards		= { gold = 200; xp = 186; }
+		gfx.palette = $icon:pal_enemy_0,4;
+	}
+	ogre	= {
+		name	= "names.enemies.ogre";
+		weakness.family = @family.giant;
+		attributes	= { maxhp = 100; atk = 18; crt = 1; hits = 1; hit = 25; def = 10; mdef = 65; morale = 116; evd = 18; }
+		rewards		= { gold = 195; xp = 195; }
+		gfx	= { battler = $icon:gfx_enemy_1,1; palette = $icon:pal_enemy_1,1; }
+		size	= 1;
+	}
+	grogre:enemies.ogre	= {
+		name	= "names.enemies.grogre";
+		attributes	= { maxhp = 100; atk = 23; crt = 1; hits = 1; hit = 33; def = 14; mdef = 71; morale = 126; evd = 30; }
+		rewards		= { gold = 300; xp = 282; }
+		gfx.palette = $icon:pal_enemy_1,2;
+	}
+	wzogre:enemies.ogre	= {
+		name	= "names.enemies.wzogre";
+		weakness.family	= (family.giant+@family.mage+@family.regen;
+		resists.element	= @element.earth;
+		attributes	= { maxhp = 144; atk = 23; crt = 1; hits = 1; hit = 36; def = 10; mdef = 80; morale = 134; evd = 54; }
+		rewards		= { gold = 723; xp = 723; }
+		magic		= { chance = 64; table = $array:"spells.white.ruse","spells.black.dark","spells.black.sleep","spells.black.hold","spells.black.ice2"; }
+		gfx.palette = $icon:pal_enemy_1,3;
+	}
+	giant	= {
+		name	= "names.enemies.giant";
+		weakness.family = @family.giant;
+		attributes	= { maxhp = 240; atk = 38; crt = 1; hits = 1; hit = 60; def = 12; mdef = 120; morale = 136; evd = 48; }
+		rewards		= { gold = 879; xp = 879; }
+		gfx	= { battler = $icon:gfx_enemy_1,3; palette = $icon:pal_enemy_0,2; }
+		size	= 1;
+	}
+	frgiant:enemies.giant	= {
+		name	= "names.enemies.frgiant";
+		weakness.element = @element.fire; resists.element = @element.ice;
+		attributes	= { maxhp = 336; atk = 60; crt = 1; hits = 1; hit = 78; def = 16; mdef = 150; morale = 200; evd = 48; }
+		rewards		= { gold = 1752; xp = 1752; }
+		gfx.palette = $icon:pal_enemy_1,4;
+	}
+	rgiant:enemies.giant	= {
+		name	= "names.enemies.rgiant";
+		weakness.element = @element.ice; resists.element = @element.fire;
+		attributes	= { maxhp = 300; atk = 73; crt = 1; hits = 1; hit = 83; def = 20; mdef = 135; morale = 200; evd = 48; }
+		rewards		= { gold = 1506; xp = 1506; }
+		gfx.palette = $icon:pal_enemy_0,5;
+	}
+	madpony	= {
+		name	= "names.enemies.madpony";
+		attributes	= { maxhp = 64; atk = 10; hit = 16; crt = 1; def = 2; evd = 22; mdef = 40; morale = 106; hits = 2; }
+		rewards		= { gold = 15; xp = 63; }
+		gfx	= { battler = $icon:gfx_enemy_1,0; palette = $icon:pal_enemy_1,0; }
+		size	= 1;
+	}
+	nitemare:enemies.madpony	= {
+		name	= "names.enemies.nitemare";
+		weakness = { family = @family.magical; element = @element.ice; }
+		resists.element = (element.status+@element.poison_stone+@element.death+@element.fire+@element.earth;
+		attributes	= { maxhp = 200; atk = 30; hit = 50; crt = 1; def = 24; evd = 132; mdef = 100; morale = 200; hits = 3; }
+		rewards		= { gold = 700; xp = 1272; }
+		gfx.palette = $icon:pal_enemy_1,9;
+	}
+	hyena	= {
+		name	= "names.enemies.hyena";
+		attributes	= { maxhp = 120; crt = 1; hits = 1; hit = 30; def = 4; mdef = 76; morale = 122; evd = 48; }
+		rewards		= { gold = 72; xp = 288; }
+		gfx	= { battler = $icon:gfx_enemy_1,6; palette = $icon:pal_enemy_1,5; }
+		size	= 1;
+	}
+	cerebus:enemies.hyena	= {
+		name	= "names.enemies.hyena";
+		resists.element = @element.fire; weakness.element = @element.ice;
+		attributes	= { maxhp = 192; atk = 30; crt = 1; hits = 1; hit = 48; def = 8; mdef = 103; morale = 146; evd = 48; }
+		rewards		= { gold = 600; xp = 1182; }
+		skill		= { chance = 64; table = $array:"skill.scorch"; }
+		gfx.palette = $icon:pal_enemy_1,6;
+	}
+	iguana	= {
+		name	= "names.enemies.iguana";
+		weakness.family = @family.dragon;
+		attributes	= { maxhp = 92; atk = 18; crt = 10; hits = 1; hit = 23; def = 12; mdef = 55; morale = 134; evd = 24; }
+		rewards		= { gold = 50; xp = 153; }
+		gfx	= { battler = $icon:gfx_enemy_1,2; palette = $icon:pal_enemy_0,1; }
+		size	= 1;
+	}
+	agama:enemies.iguana	= {
+		name	= "names.enemies.agama";
+		weakness.element= @element.ice;
+		resists.element	= @element.fire;
+		attributes	= { maxhp = 296; atk = 31; crt = 1; hits = 2; hit = 74; def = 18; mdef = 143; morale = 200; evd = 36; }
+		rewards		= { gold = 1200; xp = 2472; }
+		skill		= { chance = 32; table = $array:"skill.heat"; }
+		gfx.palette = $icon:pal_enemy_0,5;
+	}
+	sauria:enemies.iguana	= {
+		name	= "names.enemies.sauria";
+		attributes	= { maxhp = 196; atk = 30; crt = 1; hits = 1; hit = 54; def = 20; mdef = 91; morale = 200; evd = 24; }
+		rewards		= { gold = 658; xp = 1977; }
+		skill		= { chance = 64; table = $array:"skill.glance"; }
+		gfx.palette = $icon:pal_enemy_0,2;
+	}
+	asp	= {
+		name	= "names.enemies.asp";
+		weakness.family = @family.dragon;
+		attributes	= { maxhp = 56; atk = 6; crt = 1; hits = 2; hit = 14; def = 6; mdef = 46; morale = 107; evd = 30; poison = 2; }
+		rewards		= { gold = 50; xp = 153; }
+		attack		= "skill.attack.poison";
+		gfx	= { battler = $icon:gfx_enemy_0,3; palette = $icon:pal_enemy_0,6; }
+		size	= 0;
+	}
+	cobra:enemies.asp	= {
+		name	= "names.enemies.cobra";
+		attributes	= { maxhp = 80; atk = 22; crt = 31; hits = 1; hit = 20; def = 10; mdef = 56; morale = 110; evd = 36; poison = 4; }
+		rewards		= { gold = 50; xp = 165; }
+		gfx.palette = $icon:pal_enemy_0,2;
+	}
+	seasnake:enemies.asp	= {
+		name	= "names.enemies.seasnake";
+		weakness.element = @element.lightning; resists.element = (element.fire+@element.earth;
+		attributes	= { maxhp = 224; atk = 35; crt = 0; hits = 1; hit = 56; def = 12; mdef = 116; morale = 200; evd = 48; }
+		rewards		= { gold = 600; xp = 957; }
+		attack		= "skill.weapon";
+		gfx.palette = $icon:pal_enemy_1,10;
+	}
+	spider	= {
+		name	= "names.enemies.spider";
+		attributes	= { maxhp = 28; atk = 10; crt = 1; hits = 1; hit = 7; def = 0; mdef = 28; morale = 109; evd = 30; }
+		rewards		= { gold = 8; xp = 30; }
+		gfx	= { battler = $icon:gfx_enemy_0,5; palette = $icon:pal_enemy_0,7; }
+		size	= 0;
+	}
+	arachnid:enemies.spider = {
+		name	= "names.enemies.arachnid";
+		attributes	= { maxhp = 64; atk = 5; crt = 1; hits = 1; hit = 16; def = 12; mdef = 46; morale = 111; evd = 24; poison = 2; }
+		attack		= "skill.attack.poison";
+		rewards		= { gold = 50; xp = 141; }
+		gfx.palette = $icon:pal_enemy_0,8;
+	}
+	bone	= {
+		name	= "names.enemies.bone";
+		weakness.family	= @family.undead; weakness.element = @element.fire;
+		resists.element	= (element.status+@element.poison_stone+@element.death;
+		attributes	= { maxhp = 10; atk = 10; crt = 1; hits = 1; hit = 2; def = 0; mdef = 17; morale = 124; evd = 12; }
+		rewards		= { gold = 3; xp = 9; }
+		gfx	= { battler = $icon:gfx_enemy_0,2; palette = $icon:pal_enemy_0,1; }
+		size	= 0;
+	}
+	rbone:enemies.bone	= {
+		name	= "names.enemies.rbone";
+		attributes	= { maxhp = 144; atk = 26; crt = 1; hits = 1; hit = 36; def = 12; mdef = 76; morale = 156; evd = 42; }
+		rewards		= { gold = 378; xp = 378; }
+		gfx.palette = $icon:pal_enemy_0,0;
+	}
+	shadow	= {
+		name	= "names.enemies.zombie";
+		weakness.family	= (family.magical+@family.undead; weakness.element = @element.fire;
+		resists.element	= (element.status+@element.poison_stone+@element.death+@element.ice+@element.earth;
+		attributes	= { maxhp = 50; atk = 10; crt = 1; hits = 1; hit = 13; def = 0; mdef = 37; morale = 124; evd = 36; }
+		rewards		= { gold = 45; xp = 90; }
+		attack		= "skill.attack.blind";
+		gfx	= { battler = $icon:gfx_enemy_0,9; palette = $icon:pal_enemy_0,13; }
+		size	= 0;
+	}
+	image:enemies.shadow	= {
+		name	= "names.enemies.image";
+		attributes	= { maxhp = 86; atk = 22; crt = 1; hits = 1; hit = 22; def = 4; mdef = 52; morale = 160; evd = 90; }
+		rewards		= { gold = 231; xp = 231; }
+		attack		= "skill.attack.paralyze";
+		gfx.palette = $icon:pal_enemy_0,14;
+	}
+	wraith:enemies.shadow	= {
+		name	= "names.enemies.wraith";
+		attributes	= { maxhp = 114; atk = 40; crt = 1; hits = 1; hit = 29; def = 12; mdef = 67; morale = 160; evd = 108; }
+		rewards		= { gold = 432; xp = 432; }
+		gfx.palette = $icon:pal_enemy_1,7;
+	}
+	ghost:enemies.shadow	= {
+		name	= "names.enemies.ghost";
+		attributes	= { maxhp = 180; atk = 93; crt = 1; hits = 1; hit = 45; def = 30; mdef = 85; morale = 184; evd = 36; }
+		rewards		= { gold = 990; xp = 990; }
+		gfx.palette = $icon:pal_enemy_1,8;
+	}
+	zombie	= {
+		name	= "names.enemies.zombie";
+		weakness.family	= @family.undead; weakness.element = @element.fire;
+		resists.element	= (element.status+@element.poison_stone+@element.death+@element.ice+@element.earth;
+		attributes	= { maxhp = 20; atk = 10; crt = 1; hits = 1; hit = 5; def = 0; mdef = 25; morale = 120; evd = 6; }
+		rewards		= { gold = 12; xp = 24; }
+		gfx	= { battler = $icon:gfx_enemy_0,7; palette = $icon:pal_enemy_0,9; }
+		size	= 0;
+	}
+	ghoul:enemies.zombie	= {
+		name	= "names.enemies.ghoul";
+		resists.element	= (element.status+@element.poison_stone+@element.death+@element.lightning;
+		attributes	= { maxhp = 48; atk = 8; crt = 1; hits = 3; hit = 12; def = 6; mdef = 36; morale = 124; evd = 12; }
+		attack		= "skill.attack.paralyze";
+		rewards		= { gold = 50; xp = 93; }
+		gfx.palette = $icon:pal_enemy_0,10;
+	}
+	geist:enemies.ghoul	= {
+		name	= "names.enemies.geist";
+		attributes	= { maxhp = 56; atk = 8; crt = 1; hits = 3; hit = 14; def = 10; mdef = 40; morale = 160; evd = 46; }
+		rewards		= { gold = 117; xp = 117; }
+		gfx.palette = $icon:pal_enemy_0,11;
+	}
+	specter:enemies.geist	= {
+		name	= "names.enemies.specter";
+		attributes	= { maxhp = 52; atk = 20; crt = 1; hits = 1; hit = 13; def = 12; mdef = 45; morale = 160; evd = 42; }
+		rewards		= { gold = 150; xp = 150; }
+		gfx.palette = $icon:pal_enemy_0,12;
+	}
+	scum	= {
+		name	= "names.enemies.scum";
+		weakness.element = (element.fire+@element.ice;
+		resists.element	= (element.status+@element.poison_stone+@element.death+@element.lightning+@element.earth;
+		attributes	= { maxhp = 24; atk = 1; crt = 1; hits = 1; hit = 1; def = 255; mdef = 36; morale = 124; evd = 0; }
+		rewards		= { gold = 20; xp = 84; }
+		gfx	= { battler = $icon:gfx_enemy_0,12; palette = $icon:pal_enemy_1,12; }
+		size	= 0;
+	}
+	muck:enemies.scum	= {
+		name	= "names.enemies.muck";
+		weakness.element = (element.lightning;
+		resists.element	= (element.status+@element.poison_stone+@element.death+@element.fire+@element.ice+@element.earth;
+		attributes	= { maxhp = 76; atk = 1; crt = 1; hits = 1; hit = 19; def = 7; mdef = 55; morale = 152; evd = 4; }
+		rewards		= { gold = 70; xp = 255; }
+		gfx.palette = $icon:pal_enemy_1,13;
+	}
+	ooze:enemies.scum	= {
+		name	= "names.enemies.ooze";
+		attributes	= { maxhp = 76; atk = 32; crt = 1; hits = 1; hit = 19; def = 6; mdef = 55; morale = 144; evd = 6; }
+		rewards		= { gold = 70; xp = 252; }
+		gfx.palette = $icon:pal_enemy_1,14;
+	}
+	slime:enemies.scum	= {
+		name	= "names.enemies.slime";
+		attributes	= { maxhp = 156; atk = 49; crt = 1; hits = 1; hit = 39; def = 255; mdef = 85; morale = 200; evd = 24; }
+		rewards		= { gold = 900; xp = 1101; }
+		gfx.palette = $icon:pal_enemy_2,0;
+	}
+	sahag	= {
+		name	= "names.enemies.sahag";
+		weakness = { family = @family.aquatic; element = @element.lightning }
+		resists.element	= (element.fire+@element.earth;
+		attributes	= { maxhp = 28; atk = 10; crt = 1; hits = 1; hit = 7; def = 4; mdef = 28; morale = 110; evd = 72; }
+		rewards		= { gold = 30; xp = 30; }
+		gfx	= { battler = $icon:gfx_enemy_0,11; palette = $icon:pal_enemy_2,3; }
+		size	= 0;
+	}
+	rsahag:enemies.sahag	= {
+		name	= "names.enemies.rsahag";
+		attributes	= { maxhp = 64; atk = 15; crt = 1; hits = 1; hit = 16; def = 8; mdef = 46; morale = 142; evd = 78; }
+		rewards		= { gold = 105; xp = 105; }
+		gfx.palette = $icon:pal_enemy_2,4;
+	}
+	wzsahag:enemies.sahag	= {
+		name	= "names.enemies.wzsahag";
+		attributes	= { maxhp = 204; atk = 47; crt = 1; hits = 1; hit = 51; def = 20; mdef = 101; morale = 200; evd = 96; }
+		rewards		= { gold = 882; xp = 882; }
+		gfx.palette = $icon:pal_enemy_2,5;
+	}
+	oddeye	= {
+		name	= "names.enemies.oddeye";
+		weakness = { family = @family.aquatic; element = @element.lightning }
+		resists.element	= (element.fire+@element.earth;
+		attributes	= { maxhp = 10; atk = 4; crt = 1; hits = 1; hit = 2; def = 0; mdef = 14; morale = 110; evd = 84; }
+		rewards		= { gold = 10; xp = 42; }
+		gfx	= { battler = $icon:gfx_enemy_1,4; palette = $icon:pal_enemy_2,4; }
+		skill	= { chance = 128; table = $array:"skill.gaze"; }
+		size	= 1;
+	}
+	bigeye:enemies.oddeye	= {
+		name	= "names.enemies.bigeye";
+		attributes	= { maxhp = 304; atk = 30; crt = 1; hits = 1; hit = 76; def = 16; mdef = 156; morale = 200; evd = 24; }
+		rewards		= { gold = 3591; xp = 3591; }
+		gfx.palette = $icon:pal_enemy_2,3;
+		skill	= { chance = 64; table = $array:"skill.gaze","skill.flash"; }
+	}
+	shark	= {
+		name	= "names.enemies.shark";
+		weakness = { family = @family.aquatic; element = @element.lightning }
+		resists.element	= (element.fire+@element.earth;
+		attributes	= { maxhp = 120; atk = 22; crt = 1; hits = 1; hit = 30; def = 0; mdef = 70; morale = 121; evd = 72; }
+		rewards		= { gold = 66; xp = 267; }
+		gfx	= { battler = $icon:gfx_enemy_1,5; palette = $icon:pal_enemy_2,3; }
+		size	= 1;
+	}
+	grshark:enemies.shark	= {
+		name	= "names.enemies.grshark";
+		attributes	= { maxhp = 344; atk = 50; crt = 1; hits = 1; hit = 86; def = 8; mdef = 170; morale = 200; evd = 72; }
+		rewards		= { gold = 600; xp = 2361; }
+		gfx.palette = $icon:pal_enemy_2,6;
+	}
+	pirate	= {
+		name	= "names.enemies.pirate";
+		attributes	= { maxhp = 18; atk = 8; crt = 1; hits = 2; hit = 15; def = 0; mdef = 15; morale = 255; evd = 12; }
+		rewards		= { gold = 40; xp = 40; }
+		gfx	= { battler = $icon:gfx_enemy_0,10; palette = $icon:pal_enemy_1,11; }
+		size	= 0;
+	}
+	kyzoku:enemies.pirate	= {
+		name	= "names.enemies.kyzoku";
+		resists.element	= @element.earth;
+		attributes	= { maxhp = 50; atk = 14; crt = 1; hits = 1; hit = 13; def = 6; mdef = 37; morale = 106; evd = 24; }
+		rewards		= { gold = 120; xp = 60; }
+		gfx.palette = $icon:pal_enemy_1,12;
+	}
+	bikke:enemies.pirate	= {
+		name	= "names.enemies.bikke";
+		resists.element	= @element.status;
+		attributes	= { maxhp = 70; atk = 14; crt = 8; hits = 1; hit = 13; def = 17; mdef = 64; morale = 180; evd = 12; }
+		rewards		= { gold = 120; xp = 60; }
+		skill	= { chance = 64; table = $array:"skill.rally","skill.charge" }
+		gfx	= { battler = $icon:gfx_enemy_0,13; palette = $icon:pal_enemy_2,2; }
+	}
+	garland	= {
+		name	= "names.enemies.garland";
+		attributes	= { maxhp = 106; atk = 15; crt = 1; hits = 1; hit = 27; def = 10; mdef = 64; morale = 255; evd = 12; }
+		rewards		= { gold = 250; xp = 130; }
+		gfx	= { battler = $icon:gfx_enemy_2,0; palette = $icon:pal_enemy_S,0; }
+		size	= 2;
+		resize	= $array:64,42,0,16;
+	}
+	garland2:enemies.garland	= {
+		attributes	= { maxhp = 210; atk = 19; crt = 1; hits = 1; hit = 27; def = 20; mdef = 64; morale = 255; evd = 12; }
+		rewards.xp	= 250;
+		skill	= { chance = 64; table = $array:"skill.slay","skill.gaze2","skill.gaze2","skill.slay"; }
+	}
+}

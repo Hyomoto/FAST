@@ -1,0 +1,359 @@
+// this is the shops defintion file
+// options
+//%wares, %party, action:string
+//commands
+//%line:line		updates line on speech box
+//%cost				updates cost on speech box
+//%try:value		runs fail if logic does, options: gold, buy
+//%go:menu			run menu sequence
+//%exit				exit shop
+//%write:var=val	write val to var
+//menu commands
+//menu:ocus
+//	o - open, refresh if already open
+//	c - close previous pane
+//	u - update, updates text contents, refreshes if open
+//	s - skip, do not activate this window, previous window will remain active
+//	n - no refresh, do not refresh this window
+shop.menus = {
+	speech		= { pane = "speech"; }
+	wares		= { pane = "wares"; }
+	menu		= { pane = "menu"; }
+	gold		= { pane = "gold"; }
+	info		= { pane = "info"; }
+	exit		= { sequence = "%exit"; }
+	start	= {
+		sequence= "speech:so,%go:menu";
+		speech	= $link:shop.menus.speech;
+	}
+	clinic	= {
+		start	= {
+			sequence	= "speech:s,%try:has-dead,%line:initial,speech:son,%go:menu";
+			speech		= { pane = "speech"; fail = "%go:fail"; }
+		}
+		menu	= {
+			sequence	= "menu:uo,%read:cost=cost,%do:show-cost,%line:confirm,confirm:uo,%try:has-gold,%do:lose-gold,gold:su,%go:revive";
+			menu		= { pane = "menu"; filter = "dead"; options = "%party>id@target"; cancel = "%go:exit" }
+			confirm		= { pane = "menu"; options = "confirm:common.yes.long,cancel:common.no.long"; fail = "%line:cant_afford,%do:cursor-hide,speech,%go:exit"; cancel = "%line:initial,%go:menu"; }
+			speech	= $link:shop.menus.speech;
+			gold	= $link:shop.menus.gold;
+		}
+		revive	= {
+			sequence	= "%line:revive,menu:sc,%do:cursor-hide,%do:clinic>target,%do:update-party,%do:fade-in,speech,%go:start";
+			menu	= $link:shop.menus.menu;
+			speech	= $link:shop.menus.speech;
+		}
+		fail	= {
+			sequence	= "%line:no_help,speech:on,%exit";
+			speech	= $link:shop.menus.speech;
+		}
+		exit	= $link:shop.menus.exit;
+	}
+	inn	= {
+		start	= {
+			sequence	= "speech:os,%go:menu";
+			speech	= $link:shop.menus.speech;
+		}
+		menu	= {
+			sequence	= "menu:ou,confirm:ou,%try:has-gold,%go:stay";
+			menu		= { pane = "menu"; options = "confirm:common.yes.long,cancel:common.no.long"; confirm = "%read:cost=cost,%do:show-cost,%line:confirm"; cancel = "%go:exit"; }
+			confirm		= { pane = "menu"; options = "confirm:common.yes.long,cancel:common.no.long"; success = "%do:lose-gold,gold:su"; fail = "%line:cant_afford,%do:cursor-hide,speech:n,%exit"; cancel = "%go:exit"; }
+			speech	= $link:shop.menus.speech;
+			gold	= $link:shop.menus.gold;
+		}
+		stay	= {
+			sequence	= "%line:stay,%do:cursor-hide,speech:cns,%do:fade-out,speech,%do:fade-in,%line:warn,speech,%do:inn,%do:save,%exit";
+			speech	= $link:shop.menus.speech;
+		}
+		exit	= {
+			sequence	= "%do:save,%line:warn,%do:cursor-hide,speech:c,%exit";
+			menu	= $link:shop.menus.menu;
+			speech	= $link:shop.menus.speech;
+		}
+	}
+	magic = {
+		start	= $link:shop.menus.start;
+		menu	= {
+			sequence = "%do:show-use,menu:uo,wares:uco,%try:can-use>target@ware,confirm:uo,%write:mode=afford,%try:has-gold,%write:mode=has,%try:have:not>target@ware,%write:mode=hold,%try:get>target@ware,%go:sold";
+			menu	= { pane = "menu"; filter = "alive,incap"; options = "%party>id@target"; cancel = "%go:exit" }
+			wares 	= { pane = "wares"; options = "%wares>path@ware"; success = "%do:get-cost@ware,%line:confirm"; fail = "%line:cant_learn,%go:menu"; open = "%do:show-use@ware,%wait"; move = "%do:show-use@ware,%wait" }
+			confirm	= { pane = "menu"; options = "confirm:common.yes.long,cancel:common.no.long"; fail = "%go:mode"; cancel = "%line:cancel,%go:menu"; }
+		}
+		sold	= { sequence = "%do:lose-gold,gold:su,%line:initial,%go:menu"; gold	= $link:shop.menus.gold; }
+		hold	= { sequence = "%line:too_many,%go:menu"; }
+		has		= { sequence = "%line:already_known,%go:menu"; }
+		afford	= { sequence = "%line:cant_afford,%go:menu"; }
+		exit	= $link:shop.menus.exit;
+	}
+	item	= {
+		start	= $link:shop.menus.start;
+		menu	= {
+			sequence= "menu:uo;";
+			menu	= { pane = "menu"; options = "buy:shop.generic.menu.buy,cancel:shop.generic.menu.exit"; buy = "%line:buy,%go:buy"; cancel = "%go:exit"; }
+		}
+		buy		= {
+			sequence= "wares:uco,confirm:uo";
+			wares 	= { pane = "wares"; options = "%wares>path@ware"; confirm = "%do:get-cost@ware,%line:confirm"; }
+			confirm	= { pane = "menu"; options = "buy1:shop.item.buy_1,buy5:shop.item.buy_5,cancel:common.no.long"; buy1 = "%do:get-cost@ware[1,%try:has-gold,%go:buy1"; buy5 = "%do:get-cost@ware[5,%try:has-gold,%go:buy5"; cancel = "%line:cancel,%go:menu"; fail = "%line:cant_afford,%go:menu"; }
+			gold	= $link:shop.menus.gold;
+		}
+		sold	= { sequence = "%do:lose-gold,gold:su,%line:purchase,%go:menu"; gold	= $link:shop.menus.gold; }
+		buy1	= { sequence = "%try:get@ware[1,%go:sold"; fail = "%line:cant_hold,%go:menu"; }
+		buy5	= { sequence = "%try:get@ware[5,%go:sold"; fail = "%line:cant_hold_more,%go:menu"; }
+		// sell	= {
+			// sequence= "target,wares:co,confirm:o,%sell";
+			// target	= { pane = "menu"; filter = "alive"; options = "%party:target"; }
+			// wares	= { pane = "wares"; filter = "item:weapon"; options = "%target:inventory"; }
+			// confirm	= { pane = "menu"; options = "confirm:common.yes.long,cancel:common.no.long"; }
+		// }
+		exit	= $link:shop.menus.exit;
+	}
+	equip = {
+		menu	= {
+			sequence= "%do:show-use,info:C,menu:ruo";
+			menu	= { pane = "menu"; options = "buy:shop.generic.menu.buy,sell:shop.generic.menu.sell,cancel:shop.generic.menu.exit"; buy = "%go:buy"; sell = "%go:sell"; cancel = "%go:exit"; }
+			info	= $link:shop.menus.info;
+		}
+		buy		= {
+			sequence= "%line:buy,info:ocs,wares:uo,confirm:uo,%try:has-gold,%line:target,target:uo,%try:get>target@ware,%go:menu";
+			wares 	= { pane = "wares"; options = "%wares>path@ware"; confirm = "%do:get-cost@ware,info:C,%line:confirm"; open = "%do:show-use@ware,%do:show-stats@ware,%wait"; move = "%do:show-use@ware,%do:show-stats@ware,%wait" }
+			confirm	= { pane = "menu"; options = "confirm:common.yes.long,cancel:common.no.long"; cancel = "%line:cancel,%go:menu"; fail = "%line:cant_afford,%go:menu"; }
+			target	= { pane = "menu"; filter = "alive,incap"; options = "%party>id@target"; success = "%do:lose-gold,gold:su,%line:purchase"; fail = "%line:cant_hold,%go:menu" }
+			info	= $link:shop.menus.info;
+			gold	= $link:shop.menus.gold;
+		}
+		sell	= {
+			sequence= "target:uo,wares:us,%try:is-empty:wares,wares:oc,confirm:ou,%try:lose>target@inventory[choice,%do:gain-gold@sell,gold:su,%go:menu";
+			target	= { pane = "menu"; filter = "alive,incap"; options = "%party>id@target"; }
+			wares	= { pane = "wares"; filter = "weapon"; options = "%inventory:target>index@choice"; confirm = "%do:get-cost:sell>target@inventory[choice,%line:confirm"; success = "%line:no_sell,%go:menu"; fail = "%next"; }
+			confirm	= { pane = "menu"; options = "confirm:common.yes.long,cancel:common.no.long"; cancel = "%line:cancel,%go:menu"; }
+		}
+		exit	= $link:shop.menus.exit;
+	}
+	weapon = {
+		start	= $link:shop.menus.start;
+		menu	= $link:shop.menus.equip.menu;
+		buy	= $link:shop.menus.equip.buy;
+		sell = {
+			sequence	= $link:shop.menus.equip.sell.sequence;
+			target	= $link:shop.menus.equip.sell.target;
+			wares:shop.menus.equip.sell.wares = { filter = "weapon"; }
+			confirm	= $link:shop.menus.equip.sell.confirm;
+			gold	= $link:shop.menus.gold;
+		}
+		exit	= $link:shop.menus.exit;
+	}
+	armor:shop.menus.weapon = {
+		sell.wares.filter = "armor";
+	}
+}
+shop.gfx	= {
+	inn		= {
+		shopkeeper	= { icon = $icon:gfx_shop_keeper_0,0; palette = $icon:pal_shop_1,0; }
+		counter		= { icon = $icon:gfx_shop_counters_0,1; palette = $icon:pal_shop_0,0; }
+		decor		= {
+			0	= { icon = $icon:gfx_shop_decor_0,0; palette = $icon:pal_shop_0,0; }
+			1	= { icon = $icon:gfx_shop_decor_0,0; palette = $icon:pal_shop_0,0; }
+			2	= { icon = $icon:gfx_shop_decor_0,0; palette = $icon:pal_shop_0,0; }	
+		}
+	}
+	item	= {
+		shopkeeper	= { icon = $icon:gfx_shop_keeper_0,6; palette = $icon:pal_shop_1,3; }
+		counter		= { icon = $icon:gfx_shop_counters_0,5; palette = $icon:pal_shop_0,3; }
+		decor		= {
+			0	= { icon = $icon:gfx_shop_decor_0,5; palette = $icon:pal_shop_0,3; }
+			1	= { icon = $icon:gfx_shop_decor_0,5; palette = $icon:pal_shop_0,3; }
+			2	= { icon = $icon:gfx_shop_decor_0,5; palette = $icon:pal_shop_0,3; }
+		}
+	}
+	weapon = {
+		shopkeeper	= { icon = $icon:gfx_shop_keeper_0,2; palette = $icon:pal_shop_1,2; }
+		counter		= { icon = $icon:gfx_shop_counters_0,3; palette = $icon:pal_shop_0,2; }
+		decor		= {
+			0	= { icon = $icon:gfx_shop_decor_0,6; palette = $icon:pal_shop_0,2; }
+			1	= { icon = $icon:gfx_shop_decor_0,6; palette = $icon:pal_shop_0,2; }
+			2	= { icon = $icon:gfx_shop_decor_0,6; palette = $icon:pal_shop_0,2; }
+		}
+	}
+	armor	= {
+		shopkeeper	= { icon = $icon:gfx_shop_keeper_0,5; palette = $icon:pal_shop_1,1; }
+		counter		= { icon = $icon:gfx_shop_counters_0,1; palette = $icon:pal_shop_0,1; }
+		decor		= {
+			0	= { icon = $icon:gfx_shop_decor_0,3; palette = $icon:pal_shop_0,1; }
+			1	= { icon = $icon:gfx_shop_decor_0,3; palette = $icon:pal_shop_0,1; }
+			2	= { icon = $icon:gfx_shop_decor_0,3; palette = $icon:pal_shop_0,1; }
+		}
+	}
+	white	= {
+		shopkeeper	= { icon = $icon:gfx_shop_keeper_0,4; palette = $icon:pal_shop_1,7; }
+		counter		= { icon = $icon:gfx_shop_counters_0,4; palette = $icon:pal_shop_0,7; }
+		decor		= {
+			0	= { icon = $icon:gfx_shop_decor_0,4; palette = $icon:pal_shop_0,7; }
+			1	= { icon = $icon:gfx_shop_decor_0,4; palette = $icon:pal_shop_0,7; }
+			2	= { icon = $icon:gfx_shop_decor_0,4; palette = $icon:pal_shop_0,7; }	
+		}
+	}
+	black	= {
+		shopkeeper	= { icon = $icon:gfx_shop_keeper_0,3; palette = $icon:pal_shop_1,6; }
+		counter		= { icon = $icon:gfx_shop_counters_0,4; palette = $icon:pal_shop_0,6; }
+		decor		= {
+			0	= { icon = $icon:gfx_shop_decor_0,1; palette = $icon:pal_shop_0,6; }
+			1	= { icon = $icon:gfx_shop_decor_0,1; palette = $icon:pal_shop_0,6; }
+			2	= { icon = $icon:gfx_shop_decor_0,1; palette = $icon:pal_shop_0,6; }	
+		}
+	}
+	clinic	= {
+		shopkeeper	= { icon = $icon:gfx_shop_keeper_0,1; palette = $icon:pal_shop_1,4; }
+		counter		= { icon = $icon:gfx_shop_counters_0,0; palette = $icon:pal_shop_0,4; }
+		decor		= {
+			0	= { icon = $icon:gfx_shop_decor_0,0; palette = $icon:pal_shop_0,4; }
+			1	= { icon = $icon:gfx_shop_decor_0,9; palette = $icon:pal_shop_0,4; }
+			2	= { icon = $icon:gfx_shop_decor_0,0; palette = $icon:pal_shop_0,4; }
+		}
+	}
+}
+template.shop = {
+	name		= "shop.generic.name"
+	party_show	= "alive,incap"
+	lines		= {
+		initial		= "no.string"
+		confirm		= "shop.generic.confirm"
+		cant_afford	= "shop.generic.cant_afford"
+	}
+}
+template.item:template.shop = {
+	name		= "shop.item.name";
+	menus	= $link:shop.menus.item
+	gfx	= $link:shop.gfx.item;
+	lines		= {
+		initial		= "shop.generic.greeting"
+		buy			= "shop.generic.buy"
+		cancel		= "shop.generic.nevermind"
+		cant_hold	= "shop.generic.cant_hold"
+		cant_hold_more	= "shop.item.cant_hold"
+		purchase	= "shop.generic.purchase"
+		target		= "shop.generic.target"
+	}
+}
+template.weapon:template.shop = {
+	name	= "shop.equip.weapon"
+	menus	= $link:shop.menus.weapon;
+	gfx	= $link:shop.gfx.weapon;
+	lines		= {
+		initial		= "shop.generic.greeting"
+		buy			= "shop.generic.buy"
+		cancel		= "shop.generic.nevermind"
+		cant_hold	= "shop.generic.cant_hold"
+		purchase	= "shop.generic.purchase"
+		target		= "shop.generic.target"
+		no_sell		= "shop.equip.no_sell"
+	}
+}
+template.armor:template.weapon = {
+	name		= "shop.equip.armor"
+	menus	= $link:shop.menus.armor;
+	gfx	= $link:shop.gfx.armor;
+}
+template.magic.white:template.shop = {
+	name		= "shop.magic.white"
+	menus	= $link:shop.menus.magic;
+	gfx	= $link:shop.gfx.white;
+	lines		= {
+		initial		= "shop.magic.greeting";
+		cancel		= "shop.generic.nevermind"
+		cant_learn	= "shop.magic.cant_learn";
+		too_many	= "shop.magic.too_many";
+		already_known="shop.magic.already_known";
+	}
+}
+template.magic.black:template.magic.white = {
+	name		= "shop.magic.black"
+	gfx	= $link:shop.gfx.black;
+}
+template.clinic:template.shop = {
+	name		= "shop.clinic.name";
+	menus	= $link:shop.menus.clinic;
+	gfx	= $link:shop.gfx.clinic;
+	cost		= 0;
+	lines		= {
+		initial	= "shop.clinic.greeting";
+		no_help	= "shop.clinic.no_help";
+		revive	= "shop.clinic.revive";
+		purchase= "shop.clinic.greeting";
+		cancel	= "shop.clinic.greeting";
+	}
+}
+template.inn:template.shop = {
+	name		= "shop.inn.name";
+	menus	= $link:shop.menus.inn;
+	gfx	= $link:shop.gfx.inn;
+	cost		= 0;
+	lines		= {
+		initial	= "shop.inn.greeting"
+		stay	= "shop.inn.stay"
+		warn	= "shop.inn.warn"
+	}
+}
+shop	= {
+	coneria	= {
+		weapon:template.weapon		= { wares = $array:"weapon.staff.wooden","weapon.knife.small","weapon.numchaku.wooden","weapon.sword.rapier","weapon.hammer.iron"; }
+		armor:template.armor		= { wares = $array:"armor.body.cloth","armor.body.wooden","armor.body.chain","armor.boots.travel","armor.helmet.cap"; }
+		item:template.item			= { wares = $array:"item.heal","item.pure","item.tent"; }
+		inn:template.inn 			= { cost = 20; }
+		clinic:template.clinic 		= { cost = 10; }
+		white:template.magic.white	= { wares = $array:"spells.white.cure","spells.white.harm","spells.white.fog","spells.white.ruse","spells.white.rouse"; }
+		black:template.magic.black	= { wares = $array:"spells.black.fire","spells.black.sleep","spells.black.lock","spells.black.lit"; }
+	}
+	pravoka	= {
+		weapon:template.weapon		= { wares = $array:"weapon.hammer.iron","weapon.sword.short","weapon.axe.hand","weapon.sword.scimictar","weapon.staff.quarter" }
+		armor:template.armor		= { wares = $array:"armor.body.chain","armor.body.iron","armor.shield.buckler","armor.helmet.cap","armor.gloves.gloves"; }
+		item:template.item			= { wares = $array:"item.heal","item.pure","item.tent","item.cabin"; }
+		inn:template.inn 			= { cost = 30; }
+		clinic:template.clinic 		= { cost = 40; }
+		white:template.magic.white	= { wares = $array:"spells.white.lamp","spells.white.mute","spells.white.alit","spells.white.invis" }
+		black:template.magic.black	= { wares = $array:"spells.black.ice","spells.black.dark","spells.black.saber","spells.black.slow"; }
+	}
+	elfheim	= {
+		inn:template.inn			= { cost = 100; }
+		clinic:template.clinic		= { cost = 200; }
+		weapon:template.weapon		= { wares = $array:"weapon.numchaku.iron","weapon.knife.large","weapon.staff.iron","weapon.sword.sabre","weapon.sword.silver"; }
+		armor:template.armor		= { wares = $array:"armor.body.iron","armor.bracelet.copper","armor.shield.iron","armor.helmet.cap","armor.helmet.wooden"; }
+		item:template.item			= { wares = $array:"item.heal","item.pure","item.cabin","item.house","item.soft"; }
+		black3:template.magic.black	= { wares = $array:"spells.black.fire2","spells.black.hold","spells.black.lit2","spells.black.lock2"; }
+		white3:template.magic.white	= { wares = $array:"spells.white.cure2","spells.white.harm2","spells.white.afir","spells.white.heal"; }
+		black4:template.magic.black	= { wares = $array:"spells.black.sleep2","spells.black.fast","spells.black.conf","spells.black.ice2"; }
+		white4:template.magic.white	= { wares = $array:"spells.white.pure","spells.white.fear","spells.white.aice","spells.white.mute"; }
+	}
+	caravan:template.item	= {
+		name	= "shop.caravan.name";
+		gfx	= ${
+			shopkeeper	= { icon = $icon:gfx_shop_keeper_0,1; palette = $icon:pal_shop_1,4; }
+			counter		= { icon = $icon:gfx_shop_counters_0,0; palette = $icon:pal_shop_0,4; }
+			decor		= {
+				0	= { icon = $icon:gfx_shop_decor_0,0; palette = $icon:pal_shop_0,4; }
+				1	= { icon = $icon:gfx_shop_decor_0,9; palette = $icon:pal_shop_0,4; }
+				2	= { icon = $icon:gfx_shop_decor_0,0; palette = $icon:pal_shop_0,4; }
+			}
+		}
+		menus 	= ${
+			start	= $link:shop.menus.start;
+			menu	= $link:shop.menus.item.menu;
+			buy	= {
+				sequence= "wares:uco,confirm:uo";
+				wares 	= { pane = "wares"; options = "%wares>path@ware"; confirm = "%do:get-cost@ware,%line:confirm"; }
+				confirm	= { pane = "menu"; options = "confirm:common.yes.long,cancel:common.no.long"; confirm = "%do:get-cost@ware[1,%try:has-gold,%go:buy1"; fail = "%line:cant_afford,%go:menu"; }
+			}
+			buy1	= { sequence = "%try:get@ware[1,%go:sold"; fail = "%line:cant_hold,%go:menu"; }
+			sold	= {
+				sequence = "%do:lose-gold,gold:su,%line:purchase,speech:cns,%do:cursor-hide,speech,%go:exit";
+				speech	= $link:shop.menus.speech;
+				gold	= $link:shop.menus.gold;
+			}
+			exit	= $link:shop.menus.exit;
+		}
+		wares			= $array:"item.bottle";
+		lines.purchase	= "shop.caravan.purchase";
+		
+	}
+	default	= $link:shop.coneria.white;
+}

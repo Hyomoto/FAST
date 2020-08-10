@@ -1,0 +1,266 @@
+// this is the classes defintion file
+template = {
+	class = {
+		gfx		= {
+			portrait	= $icon:gfx_fighter_battler_0,0
+			palette		= $icon:pal_char_fighter_0,1
+			battler		= $asset:gfx_fighter_battler_0
+			world		= $asset:gfx_fighter_world_0
+			town		= $asset:gfx_fighter_town_0
+			}
+		names	= $array:"Desh";
+		magic	= {
+			can_use	= @false;
+			charges = $array:0,0,0,0,0,0,0,0;
+			spells = $array:null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null;
+		}
+		attributes	= {
+			values	= { maxhp = 20; str = 10; agi = 10; int = 10; wis = 10; vit = 10; lck = 10; hit = 10; mdef = 10; hits = 1; }
+			table	= $array:"maxhp","str","agi","int","wis","vit","lck","hit","mdef";
+			growth	= {
+				maxhp	= $array:0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+				str		= $array:0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+				agi		= $array:0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+				int		= $array:0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+				wis		= $array:0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+				vit		= $array:0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+				lck		= $array:0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+				hit		= 3
+				mdef	= 3
+			}
+		}
+		commands	= {
+			list	= $array:"attack","magic","item","equip","run";
+			attack	= { name = "battle.menu.attack"; ability = "skill.attack"; goto = "target"; action = "ability" }
+			magic	= { name = "battle.menu.magic"; goto = "magic"; action = "ability"; restrict = @character.status.silence }
+			item	= { name = "battle.menu.item"; goto = "item"; action = "ability"; restrict = @character.status.silence }
+			equip	= { name = "battle.menu.equip"; goto = "equip"; action = "ability"; restrict = @character.status.silence }
+			run		= { name = "battle.menu.run"; action = "run"; change = "wait"; }
+			wait	= { name = "battle.menu.wait"; action = "wait"; change = "run"; }
+		}
+		name	= "no.string"
+		desc	= "no.string"
+		upgrade_to	= "none";
+		usable_flag	= 0;
+	}
+}
+classes	= {
+	new_game	= {
+		choices	= $array:"classes.fighter","classes.thief", "classes.bbelt", "classes.wmage", "classes.bmage", "classes.rmage";
+		default	= $array:0,1,3,5;
+		
+	}
+	template	= {
+		name	= $string:"CHRIS";
+		class	= "classes.fighter";
+		filter	= @filter.character;
+		palette;
+		inventory= $array:"weapon.staff.wooden",null,null,null,"armor.body.cloth",null,null,null;
+		equipped= $array:1,0,0,0,1,0,0,0;
+		status	= 0;
+		magic	= {
+			can_use	= @false;
+			charges	= {
+				raw		= $array:0,0,0,0,0,0,0,0;
+			}
+			spells = $array:null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null
+		}
+		attributes	= {
+			level	= 1;
+			exp		= 0;
+			status	= 0;
+			raw		= { maxhp = 20; str = 10; agi = 10; int = 10; wis = 10; vit = 10; lck = 10; hit = 10; mdef = 10; }
+		}
+		effective	= { family	= @family.none; element	= @family.none; }
+		resists		= { family	= @family.none; element	= @family.none; }
+		weakness	= { family	= @family.none; element	= @family.none; }
+	}
+	$template:template.class
+	fighter	= {
+		name	= "class.fighter.base";
+		desc	= "class.fighter.desc"
+		gfx.palettes	= $array:2,3;
+		names	= $array:"Dill","Dan","Roth","Brock","Ionas","Essel";
+		attributes 	= {
+			values	= { maxhp = 35; str = 20; agi = 5; int = 1; wis = 4; vit = 10; lck = 5; hit = 10; mdef = 15; }
+			growth	= {
+				maxhp	= $array:0,1,1,1,1,1,1,1,1,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1
+				str		= $array:0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+				agi		= $array:0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,0,1,1,0,1,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0
+				int		= $array:0,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0
+				wis		= $array:0,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0
+				vit		= $array:0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,0,1,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0
+				lck		= $array:0,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0
+				hit		= 2
+				mdef	= 1
+			}
+		}
+		commands.magic.enable	= @false;
+		usable_flag	= @class.fighter;
+	}
+	thief	= {
+		gfx		= {
+			portrait= $icon:gfx_thief_battler_0,0
+			palette	= $icon:pal_char_thief_0,1
+			battler	= $asset:gfx_thief_battler_0
+			town	= $asset:gfx_thief_town_0
+			palettes= $array:2,3;
+			}
+		name 	= "class.thief.base";
+		desc	= "class.thief.desc";
+		names	= $array:"Bary","Eki","Russo","Andel","Cholk";
+		attributes	= {
+			values	= { maxhp = 30; str = 5; agi = 10; int = 5; wis = 1; vit = 5; lck = 15; hit = 5; mdef = 15; }
+			growth	= {
+				maxhp	= $array:0,1,1,1,1,0,1,0,1,0,1,0,1,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,1,0,0,0,0
+				str		= $array:0,1,1,1,1,1,1,1,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,0,1,0,1,1,0,1,1,0,1,1,0,1,0,1,0,1,0,1,0,1
+				agi		= $array:0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,1,1,1,1,1,1,1,1,1,0,1,0,1,0,1,0,1,0
+				int		= $array:0,0,1,0,1,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0
+				wis		= $array:0,0,1,0,1,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0
+				vit		= $array:0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0
+				lck		= $array:0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+				hit		= 3
+				mdef	= 3
+			}
+		}
+		commands.magic.enable	= @false;
+		usable_flag	= @class.thief;
+		allow_dual	= @true;
+	}
+	bbelt	= {
+		gfx		= {
+			portrait= $icon:gfx_bbelt_battler_0,0
+			battler	= $asset:gfx_bbelt_battler_0
+			town	= $asset:gfx_bbelt_town_0
+			palette	= $icon:pal_char_bbelt_0,1
+		}
+		name 	= "class.bbelt.base"; 
+		desc	= "class.bbelt.desc"
+		names	= $array:"Desh","Nox","Yan","Femp","Ottos";
+		attributes = {
+			values	= { maxhp = 33; str = 5; agi = 5; int = 5; wis = 5; vit = 20; lck = 5; hit = 5; mdef = 10; }
+			growth	= {
+				maxhp	= $array:0,1,0,1,0,0,1,0,0,1,0,0,1,0,0,1,1,0,1,0,0,1,0,0,1,0,0,1,0,0,1,1,0,1,0,0,1,0,0,1,0,0,1,0,0,1,1,0,1,0
+				str		= $array:0,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0
+				agi		= $array:0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1
+				int		= $array:0,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0
+				wis		= $array:0,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0
+				vit		= $array:0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+				lck		= $array:0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,0,1,0,0,1,0,0
+				hit		= 3
+				mdef	= 3
+			}
+		}
+		commands.magic.enable	= @false;
+		usable_flag	= @class.bbelt;
+	}
+	wmage	= {
+		gfx		= {
+			portrait= $icon:gfx_wmage_battler_0,0
+			battler	= $asset:gfx_wmage_battler_0
+			town	= $asset:gfx_wmage_town_0
+			world	= $asset:gfx_wmage_world_0
+			palette	= $icon:pal_char_wmage_0,1
+			palettes= $array:2,3;
+		}
+		name 	= "class.wmage.base";
+		desc	= "class.wmage.desc"
+		names	= $array:"Jesse","Chris","Robin","Elso","Jules";
+		formulas.magic	= {
+			bonus	= "%get:attr-%get,base:effectivity/(9-%get,base:level)";
+			attr	= "attributes.current.wis";
+		}
+		attributes = {
+			values	= { maxhp = 28; str = 5; agi = 5; int = 5; wis = 15; vit = 10; lck = 5; hit = 5; mdef = 20; }
+			growth	= {
+				maxhp	= $array:0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,0,1,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0
+				str		= $array:0,1,1,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0
+				agi		= $array:0,1,1,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1
+				int		= $array:0,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0
+				wis		= $array:0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+				vit		= $array:0,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0
+				lck		= $array:0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1
+				hit		= 3
+				mdef	= 3
+			}
+		}
+		magic	= {
+			can_use	= @true;
+			growth	= $array:0x13,0x13,0x23,0x24,0x134,0x234,0x235,0x1335,0x2345,0x2346,0x3446,0x13446,0x23456,0x24457,0x34557,0x134557,0x234567,0x245567,0x345568,0x1345668,0x2345668,0x2455668,0x3456668,0x3456679,0x13556679,0x24556679,0x24566779,0x34566789,0x35567789,0x45667789,0x45667889,0x45677889,0x55677889,0x56677889,0x56678889,0x56778889,0x66778889,0x66778899,0x67778899,0x67788899,0x77788899,0x77888899,0x77888999,0x78888999,0x88888999,0x88889999,0x88899999,0x88999999,0x89999999,0x99999999
+		}
+		usable_flag	= @class.wmage;
+	}
+	bmage	= {
+		gfx		= {
+			portrait= $icon:gfx_bmage_battler_0,0
+			battler	= $asset:gfx_bmage_battler_0
+			town	= $asset:gfx_bmage_town_0
+			world	= $asset:gfx_bmage_world_0
+			palette	= $icon:pal_char_bmage_0,1
+			palettes= $array:2,3,4;
+		}
+		name 	= "class.bmage.base";
+		desc	= "class.bmage.desc";
+		names	= $array:"Xavius","Vento","Modos","Zin","Delph";
+		formulas.magic	= {
+			bonus	= "%get:attr-%get,base:effectivity/(9-%get,base:level)";
+			attr	= "attributes.current.int";
+		}
+		attributes = {
+			values	= { maxhp = 25; str = 1; agi = 10; int = 20; wis = 1; vit = 1; lck = 10; hit = 5; mdef = 20; }
+			growth	= {
+				maxhp	= $array:0,1,0,1,0,1,0,1,0,0,1,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+				str		= $array:0,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0
+				agi		= $array:0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0
+				int		= $array:0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+				wis		= $array:0,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0
+				vit		= $array:0,0,1,0,1,0,1,0,1,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0
+				lck		= $array:0,0,0,1,0,1,0,1,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1
+				hit		= 3
+				mdef	= 3
+			}
+		}
+		magic	= {
+			can_use	= @true;
+			growth	= $array:0x13,0x13,0x23,0x24,0x134,0x234,0x235,0x1335,0x2345,0x2346,0x3446,0x13446,0x23456,0x24457,0x34557,0x134557,0x234567,0x245567,0x345568,0x1345668,0x2345668,0x2455668,0x3456668,0x3456679,0x13556679,0x24556679,0x24566779,0x34566789,0x35567789,0x45667789,0x45667889,0x45677889,0x55677889,0x56677889,0x56678889,0x56778889,0x66778889,0x66778899,0x67778899,0x67788899,0x77788899,0x77888899,0x77888999,0x78888999,0x88888999,0x88889999,0x88899999,0x88999999,0x89999999,0x99999999
+		}
+		usable_flag	= @class.bmage;
+	}
+	rmage	= {
+		gfx		= {
+			portrait= $icon:gfx_rmage_battler_0,0
+			battler	= $asset:gfx_rmage_battler_0
+			town	= $asset:gfx_rmage_town_0
+			world	= $asset:gfx_rmage_world_0
+			palette	= $icon:pal_char_rmage_0,1
+			palettes	= $array:2,3;
+		}
+		name 	= "class.rmage.base";
+		desc	= "class.rmage.desc";
+		names	= $array:"Zolo","Novile","Jens","Ozmo","Bosch";
+		formulas.magic	= {
+			bonus	= "%get:attr-%get,base:effectivity/(9-%get,base:level)";
+			attr	= "(attributes.current.int+attributes.current.wis)/2";
+			cth		= "148*(1-%resist:target,skill)+(%weak:target,skill*40)+%get,base:accuracy-attributes.current.mdef,other-(%get:attr-%get,base:effectivity)";
+		}
+		attributes = {
+			values	= { maxhp = 30; str = 10; agi = 10; int = 10; wis = 5; vit = 5; lck = 5; hit = 7; mdef = 20; }
+			growth	= {
+				maxhp	= $array:0,1,0,1,0,1,0,1,1,1,0,1,0,1,0,1,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0
+				str		= $array:0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1
+				agi		= $array:0,0,1,0,1,0,1,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0
+				int		= $array:0,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0
+				wis		= $array:0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,0
+				vit		= $array:0,1,1,1,1,1,0,1,0,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1
+				lck		= $array:0,1,0,1,0,1,0,1,0,1,0,1,1,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0
+				hit		= 3
+				mdef	= 3
+			}
+		}
+		magic	= {
+			can_use	= @true;
+			growth	= $array:0x13,0x13,0x23,0x24,0x34,0x134,0x235,0x245,0x345,0x1346,0x2346,0x2446,0x3456,0x3457,0x13457,0x24557,0x24567,0x34567,0x35567,0x135667,0x245668,0x245669,0x345669,0x346679,0x356679,0x1456679,0x2456779,0x2456789,0x3556789,0x3567789,0x13567789,0x24567889,0x24667889,0x34667889,0x35677889,0x45677889,0x45678889,0x46678889,0x56678889,0x56778889,0x56778899,0x56788899,0x66788899,0x67788899,0x67788999,0x67888999,0x77888999,0x77889999,0x78889999,0x78899999
+		}
+		usable_flag	= @class.rmage;
+	}
+}

@@ -1,0 +1,42 @@
+// this is the treasure defintion file
+// treasure = "flag:item;item"	can specify treasure based on flags, however only one treasure can be retrieved
+treasure	= {
+	matoya	= {
+		A	= "item.heal";
+		B	= "item.heal";
+		C	= "item.pure";
+	}
+	coneria	= {
+		castle	= {
+			A	= "armor.body.iron";
+			B	= "armor.shield.iron";
+			C	= "item.tnt";
+			D	= "$400";
+			E	= "item.heal[5";
+			F	= "item.heal";
+		}
+	}
+	tof	= {
+		B	= "item.tent"
+		C	= "weapon.sword.were"
+		D	= "item.soft"
+		E	= "armor.helmet.cap"
+		F	= "weapon.sword.rune"
+		I	= "armor.shield.wooden"
+		J	= "$400"
+		b1	= {
+			A	= "item.heal"
+			B	= "armor.bracelet.mind"
+			C	= "$250"
+		}
+	}
+	pc	= {
+		bikke	= "$500"
+		A		= "weapon.knife.large"
+		B		= "item.cabin"
+		C		= "weapon.sword.scimictar"
+		D		= "armor.bracelet.copper"
+		E		= "item.heal"
+		F		= "item.pure"
+	}
+}

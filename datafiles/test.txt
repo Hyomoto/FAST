@@ -1,0 +1,158 @@
+// this is the database defintion file
+@true	= 1;
+@false	= 0;
+
+@filter.none	= 0;
+@filter.item	= 1;
+@filter.usable	= @filter.item + 2;
+@filter.key		= @filter.item + 4;
+@filter.equip	= @filter.item + 8;
+@filter.weapon	= @filter.equip + 16;
+@filter.armor	= @filter.equip + 32;
+@filter.skill	= 1024;
+@filter.white	= @filter.skill + 2048;
+@filter.black	= @filter.skill + 4096;
+@filter.character	= 8192;
+@filter.enemy	= 16384;
+
+@class.fighter	= 1;
+@class.knight	= 2;
+@class.thief	= 4;
+@class.ninja	= 8;
+@class.bbelt	= 16;
+@class.master	= 32;
+@class.wmage	= 64;
+@class.wwizard	= 128;
+@class.bmage	= 256;
+@class.bwizard	= 512;
+@class.rmage	= 1024;
+@class.rwizard	= 2048;
+
+@class.any_fighter	= @class.fighter + @class.knight;
+@class.any_thief	= @class.thief + @class.ninja;
+@class.any_bbelt	= @class.bbelt + @class.master;
+@class.any_wmage	= @class.wmage + @class.wwizard;
+@class.any_bmage	= @class.bmage + @class.bwizard;
+@class.any_rmage	= @class.rmage + @class.rwizard;
+
+@class.any			= @class.any_fighter + @class.any_thief + @class.any_bbelt + @class.any_wmage + @class.any_bmage + @class.any_rmage;
+
+@character.status.dead		= 1;
+@character.status.stone		= 2;
+@character.status.poison	= 4;
+@character.status.blind		= 8;
+@character.status.paralyze	= 16;
+@character.status.sleep		= 32;
+@character.status.silence	= 64;
+@character.status.confuse	= 128;
+@character.status.regen		= 256;
+
+@character.is_dead			= @character.status.dead + @character.status.stone;
+@character.status.recoverable	= 252;
+
+@family.none	= 0;
+@family.magical	= 1;
+@family.dragon	= 2;
+@family.giant	= 4;
+@family.undead	= 8;
+@family.were	= 16;
+@family.aquatic	= 32;
+@family.mage	= 64;
+@family.regen	= 128;
+
+@family.all		= @family.magical + @family.dragon + @family.giant + @family.undead + @family.were + @family.aquatic + @family.mage + @family.regen;
+
+@element.none		= 0;
+@element.status		= 1;
+@element.poison_stone	= 2;
+@element.time		= 4;
+@element.death		= 8;
+@element.fire		= 16;
+@element.ice		= 32;
+@element.lightning	= 64;
+@element.earth		= 128;
+
+@element.all	= @element.status + @element.poison_stone + @element.time + @element.death + @element.fire + @element.ice + @element.lightning + @element.earth;
+
+tables		= {
+	encounter	= $array:31, 166, 222, 186, 204, 18, 125, 116, 27, 243, 180, 136, 248, 82, 244, 7, 144, 171, 179, 189, 170, 85, 40, 188, 138, 109, 14, 196, 131, 169, 59, 118, 32, 124, 9, 146, 253, 74, 168, 240, 97, 227, 242, 105, 108, 187, 56, 195, 174, 183, 67, 132, 120, 35, 123, 155, 45, 219, 62, 145, 207, 2, 42, 182, 134, 238, 156, 142, 184, 111, 26, 87, 5, 233, 115, 49, 210, 217, 29, 251, 148, 157, 177, 10, 58, 17, 90, 71, 149, 44, 68, 224, 106, 140, 91, 122, 167, 93, 54, 112, 229, 199, 73, 220, 104, 151, 216, 102, 163, 15, 176, 159, 3, 214, 119, 22, 19, 48, 37, 60, 16, 23, 173, 152, 107, 47, 215, 161, 255, 164, 235, 81, 254, 39, 141, 147, 213, 61, 246, 8, 117, 225, 165, 70, 99, 245, 77, 218, 50, 175, 64, 55, 211, 192, 137, 103, 6, 33, 110, 129, 181, 160, 79, 12, 46, 231, 28, 88, 133, 232, 89, 206, 53, 203, 30, 198, 43, 154, 230, 221, 241, 236, 150, 202, 172, 0, 80, 201, 76, 252, 20, 126, 86, 128, 208, 121, 191, 41, 135, 72, 36, 25, 197, 34, 113, 127, 114, 13, 205, 143, 190, 63, 158, 52, 237, 83, 84, 4, 98, 162, 194, 65, 94, 130, 75, 38, 92, 66, 101, 153, 78, 96, 139, 247, 11, 51, 223, 209, 100, 200, 193, 1, 239, 249, 250, 228, 95, 24, 185, 178, 57, 212, 21, 226, 234, 69
+	formation	= $array:2, 3, 2, 5, 1, 1, 6, 4, 2, 4, 4, 0, 5, 1, 4, 0, 1, 3, 4, 6, 3, 1, 3, 6, 0, 3, 1, 0, 0, 3, 5, 5, 2, 6, 0, 1, 6, 0, 3, 4, 2, 2, 4, 3, 3, 5, 5, 0, 3, 5, 0, 0, 5, 2, 5, 2, 3, 2, 6, 1, 1, 0, 3, 5, 0, 3, 2, 1, 5, 3, 2, 1, 0, 3, 4, 4, 1, 2, 2, 5, 1, 2, 4, 0, 5, 1, 2, 0, 1, 3, 0, 2, 3, 1, 2, 5, 3, 2, 5, 4, 3, 0, 0, 2, 3, 1, 2, 3, 2, 1, 4, 2, 0, 1, 5, 1, 1, 4, 3, 6, 1, 1, 3, 2, 3, 3, 1, 2, 7, 3, 3, 1, 6, 3, 1, 1, 1, 6, 5, 0, 4, 2, 3, 0, 2, 4, 1, 2, 4, 3, 0, 5, 1, 0, 0, 3, 0, 2, 3, 0, 4, 2, 1, 1, 3, 3, 2, 2, 0, 3, 2, 1, 4, 0, 2, 0, 3, 2, 3, 2, 4, 3, 1, 0, 3, 0, 1, 0, 1, 6, 1, 6, 1, 0, 1, 5, 7, 3, 0, 0, 3, 2, 0, 2, 4, 7, 4, 1, 1, 1, 6, 7, 2, 4, 3, 1, 1, 0, 2, 2, 0, 0, 2, 0, 0, 3, 2, 0, 3, 2, 1, 2, 0, 5, 0, 4, 2, 1, 3, 0, 0, 0, 3, 5, 5, 3, 2, 2, 5, 4, 5, 1, 1, 2, 3, 0
+	world_color	= $array:0x08,0x10,0x80,0x40,0x02,0x20,0x0400,0x01,0x04;
+	// FIELD	= 0x0001,
+	// GRASS	= 0x0002,
+	// MOUNTAIN	= 0x0004,
+	// OCEAN	= 0x0008,
+	// RIVER	= 0x0010,
+	// MARSH	= 0x0020,
+	// DESERT	= 0x0040,
+	// FOREST	= 0x0080,
+}
+attributes	= {
+	//table	= $array:"hp","maxhp","str","agi","int","vit","lck","atk","hit","def","evd","crt","mdef";
+	hp		= { min = 0; max = "maxhp"; name = "attributes.hp" }
+	maxhp	= { min = 0; max = 999; name = "attributes.hp" }
+	str		= { min = 0; max = 255; name = "attributes.str" }
+	agi		= { min = 0; max = 255; name = "attributes.agi" }
+	int		= { min = 0; max = 255; name = "attributes.int" }
+	vit		= { min = 0; max = 255; name = "attributes.vit" }
+	lck		= { min = 0; max = 255; name = "attributes.lck" }
+	atk		= { min = 0; max = 255; name = "attributes.atk" }
+	hit		= { min = 0; max = 255; name = "attributes.hit" }
+	def		= { min = 0; max = 255; name = "attributes.def" }
+	evd		= { min = 0; max = 255; name = "attributes.evd" }
+	crt		= { min = 0; max = 255; name = "attributes.crt" }
+	mdef	= { min = 0; max = 255; name = "attributes.mdef" }
+	hits	= { min = 1; max = 2; name = "attributes.hits" }
+	exp		= { min = 0; max = 999999999; name = "attributes.exp" }
+	level	= { min = 1; max = 50; name = "attributes.level" }
+	eff		= { min = 1; max = 9999; }
+	poison	= { min = 1; max = 255; }
+	regen	= { min = 1; max = 255; }
+	default	= { min = 0; max = 255; }
+}
+formulas	= { // ≤≥
+	roll	= "%rand:200";
+	physical	= {
+		atk		= "attributes.current.atk";
+		def 	= "attributes.current.def";
+		hit		= "attributes.current.hit";
+		evd		= "(%status,target,not:sleep,paralyze*attributes.current.evd,target)-(%status,target:blind*40)";
+		hits	= "(1+attributes.current.agi/16)+attributes.current.hits";
+		dam		= "(attributes.current.atk+%rand:attributes.current.atk)+(%weak:target,self*4)*(1+%get:crt)-attributes.current.def,other";
+		cth		= "168-(%status,self:blind*40)+(%weak:target,self*40)+attributes.current.hit-%get:evd+(%get:roll=200*255)";
+		crt		= "%get:roll<(attributes.current.crt+(attributes.current.lck/16)+(%get:roll=0*1)";
+	}
+	unarmed		= {
+		hits	= "(1+(attributes.current.agi/16))+attributes.current.hits";
+		dam		= "(attributes.current.atk+%rand:attributes.current.atk)+(%weak:target,self*4)*(1+%get:crt)-attributes.current.def,other";
+		crt		= "0";
+	}
+	status	= {
+		cth		= "(100+%get:eff)*(1-%resist:target,skill)";
+		eff		= "0";
+	}
+	magic	= {
+		attr	= "0";
+		bonus	= "0";
+		cth		= "148*(1-%resist:target,skill)+(%weak:target,skill*40)+%get,base:accuracy-attributes.current.mdef,other";
+		base	= "%get,base:effectivity+(%weak:target,skill*%get,base:effectivity/2)/(1+%resist:target,skill*1)";
+		eff		= "(%get:base+%rand,get:base)*(%rand:200<%get:cth+1)+%get:bonus";
+	}
+	status	= {
+		eff		= "%get,base:effectivity";
+		hit		= "%if:weak,target:0,100+attributes.current.vit/4";
+		poison 	= "2+%get:poison-(attribute.current.vit/4)"
+		regen	= "2+%get:regen+attribute.current.regen"
+	}
+}
+//#include "locations.ffd"
+#include \base\animate.ffd
+#include \base\classes.ffd
+#include \base\effects.ffd
+#include \base\spells.ffd
+#include \base\items.ffd
+#include \base\shops.ffd
+#include \base\treasure.ffd
+#include \base\speech.ffd
+#include \base\enemies.ffd
+#include \base\battle.ffd

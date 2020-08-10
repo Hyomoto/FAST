@@ -1,0 +1,753 @@
+[12-07-2020 10:47:06] Initialized GameMaker Project: FASTv33.yyp
+[12-07-2020 10:47:06] Checking ___redundant
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/___redundant
+[12-07-2020 10:47:06] Checking sprites
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/sprites
+[12-07-2020 10:47:06] Checking scripts
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts
+[12-07-2020 10:47:06] Checking rooms
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/rooms
+[12-07-2020 10:47:06] Checking options
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options
+[12-07-2020 10:47:06] Checking objects
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/objects
+[12-07-2020 10:47:06] Checking notes
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/notes
+[12-07-2020 10:47:06] Checking fonts
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/fonts
+[12-07-2020 10:47:06] Checking FASTv33.yyp
+[12-07-2020 10:47:06] Checking datafiles
+[12-07-2020 10:47:06] Reading Datafiles...
+[12-07-2020 10:47:06] Checking font_sys_debug
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/fonts/font_sys_debug
+[12-07-2020 10:47:06] Checking font_sys_debug.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/fonts/font_sys_debug/font_sys_debug.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/fonts/font_sys_debug/font_sys_debug.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/System/Resources/Fonts" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/fonts/font_sys_debug/font_sys_debug.yy"
+[12-07-2020 10:47:06] Found Font: font_sys_debug
+[12-07-2020 10:47:06] Checking font_sys_debug.png
+[12-07-2020 10:47:06] Checking FAST_Render_Manual
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/notes/FAST_Render_Manual
+[12-07-2020 10:47:06] Checking FAST_Render_Manual.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/notes/FAST_Render_Manual/FAST_Render_Manual.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/notes/FAST_Render_Manual/FAST_Render_Manual.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Render/Manual" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/notes/FAST_Render_Manual/FAST_Render_Manual.yy"
+[12-07-2020 10:47:06] Found Note: FAST_Render_Manual
+[12-07-2020 10:47:06] Checking FAST_Render_Manual.txt
+[12-07-2020 10:47:06] Checking __FASTtool
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/objects/__FASTtool
+[12-07-2020 10:47:06] Checking oInterface
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/objects/oInterface
+[12-07-2020 10:47:06] Checking oFASTrender
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/objects/oFASTrender
+[12-07-2020 10:47:06] Checking Object1
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/objects/Object1
+[12-07-2020 10:47:06] Checking Step_0.gml
+[12-07-2020 10:47:06] Checking Other_25.gml
+[12-07-2020 10:47:06] Checking Object1.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/objects/Object1/Object1.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/objects/Object1/Object1.yy
+[12-07-2020 10:47:06] ROOT found, not added.
+[12-07-2020 10:47:06] Par: "folders" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/objects/Object1/Object1.yy"
+[12-07-2020 10:47:06] Found Object: Object1
+[12-07-2020 10:47:06] Checking Draw_0.gml
+[12-07-2020 10:47:06] Checking Create_0.gml
+[12-07-2020 10:47:06] Checking Step_2.gml
+[12-07-2020 10:47:06] Checking Other_5.gml
+[12-07-2020 10:47:06] Checking oFASTrender.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/objects/oFASTrender/oFASTrender.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/objects/oFASTrender/oFASTrender.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Render/Objects" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/objects/oFASTrender/oFASTrender.yy"
+[12-07-2020 10:47:06] Found Object: oFASTrender
+[12-07-2020 10:47:06] Checking Draw_77.gml
+[12-07-2020 10:47:06] Checking Create_0.gml
+[12-07-2020 10:47:06] Checking Step_0.gml
+[12-07-2020 10:47:06] Checking oInterface.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/objects/oInterface/oInterface.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/objects/oInterface/oInterface.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Interface/Objects" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/objects/oInterface/oInterface.yy"
+[12-07-2020 10:47:06] Found Object: oInterface
+[12-07-2020 10:47:06] Checking Draw_0.gml
+[12-07-2020 10:47:06] Checking Destroy_0.gml
+[12-07-2020 10:47:06] Checking Create_0.gml
+[12-07-2020 10:47:06] Checking __FASTtool.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/objects/__FASTtool/__FASTtool.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/objects/__FASTtool/__FASTtool.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/System/Objects" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/objects/__FASTtool/__FASTtool.yy"
+[12-07-2020 10:47:06] Found Object: __FASTtool
+[12-07-2020 10:47:06] Checking Step_2.gml
+[12-07-2020 10:47:06] Checking Step_1.gml
+[12-07-2020 10:47:06] Checking Step_0.gml
+[12-07-2020 10:47:06] Checking Other_75.gml
+[12-07-2020 10:47:06] Checking Other_5.gml
+[12-07-2020 10:47:06] Checking Other_3.gml
+[12-07-2020 10:47:06] Checking Create_0.gml
+[12-07-2020 10:47:06] Checking xboxone
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/xboxone
+[12-07-2020 10:47:06] Checking windowsuap
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/windowsuap
+[12-07-2020 10:47:06] Checking windows
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/windows
+[12-07-2020 10:47:06] Checking tvos
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/tvos
+[12-07-2020 10:47:06] Checking switch
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/switch
+[12-07-2020 10:47:06] Checking ps4
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/ps4
+[12-07-2020 10:47:06] Checking main
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/main
+[12-07-2020 10:47:06] Checking mac
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/mac
+[12-07-2020 10:47:06] Checking linux
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/linux
+[12-07-2020 10:47:06] Checking ios
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/ios
+[12-07-2020 10:47:06] Checking html5
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/html5
+[12-07-2020 10:47:06] Checking android
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/android
+[12-07-2020 10:47:06] Checking amazonfire
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/amazonfire
+[12-07-2020 10:47:06] Checking options_amazonfire.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/amazonfire/options_amazonfire.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/amazonfire/options_amazonfire.yy
+[12-07-2020 10:47:06] Option: [object Object]
+[12-07-2020 10:47:06] Checking options_android.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/android/options_android.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/android/options_android.yy
+[12-07-2020 10:47:06] Option: [object Object]
+[12-07-2020 10:47:06] Checking options_html5.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/html5/options_html5.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/html5/options_html5.yy
+[12-07-2020 10:47:06] Option: [object Object]
+[12-07-2020 10:47:06] Checking options_ios.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/ios/options_ios.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/ios/options_ios.yy
+[12-07-2020 10:47:06] Option: [object Object]
+[12-07-2020 10:47:06] Checking options_linux.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/linux/options_linux.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/linux/options_linux.yy
+[12-07-2020 10:47:06] Option: [object Object]
+[12-07-2020 10:47:06] Checking options_mac.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/mac/options_mac.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/mac/options_mac.yy
+[12-07-2020 10:47:06] Option: [object Object]
+[12-07-2020 10:47:06] Checking options_main.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/main/options_main.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/main/options_main.yy
+[12-07-2020 10:47:06] Option: [object Object]
+[12-07-2020 10:47:06] Checking options_ps4.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/ps4/options_ps4.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/ps4/options_ps4.yy
+[12-07-2020 10:47:06] Option: [object Object]
+[12-07-2020 10:47:06] Checking options_switch.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/switch/options_switch.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/switch/options_switch.yy
+[12-07-2020 10:47:06] Option: [object Object]
+[12-07-2020 10:47:06] Checking options_tvos.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/tvos/options_tvos.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/tvos/options_tvos.yy
+[12-07-2020 10:47:06] Option: [object Object]
+[12-07-2020 10:47:06] Checking options_windows.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/windows/options_windows.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/windows/options_windows.yy
+[12-07-2020 10:47:06] Option: [object Object]
+[12-07-2020 10:47:06] Checking options_windowsuap.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/windowsuap/options_windowsuap.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/windowsuap/options_windowsuap.yy
+[12-07-2020 10:47:06] Option: [object Object]
+[12-07-2020 10:47:06] Checking options_xboxone.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/xboxone/options_xboxone.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/options/xboxone/options_xboxone.yy
+[12-07-2020 10:47:06] Option: [object Object]
+[12-07-2020 10:47:06] Checking Room1
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/rooms/Room1
+[12-07-2020 10:47:06] Checking Room1.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/rooms/Room1/Room1.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/rooms/Room1/Room1.yy
+[12-07-2020 10:47:06] ROOT found, not added.
+[12-07-2020 10:47:06] Par: "folders" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/rooms/Room1/Room1.yy"
+[12-07-2020 10:47:06] Found Room: Room1
+[12-07-2020 10:47:06] Checking __FAST_files__
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/__FAST_files__
+[12-07-2020 10:47:06] Checking __FAST_file
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/__FAST_file
+[12-07-2020 10:47:06] Checking __FASTnode
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/__FASTnode
+[12-07-2020 10:47:06] Checking __ChannelInit
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/__ChannelInit
+[12-07-2020 10:47:06] Checking Vec2
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Vec2
+[12-07-2020 10:47:06] Checking validate_struct
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/validate_struct
+[12-07-2020 10:47:06] Checking validate_array
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/validate_array
+[12-07-2020 10:47:06] Checking unlisten
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/unlisten
+[12-07-2020 10:47:06] Checking Timer
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Timer
+[12-07-2020 10:47:06] Checking Surface
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Surface
+[12-07-2020 10:47:06] Checking string_trim
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/string_trim
+[12-07-2020 10:47:06] Checking string_to_real
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/string_to_real
+[12-07-2020 10:47:06] Checking string_justify
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/string_justify
+[12-07-2020 10:47:06] Checking string_find
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/string_find
+[12-07-2020 10:47:06] Checking string_explode_reverse
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/string_explode_reverse
+[12-07-2020 10:47:06] Checking string_explode
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/string_explode
+[12-07-2020 10:47:06] Checking string_con
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/string_con
+[12-07-2020 10:47:06] Checking StringTime
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/StringTime
+[12-07-2020 10:47:06] Checking StringNumber
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/StringNumber
+[12-07-2020 10:47:06] Checking String
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/String
+[12-07-2020 10:47:06] Checking ShapeRectangle
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/ShapeRectangle
+[12-07-2020 10:47:06] Checking ShapePolygon
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/ShapePolygon
+[12-07-2020 10:47:06] Checking ShapeEllipses
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/ShapeEllipses
+[12-07-2020 10:47:06] Checking ShapeCircle
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/ShapeCircle
+[12-07-2020 10:47:06] Checking Shape
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Shape
+[12-07-2020 10:47:06] Checking Script1
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Script1
+[12-07-2020 10:47:06] Checking RenderInit
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/RenderInit
+[12-07-2020 10:47:06] Checking ObserverInit
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/ObserverInit
+[12-07-2020 10:47:06] Checking notify
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/notify
+[12-07-2020 10:47:06] Checking Notifier
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Notifier
+[12-07-2020 10:47:06] Checking MouseWheel
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/MouseWheel
+[12-07-2020 10:47:06] Checking MouseButton
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/MouseButton
+[12-07-2020 10:47:06] Checking log_notify
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/log_notify
+[12-07-2020 10:47:06] Checking log_nonfatal
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/log_nonfatal
+[12-07-2020 10:47:06] Checking log_debug
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/log_debug
+[12-07-2020 10:47:06] Checking log_critical
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/log_critical
+[12-07-2020 10:47:06] Checking Logger
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Logger
+[12-07-2020 10:47:06] Checking log
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/log
+[12-07-2020 10:47:06] Checking listen
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/listen
+[12-07-2020 10:47:06] Checking KeyboardKey
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/KeyboardKey
+[12-07-2020 10:47:06] Checking int_wrap
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/int_wrap
+[12-07-2020 10:47:06] Checking InputDevice
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/InputDevice
+[12-07-2020 10:47:06] Checking include
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/include
+[12-07-2020 10:47:06] Checking GenericInput
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/GenericInput
+[12-07-2020 10:47:06] Checking GamepadInit
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/GamepadInit
+[12-07-2020 10:47:06] Checking Gamepad
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Gamepad
+[12-07-2020 10:47:06] Checking FileFormat
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/FileFormat
+[12-07-2020 10:47:06] Checking File
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/File
+[12-07-2020 10:47:06] Checking Feature
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Feature
+[12-07-2020 10:47:06] Checking FAST_macros
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/FAST_macros
+[12-07-2020 10:47:06] Checking FASTInit
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/FASTInit
+[12-07-2020 10:47:06] Checking EventBegin
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/EventBegin
+[12-07-2020 10:47:06] Checking Event
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Event
+[12-07-2020 10:47:06] Checking DsTable
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/DsTable
+[12-07-2020 10:47:06] Checking DsStack
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/DsStack
+[12-07-2020 10:47:06] Checking DsNodeValue
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/DsNodeValue
+[12-07-2020 10:47:06] Checking DsNode
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/DsNode
+[12-07-2020 10:47:06] Checking DsMap
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/DsMap
+[12-07-2020 10:47:06] Checking DsList
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/DsList
+[12-07-2020 10:47:06] Checking DsChain
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/DsChain
+[12-07-2020 10:47:06] Checking draw_bubble
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/draw_bubble
+[12-07-2020 10:47:06] Checking draw_bar
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/draw_bar
+[12-07-2020 10:47:06] Checking database_load
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/database_load
+[12-07-2020 10:47:06] Checking ComboInput
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/ComboInput
+[12-07-2020 10:47:06] Checking array_contains
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/array_contains
+[12-07-2020 10:47:06] Checking ArrayStrings
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/ArrayStrings
+[12-07-2020 10:47:06] Checking ArrayNumbers
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/ArrayNumbers
+[12-07-2020 10:47:06] Checking Array
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Array
+[12-07-2020 10:47:06] Checking Array.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Array/Array.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Array/Array.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Data Types/Array" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Array/Array.yy"
+[12-07-2020 10:47:06] Found Script: Array
+[12-07-2020 10:47:06] Checking Array.gml
+[12-07-2020 10:47:06] Checking ArrayNumbers.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/ArrayNumbers/ArrayNumbers.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/ArrayNumbers/ArrayNumbers.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Data Types/Array" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/ArrayNumbers/ArrayNumbers.yy"
+[12-07-2020 10:47:06] Found Script: ArrayNumbers
+[12-07-2020 10:47:06] Checking ArrayNumbers.gml
+[12-07-2020 10:47:06] Checking ArrayStrings.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/ArrayStrings/ArrayStrings.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/ArrayStrings/ArrayStrings.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Data Types/Array" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/ArrayStrings/ArrayStrings.yy"
+[12-07-2020 10:47:06] Found Script: ArrayStrings
+[12-07-2020 10:47:06] Checking ArrayStrings.gml
+[12-07-2020 10:47:06] Checking array_contains.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/array_contains/array_contains.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/array_contains/array_contains.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/System/Functions/array" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/array_contains/array_contains.yy"
+[12-07-2020 10:47:06] Found Script: array_contains
+[12-07-2020 10:47:06] Checking array_contains.gml
+[12-07-2020 10:47:06] Checking ComboInput.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/ComboInput/ComboInput.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/ComboInput/ComboInput.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Input/Inputs" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/ComboInput/ComboInput.yy"
+[12-07-2020 10:47:06] Found Script: ComboInput
+[12-07-2020 10:47:06] Checking ComboInput.gml
+[12-07-2020 10:47:06] Checking database_load.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/database_load/database_load.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/database_load/database_load.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Files" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/database_load/database_load.yy"
+[12-07-2020 10:47:06] Found Script: database_load
+[12-07-2020 10:47:06] Checking database_load.gml
+[12-07-2020 10:47:06] Checking draw_bar.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/draw_bar/draw_bar.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/draw_bar/draw_bar.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/System/Functions/draw" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/draw_bar/draw_bar.yy"
+[12-07-2020 10:47:06] Found Script: draw_bar
+[12-07-2020 10:47:06] Checking draw_bar.gml
+[12-07-2020 10:47:06] Checking draw_bubble.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/draw_bubble/draw_bubble.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/draw_bubble/draw_bubble.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/System/Functions/draw" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/draw_bubble/draw_bubble.yy"
+[12-07-2020 10:47:06] Found Script: draw_bubble
+[12-07-2020 10:47:06] Checking draw_bubble.gml
+[12-07-2020 10:47:06] Checking DsChain.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/DsChain/DsChain.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/DsChain/DsChain.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Data Types/DS" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/DsChain/DsChain.yy"
+[12-07-2020 10:47:06] Found Script: DsChain
+[12-07-2020 10:47:06] Checking DsChain.gml
+[12-07-2020 10:47:06] Checking DsList.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/DsList/DsList.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/DsList/DsList.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Data Types/DS" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/DsList/DsList.yy"
+[12-07-2020 10:47:06] Found Script: DsList
+[12-07-2020 10:47:06] Checking DsList.gml
+[12-07-2020 10:47:06] Checking DsMap.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/DsMap/DsMap.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/DsMap/DsMap.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Data Types/DS" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/DsMap/DsMap.yy"
+[12-07-2020 10:47:06] Found Script: DsMap
+[12-07-2020 10:47:06] Checking DsMap.gml
+[12-07-2020 10:47:06] Checking DsNode.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/DsNode/DsNode.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/DsNode/DsNode.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/for_refactor" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/DsNode/DsNode.yy"
+[12-07-2020 10:47:06] Found Script: DsNode
+[12-07-2020 10:47:06] Checking DsNode.gml
+[12-07-2020 10:47:06] Checking DsNodeValue.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/DsNodeValue/DsNodeValue.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/DsNodeValue/DsNodeValue.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/for_refactor" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/DsNodeValue/DsNodeValue.yy"
+[12-07-2020 10:47:06] Found Script: DsNodeValue
+[12-07-2020 10:47:06] Checking DsNodeValue.gml
+[12-07-2020 10:47:06] Checking DsStack.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/DsStack/DsStack.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/DsStack/DsStack.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Data Types/DS" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/DsStack/DsStack.yy"
+[12-07-2020 10:47:06] Found Script: DsStack
+[12-07-2020 10:47:06] Checking DsStack.gml
+[12-07-2020 10:47:06] Checking DsTable.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/DsTable/DsTable.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/DsTable/DsTable.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Data Types/DS" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/DsTable/DsTable.yy"
+[12-07-2020 10:47:06] Found Script: DsTable
+[12-07-2020 10:47:06] Checking DsTable.gml
+[12-07-2020 10:47:06] Checking Event.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Event/Event.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Event/Event.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/System/Event" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Event/Event.yy"
+[12-07-2020 10:47:06] Found Script: Event
+[12-07-2020 10:47:06] Checking Event.gml
+[12-07-2020 10:47:06] Checking EventBegin.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/EventBegin/EventBegin.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/EventBegin/EventBegin.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/System/Event" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/EventBegin/EventBegin.yy"
+[12-07-2020 10:47:06] Found Script: EventBegin
+[12-07-2020 10:47:06] Checking EventBegin.gml
+[12-07-2020 10:47:06] Checking FASTInit.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/FASTInit/FASTInit.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/FASTInit/FASTInit.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/System" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/FASTInit/FASTInit.yy"
+[12-07-2020 10:47:06] Found Script: FASTInit
+[12-07-2020 10:47:06] Checking FASTInit.gml
+[12-07-2020 10:47:06] Checking FAST_macros.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/FAST_macros/FAST_macros.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/FAST_macros/FAST_macros.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/System" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/FAST_macros/FAST_macros.yy"
+[12-07-2020 10:47:06] Found Script: FAST_macros
+[12-07-2020 10:47:06] Checking FAST_macros.gml
+[12-07-2020 10:47:06] Checking Feature.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Feature/Feature.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Feature/Feature.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/System/Feature" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Feature/Feature.yy"
+[12-07-2020 10:47:06] Found Script: Feature
+[12-07-2020 10:47:06] Checking Feature.gml
+[12-07-2020 10:47:06] Checking File.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/File/File.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/File/File.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Files" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/File/File.yy"
+[12-07-2020 10:47:06] Found Script: File
+[12-07-2020 10:47:06] Checking File.gml
+[12-07-2020 10:47:06] Checking FileFormat.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/FileFormat/FileFormat.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/FileFormat/FileFormat.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Files" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/FileFormat/FileFormat.yy"
+[12-07-2020 10:47:06] Found Script: FileFormat
+[12-07-2020 10:47:06] Checking FileFormat.gml
+[12-07-2020 10:47:06] Checking Gamepad.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Gamepad/Gamepad.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Gamepad/Gamepad.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Input/Gamepad" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Gamepad/Gamepad.yy"
+[12-07-2020 10:47:06] Found Script: Gamepad
+[12-07-2020 10:47:06] Checking Gamepad.gml
+[12-07-2020 10:47:06] Checking GamepadInit.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/GamepadInit/GamepadInit.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/GamepadInit/GamepadInit.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Input/Gamepad" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/GamepadInit/GamepadInit.yy"
+[12-07-2020 10:47:06] Found Script: GamepadInit
+[12-07-2020 10:47:06] Checking GamepadInit.gml
+[12-07-2020 10:47:06] Checking GenericInput.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/GenericInput/GenericInput.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/GenericInput/GenericInput.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Input" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/GenericInput/GenericInput.yy"
+[12-07-2020 10:47:06] Found Script: GenericInput
+[12-07-2020 10:47:06] Checking GenericInput.gml
+[12-07-2020 10:47:06] Checking include.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/include/include.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/include/include.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/System/Functions/include" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/include/include.yy"
+[12-07-2020 10:47:06] Found Script: include
+[12-07-2020 10:47:06] Checking include.gml
+[12-07-2020 10:47:06] Checking InputDevice.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/InputDevice/InputDevice.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/InputDevice/InputDevice.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Input" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/InputDevice/InputDevice.yy"
+[12-07-2020 10:47:06] Found Script: InputDevice
+[12-07-2020 10:47:06] Checking InputDevice.gml
+[12-07-2020 10:47:06] Checking int_wrap.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/int_wrap/int_wrap.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/int_wrap/int_wrap.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/System/Functions/int" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/int_wrap/int_wrap.yy"
+[12-07-2020 10:47:06] Found Script: int_wrap
+[12-07-2020 10:47:06] Checking int_wrap.gml
+[12-07-2020 10:47:06] Checking KeyboardKey.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/KeyboardKey/KeyboardKey.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/KeyboardKey/KeyboardKey.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Input/Keyboard" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/KeyboardKey/KeyboardKey.yy"
+[12-07-2020 10:47:06] Found Script: KeyboardKey
+[12-07-2020 10:47:06] Checking KeyboardKey.gml
+[12-07-2020 10:47:06] Checking listen.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/listen/listen.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/listen/listen.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Observer/Functions" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/listen/listen.yy"
+[12-07-2020 10:47:06] Found Script: listen
+[12-07-2020 10:47:06] Checking listen.gml
+[12-07-2020 10:47:06] Checking log.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/log/log.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/log/log.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Logging/Functions" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/log/log.yy"
+[12-07-2020 10:47:06] Found Script: log
+[12-07-2020 10:47:06] Checking log.gml
+[12-07-2020 10:47:06] Checking Logger.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Logger/Logger.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Logger/Logger.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Logging" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Logger/Logger.yy"
+[12-07-2020 10:47:06] Found Script: Logger
+[12-07-2020 10:47:06] Checking Logger.gml
+[12-07-2020 10:47:06] Checking log_critical.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/log_critical/log_critical.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/log_critical/log_critical.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Logging/Functions" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/log_critical/log_critical.yy"
+[12-07-2020 10:47:06] Found Script: log_critical
+[12-07-2020 10:47:06] Checking log_critical.gml
+[12-07-2020 10:47:06] Checking log_debug.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/log_debug/log_debug.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/log_debug/log_debug.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Logging/Functions" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/log_debug/log_debug.yy"
+[12-07-2020 10:47:06] Found Script: log_debug
+[12-07-2020 10:47:06] Checking log_debug.gml
+[12-07-2020 10:47:06] Checking log_nonfatal.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/log_nonfatal/log_nonfatal.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/log_nonfatal/log_nonfatal.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Logging/Functions" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/log_nonfatal/log_nonfatal.yy"
+[12-07-2020 10:47:06] Found Script: log_nonfatal
+[12-07-2020 10:47:06] Checking log_nonfatal.gml
+[12-07-2020 10:47:06] Checking log_notify.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/log_notify/log_notify.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/log_notify/log_notify.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Logging/Functions" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/log_notify/log_notify.yy"
+[12-07-2020 10:47:06] Found Script: log_notify
+[12-07-2020 10:47:06] Checking log_notify.gml
+[12-07-2020 10:47:06] Checking MouseButton.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/MouseButton/MouseButton.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/MouseButton/MouseButton.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Input/Mouse" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/MouseButton/MouseButton.yy"
+[12-07-2020 10:47:06] Found Script: MouseButton
+[12-07-2020 10:47:06] Checking MouseButton.gml
+[12-07-2020 10:47:06] Checking MouseWheel.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/MouseWheel/MouseWheel.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/MouseWheel/MouseWheel.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Input/Mouse" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/MouseWheel/MouseWheel.yy"
+[12-07-2020 10:47:06] Found Script: MouseWheel
+[12-07-2020 10:47:06] Checking MouseWheel.gml
+[12-07-2020 10:47:06] Checking Notifier.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Notifier/Notifier.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Notifier/Notifier.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Observer" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Notifier/Notifier.yy"
+[12-07-2020 10:47:06] Found Script: Notifier
+[12-07-2020 10:47:06] Checking Notifier.gml
+[12-07-2020 10:47:06] Checking notify.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/notify/notify.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/notify/notify.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Observer/Functions" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/notify/notify.yy"
+[12-07-2020 10:47:06] Found Script: notify
+[12-07-2020 10:47:06] Checking notify.gml
+[12-07-2020 10:47:06] Checking ObserverInit.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/ObserverInit/ObserverInit.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/ObserverInit/ObserverInit.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Observer" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/ObserverInit/ObserverInit.yy"
+[12-07-2020 10:47:06] Found Script: ObserverInit
+[12-07-2020 10:47:06] Checking ObserverInit.gml
+[12-07-2020 10:47:06] Checking RenderInit.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/RenderInit/RenderInit.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/RenderInit/RenderInit.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Render/Scripts" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/RenderInit/RenderInit.yy"
+[12-07-2020 10:47:06] Found Script: RenderInit
+[12-07-2020 10:47:06] Checking RenderInit.gml
+[12-07-2020 10:47:06] Checking Script1.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Script1/Script1.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Script1/Script1.yy
+[12-07-2020 10:47:06] ROOT found, not added.
+[12-07-2020 10:47:06] Par: "folders" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Script1/Script1.yy"
+[12-07-2020 10:47:06] Found Script: Script1
+[12-07-2020 10:47:06] Checking Script1.gml
+[12-07-2020 10:47:06] Checking Shape.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Shape/Shape.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Shape/Shape.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Data Types/Shapes" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Shape/Shape.yy"
+[12-07-2020 10:47:06] Found Script: Shape
+[12-07-2020 10:47:06] Checking Shape.gml
+[12-07-2020 10:47:06] Checking ShapeCircle.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/ShapeCircle/ShapeCircle.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/ShapeCircle/ShapeCircle.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Data Types/Shapes" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/ShapeCircle/ShapeCircle.yy"
+[12-07-2020 10:47:06] Found Script: ShapeCircle
+[12-07-2020 10:47:06] Checking ShapeCircle.gml
+[12-07-2020 10:47:06] Checking ShapeEllipses.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/ShapeEllipses/ShapeEllipses.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/ShapeEllipses/ShapeEllipses.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Data Types/Shapes" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/ShapeEllipses/ShapeEllipses.yy"
+[12-07-2020 10:47:06] Found Script: ShapeEllipses
+[12-07-2020 10:47:06] Checking ShapeEllipses.gml
+[12-07-2020 10:47:06] Checking ShapePolygon.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/ShapePolygon/ShapePolygon.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/ShapePolygon/ShapePolygon.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Data Types/Shapes" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/ShapePolygon/ShapePolygon.yy"
+[12-07-2020 10:47:06] Found Script: ShapePolygon
+[12-07-2020 10:47:06] Checking ShapePolygon.gml
+[12-07-2020 10:47:06] Checking ShapeRectangle.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/ShapeRectangle/ShapeRectangle.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/ShapeRectangle/ShapeRectangle.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Data Types/Shapes" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/ShapeRectangle/ShapeRectangle.yy"
+[12-07-2020 10:47:06] Found Script: ShapeRectangle
+[12-07-2020 10:47:06] Checking ShapeRectangle.gml
+[12-07-2020 10:47:06] Checking String.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/String/String.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/String/String.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Data Types/String" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/String/String.yy"
+[12-07-2020 10:47:06] Found Script: String
+[12-07-2020 10:47:06] Checking String.gml
+[12-07-2020 10:47:06] Checking StringNumber.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/StringNumber/StringNumber.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/StringNumber/StringNumber.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Data Types/String" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/StringNumber/StringNumber.yy"
+[12-07-2020 10:47:06] Found Script: StringNumber
+[12-07-2020 10:47:06] Checking StringNumber.gml
+[12-07-2020 10:47:06] Checking StringTime.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/StringTime/StringTime.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/StringTime/StringTime.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Data Types/String" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/StringTime/StringTime.yy"
+[12-07-2020 10:47:06] Found Script: StringTime
+[12-07-2020 10:47:06] Checking StringTime.gml
+[12-07-2020 10:47:06] Checking string_con.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/string_con/string_con.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/string_con/string_con.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/System/Functions/string" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/string_con/string_con.yy"
+[12-07-2020 10:47:06] Found Script: string_con
+[12-07-2020 10:47:06] Checking string_con.gml
+[12-07-2020 10:47:06] Checking string_explode.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/string_explode/string_explode.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/string_explode/string_explode.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/System/Functions/string" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/string_explode/string_explode.yy"
+[12-07-2020 10:47:06] Found Script: string_explode
+[12-07-2020 10:47:06] Checking string_explode.gml
+[12-07-2020 10:47:06] Checking string_explode_reverse.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/string_explode_reverse/string_explode_reverse.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/string_explode_reverse/string_explode_reverse.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/System/Functions/string" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/string_explode_reverse/string_explode_reverse.yy"
+[12-07-2020 10:47:06] Found Script: string_explode_reverse
+[12-07-2020 10:47:06] Checking string_explode_reverse.gml
+[12-07-2020 10:47:06] Checking string_find.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/string_find/string_find.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/string_find/string_find.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/System/Functions/string" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/string_find/string_find.yy"
+[12-07-2020 10:47:06] Found Script: string_find
+[12-07-2020 10:47:06] Checking string_find.gml
+[12-07-2020 10:47:06] Checking string_justify.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/string_justify/string_justify.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/string_justify/string_justify.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/System/Functions/string" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/string_justify/string_justify.yy"
+[12-07-2020 10:47:06] Found Script: string_justify
+[12-07-2020 10:47:06] Checking string_justify.gml
+[12-07-2020 10:47:06] Checking string_to_real.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/string_to_real/string_to_real.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/string_to_real/string_to_real.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/System/Functions/string" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/string_to_real/string_to_real.yy"
+[12-07-2020 10:47:06] Found Script: string_to_real
+[12-07-2020 10:47:06] Checking string_to_real.gml
+[12-07-2020 10:47:06] Checking string_trim.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/string_trim/string_trim.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/string_trim/string_trim.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/System/Functions/string" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/string_trim/string_trim.yy"
+[12-07-2020 10:47:06] Found Script: string_trim
+[12-07-2020 10:47:06] Checking string_trim.gml
+[12-07-2020 10:47:06] Checking Surface.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Surface/Surface.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Surface/Surface.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Data Types" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Surface/Surface.yy"
+[12-07-2020 10:47:06] Found Script: Surface
+[12-07-2020 10:47:06] Checking Surface.gml
+[12-07-2020 10:47:06] Checking Timer.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Timer/Timer.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Timer/Timer.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Data Types" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Timer/Timer.yy"
+[12-07-2020 10:47:06] Found Script: Timer
+[12-07-2020 10:47:06] Checking Timer.gml
+[12-07-2020 10:47:06] Checking unlisten.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/unlisten/unlisten.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/unlisten/unlisten.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Observer/Functions" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/unlisten/unlisten.yy"
+[12-07-2020 10:47:06] Found Script: unlisten
+[12-07-2020 10:47:06] Checking unlisten.gml
+[12-07-2020 10:47:06] Checking validate_array.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/validate_array/validate_array.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/validate_array/validate_array.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/System/Functions/validate" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/validate_array/validate_array.yy"
+[12-07-2020 10:47:06] Found Script: validate_array
+[12-07-2020 10:47:06] Checking validate_array.gml
+[12-07-2020 10:47:06] Checking validate_struct.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/validate_struct/validate_struct.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/validate_struct/validate_struct.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/System/Functions/validate" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/validate_struct/validate_struct.yy"
+[12-07-2020 10:47:06] Found Script: validate_struct
+[12-07-2020 10:47:06] Checking validate_struct.gml
+[12-07-2020 10:47:06] Checking Vec2.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Vec2/Vec2.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Vec2/Vec2.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Data Types" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/Vec2/Vec2.yy"
+[12-07-2020 10:47:06] Found Script: Vec2
+[12-07-2020 10:47:06] Checking Vec2.gml
+[12-07-2020 10:47:06] Checking __ChannelInit.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/__ChannelInit/__ChannelInit.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/__ChannelInit/__ChannelInit.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/for_refactor" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/__ChannelInit/__ChannelInit.yy"
+[12-07-2020 10:47:06] Found Script: __ChannelInit
+[12-07-2020 10:47:06] Checking __ChannelInit.gml
+[12-07-2020 10:47:06] Checking __FASTnode.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/__FASTnode/__FASTnode.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/__FASTnode/__FASTnode.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/for_refactor/Nodes" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/__FASTnode/__FASTnode.yy"
+[12-07-2020 10:47:06] Found Script: __FASTnode
+[12-07-2020 10:47:06] Checking __FASTnode.gml
+[12-07-2020 10:47:06] Checking __FAST_file.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/__FAST_file/__FAST_file.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/__FAST_file/__FAST_file.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Files" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/__FAST_file/__FAST_file.yy"
+[12-07-2020 10:47:06] Found Script: __FAST_file
+[12-07-2020 10:47:06] Checking __FAST_file.gml
+[12-07-2020 10:47:06] Checking __FAST_files__.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/__FAST_files__/__FAST_files__.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/__FAST_files__/__FAST_files__.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/Files" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/scripts/__FAST_files__/__FAST_files__.yy"
+[12-07-2020 10:47:06] Found Script: __FAST_files__
+[12-07-2020 10:47:06] Checking __FAST_files__.gml
+[12-07-2020 10:47:06] Checking gfx_sys_terminal0
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/sprites/gfx_sys_terminal0
+[12-07-2020 10:47:06] Checking gfx_sys_disk0
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/sprites/gfx_sys_disk0
+[12-07-2020 10:47:06] Checking layers
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/sprites/gfx_sys_disk0/layers
+[12-07-2020 10:47:06] Checking gfx_sys_disk0.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/sprites/gfx_sys_disk0/gfx_sys_disk0.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/sprites/gfx_sys_disk0/gfx_sys_disk0.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/System/Resources/Sprites" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/sprites/gfx_sys_disk0/gfx_sys_disk0.yy"
+[12-07-2020 10:47:06] Found Sprite: gfx_sys_disk0
+[12-07-2020 10:47:06] Checking 2f520ccd-8261-4860-9598-3ead5ad7139d.png
+[12-07-2020 10:47:06] Checking 2f520ccd-8261-4860-9598-3ead5ad7139d
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/sprites/gfx_sys_disk0/layers/2f520ccd-8261-4860-9598-3ead5ad7139d
+[12-07-2020 10:47:06] Checking 701ca58a-383c-446a-a879-af66dbb6e98b.png
+[12-07-2020 10:47:06] Checking layers
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/sprites/gfx_sys_terminal0/layers
+[12-07-2020 10:47:06] Checking gfx_sys_terminal0.yy
+[12-07-2020 10:47:06] Parsing C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/sprites/gfx_sys_terminal0/gfx_sys_terminal0.yy
+[12-07-2020 10:47:06] Reading C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/sprites/gfx_sys_terminal0/gfx_sys_terminal0.yy
+[12-07-2020 10:47:06] Par: "folders/FAST/System/Resources/Sprites" at dir: "C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/sprites/gfx_sys_terminal0/gfx_sys_terminal0.yy"
+[12-07-2020 10:47:06] Found Sprite: gfx_sys_terminal0
+[12-07-2020 10:47:06] Checking da4324ac-b595-4b99-9d35-74aef1bdcc51.png
+[12-07-2020 10:47:06] Checking da4324ac-b595-4b99-9d35-74aef1bdcc51
+[12-07-2020 10:47:06] Directory: C:/Users/drago/Documents/GamemakerStudio2_3/FASTv33/sprites/gfx_sys_terminal0/layers/da4324ac-b595-4b99-9d35-74aef1bdcc51
+[12-07-2020 10:47:06] Checking becb23a5-576e-4334-8795-d6e7826f17ed.png
+[12-07-2020 10:47:06] Checking yypm.log
+[12-07-2020 10:47:06] Checking validate_struct.yy
+[12-07-2020 10:47:06] Redundant file: validate_struct.yy, will be moved to ___redundant
+[12-07-2020 10:47:06] Checking InterfacePolygon.yy
+[12-07-2020 10:47:06] Redundant file: InterfacePolygon.yy, will be moved to ___redundant
+[12-07-2020 10:47:06] Checking ds_map.yy
+[12-07-2020 10:47:06] Redundant file: ds_map.yy, will be moved to ___redundant
+[12-07-2020 10:47:06] Checking ds_chain.yy
+[12-07-2020 10:47:06] Redundant file: ds_chain.yy, will be moved to ___redundant
+[12-07-2020 10:47:06] Checking draw_bar.yy
+[12-07-2020 10:47:06] Redundant file: draw_bar.yy, will be moved to ___redundant
+[12-07-2020 10:47:06] FINISHED!

@@ -1,0 +1,261 @@
+// this is the items defintion file
+@equip.body		= 1;
+@equip.bracelet	= 2;
+@equip.shield	= 4;
+@equip.glove	= 8;
+@equip.helmet	= 16;
+@equip.ring		= 32;
+@equip.boots	= 64;
+@equip.other	= 128;
+@equip.weapon	= 1024;
+
+template.item	= {
+	base	= {
+		name 	= "no.string";
+		filter	= @filter.item;
+		max 	= 1;
+		price 	= { buy = 0; sell = 0; }
+	}
+	$template:template.item.base
+	usable	= {
+		filter	= @filter.usable;
+		usable 	= { by = @class.any; } // in_world, in_combat
+		//effect	= { type = "effect.none"; accuracy= 0; effectivity = 0; effective; target = 0; absolute = @false; always = @true; }
+		max = 99;
+		animate	= $link:animate.battler.item;
+	}
+	key:template.item.base = { filter = @filter.key; set_flag; }
+	equip	= { filter = @filter.equip; equip = { by = @class.any; on = 0; } effective = { family = 0; element = 0; } usable.by = @class.any; }
+	weapon:template.item.equip 	= { filter = @filter.weapon; equip.on = @equip.weapon; attributes = { atk = 0; crt = 0; hit = 0; }; gfx = { sprite = $icon:gfx_FX_weapons_0,0; palette = $icon:pal_FX_weapons_0,0; } animate = $link:animate.battler.weapon }
+	armor:template.item.equip 	= { filter = @filter.armor; attributes = { def = 0; mdef =0; evd = 0; } }
+	potion:template.item.usable = { effect.target = @effect.target.single_ally; }
+	$template:template.item.weapon
+	numchaku	= { index = 14;gfx = { sprite = $icon:gfx_FX_weapons_0,14; palette = $icon:pal_FX_weapons_0,0; } }
+	knife		= { index = 1; gfx = { sprite = $icon:gfx_FX_weapons_0,1; palette = $icon:pal_FX_weapons_0,0; } }
+	staff		= { index = 9; gfx = { sprite = $icon:gfx_FX_weapons_0,9; palette = $icon:pal_FX_weapons_0,1; } }
+	hammer		= { index = 11;gfx = { sprite = $icon:gfx_FX_weapons_0,11; palette = $icon:pal_FX_weapons_0,0; } }
+	axe			= { index = 7; gfx = { sprite = $icon:gfx_FX_weapons_0,7; palette = $icon:pal_FX_weapons_0,0; } }
+	sword		= { index = 2; gfx = { sprite = $icon:gfx_FX_weapons_0,2; palette = $icon:pal_FX_weapons_0,0; } }
+	
+	$template:template.item.armor
+	body		= { equip.on = @equip.body; }
+	bracelet	= { equip.on = @equip.bracelet; }
+	shield		= { equip.on = @equip.shield; }
+	gloves		= { equip.on = @equip.glove; }
+	helmet		= { equip.on = @equip.helmet; }
+	ring		= { equip.on = @equip.ring; }
+	boots		= { equip.on = @equip.boots; }
+	other		= { equip.on = @equip.other; }
+}
+template.action 	= {
+	name 	= "no.string";
+	filter	= @filter.none;
+	//		price;
+	// effect	= ""
+	// effects = { effect, effectivity, accuracy, on_miss }
+	// target = { style = "single,group,side,all,random", filter = "", status = 0, family = 0 }
+	target 	= { filter = "enemy,ally,caster,alive"; style = "single" }
+	usable 	= { by = @class.any; in_world; in_combat; }
+	gfx		= { sprite = $asset:gfx_FX_magic_0; palette = $icon:pal_FX_magic_0,0; }
+	// animate:animate.battler.cast.spella;
+}
+template.effect	= {
+	effect; effectivity = 0; accuracy = 0; on_miss = "stop";
+}
+item	= {
+	$template:template.item.key
+	lute	= { name = "items.lute"; set_flag = "has.lute"; }
+	crown	= { name = "items.crown"; set_flag = "has.crown"; }
+	key		= { name = "items.key"; set_flag = "has.key"; }
+	rod		= { name = "items.rod"; set_flag = "has.rod"; }
+	floater	= { name = "items.floater"; set_flag = "has.floater"; }
+	cube	= { name = "items.cube"; set_flag = "has.cube"; }
+	oxyale	= { name = "items.oxyale"; set_flag = "has.oxyale"; }
+	chime	= { name = "items.chime"; set_flag = "has.chime"; }
+	tnt		= { name = "items.tnt"; set_flag = "has.tnt"; }
+	herb	= { name = "items.herb"; set_flag = "has.herb"; }
+	crystal	= { name = "items.crystal"; set_flag = "has.crystal"; }
+	dark	= { name = "items.dark"; set_flag = "has.dark"; }
+	ruby	= { name = "items.ruby"; set_flag = "has.ruby"; }
+	slab	= { name = "items.slab"; set_flag = "has.slab"; }
+	bottle	= { name = "items.bottle"; set_flag = "has.bottle"; price = { buy = 50000 } }
+	tail	= { name = "items.tail"; set_flag = "has.tail"; }
+	adamant	= { name = "items.adamant"; set_flag = "has.adamant"; }
+	
+	$template:template.item.potion
+	heal	= {
+		name = "items.heal"; price = { buy = 60; sell = 30; }
+		usable.in_combat:spells.white.cure = {
+			target.group	= "caster";
+			animate = $link:animate.battler.item;
+		}
+		usable.in_world = $link:item.heal.usable.in_combat;
+		formulas.magic.cth = "255";
+	}
+	pure	= {
+		name = "items.pure"; price = { buy = 40; sell = 20; }
+		usable.in_combat:spells.white.pure = {
+			target.group	= "caster";
+			animate = $link:animate.battler.item;
+		}
+		usable.in_world = $link:item.pure.usable.in_combat;
+	}
+	soft	= {
+		name = "items.soft"; price = { buy = 100; sell = 200; }
+		usable.in_combat:spells.white.soft = {
+			target.group	= "caster";
+			animate = $link:animate.battler.item;
+		}
+		usable.in_world = $link:item.soft.usable.in_combat;
+	}
+	$template:template.item.usable
+	tent	= {
+		name = "items.tent"; price = { buy = 75; sell = 37; }
+		//effect = { type = "effect.raise.hp"; effectivity = 30; target = @effect.target.all_ally; } }
+		usable	= {
+			flag	= "allow_tent";
+			in_world:spells.white.heal	= {
+				method 	= $array:"save","gfx_char_special_02",5;
+			}
+		}
+		formulas.magic.cth = "0";
+	}
+	cabin:item.tent	= {
+		name = "items.cabin"; price = { buy = 250; sell = 125; }
+		usable.in_world.base.effectivity = 48;
+		formulas.magic.cth = "0";
+	}
+	house:item.tent	= {
+		name = "items.house"; price = { buy = 3000; sell = 1500; }
+		usable	= {
+			in_world	= {
+				effects.basic.effect = $link:effects.inn;
+				base.effectivity = 250;
+			}
+		}
+		formulas.magic.cth = "0";
+	}
+	harm	= {
+		name	= "spells.white.harm"
+		usable.in_world	= {
+			method	= $array:"magic","spells.white.harm";
+		}
+	}
+	// cabin:item.tent	= { name = "items.cabin"; price = { buy = 250; sell = 125; } effect.effectivity = 60; }
+	// house:item.tent	= { name = "items.house"; price = { buy = 3000; sell = 1500; } effect = { type = "effect.inn"; effectivity = 999; } }
+}
+weapon	= {
+	$template:template.item.numchaku
+	numchaku.wooden	= { name = "weapons.numchaku.wooden"; price = { buy = 60; sell = 5; } attributes = { atk = 12; hit = 0; agi = 10; crt = 1; } equip.by = @class.ninja + @class.any_bbelt }
+	numchaku.iron	= { name = "weapons.numchaku.iron"; price = { buy = 200; sell = 100; } attributes = { atk = 16; hit = 0; crt = 10; } equip.by = @class.ninja + @class.any_bbelt }
+	
+	$template:template.item.knife
+	knife.small		= { name = "weapons.knife.small"; price = { buy = 45; sell = 7; } attributes = { atk = 4; hit = 5; crt = 5; } equip.by = @class.any_fighter + @class.any_thief + @class.any_rmage + @class.any_bmage; equip.dual = @true; }
+	knife.large		= { name = "weapons.knife.large"; price = { buy = 175; sell = 87; } attributes = { atk = 5; hit = 5; agi = 4; crt = 5; } equip.by = @class.any_fighter + @class.any_thief + @class.any_rmage + @class.any_bmage; equip.dual = @true; }
+	knife.silver	= { name = "weapons.knife.silver"; price = { buy = 800; sell = 400; } attributes = { atk = 10; hit = 15; crt = 5; } equip.by = @class.any_fighter + @class.any_thief + @class.any_rmage + @class.any_bmage; equip.dual = @true; }
+	knife.catclaw	= { name = "weapons.knife.catclaw"; price = { buy = 65000; sell = 32500; } attributes = { atk = 22; hit = 35; crt = 5; } equip.by = @class.knight + @class.ninja + @class.rwizard + @class.bwizard ; equip.dual = @true; }
+	
+	$template:template.item.staff
+	staff.wooden	= { name = "weapons.staff.wooden"; price = { buy = 15; sell = 7; } attributes = { atk = 6; hit = 0; crt = 1; int = 7; wis = 3; } equip.by = @class.any; }
+	staff.quarter	= { name = "weapons.staff.quarter"; price = { buy = 100; sell = 50; } attributes = { atk = 12; hit = 10; crt = 5; } equip.by = @class.any; gfx.sprite = $icon:gfx_FX_weapons_0,8; }
+	staff.iron		= { name = "weapons.staff.iron"; price = { buy = 200; sell = 100; } attributes = { atk = 14; hit = 0; crt = 1; } equip.by = @class.any_fighter + @class.ninja + @class.any_bbelt; }
+	staff.power		= { name = "weapons.staff.power"; price = { buy = 12345; sell = 6172; } attributes = { atk = 12; hit = 0; crt = 1; } equip.by = @class.any_fighter + @class.ninja + @class.any_bbelt + @class.any_wmage + @class.any_bmage; }
+	staff.heal		= { name = "weapons.staff.heal"; price = { buy = 25000; sell = 12500; } attributes = { atk = 6; hit = 0; crt = 1; } effect = "spells.white.heal"; equip.by = @class.ninja + @class.any_wmage; }
+	staff.mage		= { name = "weapons.staff.mage"; price = { buy = 25000; sell = 12500; } attributes = { atk = 12; hit = 10; crt = 1; } usable.in_combat = $link:spells.black.fire2; formulas.magic.cth = "0"; gfx = $link:spells.black.fire2.gfx; animate = $link:animate.battler.item; equip.by = @class.ninja + @class.any_bmage; }
+	staff.wizard	= { name = "weapons.staff.wizard"; price = { buy = 50000; sell = 25000; } attributes = { atk = 15; hit = 15; crt = 1; } effect = "spells.black.confuse"; equip.by = @class.bwizard; }
+	
+	$template:template.item.hammer
+	hammer.iron		= { name = "weapons.hammer.iron"; price = { buy = 50; sell = 25; } attributes = { atk = 9; hit = 0; crt = 1; } equip.by = @class.fighter + @class.ninja + @class.any_wmage; }
+	hammer.silver	= { name = "weapons.hammer.silver"; price = { buy = 2500; sell = 1250; } attributes = { atk = 12; hit = 5; crt = 1; } equip.by = @class.any_fighter + @class.ninja + @class.any_wmage; }
+	hammer.thor		= { name = "weapons.hammer.thor"; price = { buy = 40000; sell = 20000; } attributes = { atk = 18; hit = 15; crt = 1; } effect = "spells.black.lit2"; equip.by = @class.knight + @class.ninja + @class.wwizard; }
+	
+	$template:template.item.axe
+	axe.hand		= { name = "weapons.axe.hand"; price = { buy = 550; sell = 5; } attributes = { atk = 20; hit = 5; crt = 3; }  equip.by = @class.fighter + @class.ninja; }
+	axe.great		= { name = "weapons.axe.great"; price = { buy = 2000; sell = 1000; } attributes = { atk = 22; hit = 5; crt = 3; } equip.by = @class.fighter + @class.ninja; }
+	axe.silver		= { name = "weapons.axe.silver"; price = { buy = 4500; sell = 2250; } attributes = { atk = 25; hit = 10; crt = 4; } equip.by = @class.fighter + @class.ninja; }
+	axe.light		= { name = "weapons.axe.light"; price = { buy = 10000; sell = 5000; } effective.family = @family.undead; attributes = { atk = 28; hit = 15; crt = 3; } effect = "spells.white.harm2"; equip.by = @class.fighter + @class.ninja; }
+	
+	$template:template.item.sword
+	sword.rapier	= { name = "weapons.sword.rapier"; price = { buy = 80; sell = 40; } attributes = { atk = 9; hit = 5; crt = 10; } equip.by = @class.any_fighter + @class.thief + @class.any_rmage; animate = $link:animate.battler.weapon.rapier; gfx.sprite = $icon:gfx_FX_weapons_0,4; }
+	sword.short		= { name = "weapons.sword.short"; price = { buy = 550; sell = 275; } attributes = { atk = 15; hit = 10; crt = 5; } equip.by = @class.any_fighter + @class.ninja + @class.any_rmage; gfx.sprite = $icon:gfx_FX_weapons_0,2; }
+	sword.scimictar	= { name = "weapons.sword.scimictar"; price = { buy = 200; sell = 100; } attributes = { atk = 10; hit = 5; crt = 5; agi = 5; } equip.by = @class.any_fighter + @class.thief + @class.any_rmage; gfx.sprite = $icon:gfx_FX_weapons_0,17; }
+	sword.sabre		= { name = "weapons.sword.sabre"; price = { buy = 450; sell = 225; } attributes = { atk = 13; hit = 5; crt = 10; } equip.by = @class.any_fighter + @class.thief + @class.any_rmage; }
+	sword.long		= { name = "weapons.sword.long"; price = { buy = 1500; sell = 750; } attributes = { atk = 20; hit = 10; crt = 5; } equip.by = @class.any_fighter + @class.ninja + @class.any_rmage; }
+	sword.falchion	= { name = "weapons.sword.falchion"; price = { buy = 450; sell = 225; } attributes = { atk = 15; hit = 10; crt = 5; } equip.by = @class.any_fighter + @class.thief + @class.any_rmage; }
+	sword.silver	= { name = "weapons.sword.silver"; price = { buy = 4000; sell = 2000; } attributes = { atk = 23; hit = 15; crt = 5; } equip.by = @class.any_fighter + @class.ninja + @class.any_rmage; }
+	sword.flame		= { name = "weapons.sword.flame"; price = { buy = 10000; sell = 5000; } effective = { element = @element.fire; family = @family.regen + @family.undead; } attributes = { atk = 26; hit = 20; crt = 5; } equip.by = @class.any_fighter + @class.ninja + @class.any_rmage; }
+	sword.ice		= { name = "weapons.sword.ice"; price = { buy = 15000; sell = 7500; } effective.element = @element.ice; attributes = { atk = 29; hit = 25; crt = 5; } equip.by = @class.any_fighter + @class.ninja + @class.any_rmage; }
+	sword.dragon	= { name = "weapons.sword.dragon"; price = { buy = 8000; sell = 4000; } effective.family = @family.dragon; attributes = { atk = 19; hit = 15; crt = 10; } equip.by = @class.any_fighter + @class.thief + @class.any_rmage; }
+	sword.giant		= { name = "weapons.sword.giant"; price = { buy = 8000; sell = 4000; } effective.family = @family.giant; attributes = { atk = 21; hit = 20; crt = 5; } equip.by = @class.any_fighter + @class.ninja + @class.any_rmage; }
+	sword.sun		= { name = "weapons.sword.sun"; price = { buy = 20000; sell = 10000; } effective.family = @family.undead; attributes = { atk = 32; hit = 30; crt = 5; } equip.by = @class.any_fighter + @class.ninja + @class.any_rmage; }
+	sword.coral		= { name = "weapons.sword.coral"; price = { buy = 8000; sell = 4000; } effective.family = @family.aquatic; attributes = { atk = 19; hit = 15; crt = 10; } equip.by = @class.any_fighter + @class.thief + @class.any_rmage; }
+	sword.were		= { name = "weapons.sword.were"; price = { buy = 6000; sell = 3000; } effective.family = @family.were; attributes = { atk = 18; hit = 15; crt = 5; } equip.by = @class.any_fighter + @class.ninja + @class.any_rmage; }
+	sword.rune		= { name = "weapons.sword.rune"; price = { buy = 5000; sell = 2500; } effective.family = @family.magical + @family.mage; attributes = { atk = 18; hit = 15; crt = 5; } equip.by = @class.any_fighter + @class.thief + @class.any_rmage; }
+	sword.defense	= { name = "weapons.sword.defense"; price = { buy = 40000; sell = 20000; } effect = "spells.white.ruse"; attributes = { atk = 30; hit = 35; crt = 5; } equip.by = @class.knight + @class.ninja + @class.rwizard; }
+	sword.vorpal	= { name = "weapons.sword.vorpal"; price = { buy = 30000; sell = 15000; } attributes = { atk = 24; hit = 25; crt = 30; } equip.by = @class.knight + @class.ninja + @class.rwizard; }
+	sword.bane		= { name = "weapons.sword.bane"; price = { buy = 60000; sell = 30000; } effect = "spells.black.bane"; attributes = { atk = 22; hit = 20; crt = 10; } equip.by = @class.knight + @class.ninja + @class.rwizard; }
+	sword.katana	= { name = "weapons.sword.katana"; price = { buy = 60000; sell = 30000; } attributes = { atk = 33; hit = 35; crt = 30; } equip.by = @class.ninja; }
+	sword.excalibur	= { name = "weapons.sword.excalibur"; price = { buy = 60000; sell = 30000; } attributes = { atk = 45; hit = 35; crt = 5; } equip.by = @class.knight; }
+	sword.masamune	= { name = "weapons.sword.masamune"; price = { buy = 60000; sell = 30000; } effective = { element = @element.all; family = @family.all }; attributes = { atk = 56; hit = 5; crt = 10; } equip.by = @class.any; equip.dual = @true; }
+}
+armor	= {
+	$template:template.item.body
+	body.cloth		= { name = "armor.body.cloth"; price = { buy = 10; sell = 5; } attributes = { def = 1; evd = -2; wis = 5; } equip.by = @class.any; }
+	body.mage		= { name = "armor.body.mage"; price = { buy = 550; sell = 225; } attributes = { def = 4; evd = 0; wis = 10; int = 10; } equip.by = @class.any; }
+	body.white		= { name = "armor.body.robe"; effect = "spells.white.inv2"; resists = { element = @element.fire; family = @family.dragon; } price = { buy = 2; sell = 1; } attributes = { def = 24; evd = -2; } equip.by = @class.wwizard; }
+	body.black		= { name = "armor.body.robe"; effect = "spells.black.ice2"; resists = { element = @element.ice + @element.time } price = { buy = 2; sell = 1; } attributes = { def = 24; evd = -2; } equip.by = @class.bwizard; }
+	
+	body.wooden		= { name = "armor.body.wooden"; price = { buy = 50; sell = 25; } attributes = { def = 6; evd = -8; } equip.by = @class.any_fighter+@class.any_thief+@class.any_bbelt+@class.any_rmage }
+	body.chain		= { name = "armor.body.chain"; price = { buy = 160; sell = 80; } attributes = { def = 15; evd = -15; } equip.by = @class.any_fighter+@class.ninja+@class.rmage }
+	body.iron		= { name = "armor.body.iron"; price = { buy = 800; sell = 400; } attributes = { def = 24; evd = -23; } equip.by = @class.any_fighter+@class.ninja; }
+	body.steel		= { name = "armor.body.steel"; price = { buy = 45000; sell = 22500; } attributes = { def = 34; evd = -33; } equip.by = @class.any_fighter }
+	body.silver		= { name = "armor.body.silver"; price = { buy = 7500; sell = 3750; } attributes = { def = 18; evd = -8; } equip.by = @class.any_fighter+@class.ninja+@class.any_rmage }
+	body.flame		= { name = "armor.body.flame"; resists.element = @element.ice; price = { buy = 30000; sell = 15000; } attributes = { def = 34; evd = -10; } equip.by = @class.any_fighter+@class.ninja; }
+	body.ice		= { name = "armor.body.ice"; resists.element = @element.fire; price = { buy = 30000; sell = 15000; } attributes = { def = 34; evd = -10; } equip.by = @class.any_fighter+@class.ninja; }
+	body.opal		= { name = "armor.body.opal"; resists.element = @element.lightning; price = { buy = 60000; sell = 30000; } attributes = { def = 42; evd = -10; } equip.by = @class.knight }
+	body.dragon		= { name = "armor.body.dragon"; resists.element = @element.fire + @element.ice + @element.lightning; price = { buy = 60000; sell = 30000; } attributes = { def = 42; evd = -10; } equip.by = @class.knight }
+	
+	$template:template.item.bracelet
+	bracelet.mind	= { name = "armor.bracelet.mind"; price = { buy = 100; sell = 50; } attributes = { int = 5; wis = 5; } equip.by = @class.any }
+	bracelet.copper	= { name = "armor.bracelet.copper"; price = { buy = 100; sell = 50; } attributes = { def = 4; evd = -1; } equip.by = @class.any }
+	bracelet.silver	= { name = "armor.bracelet.silver"; price = { buy = 5000; sell = 250; } attributes = { def = 15; evd = -1; } equip.by = @class.any }
+	bracelet.gold	= { name = "armor.bracelet.gold"; price = { buy = 50000; sell = 25000; } attributes = { def = 24; evd = -1; } equip.by = @class.any }
+	bracelet.opal	= { name = "armor.bracelet.opal"; price = { buy = 65000; sell = 32500; } attributes = { def = 34; evd = -1; } equip.by = @class.any }
+	
+	$template:template.item.ring
+	ring.protect	= { name = "armor.ring.protect"; resists.element = @element.death; price = { buy = 20000; sell = 10000; } attributes = { def = 8; evd = -1; } equip.by = @class.any }
+	
+	$template:template.item.boots
+	boots.travel	= { name = "armor.boots.travel"; price = { buy = 80; sell = 40; } attributes = { evd = 10; } equip.by = @class.any }
+	
+	$template:template.item.other
+	cape.protect	= { name = "armor.cape.protect"; price = { buy = 20000; sell = 10000; } attributes = { def = 8; evd = -2; } equip.by = @class.any_fighter + @class.any_thief + @class.any_rmage + @class.any_wmage + @class.any_bmage }
+	
+	$template:template.item.shield
+	shield.buckler	= { name = "armor.shield.buckler"; price = { buy = 70; sell = 35; } attributes = { def = 2; evd = 0; } equip.by = @class.any_fighter + @class.any_thief + @class.any_rmage; }
+	shield.wooden	= { name = "armor.shield.wooden"; price = { buy = 15; sell = 7; } attributes = { def = 2; evd = -2; } equip.by = @class.any_fighter + @class.ninja; }
+	shield.iron		= { name = "armor.shield.iron"; price = { buy = 100; sell = 50; } attributes = { def = 4; evd = 0; } equip.by = @class.any_fighter + @class.ninja; }
+	shield.silver	= { name = "armor.shield.silver"; price = { buy = 2500; sell = 1250; } attributes = { def = 8; evd = 0; } equip.by = @class.any_fighter + @class.ninja; }
+	shield.flame	= { name = "armor.shield.flame"; price = { buy = 10000; sell = 5000; } resists.element = @element.ice; attributes = { def = 12; evd = 0; } equip.by = @class.any_fighter + @class.ninja; }
+	shield.ice		= { name = "armor.shield.ice"; price = { buy = 10000; sell = 5000; } resists.element = @element.fire; attributes = { def = 12; evd = 0; } equip.by = @class.any_fighter + @class.ninja; }
+	shield.opal		= { name = "armor.shield.opal"; price = { buy = 15000; sell = 7500; } resists.element = @element.lightning; attributes = { def = 16; evd = 0; } equip.by = @class.knight }
+	shield.aegis	= { name = "armor.shield.aegis"; price = { buy = 40000; sell = 20000; } resists.element = @element.poison_stone; attributes = { def = 16; evd = 0; } equip.by = @class.knight }
+	
+	$template:template.item.helmet
+	helmet.cap		= { name = "armor.helmet.cap"; price = { buy = 80; sell = 40; } attributes = { def = 1; evd = 0; wis = 5; } equip.by = @class.any }
+	helmet.wooden	= { name = "armor.helmet.cap"; price = { buy = 100; sell = 50; } attributes = { def = 3; evd = -3; } equip.by = @class.any_fighter+@class.ninja }
+	helmet.iron		= { name = "armor.helmet.cap"; price = { buy = 450; sell = 225; } attributes = { def = 5; evd = -5; } equip.by = @class.any_fighter+@class.ninja }
+	helmet.silver	= { name = "armor.helmet.cap"; price = { buy = 2500; sell = 1250; } attributes = { def = 6; evd = -3; } equip.by = @class.any_fighter+@class.ninja }
+	helmet.opal		= { name = "armor.helmet.cap"; price = { buy = 10000; sell = 5000; } attributes = { def = 8; evd = -3; } equip.by = @class.knight }
+	helmet.heal		= { name = "armor.helmet.cap"; effect = "spells.white.heal"; price = { buy = 20000; sell = 10000; } attributes = { def = 6; evd = -3; } equip.by = @class.any_fighter+@class.ninja }
+	helmet.ribbon	= { name = "armor.helmet.cap"; resists = { element = @element.all; family = @family.all; } price = { buy = 2; sell = 1; } attributes = { def = 1; evd = -1; } equip.by = @class.any }
+	
+	$template:template.item.gloves
+	gloves.gloves	= { name = "armor.gloves.gloves"; price = { buy = 80; sell = 40; } attributes = { def = 1; evd = 0; wis = 4; } equip.by = @class.any }
+	gloves.copper	= { name = "armor.gloves.copper"; price = { buy = 200; sell = 100; } attributes = { def = 3; evd = -3; } equip.by = @class.any_fighter+@class.ninja }
+	gloves.iron		= { name = "armor.gloves.iron"; price = { buy = 750; sell = 375; } attributes = { def = 4; evd = -5; } equip.by = @class.any_fighter+@class.ninja }
+	gloves.silver	= { name = "armor.gloves.silver"; price = { buy = 2500; sell = 1250; } attributes = { def = 6; evd = -3; } equip.by = @class.any_fighter+@class.ninja }
+	gloves.zeus		= { name = "armor.gloves.zeus"; price = { buy = 15000; sell = 7500; } attributes = { def = 6; evd = -3; } equip.by = @class.any_fighter+@class.ninja+@class.rwizard }
+	gloves.power	= { name = "armor.gloves.power"; price = { buy = 10000; sell = 5000; } attributes = { def = 6; evd = -3; } equip.by = @class.knight+@class.ninja+@class.rwizard }
+	gloves.opal		= { name = "armor.gloves.opal"; price = { buy = 20000; sell = 10000; } attributes = { def = 8; evd = -3; } equip.by = @class.knight }	
+}

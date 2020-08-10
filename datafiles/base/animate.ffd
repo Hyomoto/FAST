@@ -1,0 +1,244 @@
+// this is the animations defintion file
+// animation = {
+//		speed	= number of frames per frame
+//		repeat	= number of times to repeat the animation
+//		animation	= CSV of frames to play
+//		sfx		=	the sfx to play, if any
+//		frames	= {
+//			$template:template.frame; <- inherits the default frame values
+//			frame	= {
+//				order	= 0 is SFX->battler, 1 is battler->SFX
+//				battler	= { x,y,sprite,frame,palette,rotate,flipX,flipY} // the battler data
+//				sfx = { x,y,sprite,frame,palette,rotate,flipX,flipY}	// the sfx data
+//				
+//			}
+//		}
+//	}
+@frame.idle		= 0,
+@frame.ready0	= 1,
+@frame.ready1	= 2,
+@frame.cast0	= 3,
+@frame.cast1	= 4,
+@frame.walk		= 5,
+@frame.attack	= 6,
+@frame.raise	= 7,
+@frame.punch	= 8,
+@frame.victory	= 9,
+@frame.cast		= 10,
+@frame.damage	= 11,
+@frame.weak		= 12,
+@frame.dead		= 13,
+
+template.frame = {
+	order = 0;
+	battler = { sprite = "battlerSprite"; palette = "battlerPalette"; frame = "battlerIdle"; }
+}
+animate	= {
+	battler	= {
+		// the idle animation inherits "battlerIdle" because the party can have different "idle" poses, weak, dead, etc...
+		enemy.attack	= {
+			speed	= 8;
+			repeat	= 1;
+			animation	= "a";
+			frames	= {
+				$template:template.frame;
+				a	= {}
+			}
+		}
+		ready	= {
+			weapon	= {
+				speed	= 16;
+				repeat	= -1;
+				animation	= "a,b";
+				frames	= {
+					$template:template.frame;
+					a	= { battler.frame = @frame.ready0; }
+					b	= { battler.frame = @frame.ready1; }
+				}
+			}
+			magic	= {
+				speed	= 16;
+				repeat	= -1;
+				animation	= "a,b";
+				frames	= {
+					$template:template.frame;
+					a	= { battler.frame = @frame.cast0; }
+					b	= { battler.frame = @frame.cast1; }
+				}
+			}
+		}
+		idle	= {
+			animation	= "idle";
+			frames		= {
+				$template:template.frame;
+				idle	= { battler = { frame = "battlerIdle"; } }
+			}
+		}
+		flee	= {
+			animation	= "idle";
+			frames		= {
+				$template:template.frame;
+				idle	= { battler = { frame = "battlerIdle"; flipX = @true } }
+			}
+		}
+		outline	= {
+			speed	= 4;
+			repeat	= 2;
+			animation	= "on,off";
+			frames	= {
+				$template:template.frame;
+				on	= { battler.palette = $icon:pal_battler_special_0,2; }
+				off	= {}
+			}
+		}
+		flash_idle	= {
+			speed	= 2;
+			repeat	= -1;
+			animation	= "invis,vis";
+			frames	= {
+				invis	= {}
+				vis:template.frame = {};
+			}
+		}
+		damage.party	= {
+			speed	= 2;
+			repeat	= 8;
+			sfx		= $asset:sfx_attack_0;
+			animation	= "invis,vis";
+			frames	= {
+				invis	= {}
+				vis:template.frame	= { battler.frame = @frame.damage; }
+			}
+		}
+		damage.flash	= {
+			speed	= 2;
+			repeat	= 8;
+			animation	= "invis,vis";
+			frames	= {
+				invis	= {}
+				vis:template.frame	= {}
+			}
+		}
+		healed	= {
+			speed	= 2;
+			repeat	= 16;
+			sfx		= $asset:sfx_effect_1;
+			animation	= "invis,vis";
+			frames	= {
+				invis	= {}
+				vis:template.frame = {};
+			}
+		}
+		unarmed	= {
+			speed		= 4;
+			repeat		= 2;
+			animation	= "swing0,swing1";
+			frames	= {
+				$template:template.frame;
+				swing0	= { battler.frame = @frame.punch; }
+				swing1	= { battler.frame = @frame.ready0; }
+			}
+		}
+		weapon	= {
+			speed		= 4;
+			repeat		= 2;
+			animation	= "swing0,swing1";
+			final		= "final";
+			frames	= {
+				$template:template.frame;
+				swing0	= { battler = { frame = @frame.attack; } sfx = { x = 22; y = -10; sprite = "sfxSprite"; frame = "sfxIndex"; palette = "sfxPalette"; rotate = 270; } }
+				swing1	= { battler = { frame = @frame.walk; } sfx = { x = -14; y = 1; sprite = "sfxSprite"; frame = "sfxIndex"; palette = "sfxPalette"; } }
+				final	= { battler.frame = @frame.walk }
+			}
+		}
+		weapon.rapier	= {
+			speed		= 4;
+			repeat		= 2;
+			animation	= "swing0,swing1";
+			frames	= {
+				$template:template.frame;
+				swing0	= { battler = { frame = @frame.punch; } sfx = { x = -20; y = 4; sprite = "sfxSprite"; frame = "sfxIndex"; palette = "sfxPalette"; } }
+				swing1	= { battler = { frame = @frame.ready0; } }
+			}
+		}
+		item	= {
+			speed		= 32;
+			repeat		= 1;
+			animation	= "use";
+			frames	= {
+				$template:template.frame;
+				use	= { battler.frame = @frame.raise; }
+			}
+		}
+		cast	= {
+			spell	= {
+				a = {
+					speed		= 8;
+					repeat		= 3;
+					sfx			= $asset:sfx_effect_1;
+					animation	= "cast0,cast1";
+					final		= "final";
+					flash	= {
+						speed	= 4;
+						repeat	= 11;
+						palette	= "sfxPalette";
+					}
+					frames	= {
+						$template:template.frame;
+						cast0	= { battler.frame = @frame.victory; sfx = { x = -16; y = 4; sprite = "sfxSprite"; frame = 0; palette = "sfxPalette"; } }
+						cast1	= { battler.frame = @frame.victory; sfx = { x = -16; y = 4; sprite = "sfxSprite"; frame = 1; palette = "sfxPalette"; } }
+						final	= { battler.frame = @frame.victory }
+					}
+				}
+				b:animate.battler.cast.spell.a	= {
+					frames	= {
+						cast0.battler.frame = @frame.cast;
+						cast1.battler.frame = @frame.cast;
+						final.battler.frame = @frame.cast;
+					}
+				}
+				c:animate.battler.cast.spell.a	= {
+					frames	= {
+						cast0.battler.frame = @frame.raise;
+						cast1.battler.frame = @frame.raise;
+						final.battler.frame = @frame.raise;
+					}
+				}
+			}
+		}
+		walk	= {
+			speed	= 4;
+			repeat	= 2;
+			animation	= "walk1,walk2";
+			final		= "final";
+			frames	= {
+				$template:template.frame;
+				walk1	= { battler.frame = @frame.walk; }
+				walk2	= { battler.frame = @frame.idle; }
+				final	= {}
+			}
+		}
+		advance	= {
+			speed	= 4;
+			repeat	= 2;
+			animation	= "walk1,walk2";
+			frames	= {
+				$template:template.frame;
+				walk1	= { battler.frame = @frame.walk; }
+				walk2	= { battler.frame = @frame.idle; }
+			}
+		}
+		victory	= {
+			speed	= 16;
+			repeat	= 4;
+			animation	= "pose1,pose2";
+			final		= "final";
+			frames	= {
+				$template:template.frame;
+				pose1	= { battler.frame = @frame.idle; }
+				pose2	= { battler.frame = @frame.victory; }
+				final	= {}
+			}
+		}
+	}
+}

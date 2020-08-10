@@ -1,0 +1,24 @@
+shop.menus = {
+	inn	= {
+		start	= {
+			sequence	= "speech:os,%go:menu";
+			speech:shop.menus.speech;
+		}
+		menu	= {
+			sequence	= "menu:ou,confirm:ou,%try:has-gold,%go:stay";
+			menu		= { pane = "menu"; options = "confirm:common.yes.long,cancel:common.no.long"; confirm = "%read:cost=cost,%do:show-cost,%line:confirm"; cancel = "%go:exit"; }
+			confirm		= { pane = "menu"; options = "confirm:common.yes.long,cancel:common.no.long"; success = "%do:lose-gold,gold:su"; fail = "%line:cant_afford,%do:cursor-hide,speech:n,%exit"; cancel = "%go:exit"; }
+			speech:shop.menus.speech;
+			gold:shop.menus.gold;
+		}
+		stay	= {
+			sequence	= "%line:stay,%do:cursor-hide,speech:cns,%do:fade-out,speech,%do:fade-in,%line:warn,speech,%do:inn,%do:save,%exit";
+			speech:shop.menus.speech;
+		}
+		exit	= {
+			sequence	= "%do:save,%line:warn,%do:cursor-hide,speech:c,%exit";
+			menu:shop.menus.menu;
+			speech:shop.menus.speech;
+		}
+	}
+}
