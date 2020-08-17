@@ -4,7 +4,7 @@
 /// @param values...
 function log_notify( _id, _event ) {
 	if ( ERROR_LEVEL >= ERROR_NOTIFY ) {
-		static instance	= new Logger( "notify", System );
+		static instance	= new Logger( "notify", FAST_LOGGER_DEFAULT_LENGTH, System );
 		
 		var _string	= ( is_undefined( _id ) ? "" : string( _id ) ) + "[" + _event + "] ";
 		

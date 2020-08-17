@@ -39,6 +39,8 @@ function string_to_real( _value ) {
 		return real( _value );
 		
 	} catch ( _ ) {
+		log_nonfatal( undefined, "string_to_real", "Number conversion for ", _value," failed. Returned 0." );
+		
 		return 0;
 		
 	}

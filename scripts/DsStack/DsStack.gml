@@ -5,29 +5,37 @@ function DsStack() : DsChain() constructor {
 	/// @param values...
 	static push	= function() {
 		var _i = 0; repeat( argument_count ) {
-			add( argument[ _i++ ] );
+			var _link	= new ChainLink( argument[ _i++ ] );
+			
+			_link.chain	= chain;
+			
+			chain	= _link;
+			
+			++links;
 			
 		}
 		
 	}
 	static top	= function() {
-		if ( tail == undefined ) { return undefined; }
+		if ( chain == undefined ) { return undefined; }
 		
-		return tail.value;
+		return chain.value;
 		
 	}
 	static pop	= function() {
-		var _seek	= tail;
+		if ( chain == undefined ) { return undefined; }
 		
-		if ( _seek == undefined ) { return undefined; }
+		var _link	= chain;
 		
-		remove( _seek );
+		chain	= _link.chain;
 		
-		return _seek.value;
+		--links;
+		
+		return _link.value;
 		
 	}
 	var _i = 0; repeat( argument_count ) {
-		add( argument[ _i++ ] );
+		push( argument[ _i++ ] );
 		
 	}
 	

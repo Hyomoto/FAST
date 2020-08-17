@@ -122,7 +122,7 @@ function database_load( _filename, _target ) {
 						break;
 						
 					default :
-						log( _break );
+						syslog( _break );
 						
 				}
 				break;

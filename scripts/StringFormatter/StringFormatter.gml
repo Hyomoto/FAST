@@ -89,7 +89,7 @@ function StringFormatter( _format, _functions ) constructor {
 		push : function( _input ) {
 			if ( flag > 0 && flag & 2 == 0 ) { return; }
 			
-			_input.value	= string_insert( "\n", _input.value, last );
+			_input.value	= string_insert( "\n", _input.value, ++last );
 			
 		},
 		ignore : function() {

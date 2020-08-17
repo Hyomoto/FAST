@@ -1,11 +1,11 @@
 /// @func Publisher
-function Publisher() : DsChain() constructor {
+function Publisher() : DsWalkable() constructor {
 	static notify	= function( _message ) {
-		var _seek	= head;
+		var _seek	= chain;
 		
 		while ( _seek != undefined ) {
 			_seek.func( _message );
-			_seek	= _seek.next;
+			_seek	= _seek.chain;
 			
 		}
 		

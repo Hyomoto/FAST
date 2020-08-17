@@ -1,0 +1,4 @@
+log( "Hello World!" );
+	
+  a	= 10+( 40 + 2 ) ;
+log( a );

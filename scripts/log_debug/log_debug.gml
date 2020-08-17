@@ -4,7 +4,7 @@
 /// @param values...
 function log_debug( _id, _event ) {
 	if ( ERROR_LEVEL >= ERROR_DEBUG ) {
-		static instance	= new Logger( "debug", System );
+		static instance	= new Logger( "debug", FAST_LOGGER_DEFAULT_LENGTH, System );
 		
 		var _string	= ( is_undefined( _id ) ? "" : string( _id ) ) + " [" + _event + "] ";
 		

@@ -4,12 +4,8 @@
 /// @param parameters
 /// @param function
 function EventOnce( _event, _delay, _parameters, _function ) constructor {
-	static clear	= function() {
-		ignore	= true;
-		once	= true;
-		tock	= 0;
-		// used to clear the event on the caller, if needed
-		return undefined;
+	static discard	= function() {
+		FAST.delete_event( self );
 		
 	}
 	static toString	= function() {

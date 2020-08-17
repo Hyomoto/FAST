@@ -104,7 +104,7 @@ function PointerInterface( _shape ) constructor {
 			}
 		);
 		if ( dirty != undefined ) {
-			dirty	= dirty.clear();
+			dirty	= dirty.discard();
 			
 		}
 		

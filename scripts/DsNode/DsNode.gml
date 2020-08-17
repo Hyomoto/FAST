@@ -16,12 +16,6 @@ function DsNode() constructor {
 		return _value.value.seek( string_delete( _path, 1, _dot ) );
 		
 	}
-	static get	= function( _path, _undefined ) {
-		var _value	= seek( _path );
-		
-		return ( is_undefined( _value ) ? _undefined : _value.value );
-		
-	}
 	static lock		= function( _path ) {
 		var _value	= seek( _path );
 		
@@ -77,6 +71,12 @@ function DsNode() constructor {
 			
 		}
 		return _size;
+		
+	}
+	static get	= function( _path, _undefined ) {
+		var _value	= seek( _path );
+		
+		return ( is_undefined( _value ) ? _undefined : _value.value );
 		
 	}
 	static set	= function( _path, _value, _type ) {

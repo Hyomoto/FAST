@@ -1,4 +1,4 @@
-#macro log		SystemOutput().write
+#macro syslog	SystemOutput().write
 #macro System	SystemOutput()
 
 function SystemOutput() {

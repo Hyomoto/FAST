@@ -10,11 +10,11 @@ interface.add( new ShapeRectangle( 15, 0, 30, 20 ), -1, false );
 origin_x	= x;
 
 interface.set_leave( interface.objects[ 0 ].target, function() {
-	log( "done!" );
+	syslog( "done!" );
 	
 });
 
 interface.set_step( interface.objects[ 0 ].target, function() {
-	log( "hello world!" );
+	syslog( "hello world!" );
 	
 });

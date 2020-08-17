@@ -1,7 +1,7 @@
 /// @func FileFAST
 /// @param filename
 /// @param *read_only
-function FileFAST( _filename, _formatter ) : File( _filename, _formatter ) constructor {
+function FileFAST( _filename, _readonly ) : File( _filename, _readonly ) constructor {
 	static FASTformatter	= new StringFormatter( " :strip,	:strip,\":save,{:push,}:pull+push,;:strip+push,+:pull", {
 		setup : function( _input ) {
 			flag = 0;

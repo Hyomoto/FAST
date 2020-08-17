@@ -2,6 +2,7 @@
 /// @param chars
 /// @param string
 /// @param start
+/// @desc	returns: the position of the first found char or 0 if nothing was found
 function string_find_first( _chars, _string, _start ) {
 	var _found = 0;
 	var _next;

@@ -1,4 +1,4 @@
-/// @func string sring_trim( string )
+/// @func string_trim
 /// @param {string} string	the string to trim
 /// @desc	trims the whitespace, tabs and spaces, before and after a string
 function string_trim( _string ) {
