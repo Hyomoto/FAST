@@ -1,4 +1,4 @@
-#macro FAST		FASTManager()
+#macro FAST		( FASTManager() )
 
 room_instance_add( room_first, 0, 0, __FASTtool );
 

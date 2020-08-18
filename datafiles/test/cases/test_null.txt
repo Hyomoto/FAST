@@ -1,0 +1,2 @@
+function( value )
+log( value == null )

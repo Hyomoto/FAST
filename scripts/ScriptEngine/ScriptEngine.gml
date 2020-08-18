@@ -46,8 +46,32 @@ function ScriptEngine( _filename, _debug ) constructor {
 				_last.discard();
 				
 			}
-			scripts[? _name ]	= new ScriptFile( _path + _file, true );
+			var _script	= new ScriptFile( _path + _file, true );
 			
+			if ( _script.isFunction ) {
+				var _args	= _script.get_line( 0 ).first().get_arguments();
+				var _arguments	= array_create( array_length( _args ) )
+				
+				var _i = 0; repeat( array_length( _arguments ) ) {
+					if ( _args[ _i ].size() != 1 || _args[ _i ].first().code != SCRIPT_VARIABLE || _args[ _i ].first().seek ) {
+						log( "ScriptEngine.load->get_file", "Could not load ", _path, _file,": malformed function variable \"", string( _args[ _i ] ), ". Skipped!" );
+						
+						_script.discard();
+						
+						return false;
+						
+					}
+					_arguments[ _i ]	= _args[ _i ].first().value;
+					
+					++_i;
+					
+				}
+				return script_add_function( _name, _arguments, _script );
+				
+			} else {
+				scripts[? _name ]	= _script;
+				
+			}
 			return true;
 			
 		}
@@ -83,6 +107,7 @@ function ScriptEngine( _filename, _debug ) constructor {
 				_file	= file_find_next();
 				
 			}
+			file_find_close();
 			
 		} until ( _stack.empty() );
 		
@@ -160,6 +185,7 @@ function ScriptEngine( _filename, _debug ) constructor {
 		
 	}
 	static execute	= function( _script ) {
+		var _depth	 = -1;
 		var _execute;
 		
 		_script	= lookup_script( _script );
@@ -168,29 +194,57 @@ function ScriptEngine( _filename, _debug ) constructor {
 		
 		log( "ScriptEngine.run", "Executing script : ", _script.name );
 		
-		_script.reset();
+		_script.last	= _script.startAt;
+		
+		error	= 0;
 		
 		while ( _script.eof() == false ) {
 			_execute	= _script.read();
-			//syslog( _execute );
 			
-			if ( script_evaluate( _execute, _script.local, self ) != 0 ) {
-				if ( error == 0 ) { return 0; }
-				
-				switch ( error ) {
-					case 1 :
-						log( "ScriptEngine.execute", "Assignment failed on line ", _script.line, " in ", _script.name, ". Aborted!" );
-						
-						break;
+			if ( _execute.first().code == SCRIPT_LANGUAGE && _execute.first().escape == 2 && _execute.first().level <= _depth ) {
+				if ( _execute.first().value == "end" ) {
+					continue;
 					
 				}
-				return -1;
+				_script.last	= _execute.first().goto;
+				
+				continue;
+				
+			}
+			switch ( script_evaluate( _execute, _script.local, self ) ) {
+				case 2 :
+					var _goto	= stack.pop();
+					
+					if ( stack.pop() == 0 ) {
+						_script.last	= _goto;
+						
+					} else {
+						++_depth;
+						
+					}
+					
+				case 0 :
+					break;
+					
+				case -1 :
+					if ( error == 0 ) { return 0; }
+				
+					switch ( error ) {
+						case 1 :
+							log( "ScriptEngine.execute", "Assignment failed on line ", _script.line, " in ", _script.name, ". Aborted!" );
+						
+							break;
+					
+					}
+					return -1;
+				
+				default :
+					return 0;
 				
 			}
 			
 		}
-		_script.local	= {};
-		
+		// clear the stack
 		return 0;
 		
 	}
@@ -210,13 +264,16 @@ function ScriptEngine( _filename, _debug ) constructor {
 		if ( wait > 0 ) {
 			wait	-= 1;
 			
-		} else {
+		} else if ( queue.empty() == false ) {
+			var _timer	= ( debug ? new Timer( "Took $S seconds", 4 ) : undefined );
+			
 			while ( queue.empty() == false ) {
 				if ( execute( queue.head() ) > 0 ) { break; }
 				
 				queue.dequeue();
 				
 			}
+			log( "ScriptEngine", _timer );
 			
 		}
 		

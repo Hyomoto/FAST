@@ -1,3 +1,0 @@
-static.value	= 10
-a = static.value;
-

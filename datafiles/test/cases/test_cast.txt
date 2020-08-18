@@ -1,0 +1,3 @@
+function()
+log( 10 + number->10 );
+log( "Hello " + string->"World!" );

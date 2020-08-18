@@ -1,0 +1,13 @@
+log( "Test 1... func" )
+test_func()
+log( "Test 2... return" )
+log( test_return( "Hello World!" ) );
+log( "Test 3... cast" );
+test_cast()
+log( "Test 4... if" );
+test_if( 0 )
+test_if( 1 )
+test_if( 2 )
+test_if( "tart" )
+log( "Test 5... null" );
+test_null( null )

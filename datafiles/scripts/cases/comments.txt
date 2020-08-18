@@ -1,2 +1,0 @@
-/* this is a
-comment*/log("comments.txt test complete" )// another comment

@@ -4,6 +4,8 @@
 /// @param {bool}	trim	whether to trim whitespace from each item
 /// @desc	takes a string, and converts it into an array based on the specified divider
 function string_explode( _string, _divider, _trim ) {
+	if ( _string == "" ) { return []; }
+	
 	var _array	= array_create( string_count( _divider, _string ) + 1 );
 	var _sep	= string_length( _divider );
 	var _len	= string_length( _string );

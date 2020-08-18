@@ -1,0 +1,13 @@
+function( compare )
+if compare == 0
+	log( "branch 0" )
+elseif compare == 1
+	log( "branch 1" )
+else
+	if compare == 2
+		log( "branch 2" )
+	else
+		log( "other" )
+	end
+end
+log( "value was " + string->compare )

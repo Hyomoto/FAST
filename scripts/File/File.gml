@@ -37,6 +37,18 @@ function File( _filename, _readonly ) : Output() constructor {
 		ds_list_add( list, _value );
 		
 	}
+	static get_line	= function( _line ) {
+		if ( _line >= 0 && _line < lines ) {
+			return list[| _line ];
+			
+		}
+		return undefined;
+		
+	}
+	static remaining= function() {
+		return lines - last;
+		
+	}
 	static eof		= function() {
 		return last	== lines;
 		

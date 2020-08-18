@@ -26,27 +26,41 @@ function DsWalkable() : DsChain() constructor {
 	static clear	= function() {
 		final	= self;
 		step	= self;
+		steps	= 0;
 		
 		clearSuper();
 		
 	}
 	static start	= function( _at ) {
 		step	= self;
+		steps	= 0;
 		
 		repeat( _at == undefined ? 0 : _at ) { next(); }
+		
+	}
+	static first	= function() {
+		if ( links == 0 ) { return undefined; }
+		
+		return chain.value;
 		
 	}
 	static has_next	= function() {
 		return ( links == 0 ? false : ( step.chain == undefined ? false : true ) );
 		
 	}
+	static remaining	= function() {
+		return links - steps;
+		
+	}
 	static next		= function() {
 		if ( links == 0 ) { return undefined; }
 		if ( step.chain == undefined ) {
 			step	= self;
+			steps	= 0;
 			
 		}
 		step	= step.chain;
+		steps	+= 1;
 		
 		return step.value;
 		
@@ -78,5 +92,6 @@ function DsWalkable() : DsChain() constructor {
 	}
 	final	= self;
 	step	= self;
+	steps	= 0;
 	
 }

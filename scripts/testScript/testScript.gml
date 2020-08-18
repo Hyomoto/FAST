@@ -2,17 +2,21 @@
 #macro Nonfatal:ERROR_LEVEL	2
 #macro Notify:ERROR_LEVEL	3
 
-//var _scr	= new ScriptParser( "  ab= \" h+a)i \"+10+( 40 * 12 ) " )
+//var _scr	= new ScriptParser( "var a = string->10" )
 
 //while( _scr.has_next() ) {
 //	syslog( "result : ", _scr.next() );
 	
 //}
-global.engine	= new ScriptEngine( "scripts/test.txt", true )// "scripts/", true );
-
 var _timer	= new Timer( "evaluation took $S seconds", 5 );
 
-global.engine.enqueue( "test" );
+global.engine	= new ScriptEngine( "test/", false );// "scripts/", true );
+
+//global.engine.load( "test/" );
+
+syslog( _timer );
+
+
 
 //_a	= new ScriptExpression( "a.b = 10 * 2 + ( 15 + 1 ) * ( ( 6 ) * 2 )" );
 //_b	= new ScriptExpression( "1 && 0" );
@@ -24,7 +28,7 @@ global.engine.enqueue( "test" );
 //_h	= new ScriptExpression( "7 >= 3" );
 //_i	= new ScriptExpression( "7 <= 3" );
 
-//syslog( _timer );
+//
 //var _timer	= new Timer( "evaluate took $S seconds", 5 );
 
 //script_evaluate( _a, global.engine.local, global.engine );
@@ -49,7 +53,7 @@ global.engine.enqueue( "test" );
 // 10 + 16 * 12
 //syslog( global.engine.get_value( "a" ) );
 //syslog( 10 * 2 + ( 15 + 1 ) * ( ( 6 ) * 2 ) );
-syslog( _timer );
+//syslog( _timer );
 
 //global.engine.run( "test" );
 

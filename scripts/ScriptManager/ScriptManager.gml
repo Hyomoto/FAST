@@ -1,4 +1,9 @@
 #macro FAST_LOGGER_DEFAULT_LENGTH	144
+
+script_add_function( "log", "value", function() {
+	syslog( value );
+	
+});
 /// @func ScriptManager
 function ScriptManager() {
 	static manager	= function() constructor {
@@ -76,20 +81,19 @@ function ScriptManager() {
 			}
 			
 		});
-		static command	= function( _name, _command ) {
-			if ( commands[? _name ] != undefined ) {
+		static command	= function( _func ) {
+			if ( commands[? _func.name ] != undefined ) {
 				logger.write( "[ScriptManager.command] Command \"" + _name + "\" already exists. Skipped." );
 				
+			} else {
+				logger.write( "[ScriptManager.command] Command " + string( _func ) + " added." );
+				
+				commands[? _func.name ]	= _func;
+				
 			}
-			commands[? _name ]	= _command;
 			
 		}
 		commands	= ds_map_create();
-		
-		commands[? "log" ]	= function( _stack ) {
-			syslog( "[SCRIPT] ", "Value ", _stack.pop(), " passed from a script!" );
-			
-		}
 		
 	}
 	static instance	= new Feature( "FAST Scripts", "1.0", "08/13/2020", new manager() );

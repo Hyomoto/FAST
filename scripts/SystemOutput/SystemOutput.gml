@@ -1,5 +1,5 @@
-#macro syslog	SystemOutput().write
-#macro System	SystemOutput()
+#macro syslog	( SystemOutput() ).write
+#macro System	( SystemOutput() )
 
 function SystemOutput() {
 	static instance	= new Output( function() {

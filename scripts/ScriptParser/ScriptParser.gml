@@ -29,6 +29,9 @@ function ScriptParser( _string ) : Parser ( _string ) constructor {
 					if ( _ws && string_char_at( value, _i + 1 ) == "=" ) {
 						++_i;
 						
+					} else if ( !_ws && _char == "-" && string_char_at( value, _i + 1 ) == ">" ) {
+						_i	+= 2;
+						
 					}
 					_last	= ( _ws ? _i + 1 : _i-- );
 					// resolve

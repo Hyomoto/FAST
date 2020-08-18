@@ -1,3 +1,0 @@
-<<wait 60>>
-var t "Hello World!"
-<<log $t>>

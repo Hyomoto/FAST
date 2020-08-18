@@ -21,6 +21,13 @@ function ScriptFile( _filename, _readonly ) : File( _filename, _readonly ) const
 		return undefined;
 		
 	}
+	static get_lineSuper	= get_line;
+	static get_line	= function( _line ) {
+		var _return	= get_lineSuper( _line );
+		
+		return ( _return == undefined ? undefined : _return.value );
+		
+	}
 	// closes the file, preserving changes
 	static closeSuper	= close;
 	static close	= function() {
@@ -48,7 +55,7 @@ function ScriptFile( _filename, _readonly ) : File( _filename, _readonly ) const
 	static load	= function( _filename ) {
 		static fragment	= function( _string, _line ) constructor {
 			static toString	= function() {
-				return value;
+				return string( value );
 				
 			}
 			value	= _string;
@@ -96,6 +103,7 @@ function ScriptFile( _filename, _readonly ) : File( _filename, _readonly ) const
 		name	= _filename;
 		
 	}
+	isFunction	= false;
 	includes	= 0;
 	line		= 0;
 	startAt		= 0;
@@ -103,10 +111,31 @@ function ScriptFile( _filename, _readonly ) : File( _filename, _readonly ) const
 	
 	load( _filename );
 	
+	var _branch	= new DsStack();
+	
 	var _i = 0; repeat( lines ) {
 		list[| _i ].value	= new ScriptExpression( list[| _i ].value );
 		
+		if ( list[| _i ].value.first().code == SCRIPT_LANGUAGE ) {
+			if ( list[| _i ].value.first().closure ) {
+				
+				_branch.pop().goto	= _i;
+				
+			}
+			if ( list[| _i ].value.first().branch ) {
+				list[| _i ].value.first().level	= _branch.size();
+				
+				_branch.push( list[| _i ].value.first() );
+				
+			}
+			
+		}
 		++_i;
+		
+	}
+	if ( list[| 0 ].value.first().value == "function" ) {
+		isFunction	= true;
+		startAt		= 1;
 		
 	}
 	
