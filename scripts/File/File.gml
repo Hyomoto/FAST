@@ -2,7 +2,7 @@
 /// @param {string}	filename	the name of the file to load
 /// @param *read_only
 /// @desc	generic File handling object
-function File( _filename, _readonly ) : Output() constructor {
+function File( _filename, _readonly ) : GenericOutput() constructor {
 	static reset	= function() {
 		last	= 0;
 		

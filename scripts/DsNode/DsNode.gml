@@ -1,5 +1,7 @@
 /// @func DsNode
+/// @desc DsNode is a traversable data type
 function DsNode() constructor {
+	// finds the node at the given path and returns it
 	static seek	= function( _path ) {
 		var _dot	= string_pos( ".", _path );
 		var _key	= ( _dot == 0 ? _path : string_copy( _path, 1, _dot - 1 ) );
@@ -16,6 +18,7 @@ function DsNode() constructor {
 		return _value.value.seek( string_delete( _path, 1, _dot ) );
 		
 	}
+	// flags the node as read-only
 	static lock		= function( _path ) {
 		var _value	= seek( _path );
 		
@@ -25,6 +28,7 @@ function DsNode() constructor {
 		}
 		
 	}
+	// flags the node as editable, all nodes are editable by default
 	static unlock	= function( _path ) {
 		var _value	= seek( _path );
 		
@@ -34,6 +38,7 @@ function DsNode() constructor {
 		}
 		
 	}
+	// destroys the node
 	static destroy	= function() {
 		var _key	= ds_map_find_first( table );
 		
@@ -46,6 +51,7 @@ function DsNode() constructor {
 		ds_map_destroy( table );
 		
 	}
+	// returns the size of the node structure
 	static size	= function( _links ) {
 		_links	= ( _links == undefined ? true : _links );
 		
@@ -73,12 +79,14 @@ function DsNode() constructor {
 		return _size;
 		
 	}
+	// returns the value at the given path, or undefined
 	static get	= function( _path, _undefined ) {
 		var _value	= seek( _path );
 		
 		return ( is_undefined( _value ) ? _undefined : _value.value );
 		
 	}
+	// sets the value at the given path, will infer type if not provided
 	static set	= function( _path, _value, _type ) {
 		var _dot	= string_pos( ".", _path );
 		var _key	= ( _dot == 0 ? _path : string_copy( _path, 1, _dot - 1 ) );
@@ -134,6 +142,8 @@ function DsNode() constructor {
 		}
 		
 	}
+	// copies this node into the node provided, or a new one if not provided, and
+	// returns it
 	static copy		= function( _target ) {
 		var _new	= ( _target == undefined ? new DsNode() : _target );
 		var _key	= ds_map_find_first( table );
@@ -159,6 +169,7 @@ function DsNode() constructor {
 		return _new;
 		
 	}
+	// removes the value with the given key
 	static remove	= function( _key ) {
 		var _value	= table[? _key ];
 		
@@ -169,6 +180,7 @@ function DsNode() constructor {
 		ds_map_delete( table, _key );
 		
 	}
+	// returns this node as a string
 	static toString	= function() {
 		return "node :: map " + string( table ) + ", entries " + string( ds_map_size( table ) );
 		

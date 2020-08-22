@@ -1,4 +1,6 @@
 /// @func DsChain()
+/// @desc	inheritable template, provides a standardized way for dealing with
+///		structures that can be written to
 function DsChain() constructor {
 	static ChainLink	= function( _value ) constructor {
 		value	= _value;

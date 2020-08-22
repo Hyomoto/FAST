@@ -3,6 +3,7 @@
 /// @param delay
 /// @param parameters
 /// @param function
+/// @desc	Returns an event that will run once during the specified event
 function EventOnce( _event, _delay, _parameters, _function ) constructor {
 	static discard	= function() {
 		FAST.delete_event( self );

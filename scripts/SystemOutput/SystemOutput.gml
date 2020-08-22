@@ -2,7 +2,7 @@
 #macro System	( SystemOutput() )
 
 function SystemOutput() {
-	static instance	= new Output( function() {
+	static instance	= new GenericOutput( function() {
 		var _string	= "";
 		
 		var _i = 0; repeat( argument_count ) {

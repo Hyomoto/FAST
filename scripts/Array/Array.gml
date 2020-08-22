@@ -1,6 +1,22 @@
 /// @func Array
 /// @param size
 /// @param *default
+/// @desc returns an array-as-a-struct
+/* methods
+sort()				- used as a template interface for constructors that inherit Array
+size()				- returns the size of the array
+swap( a, b )		- swaps index a and b in the array
+unique()			- returns an array containing all unique values
+concat( array )		- returns the array combined with the provided array
+union( array )		- returns an array containing all unique values from the array combined with the provided array
+difference( array )	- returns the array minus the values contained in the provided array
+contains( value )	- searches the array and returns the index the value was found, or -1
+set( index, value )	- sets the array index to the given value
+get( *index )		- returns the value at the given index, or the array if no index is provided
+forEach( function )	- performs the given function on each indice in the array
+toArray()			- returns the array
+toString()			- returns the array as a string
+*/
 function Array( _size, _default ) constructor {
 	// interfaces
 	static sort	= function() {}

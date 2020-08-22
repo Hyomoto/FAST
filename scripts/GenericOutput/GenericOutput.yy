@@ -6,7 +6,7 @@
     "path": "folders/FAST/System/Scripts.yy",
   },
   "resourceVersion": "1.0",
-  "name": "Output",
+  "name": "GenericOutput",
   "tags": [],
   "resourceType": "GMScript",
 }
