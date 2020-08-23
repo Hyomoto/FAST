@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Scripts",
-    "path": "folders/FAST/Script/Scripts.yy",
+    "name": "Functions",
+    "path": "folders/FAST/System/Functions.yy",
   },
   "resourceVersion": "1.0",
-  "name": "ScriptFunction",
+  "name": "test_validator",
   "tags": [],
   "resourceType": "GMScript",
 }

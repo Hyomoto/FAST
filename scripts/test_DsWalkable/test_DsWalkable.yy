@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Functions",
-    "path": "folders/FAST/Script/Functions.yy",
+    "name": "TEST_CASES",
+    "path": "folders/TEST_CASES.yy",
   },
   "resourceVersion": "1.0",
-  "name": "script_load",
+  "name": "test_DsWalkable",
   "tags": [],
   "resourceType": "GMScript",
 }

@@ -1,2 +1,7 @@
-function( value )
-log( value == null )
+function( a, b, c )
+trace( "Testing null comparison..." )
+if ( a != null ) && ( b != null ) && ( c == null )
+	trace( "--> Passed" )
+	return
+end
+trace( "--> Failed" )

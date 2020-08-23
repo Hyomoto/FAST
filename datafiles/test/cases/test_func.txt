@@ -1,2 +1,3 @@
 function()
-log( "Hello World!" )
+trace( "Testing functions..." )
+trace( "--> Passed" )

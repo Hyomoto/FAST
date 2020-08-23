@@ -1,89 +1,127 @@
-#macro SCRIPT_ENGINE_MAX_STACK_CALLS	50
 /// @func ScriptEngine
 /// @param filepath
 /// @param *debug?
-function ScriptEngine( _filename, _debug ) constructor {
-	static manager	= ScriptManager();
-	static is_idle	= function() {
-		return queue.empty();
+function ScriptEngine( _name, _filepath, _debug ) constructor {
+	static execute_string	= function( _expression ) {
+		_expression	= new ScriptStatement( _expression );
+		
+		return _expression.execute( self, {} );
 		
 	}
-	static log	= function( _event ) {
-		static instance	= ScriptManager().logger;
+	static do_script	= function( _name ) {
+		var _script	= scripts[? _name ];
 		
-		if ( debug ) {
-			var _string	= "[" + _event + "] ";
+		if ( _script == undefined ) {
+			log( "ScriptEngine.execute", "Script \"", _name, "\" does not exist. Skipped!" );
 			
-			var _i = 1; repeat( argument_count - 1 ) {
-				_string	+= string( argument[ _i++ ] );
-				
-			}
-			instance.write( _string );
+			return false;
 			
 		}
+		_script.file.reset();
+		_script.file.execute( self );
+		
+	}
+	static do_function	= function( _name ) {
+		var _func	= funcs[? _name ];
+		
+		if ( _func == undefined ) {
+			log( "ScriptEngine.execute", "Function \"", _name, "\" does not exist. Skipped!" );
+			
+			return false;
+			
+		}
+		var _args	= {};
+		var _arg;
+		
+		_func.file.reset();
+		
+		var _i = 1; repeat( array_length( _func.args ) ) {
+			_arg	= ( _i < argument_count ? argument[ _i ] : undefined );
+			
+			variable_struct_set( _args, _func.args[ _i++ - 1 ], _arg );
+			
+		}
+		_func.file.local	= _args;
+		_func.file.execute( self );
 		
 	}
 	static load		= function( _filename, _reload ) {
 		var _stack	= new DsStack();
 		
-		static get_file	= function( _path, _file, _reload ) {
-			if ( file_exists( _path + _file ) == false ) {
+		static get_file	= function( _path, _filename, _reload ) {
+			if ( file_exists( _path + _filename ) == false ) {
 				log( "ScriptEngine.load->get_file", "File \"", _file, "\" does not exist. Skipped!" );
 				
 				return false;
 				
 			}
-			var _name	= string_copy( _file, 1, string_pos( ".", _file ) - 1 );
+			var _name	= string_copy( _filename, 1, string_pos( ".", _filename ) - 1 );
 			var _last	= scripts[? _name ];
+			var _file	= new FileScript( _path + _filename, true );
+			var _line	= _file.get_line( 0 );
 			
-			if ( _last != undefined ) {
-				if ( _reload != true ) {
-					log( "ScriptEngine.load->get_file", "Could not load ", _path, _file," because \"", _name, "\" already exists at ", _last.source, ". Skipped!" );
-					
-					return false;
-					
-				}
-				_last.discard();
+			if ( is_string( _line ) && string_copy( _line, 1, 9 ) == "function(" ) {
+				var _args	= string_explode( string_copy( _line, 10, string_length( _line ) - 11 ), ",", true );
 				
-			}
-			var _script	= new ScriptFile( _path + _file, true );
-			
-			if ( _script.isFunction ) {
-				var _args	= _script.get_line( 0 ).first().get_arguments();
-				var _arguments	= array_create( array_length( _args ) )
-				
-				var _i = 0; repeat( array_length( _arguments ) ) {
-					if ( _args[ _i ].size() != 1 || _args[ _i ].first().code != SCRIPT_VARIABLE || _args[ _i ].first().seek ) {
-						log( "ScriptEngine.load->get_file", "Could not load ", _path, _file,": malformed function variable \"", string( _args[ _i ] ), ". Skipped!" );
+				if ( funcs[? _name ] != undefined ) {
+					if ( _reload != true ) {
+						log( "ScriptEngine.load->get_file", "Could not load function ", _path, _filename," because \"", _name, "\" already exists at ", funcs[? _name ].source, ". Skipped!" );
 						
-						_script.discard();
+						_file.discard();
 						
 						return false;
 						
 					}
-					_arguments[ _i ]	= _args[ _i ].first().value;
-					
-					++_i;
+					_last.discard();
 					
 				}
-				return script_add_function( _name, _arguments, _script );
+				funcs[? _name ]	= {
+					source	: _path + _filename,
+					args	: _args,
+					file	: _file
+				}
+				_file.isFunction	= true;
+				_file.startAt		= 1;
+				
+				log( "ScriptEngine.load->get_file", "File ", _path, _filename, " added as function \"", _name, "\"" );
+				
+				return 2;
 				
 			} else {
-				scripts[? _name ]	= _script;
+				if ( funcs[? _name ] != undefined ) {
+					if ( _reload != true ) {
+						log( "ScriptEngine.load->get_file", "Could not load script ", _path, _filename," because \"", _name, "\" already exists at ", scripts[? _name ].source, ". Skipped!" );
+						
+						_file.discard();
+						
+						return false;
+						
+					}
+					_last.discard();
+					
+				}
+				scripts[? _name ]	= {
+					source	: _path + _filename,
+					file	: _file
+				}
+				log( "ScriptEngine.load->get_file", "File ", _path, _filename, " added as script \"", _name, "\"" );
+				
+				return 1;
 				
 			}
-			return true;
+			return false;
 			
 		}
 		var _file	= filename_name( _filename );
 		var _path	= filename_path( _filename );
-		var _count	= 0;
+		var _scripts= 0;
+		var _funcs	= 0;
 		var _found	= 0;
 		
 		if ( _file != "" ) {
-			_count	+= get_file( _path, _file, _reload );
+			var _result = get_file( _path, _file, _reload );
 			
-			log( "ScriptEngine.load", _filename, " loaded ", ( _count ? "successfully" : "unsuccessfully" ) ,"." );
+			log( "ScriptEngine.load", _filename, " loaded ", ( _result > 0 ? "successfully" : "unsuccessfully" ) ,"." );
 			
 			return;
 			
@@ -100,7 +138,10 @@ function ScriptEngine( _filename, _debug ) constructor {
 					_stack.push( _path + _file + "/" );
 					
 				} else {
-					_count += ( get_file( _path, _file, _reload ) ? 1 : 0 );
+					switch( get_file( _path, _file, _reload ) ) {
+						case 1 : ++_scripts; break;
+						case 2 : ++_funcs; break;
+					}
 					_found += 1;
 					
 				}
@@ -111,177 +152,63 @@ function ScriptEngine( _filename, _debug ) constructor {
 			
 		} until ( _stack.empty() );
 		
-		log( "ScriptEngine.load", _found, " script(s) discovered, ", _count, " script(s) loaded." );
+		log( "ScriptEngine.load", _found, " files(s) discovered, ", _scripts, " script(s) and ", _funcs, " functions loaded." );
 		
 	}
-	// clears all processing scripts, and discards all stored ones
-	static flush	= function() {
-		var _key = ds_map_find_first( scripts ); repeat( ds_map_size( scripts ) ) {
-			scripts[? _key ].discard();
+	static log	= function( _event ) {
+		static logger	= ScriptManager().logger;
+		static system	= ScriptManager().system;
+		
+		if ( debug ) {
+			var _string	= name + " [" + _event + "] ";
 			
-			_key	= ds_map_find_next( scripts, _key );
-			
-		}
-		queue.clear();
-		
-		ds_map_clear( scripts );
-		
-		wait	= 0;
-		
-	}
-	// flushes ScriptEngine, and destroys structures
-	static discard	= function() {
-		flush();
-		
-		ds_map_destroy( scripts );
-		
-	}
-	static get_value	= function( _key, _undefined ) {
-		return values.get( _key, _undefined );
-		
-	}
-	static set_value	= function( _key, _value, _type ) {
-		values.set( _key, _value, _type );
-		
-	}
-	static lookup_script	= function( _script ) {
-		if ( is_string( _script ) ) {
-			var _run	= scripts[? _script ];
-			
-			if ( _run == undefined ) {
-				log( "ScriptEngine.run", "Script \"", _script, "\" not found. Skipped." );
-				
-				return undefined;
+			var _i = 1; repeat( argument_count - 1 ) {
+				_string	+= string( argument[ _i++ ] );
 				
 			}
-			return _run;
-			
-		}
-		return _script;
-		
-	}
-	static enqueue	= function( _script ) {
-		_script	= lookup_script( _script );
-		
-		if ( _script == undefined ) { return; }
-		
-		log( "ScriptEngine.run", "Queuing script : ", _script.name );
-		
-		queue.enqueue( _script );
-		
-	}
-	static execute_string	= function( _string ) {
-		var _expression	= new ScriptExpression( _string );
-		
-		log( "ScriptEngine.execute_string", _expression.source );
-		
-		script_evaluate( _expression, local, self );
-		
-		local	= {};
-		
-		syslog( stack );
-		
-		return stack.pop();
-		
-	}
-	static execute	= function( _script ) {
-		var _depth	 = -1;
-		var _execute;
-		
-		_script	= lookup_script( _script );
-		
-		if ( _script == undefined ) { return; }
-		
-		log( "ScriptEngine.run", "Executing script : ", _script.name );
-		
-		_script.last	= _script.startAt;
-		
-		error	= 0;
-		
-		while ( _script.eof() == false ) {
-			_execute	= _script.read();
-			
-			if ( _execute.first().code == SCRIPT_LANGUAGE && _execute.first().escape == 2 && _execute.first().level <= _depth ) {
-				if ( _execute.first().value == "end" ) {
-					continue;
-					
-				}
-				_script.last	= _execute.first().goto;
-				
-				continue;
-				
-			}
-			switch ( script_evaluate( _execute, _script.local, self ) ) {
-				case 2 :
-					var _goto	= stack.pop();
-					
-					if ( stack.pop() == 0 ) {
-						_script.last	= _goto;
-						
-					} else {
-						++_depth;
-						
-					}
-					
-				case 0 :
-					break;
-					
-				case -1 :
-					if ( error == 0 ) { return 0; }
-				
-					switch ( error ) {
-						case 1 :
-							log( "ScriptEngine.execute", "Assignment failed on line ", _script.line, " in ", _script.name, ". Aborted!" );
-						
-							break;
-					
-					}
-					return -1;
-				
-				default :
-					return 0;
-				
-			}
-			
-		}
-		// clear the stack
-		return 0;
-		
-	}
-	static toString	= function() {
-		return "ScriptEngine : " + string( ds_map_size( scripts ) ) + " scripts, " + string( queue.size() ) + " in queue.";
-		
-	}
-	scripts	= ds_map_create();
-	queue	= new DsQueue();
-	values	= new DsNode();
-	stack	= new DsStack();
-	wait	= 0;
-	error	= 0;
-	local	= {};
-	debug	= ( _debug == true ? true : false );
-	event	= new Event( FAST.STEP, 0, undefined, function() {
-		if ( wait > 0 ) {
-			wait	-= 1;
-			
-		} else if ( queue.empty() == false ) {
-			var _timer	= ( debug ? new Timer( "Took $S seconds", 4 ) : undefined );
-			
-			while ( queue.empty() == false ) {
-				if ( execute( queue.head() ) > 0 ) { break; }
-				
-				queue.dequeue();
-				
-			}
-			log( "ScriptEngine", _timer );
+			logger.write( _string );
+			system.write( _string );
 			
 		}
 		
-	});
-	log( "ScriptEngine", "New ScriptEngine created." );
+	}
+	static log_low	= function( _event ) {
+		static logger	= ScriptManager().logger;
+		
+		if ( debug ) {
+			var _string	= name + " [" + _event + "] ";
+			
+			var _i = 1; repeat( argument_count - 1 ) {
+				_string	+= string( argument[ _i++ ] );
+				
+			}
+			logger.write( _string );
+			
+		}
+		
+	}
+	static get_value	= function( _key ) {
+		return ds_map_find_value( values, _key );
+		
+	}
+	static set_value	= function( _key, _value ) {
+		ds_map_replace( values, _key, _value );
+		
+	}
+	static manager	= ScriptManager();
 	
-	if ( _filename != undefined ) {
-		load( _filename );
+	values	= ds_map_create();
+	funcs	= ds_map_create();
+	scripts	= ds_map_create();
+	debug	= _debug == true;
+	name	= _name;
+	queue	= new DsQueue();
+	run		= new DsWalkable();
+	
+	ds_map_copy( funcs, ScriptManager().funcs );
+	
+	if ( _filepath != undefined ) {
+		load( _filepath, false );
 		
 	}
 	

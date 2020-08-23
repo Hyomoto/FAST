@@ -1,22 +1,36 @@
 /// @func DsWalkable
 function DsWalkable() : DsChain() constructor {
 	static remove		= function( _link ) {
-		var _final	= self;
-		var _chain	= chain;
+		if ( links == 0 ) { return; }
 		
-		while ( _chain != undefined ) {
-			if ( _chain == _link ) {
-				if ( _link == final ) { final = _final; }
-				
-				_final.chain	= _link.chain;
-				
+		var _seek	= chain;
+		var _last	= undefined;
+		
+		while ( _seek != undefined ) {
+			if ( _seek == _link ) {
+				if ( _link == step ) {
+					next();
+					
+				}
+				if ( _last != undefined ) {
+					_last.chain	= _link.chain;
+					
+				}
+				if ( _link == chain ) {
+					chain	= _link.chain;
+					
+				}
+				if ( _link == final ) {
+					final	= _last;
+					
+				}
 				--links;
 				
 				return true;
 				
 			}
-			_final	= _chain;
-			_chain	= _chain.chain;
+			_last	= _seek;
+			_seek	= _seek.chain;
 			
 		}
 		return false;
@@ -24,15 +38,15 @@ function DsWalkable() : DsChain() constructor {
 	}
 	static clearSuper	= clear;
 	static clear	= function() {
-		final	= self;
-		step	= self;
+		final	= undefined;
+		step	= undefined;
 		steps	= 0;
 		
 		clearSuper();
 		
 	}
 	static start	= function( _at ) {
-		step	= self;
+		step	= undefined;
 		steps	= 0;
 		
 		repeat( _at == undefined ? 0 : _at ) { next(); }
@@ -45,7 +59,7 @@ function DsWalkable() : DsChain() constructor {
 		
 	}
 	static has_next	= function() {
-		return ( links == 0 ? false : ( step.chain == undefined ? false : true ) );
+		return ( links == 0 ? false : step == undefined || step.chain != undefined );
 		
 	}
 	static remaining	= function() {
@@ -54,18 +68,27 @@ function DsWalkable() : DsChain() constructor {
 	}
 	static next		= function() {
 		if ( links == 0 ) { return undefined; }
-		if ( step.chain == undefined ) {
-			step	= self;
-			steps	= 0;
+		if ( step == undefined || step.chain == undefined ) {
+			step	= chain;
+			steps	= 1;
+			
+		} else {
+			step	= step.chain;
+			steps	+= 1;
 			
 		}
-		step	= step.chain;
-		steps	+= 1;
-		
 		return step.value;
 		
 	}
+	static peek	= function() {
+		if ( links == 0 ) { return undefined; }
+		
+		return ( step == undefined ? chain.value : step.value );
+		
+	}
 	static find	= function( _value ) {
+		if ( links == 0 ) { return undefined; }
+		
 		var _seek	= chain;
 		
 		while ( _seek != undefined ) {
@@ -82,7 +105,13 @@ function DsWalkable() : DsChain() constructor {
 	static add	= function( _value ) {
 		var _link	= new ChainLink( _value );
 		
-		final.chain	= _link;
+		if ( final == undefined ) { 
+			chain		= _link;
+			
+		} else {
+			final.chain	= _link;
+			
+		}
 		final		= _link;
 		
 		++links;
@@ -90,8 +119,8 @@ function DsWalkable() : DsChain() constructor {
 		return _link;
 		
 	}
-	final	= self;
-	step	= self;
+	final	= undefined;
+	step	= undefined;
 	steps	= 0;
 	
 }

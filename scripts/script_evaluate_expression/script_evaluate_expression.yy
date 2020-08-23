@@ -6,7 +6,7 @@
     "path": "folders/FAST/Script/Functions.yy",
   },
   "resourceVersion": "1.0",
-  "name": "script_get_value",
+  "name": "script_evaluate_expression",
   "tags": [],
   "resourceType": "GMScript",
 }

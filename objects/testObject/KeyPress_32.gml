@@ -1,5 +1,8 @@
-var _timer	= new Timer( "evaluation took $S seconds", 5 );
+var _timer	= new Timer( "$S", 5 );
+syslog( "Running test..." );
 
-global.engine.execute( "test" );
+event_user( 0 );
 
-syslog( _timer );
+
+//global.eng.do_function( "test_if" );
+syslog( "execution took ", _timer, " seconds" );

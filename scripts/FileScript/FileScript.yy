@@ -6,7 +6,7 @@
     "path": "folders/FAST/Script/Scripts.yy",
   },
   "resourceVersion": "1.0",
-  "name": "ScriptFile",
+  "name": "FileScript",
   "tags": [],
   "resourceType": "GMScript",
 }

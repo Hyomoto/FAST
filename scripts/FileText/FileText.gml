@@ -8,12 +8,20 @@ function FileText( _filename, _readonly ) : File( _filename, _readonly ) constru
 		if ( writable ) {
 			var _file	= file_text_open_write( name );
 			
-			var _i = 0; repeat( ds_list_size( list ) ) {
-				file_text_write_string( _file, list[| _i++ ] );
-				file_text_writeln( _file );
+			if ( _file == -1 ) {
+				log_notify( undefined, instanceof( self ) + ".close", "Could not write to ", name, ". Ignored." );
+				
+			} else {
+				var _i = 0; repeat( ds_list_size( list ) ) {
+					file_text_write_string( _file, list[| _i++ ] );
+					file_text_writeln( _file );
+				
+				}
+				file_text_close( _file );
+				
+				syslog( name );
 				
 			}
-			file_text_close( _file );
 			
 		} else {
 			log_notify( undefined, instanceof( self ) + ".close", "Called on ", name, ", which is a read only file. Ignored." );

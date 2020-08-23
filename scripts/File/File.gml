@@ -27,6 +27,14 @@ function File( _filename, _readonly ) : GenericOutput() constructor {
 		return undefined;
 		
 	}
+	static peek		= function() {
+		if ( last < lines ) {
+			return list[| last ];
+			
+		}
+		return undefined;
+		
+	}
 	static write	= function( _value ) {
 		if ( writable == false ) {
 			log_notify( undefined, instanceof( self ) + ".write", "Called on ", name, ", which is a read only file. Ignored." );

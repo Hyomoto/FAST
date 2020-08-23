@@ -1,190 +1,114 @@
-#macro SCRIPT_ASSIGNMENT	0
-#macro SCRIPT_COMPARISON	1
-#macro SCRIPT_OPERAND		2
-#macro SCRIPT_EXPRESSION	3
-#macro SCRIPT_FUNCTION		4
-#macro SCRIPT_VARIABLE		5
-#macro SCRIPT_VALUE			6
-#macro SCRIPT_LANGUAGE		7
-#macro SCRIPT_CAST			8
-
 /// @func ScriptExpression
-/// @param string
+/// @param expression
 function ScriptExpression( _string ) : DsWalkable() constructor {
-	static __assignment	= function( _value ) constructor {
-		value	= _value;
-		code	= SCRIPT_ASSIGNMENT;
+	static get	= function( _engine, _local ) {
+		return script_evaluate_expression( _engine, _local, self );
 		
 	}
-	static __comparison	= function( _value ) constructor {
-		value	= _value;
-		code	= SCRIPT_COMPARISON;
-		
-	}
-	static __operand	= function( _value ) constructor {
-		value	= _value;
-		code	= SCRIPT_OPERAND;
-		
-	}
-	static __expression	= function( _value ) constructor {
-		value	= _value;
-		code	= SCRIPT_EXPRESSION;
-		
-	}
-	static __function	= function( _value ) constructor {
-		static get_arguments	= function() {
-			return args;
-			
-		}
-		var _args	=  string_pos( "(", _value );
-		
-		value	= string_copy( _value, 1, _args - 1 );
-		code	= SCRIPT_FUNCTION;
-		args	= string_explode( string_copy( _value, _args + 1, string_length( _value ) - _args - 1 ), ",", true );
-		
-		var _i = 0; repeat( array_length( args ) ) {
-			args[ _i ]	= new ScriptExpression( args[ _i ] );
-			
-			_i++;
-			
-		}
-		
-	}
-	static __variable	= function( _value ) constructor {
-		value	= _value;
-		code	= SCRIPT_VARIABLE;
-		seek	= string_pos( ".", _value ) > 0;
-		
-	}
-	static __value		= function( _value ) constructor {
-		value	= _value;
-		code	= SCRIPT_VALUE;
-		
-	}
-	static __language	= function( _value ) constructor {
-		code	= SCRIPT_LANGUAGE;
-		value	= _value;
-		branch	= false;
-		closure	= false;
-		escape	= 0;
-		goto	= -1;
-		level	= -1;
-		
-	}
-	static __cast		= function( _value ) constructor {
-		code	= SCRIPT_CAST;
-		value	= _value;
-		
-	}
-	static last	= function() {
-		if ( links == 0 ) { return undefined; }
-		
-		return step.value;
-		
-	}
-	static toString	= function() {
-		var _string	= "(";
-		var _last	= step;
-		var _steps	= steps;
-		
-		step	= self;
-		
-		while ( has_next() ) {
-			_string	+= string( next().value );
-			
-		}
-		step	= _last;
-		steps	= _steps;
-		
-		return _string + ")";
-		
-	}
-	source	= _string;
-	assign	= false;
-	operate	= false;
+	var _manager= ScriptManager();
+	var _parser	= _manager.parser;
+	var _next, _char, _len;
+	var _not	= false;
 	
-	var _parser	= new ScriptParser( _string );
-	var _read	= _parser.next();
-	var _lang	= undefined;
+	_parser.parse( _string );
 	
-	switch ( _read ) {
-		case "return" :
-			_lang	= new __language( _read );
-			_lang.escape	= 1;
-			
-			break;
-			
-		case "if" :
-			_lang	= new __language( _read );
-			_lang.branch	= true;
-			_lang.escape	= 2;
-			
-			break;
-			
-		case "else" :
-			_parser.parse( "1" );
-			
-		case "elseif" :
-			_lang	= new __language( "elseif" );
-			_lang.branch	= true;
-			_lang.closure	= true;
-			_lang.escape	= 2;
-			
-			break;
-			
-		case "end" :
-			_lang	= new __language( _read );
-			_lang.closure	= true;
-			_lang.escape	= 2;
-			
-			break;
-		
-	}
-	if ( _lang != undefined ) {
-		add( _lang );
-		operate	= true;
-		
-	} else {
-		_parser.reset();
-		
-	}
 	while ( _parser.has_next() ) {
-		_read	= _parser.next();
+		_next	= _parser.next();
+		_char	= string_char_at( _next, 1 );
+		_len	= string_length( _next );
 		
-		if ( _read == "=" ) {
-			add( new __assignment( _read ) );
+		if ( _char == "\"" ) { // string
+			add( new ScriptEngine_Value(
+				string_copy( _next, 2, _len - 2 ),
+				SCRIPT_EXPRESSION_TYPE_STRING
+			));
 			
-			assign	= true;
+		} else if ( _char == "(" ) { // expression
+			var _last	= _parser.last;
 			
-		} else if ( string_char_at( _read, 1 ) == "\"" ) {
-			add( new __value( string_copy( _read, 2, string_length( _read ) - 2 ) ) );
+			add( new ScriptExpression( string_copy( _next, 2, _len - 2 ) ) );
 			
-		} else if ( string_pos( "(", _read ) > 0 ) {
-			add( new __function( _read ) );
+			_parser.parse( _string );
+			_parser.last	= _last;
 			
-		} else if ( string_pos( "->", _read ) > 0 && string_pos( "->", _read ) == string_length( _read ) - 1 ) {
-			add( new __cast( string_copy( _read, 1, string_length( _read ) - 2 ) ) );
+		} else if ( string_pos( "->", _next ) > 0 && string_pos( "->", _next ) == _len - 1 ) { // cast
+			var _op	= add( new ScriptEngine_Operator( 5 ) ).value;
 			
-		} else if ( string_find_first( "=<>&|", _read, 0 ) > 0 ) {
-			add( new __comparison( _read ) );
+			_op.execute	= _manager.casts[? string_copy( _next, 1, _len - 2 ) ];
+			_op.rao		= true;
 			
-		} else if ( string_pos( _read, "+/-*" ) ) {
-			add( new __operand( _read ) );
+		} else if ( string_pos( _char, "/*+-" ) > 0 ) { // operator
+			var _op	= add( new ScriptEngine_Operator( 4 ) ).value;
 			
-		} else if ( string_char_at( _read, 1 ) == "(" ) {
-			add( new __expression( new ScriptExpression( string_copy( _read, 2, string_length( _read ) - 2 ) ) ) );
-			
-		} else if ( string_letters( string_char_at( _read, 1 ) ) != "" ) {
-			if ( _read == "null" ) {
-				add( new __value( undefined ) );
-				
-				continue;
+			switch ( _next ) {
+				case "/" : _op.execute	= method( _op, function( _a, _b ) { return _a / _b; } ); _op.prec = 5; break;
+				case "*" : _op.execute	= method( _op, function( _a, _b ) { return _a * _b; } ); _op.prec = 5; break;
+				case "+" : _op.execute	= method( _op, function( _a, _b ) { return _a + _b; } ); break;
+				case "-" : _op.execute	= method( _op, function( _a, _b ) { return _a - _b; } ); break;
 				
 			}
-			add( new __variable( _read ) );
 			
-		} else {
-			add( new __value( string_to_real( _read ) ) );
+		} else if ( string_find_first( "!=<>&|", _char, 0 ) > 0) { // comparison
+			var _op	= add( new ScriptEngine_Operator( 0 ) ).value;
+			
+			switch ( _next ) {
+				case ">" : _op.execute	= function( _a, _b ) { return _a > _b; }; break;
+				case ">=" : _op.execute	= function( _a, _b ) { return _a >= _b; }; break;
+				case "<" : _op.execute	= function( _a, _b ) { return _a < _b; }; break;
+				case "<=" : _op.execute	= function( _a, _b ) { return _a <= _b; }; break;
+				case "==" : _op.execute	= function( _a, _b ) { return _a == _b; }; break;
+				case "!=" : _op.execute	= function( _a, _b ) { return _a != _b; }; break;
+				case "&" : _op.execute	= function( _a, _b ) { return _a & _b; }; _op.prec = 1; break;
+				case "&&" : _op.execute	= function( _a, _b ) { return _a && _b; }; break;
+				case "|" : _op.execute	= function( _a, _b ) { return _a | _b; }; _op.prec = 1; break;
+				case "||" : _op.execute	= function( _a, _b ) { return _a || _b; }; break;
+				
+			}
+		
+		} else if ( string_pos( "(", _next ) > 0 ) { // function
+			var _last	= _parser.last;
+			
+			add( new ScriptEngine_Function( _next ) );
+			
+			_parser.parse( _string );
+			_parser.last	= _last;
+			
+		} else if ( _next == "null" ) { // undefined
+			add( new ScriptEngine_Value( undefined, SCRIPT_EXPRESSION_TYPE_OTHER ) );
+			
+		} else if ( _next == "true" ) {
+			add( new ScriptEngine_Value( 1, SCRIPT_EXPRESSION_TYPE_NUMBER ) );
+			
+		} else if ( _next == "false" ) {
+			add( new ScriptEngine_Value( 0, SCRIPT_EXPRESSION_TYPE_NUMBER ) );
+			
+		} else if ( _next == "or" ) {
+			var _op	= add( new ScriptEngine_Operator( 4 ) ).value;
+			
+			_op.execute	= function( _a, _b ) { return _a || _b; };
+			
+		} else if ( _next == "and" ) {
+			var _op	= add( new ScriptEngine_Operator( 4 ) ).value;
+			
+			_op.execute	= function( _a, _b ) { return _a && _b; };
+			
+			
+		} else if ( _next == "is" ) {
+			var _op	= add( new ScriptEngine_Operator( 4 ) ).value;
+			
+			_op.execute	= function( _a, _b ) { return _a == _b; };
+			
+		} else if ( _next == "not" ) { // not
+			var _op	= add( new ScriptEngine_Operator( 7 ) ).value;
+			
+			_op.execute	= function( _a ) { return not _a };
+			_op.rao		= true;
+			
+		} else if ( ord( _char ) >= 0x41 ) { // variable
+			add( new ScriptEngine_Value( _next, SCRIPT_EXPRESSION_TYPE_VARIABLE ) );
+			
+		} else { // number
+			add( new ScriptEngine_Value( string_to_real( _next ), SCRIPT_EXPRESSION_TYPE_NUMBER ) );
 			
 		}
 		

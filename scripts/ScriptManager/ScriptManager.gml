@@ -1,14 +1,34 @@
-#macro FAST_LOGGER_DEFAULT_LENGTH	144
+#macro SCRIPT_EXPRESSION_TYPE_OTHER		0
+#macro SCRIPT_EXPRESSION_TYPE_STRING	1
+#macro SCRIPT_EXPRESSION_TYPE_NUMBER	2
+#macro SCRIPT_EXPRESSION_TYPE_VARIABLE	3
+#macro SCRIPT_EXPRESSION_TYPE_OPERAND	4
+#macro SCRIPT_EXPRESSION_TYPE_FUNCTION	5
 
-script_add_function( "log", "value", function() {
-	syslog( value );
-	
-});
 /// @func ScriptManager
-function ScriptManager() {
+function ScriptManager(){
 	static manager	= function() constructor {
-		static logger	= new Logger( "ScriptManager", FAST_LOGGER_DEFAULT_LENGTH, System, new FileText( "log/scripts.txt" ) );
-		static formatter	= new StringFormatter( "\":save,{:push,}:pull+push,;:strip+push", {
+		static add_cast	= function( _name, _cast, _rebind ) {
+			if ( casts[? _name ] != undefined && _rebind != true ) {
+				log_notify( undefined, "ScriptManager().add_cast", "Cast \"", _name, "\" already in use. Skipped." );
+				
+				return;
+				
+			}
+			casts[? _name ]	= _cast;
+			
+		}
+		static add_function	= function( _name, _function, _rebind ) {
+			if ( casts[? _name ] != undefined && _rebind != true ) {
+				log_notify( undefined, "ScriptManager().add_function", "Function \"", _name, "\" already in use. Skipped." );
+				
+				return;
+				
+			}
+			funcs[? _name ]	= _function;
+			
+		}
+		formatter	= new StringFormatter( "\":save,\t:replace", {
 			setup : function( _input ) {
 				flag = 0;
 				
@@ -51,28 +71,10 @@ function ScriptManager() {
 				}
 				
 			},
-			strip : function( _input ) {
+			replace : function( _input ) {
 				if ( flag & 1 && flag & 2 == 0 ) { return; }
 				
-				_input.value	= string_delete( _input.value, last--, 1 );
-				
-			},
-			skip : function( _input ) {
-				if ( flag & 1 && flag & 2 == 0 ) { return; }
-				
-				last++;
-				
-			},
-			push : function( _input ) {
-				if ( flag > 0 && flag & 2 == 0 ) { return; }
-				
-				_input.value	= string_insert( "\n", _input.value, ++last );
-				
-			},
-			pull : function( _input ) {
-				if ( flag > 0 && flag & 2 == 0 ) { return _input; }
-				
-				_input.value	= string_insert( "\n", _input.value, last++ );
+				_input.value	= string_copy( _input.value, 1, last - 1 ) + " " + string_delete( _input.value, 1, last );
 				
 			},
 			save : function() {
@@ -81,22 +83,25 @@ function ScriptManager() {
 			}
 			
 		});
-		static command	= function( _func ) {
-			if ( commands[? _func.name ] != undefined ) {
-				logger.write( "[ScriptManager.command] Command \"" + _name + "\" already exists. Skipped." );
-				
-			} else {
-				logger.write( "[ScriptManager.command] Command " + string( _func ) + " added." );
-				
-				commands[? _func.name ]	= _func;
-				
-			}
-			
-		}
-		commands	= ds_map_create();
+		var _file	= new FileText( "logs/scripts.txt" );
+		
+		_file.clear();
+		
+		parser	= new ScriptParser("");
+		system	= new Logger( "Script Manager", FAST_LOGGER_DEFAULT_LENGTH, System );
+		logger	= new Logger( "Script Manager", FAST_LOGGER_DEFAULT_LENGTH, _file );
+		
+		loaded	= ds_list_create();
+		casts	= ds_map_create();
+		funcs	= ds_map_create();
+		
+		casts[? "string" ]	= function( _a ) { return string( _a ); }
+		casts[? "real" ]	= function( _a ) { return string_to_real( string( _a ) ); }
+		
+		funcs[? "trace" ]	= function( _value ) { syslog( _value ); };
 		
 	}
-	static instance	= new Feature( "FAST Scripts", "1.0", "08/13/2020", new manager() );
+	static instance	= new Feature( "FAST Script", "1.0", "08/22/2020", new manager() );
 	return instance.struct;
 	
 }

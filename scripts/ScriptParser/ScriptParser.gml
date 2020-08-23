@@ -23,7 +23,7 @@ function ScriptParser( _string ) : Parser ( _string ) constructor {
 					
 					continue;
 					
-				case "+" : case "-" : case "*" : case "/" : case "=" : case "<" : case ">" :
+				case "+" : case "-" : case "*" : case "/" : case "=" : case "<" : case ">" : case "!" :
 					if ( _op != undefined ) { continue; }
 					
 					if ( _ws && string_char_at( value, _i + 1 ) == "=" ) {
