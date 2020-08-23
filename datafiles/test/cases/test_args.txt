@@ -3,6 +3,7 @@ trace( "Testing arguments..." )
 var set d to a + b + c
 if d != 6
 	trace( "--> Failed" )
-	return
+	return 0
 end
 trace( "--> Passed" )
+return 1

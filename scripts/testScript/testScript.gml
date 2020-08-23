@@ -10,7 +10,7 @@ var _timer	= new Timer( "$S", 5 );
 
 //var _file	= new FileScript( "test/test.txt" );
 
-//gc_enable( false )
+//gc_enable( false );
 
 
 syslog( "compilation took ", _timer, " seconds" );

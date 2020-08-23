@@ -123,7 +123,7 @@ function FileScript( _filename, _readonly ) : File( _filename, _readonly ) const
 				ds_list_add( list, new fragment( _execute, true, _line ) );
 				
 				if ( _execute.close ) {
-					_branch.pop().goto	= _line;
+					_branch.pop().goto	= ds_list_size( list ) - 1;
 					
 				}
 				if ( _execute.open ) {

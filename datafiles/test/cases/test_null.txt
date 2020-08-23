@@ -2,6 +2,7 @@ function( a, b, c )
 trace( "Testing null comparison..." )
 if ( a != null ) && ( b != null ) && ( c == null )
 	trace( "--> Passed" )
-	return
+	return 1
 end
 trace( "--> Failed" )
+return 0

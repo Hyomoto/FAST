@@ -1,10 +1,10 @@
 /// @func ScriptStatement
 /// @param expression
 function ScriptStatement( _expression ) constructor {
-	static toString	= function() {
-		return ( keyword != "" ? keyword : "" ) + ( target != undefined ? "(" + string( target ) + ") " : "" ) + ( expression != undefined ? string( expression ) : "" ) + " " + string( execute );
+	//static toString	= function() {
+	//	return ( keyword != "" ? keyword : "" ) + ( target != undefined ? "(" + string( target ) + ") " : "" ) + ( expression != undefined ? string( expression ) : "" ) + " " + string( execute );
 		
-	}
+	//}
 	execute		= function( _engine, _local ) {
 		if ( expression.size() == 0 ) { return undefined; }
 		
@@ -49,7 +49,7 @@ function ScriptStatement( _expression ) constructor {
 			execute	= function( _engine, _local ) {
 				var _result	= script_evaluate_expression( _engine, _local, expression );
 				
-				if ( local ) {
+				if ( variable_struct_exists( _local, target ) || local ) {
 					variable_struct_set( _local, target, _result );
 					
 				} else {

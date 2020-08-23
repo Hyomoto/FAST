@@ -1,19 +1,21 @@
 function( compare )
+var set result to null
 trace( "Testing if/else branching..." )
 if compare == 0
-	var set result to 0
+	set result to 0
 elseif compare == 1
-	var set result to 1
+	set result to 1
 else
 	if compare == 2
-		var set result to 2
+		set result to 2
 	else
-		var set result to 3
+		set result to 3
 	end
 end
 trace( "Compare " + string->compare + ", Result " + string->result )
 if ( compare != result ) && not ( compare > 2 )
 	trace( "--> Failed" )
-	return
+	return 0
 end
 trace( "--> Passed" )
+return 1

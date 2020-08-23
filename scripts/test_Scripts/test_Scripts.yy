@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Scripts",
-    "path": "folders/FAST/Script/Scripts.yy",
+    "name": "TEST_CASES",
+    "path": "folders/TEST_CASES.yy",
   },
   "resourceVersion": "1.0",
-  "name": "Script100",
+  "name": "test_Scripts",
   "tags": [],
   "resourceType": "GMScript",
 }

@@ -1,7 +1,7 @@
 var _timer	= new Timer( "$S", 5 );
 syslog( "Running test..." );
 
-event_user( 0 );
+test_Scripts();
 
 
 //global.eng.do_function( "test_if" );
