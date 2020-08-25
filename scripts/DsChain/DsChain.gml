@@ -3,6 +3,10 @@
 ///		structures that can be written to
 function DsChain() constructor {
 	static ChainLink	= function( _value ) constructor {
+		static toString	= function() {
+			return "ChainLink(" + string( value ) + ")";
+			
+		}
 		value	= _value;
 		chain	= undefined;
 		

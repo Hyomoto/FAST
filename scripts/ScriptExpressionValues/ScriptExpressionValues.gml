@@ -42,7 +42,7 @@ function ScriptEngine_Function( _value ) constructor {
 			var _args	= {};
 			var _arg;
 			
-			_func.file.reset();
+			//_func.file.reset();
 			
 			var _i = 0; repeat( array_length( _func.args ) ) {
 				_arg	= ( queue.empty() ? undefined : queue.dequeue() );
@@ -50,8 +50,8 @@ function ScriptEngine_Function( _value ) constructor {
 				variable_struct_set( _args, _func.args[ _i++ ], _arg );
 				
 			}
-			_func.file.local	= _args;
-			_result	= _func.file.execute( _engine, _args );
+			//_func.file.local	= _args;
+			_result	= _func.target.execute( _engine, _args );
 			
 		} else {
 			switch ( queue.size() ) {

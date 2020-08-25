@@ -1,5 +1,6 @@
 /// @func DsWalkable
 function DsWalkable() : DsChain() constructor {
+// # Method Declaration
 	static remove		= function( _link ) {
 		if ( links == 0 ) { return; }
 		
@@ -119,6 +120,7 @@ function DsWalkable() : DsChain() constructor {
 		return _link;
 		
 	}
+// # Variable Declaration
 	final	= undefined;
 	step	= undefined;
 	steps	= 0;

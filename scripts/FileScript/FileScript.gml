@@ -93,7 +93,7 @@ function FileScript( _filename, _readonly ) : File( _filename, _readonly ) const
 			
 			if ( _line == 0 && string_copy( _read, 1, 9 ) == "function(" ) {
 				ds_list_add( list, new fragment( _read, false, _line ) );
-				
+				last	= 1;
 				_logic	= 3;
 				_line	+= 1;
 				
@@ -122,16 +122,16 @@ function FileScript( _filename, _readonly ) : File( _filename, _readonly ) const
 				
 				ds_list_add( list, new fragment( _execute, true, _line ) );
 				
-				if ( _execute.close ) {
-					_branch.pop().goto	= ds_list_size( list ) - 1;
+				//if ( _execute.close ) {
+				//	_branch.pop().goto	= ds_list_size( list ) - 1;
 					
-				}
-				if ( _execute.open ) {
-					_execute.depth	= _branch.size();
+				//}
+				//if ( _execute.open ) {
+				//	_execute.depth	= _branch.size();
 					
-					_branch.push( _execute );
+				//	_branch.push( _execute );
 					
-				}
+				//}
 				
 			}
 			if ( _logic == 2 ) {
@@ -147,60 +147,60 @@ function FileScript( _filename, _readonly ) : File( _filename, _readonly ) const
 		name	= _filename;
 		
 	}
-	static execute	= function( _engine, _local ) {
-		var _next;
+	//static execute	= function( _engine, _local ) {
+	//	var _next;
 		
-		isRunning	= true;
+	//	isRunning	= true;
 		
-		_local	= ( _local == undefined ? local : _local );
+	//	_local	= ( _local == undefined ? local : _local );
 		
-		while ( eof() == false ) {
-			if ( is_string( peek() ) && isFunction == false ) {
-				syslog( "RTP: ", read() );
+	//	while ( eof() == false ) {
+	//		if ( is_string( peek() ) && isFunction == false ) {
+	//			syslog( "RTP: ", read() );
 				
-				break;
+	//			break;
 				
-			}
-			_next	= read();
+	//		}
+	//		_next	= read();
 			
-			if ( _next.ends ) {
-				isRunning	= false;
+	//		if ( _next.ends ) {
+	//			isRunning	= false;
 				
-				return _next.execute( _engine, _local );
+	//			return _next.execute( _engine, _local );
 				
-			}
-			if ( _next.close ) {
-				if ( _next.keyword == "end" ) {
-					--depth;
+	//		}
+	//		if ( _next.close ) {
+	//			if ( _next.keyword == "end" ) {
+	//				--depth;
 					
-					continue;
+	//				continue;
 					
-				}
+	//			}
 				
-			}
-			if ( _next.open ) {
-				if ( depth < _next.depth && _next.execute( _engine, _local ) ) {
-					++depth;
+	//		}
+	//		if ( _next.open ) {
+	//			if ( depth < _next.depth && _next.execute( _engine, _local ) ) {
+	//				++depth;
 					
-					continue;
+	//				continue;
 					
-				}
-				last	= _next.goto;
+	//			}
+	//			last	= _next.goto;
 				
-			} else {
-				_next.execute( _engine, _local );
+	//		} else {
+	//			_next.execute( _engine, _local );
 				
-			}
+	//		}
 			
-		}
-		if ( eof() ) {
-			isRunning	= false;
+	//	}
+	//	if ( eof() ) {
+	//		isRunning	= false;
 				
-		}
+	//	}
 		
-	}
-	isRunning	= false;
-	isFunction	= false;
+	//}
+	//isRunning	= false;
+	//isFunction	= false;
 	includes	= 0;
 	line		= 0;
 	startAt		= 0;

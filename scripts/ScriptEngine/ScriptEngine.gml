@@ -2,29 +2,29 @@
 /// @param filepath
 /// @param *debug?
 function ScriptEngine( _name, _filepath, _debug ) constructor {
+	// converts the given string into a statement that is then executed
 	static execute_string	= function( _expression ) {
-		_expression	= new ScriptStatement( _expression );
-		
-		return _expression.execute( self, {} );
+		return new ScriptStatement( _expression ).execute( self, {} );
 		
 	}
-	static do_script	= function( _name ) {
-		var _script	= scripts[? _name ];
+	// runs a script as part of the engine
+	static run_script	= function( _name ) {
+		var _seek	= scripts[? _name ];
 		
-		if ( _script == undefined ) {
+		if ( _seek == undefined ) {
 			log( "ScriptEngine.execute", "Script \"", _name, "\" does not exist. Skipped!" );
 			
 			return false;
 			
 		}
-		_script.file.reset();
-		_script.file.execute( self );
+		//_seek.target.reset();
+		_seek.target.execute( self, {} );
 		
 	}
-	static do_function	= function( _name ) {
-		var _func	= funcs[? _name ];
+	static run_function	= function( _name ) {
+		var _seek	= funcs[? _name ];
 		
-		if ( _func == undefined ) {
+		if ( _seek == undefined ) {
 			log( "ScriptEngine.execute", "Function \"", _name, "\" does not exist. Skipped!" );
 			
 			return false;
@@ -33,21 +33,19 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 		var _args	= {};
 		var _arg;
 		
-		_func.file.reset();
+		//_seek.target.reset();
 		
-		var _i = 1; repeat( array_length( _func.args ) ) {
+		var _i = 1; repeat( array_length( _seek.args ) ) {
 			_arg	= ( _i < argument_count ? argument[ _i ] : undefined );
 			
-			variable_struct_set( _args, _func.args[ _i++ - 1 ], _arg );
+			variable_struct_set( _args, _seek.args[ _i++ - 1 ], _arg );
 			
 		}
-		_func.file.local	= _args;
-		_func.file.execute( self );
+		//_seek.target.local	= _args;
+		_seek.target.execute( self, _args );
 		
 	}
 	static load		= function( _filename, _reload ) {
-		var _stack	= new DsStack();
-		
 		static get_file	= function( _path, _filename, _reload ) {
 			if ( file_exists( _path + _filename ) == false ) {
 				log( "ScriptEngine.load->get_file", "File \"", _file, "\" does not exist. Skipped!" );
@@ -78,11 +76,8 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 				funcs[? _name ]	= {
 					source	: _path + _filename,
 					args	: _args,
-					file	: _file
+					target	: new Script( _file )
 				}
-				_file.isFunction	= true;
-				_file.startAt		= 1;
-				
 				log( "ScriptEngine.load->get_file", "File ", _path, _filename, " added as function \"", _name, "\"" );
 				
 				return 2;
@@ -102,7 +97,7 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 				}
 				scripts[? _name ]	= {
 					source	: _path + _filename,
-					file	: _file
+					target	: new Script( _file )
 				}
 				log( "ScriptEngine.load->get_file", "File ", _path, _filename, " added as script \"", _name, "\"" );
 				
@@ -126,31 +121,21 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 			return;
 			
 		}
-		_stack.push( _path );
+		var _stack	= file_get_directory( _path );
+		var _next;
 		
-		do {
-			_path	= _stack.pop();
-			_file	= file_find_first( _path + "*", fa_directory );
+		while ( _stack.empty() == false ) {
+			_next	= _stack.pop();
 			
-			while ( _file != "" ) {
-				// file_attributes is broken, this is a workaround
-				if ( file_exists( _path + _file ) == false ) {
-					_stack.push( _path + _file + "/" );
-					
-				} else {
-					switch( get_file( _path, _file, _reload ) ) {
-						case 1 : ++_scripts; break;
-						case 2 : ++_funcs; break;
-					}
-					_found += 1;
-					
-				}
-				_file	= file_find_next();
+			switch( get_file( filename_path( _next ), filename_name( _next ), _reload ) ) {
+				case 1 : ++_scripts; break;
+				case 2 : ++_funcs; break;
 				
 			}
-			file_find_close();
+			_found += 1;
 			
-		} until ( _stack.empty() );
+		}
+		delete _stack;
 		
 		log( "ScriptEngine.load", _found, " files(s) discovered, ", _scripts, " script(s) and ", _funcs, " functions loaded." );
 		

@@ -13,7 +13,7 @@ else
 	end
 end
 trace( "Compare " + string->compare + ", Result " + string->result )
-if ( compare != result ) && not ( compare > 2 )
+if ( compare != result ) && not ( result > 2 )
 	trace( "--> Failed" )
 	return 0
 end
