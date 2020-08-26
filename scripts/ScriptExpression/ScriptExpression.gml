@@ -1,6 +1,6 @@
 /// @func ScriptExpression
 /// @param expression
-function ScriptExpression( _string ) : DsWalkable() constructor {
+function ScriptExpression( _string ) : DsLinkedList() constructor {
 	static get	= function( _engine, _local ) {
 		return script_evaluate_expression( _engine, _local, self );
 		

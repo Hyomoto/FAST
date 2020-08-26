@@ -3,8 +3,8 @@
 /// @param arrays...
 /// @desc	returns the unique values in array that do not appear in arrays...
 function array_difference( _a ) {
-	var _list	= new DsWalkable();
-	var _result	= new DsWalkable();
+	var _list	= new DsLinkedList();
+	var _result	= new DsLinkedList();
 	var _array;
 	
 	var _i = 1; repeat( argument_count - 1 ) {

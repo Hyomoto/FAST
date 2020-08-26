@@ -3,28 +3,19 @@ var set count to 0
 var set total to 9
 
 set count to count + test_func()
-trace( count )
 if test_return( 1 ) == 1
 	trace( "--> Passed" )
 	set count to count + 1
 else
 	trace( "--> Failed" )
 end
-trace( count )
 set count to count + test_cast()
-trace( count )
 set count to count + test_if(0)
-trace( count )
 set count to count + test_if(1)
-trace( count )
 set count to count + test_if(2)
-trace( count )
 set count to count + test_if(3)
-trace( count )
 set count to count + test_args( 1, 2, 3 )
-trace( count )
 set count to count + test_null( "BOID", 1, null )
-trace( count )
 trace( string->count + " tests passed out of " + string->total )
 if count == total
 	trace( "All tests passed!" )

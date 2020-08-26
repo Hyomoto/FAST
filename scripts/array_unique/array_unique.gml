@@ -1,7 +1,7 @@
 /// @func array_unique
 /// @param array
 function array_unique( _array ){
-	var _list	= new DsWalkable();
+	var _list	= new DsLinkedList();
 	
 	if ( is_struct( _array ) ) {
 		try {

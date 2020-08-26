@@ -1,7 +1,7 @@
 /// @func array_union
 /// @param arrays
 function array_union(){
-	var _list	= new DsWalkable();
+	var _list	= new DsLinkedList();
 	var _array;
 	
 	if ( is_struct( _array ) ) {

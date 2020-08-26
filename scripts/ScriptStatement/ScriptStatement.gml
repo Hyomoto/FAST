@@ -40,6 +40,7 @@ function ScriptStatement( _expression ) constructor {
 		case "else"		: _parser.parse( "1" ); _expression = "1";
 		case "elseif"	: close= true; open = true; break;
 		case "end"		: close= true; return;
+		case "wait"		: ends = true; break;
 		case "return"	: ends = true; break;
 		case "set" :
 			target	= _parser.next();

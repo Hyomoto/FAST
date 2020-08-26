@@ -63,55 +63,6 @@ function Script() : DsChain() constructor {
 		clearSuper();
 		
 	}
-	static execute	= function( _engine, _local, _last ) {
-		var _depth	= -1;
-		var _ex;
-		
-		_local	= ( _local == undefined ? local : _local );
-		
-		while ( has_next( _last ) ) {
-			_last	= next( _last );
-			_ex		= _last.value;
-			
-			if ( is_string( _ex ) ) {
-				syslog( "RTP: ", _last.value );
-				
-				return _last;
-				
-			}
-			//_engine.log_low( ( _ex.keyword != "" ? _ex.keyword : "" ), ( _ex.target != undefined ? "(" + _ex.target + ") " : " " ), _ex.expression );
-			
-			if ( _ex.ends ) {
-				return _ex.execute( _engine, _local );
-				
-			}
-			if ( _ex.close ) {
-				if ( _ex.keyword == "end" ) {
-					--_depth;
-					
-					continue;
-					
-				}
-				
-			}
-			if ( _ex.open ) {
-				if ( _depth < _ex.depth && _ex.execute( _engine, _local ) ) {
-					++_depth;
-					
-					continue;
-					
-				}
-				_last	= _ex.goto;
-				
-			} else {
-				_ex.execute( _engine, _local );
-				
-			}
-			
-		}
-		return undefined;
-		
-	}
 // # Variable Declaration
 	source	= undefined;
 	final	= undefined;

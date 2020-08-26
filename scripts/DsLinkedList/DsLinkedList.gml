@@ -1,5 +1,5 @@
-/// @func DsWalkable
-function DsWalkable() : DsChain() constructor {
+/// @func DsLinkedList
+function DsLinkedList() : DsChain() constructor {
 // # Method Declaration
 	static remove		= function( _link ) {
 		if ( links == 0 ) { return; }

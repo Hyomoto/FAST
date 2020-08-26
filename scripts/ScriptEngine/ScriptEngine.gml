@@ -7,9 +7,55 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 		return new ScriptStatement( _expression ).execute( self, {} );
 		
 	}
+	static execute	= function( _script, _local, _last ) {
+		var _package	= { script : _script, local : _local, last : _last, depth : -1 }
+		var _ex;
+		
+		while ( _script.has_next( _last ) ) {
+			_last	= _script.next( _last );
+			_ex		= _last.value;
+			
+			if ( is_string( _ex ) ) {
+				syslog( "RTP: ", _last.value );
+				
+				return _last;
+				
+			}
+			if ( _ex.ends ) {
+				return _ex.execute( self, _package.local );
+				
+			}
+			if ( _ex.close ) {
+				if ( _ex.keyword == "end" ) {
+					--_package.depth;
+					
+					continue;
+					
+				}
+				
+			}
+			if ( _ex.open ) {
+				if ( _package.depth < _ex.depth && _ex.execute( self, _package.local ) ) {
+					++_package.depth;
+					
+					continue;
+					
+				}
+				_last	= _ex.goto;
+				
+			} else {
+				_ex.execute( self, _package.local );
+				
+			}
+			
+		}
+		return undefined;
+		
+	}
 	// runs a script as part of the engine
 	static run_script	= function( _name ) {
 		var _seek	= scripts[? _name ];
+		var _result;
 		
 		if ( _seek == undefined ) {
 			log( "ScriptEngine.execute", "Script \"", _name, "\" does not exist. Skipped!" );
@@ -17,8 +63,7 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 			return false;
 			
 		}
-		//_seek.target.reset();
-		_seek.execute( self, {} );
+		execute( _seek, {} );
 		
 	}
 	static run_function	= function( _name ) {
@@ -39,7 +84,7 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 			variable_struct_set( _args, _seek.args[ _i++ - 1 ], _arg );
 			
 		}
-		_seek.execute( self, _args );
+		execute( _seek, _args );
 		
 	}
 	static load		= function( _filename, _reload ) {
@@ -73,7 +118,6 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 			while ( file_text_eof( _file ) == false ) {
 				// get next line
 				_line	= _formatter.format( string_trim( file_text_read_string( _file ) ) ); file_text_readln( _file );
-				//_line	= string_trim( file_text_read_string( _file ) );file_text_readln( _file );
 				_name	= filename_name( _filename );
 				_name	= ( string_pos( ".", _name ) > 0 ? string_copy( _name, 1, string_pos( ".", _name ) - 1 ) : _name );
 				
@@ -193,7 +237,8 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 	debug	= _debug == true;
 	name	= _name;
 	queue	= new DsQueue();
-	run		= new DsWalkable();
+	run		= new DsLinkedList();
+	wait	= 0;
 	
 	ds_map_copy( funcs, ScriptManager().funcs );
 	

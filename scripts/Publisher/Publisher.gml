@@ -1,5 +1,5 @@
 /// @func Publisher
-function Publisher() : DsWalkable() constructor {
+function Publisher() : DsLinkedList() constructor {
 	static notify	= function( _message ) {
 		var _seek	= chain;
 		

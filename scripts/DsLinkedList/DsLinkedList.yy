@@ -6,7 +6,7 @@
     "path": "folders/FAST/Data Types/DS.yy",
   },
   "resourceVersion": "1.0",
-  "name": "DsWalkable",
+  "name": "DsLinkedList",
   "tags": [],
   "resourceType": "GMScript",
 }

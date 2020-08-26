@@ -29,29 +29,30 @@ function StringFormatter( _format, _functions ) constructor {
 	// takes the input, applies the ruleset
 	static format	= function( _input ) {//, _output, _params ) {
 		var _ruleset, _raw, _func;
-		//var _input	= { value : _string }
 		
-		_input	= setup( _input );
+		input.value	= _input;
+		
+		setup( input );
 		last	= 0;
 		
 		while( true ) {
-			last	= string_find_first( keys, _input, last );
+			last	= string_find_first( keys, input.value, last );
 			
 			if ( last == 0 ) { break; }
 			
-			_ruleset	= ruleset[? string_char_at( _input, last ) ];
+			_ruleset	= ruleset[? string_char_at( input.value, last ) ];
 			_raw		= _ruleset[ 0 ];
 			_func		= _ruleset[ 1 ];
 			
 			pre( _raw );
 			
 			var _i = 0; repeat( array_length( _func ) ) {
-				_input	= _func[ _i++ ]( _input );
+				_func[ _i++ ]( input );
 				
 			}
 			
 		}
-		return _input;
+		return input.value;
 		
 	}
 	static close	= function() {
@@ -63,6 +64,7 @@ function StringFormatter( _format, _functions ) constructor {
 	keys		= "";
 	last		= 0;
 	flag		= 0;
+	input		= { value : "" }
 	
 	functions	= ( functions != undefined ? functions : {
 		setup : function() {

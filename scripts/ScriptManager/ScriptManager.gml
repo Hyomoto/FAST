@@ -32,38 +32,33 @@ function ScriptManager(){
 			setup : function( _input ) {
 				flag = 0;
 				
-				if ( string_pos( "//", _input ) > 0 ) {
-					_input	= string_copy( _input, 1, string_pos( "//", _input ) - 1 );
+				if ( string_pos( "//", _input.value ) > 0 ) {
+					_input.value	= string_copy( _input.value, 1, string_pos( "//", _input.value ) - 1 );
 					
 				}
-				var _open	= string_pos( "/*", _input );
-				var _close	= string_pos( "*/", _input );
+				var _open	= string_pos( "/*", _input.value );
+				var _close	= string_pos( "*/", _input.value );
 				
 				if ( _open > 0 ) {
 					if ( _close > 0 ) {
-						_input	= string_delete( _input, _open, _close + 2 - _open );
-						
-						//return _formatter.format( string_trim( file_text_read_string( _file ) ) ); file_text_readln( _file ); 
+						_input.value	= string_delete( _input.value, _open, _close + 2 - _open );
 						
 					} else {
 						comment	= true;
-						
-						_input	= string_copy( _input, 1, _open - 1 );
+						_input.value	= string_copy( _input.value, 1, _open - 1 );
 						
 					}
 					
 				}
 				if ( _open == 0 && _close > 0 ) {
 					comment	= false;
-					
-					_input	= string_delete( _input, 1, _close + 1 );
+					_input.value	= string_delete( _input.value, 1, _close + 1 );
 					
 				}
 				if ( comment ) {
-					_input	 = "";
+					_input.value	= "";
 					
 				}
-				return _input;
 				
 			},
 			pre : function( _rules ) {
@@ -79,13 +74,11 @@ function ScriptManager(){
 			replace : function( _input ) {
 				if ( flag & 1 && flag & 2 == 0 ) { return; }
 				
-				return string_copy( _input, 1, last - 1 ) + " " + string_delete( _input, 1, last );
+				_input.value	= string_copy( _input.value, 1, last - 1 ) + " " + string_delete( _input.value, 1, last );
 				
 			},
-			save : function( _input ) {
+			save : function() {
 				flag	^= 1;
-				
-				return _input;
 				
 			}
 			
