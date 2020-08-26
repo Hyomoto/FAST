@@ -18,7 +18,7 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 			
 		}
 		//_seek.target.reset();
-		_seek.target.execute( self, {} );
+		_seek.execute( self, {} );
 		
 	}
 	static run_function	= function( _name ) {
@@ -33,110 +33,114 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 		var _args	= {};
 		var _arg;
 		
-		//_seek.target.reset();
-		
 		var _i = 1; repeat( array_length( _seek.args ) ) {
 			_arg	= ( _i < argument_count ? argument[ _i ] : undefined );
 			
 			variable_struct_set( _args, _seek.args[ _i++ - 1 ], _arg );
 			
 		}
-		//_seek.target.local	= _args;
-		_seek.target.execute( self, _args );
+		_seek.execute( self, _args );
 		
 	}
 	static load		= function( _filename, _reload ) {
-		static get_file	= function( _path, _filename, _reload ) {
-			if ( file_exists( _path + _filename ) == false ) {
-				log( "ScriptEngine.load->get_file", "File \"", _file, "\" does not exist. Skipped!" );
-				
-				return false;
-				
-			}
-			var _name	= string_copy( _filename, 1, string_pos( ".", _filename ) - 1 );
-			var _last	= scripts[? _name ];
-			var _file	= new FileScript( _path + _filename, true );
-			var _line	= _file.get_line( 0 );
+		var _formatter	= ScriptManager().formatter;
+		var _goto		= new DsStack();
+		var	_logic		= 0;
+		var _last		= 0;
+		var _scripts	= 0;
+		var _funcs		= 0;
+		var _load, _line, _script;
+		var _file, _name;
+		var _found;
+		
+		if ( filename_name( _filename ) != "" ) {
+			_load	= new DsStack( _filename );
 			
-			if ( is_string( _line ) && string_copy( _line, 1, 9 ) == "function(" ) {
-				var _args	= string_explode( string_copy( _line, 10, string_length( _line ) - 11 ), ",", true );
+		} else {
+			_load	= file_get_directory( _filename );
+			
+		}
+		_found	= _load.size();
+		
+		while ( _load.empty() == false ) {
+			_filename	= _load.pop();
+			_file		= file_text_open_read( _filename );
+			_script		= new Script();
+			_last		= 0;
+			
+			_formatter.comment	= false;
+			
+			while ( file_text_eof( _file ) == false ) {
+				// get next line
+				_line	= _formatter.format( string_trim( file_text_read_string( _file ) ) ); file_text_readln( _file );
+				_name	= filename_name( _filename );
+				_name	= ( string_pos( ".", _name ) > 0 ? string_copy( _name, 1, string_pos( ".", _name ) - 1 ) : _name );
 				
-				if ( funcs[? _name ] != undefined ) {
-					if ( _reload != true ) {
-						log( "ScriptEngine.load->get_file", "Could not load function ", _path, _filename," because \"", _name, "\" already exists at ", funcs[? _name ].source, ". Skipped!" );
+				_script.source	= _filename;
+				
+				if ( _last++ == 0 ) {
+					if ( string_copy( _line, 1, 9 ) == "function(" ) {
+						_script.args	= string_explode( string_copy( _line, 10, string_length( _line ) - 11 ), ",", true );
+						_logic			= 3;
 						
-						_file.discard();
+						funcs[? _name ]	= _script;
 						
-						return false;
+						++_funcs;
+						
+						continue;
+						
+					} else {
+						scripts[? _name ]	= _script;
+						
+						++_scripts;
 						
 					}
-					_last.discard();
 					
 				}
-				funcs[? _name ]	= {
-					source	: _path + _filename,
-					args	: _args,
-					target	: new Script( _file )
+				if ( string_pos( "<<", _line ) == 1 ) {
+					_line	= string_delete( _line, 1, 2 );
+					_logic	= 1;
+					
 				}
-				log( "ScriptEngine.load->get_file", "File ", _path, _filename, " added as function \"", _name, "\"" );
+				if ( string_pos( ">>", _line ) > 0 ) {
+					_line	= string_copy( _line, 1, string_pos( ">>", _line ) - 1 );
+					_logic	= 2;
+					
+				}
 				
-				return 2;
-				
-			} else {
-				if ( funcs[? _name ] != undefined ) {
-					if ( _reload != true ) {
-						log( "ScriptEngine.load->get_file", "Could not load script ", _path, _filename," because \"", _name, "\" already exists at ", scripts[? _name ].source, ". Skipped!" );
+				if ( _line != "" ) {
+					if ( _logic ) {
+						var _final	= _script.final;
 						
-						_file.discard();
+						_script.add( new ScriptStatement( _line ) );
 						
-						return false;
+						if ( _script.final.value.close ) {
+							_goto.pop().value.goto = _final;
+							
+						}
+						if ( _script.final.value.open ) {
+							_script.final.value.depth	= _goto.size();
+							
+							_goto.push( _script.final );
+							
+						}
+						
+					} else {
+						_script.add( _line );
 						
 					}
-					_last.discard();
 					
 				}
-				scripts[? _name ]	= {
-					source	: _path + _filename,
-					target	: new Script( _file )
+				if ( _logic == 2 ) {
+					_logic	= 0;
+					
 				}
-				log( "ScriptEngine.load->get_file", "File ", _path, _filename, " added as script \"", _name, "\"" );
-				
-				return 1;
 				
 			}
-			return false;
+			file_text_close( _file );
+			//log( "ScriptEngine.load->get_file", "File ", _filename, " added as function \"", _name, "\"" );
 			
 		}
-		var _file	= filename_name( _filename );
-		var _path	= filename_path( _filename );
-		var _scripts= 0;
-		var _funcs	= 0;
-		var _found	= 0;
-		
-		if ( _file != "" ) {
-			var _result = get_file( _path, _file, _reload );
-			
-			log( "ScriptEngine.load", _filename, " loaded ", ( _result > 0 ? "successfully" : "unsuccessfully" ) ,"." );
-			
-			return;
-			
-		}
-		var _stack	= file_get_directory( _path );
-		var _next;
-		
-		while ( _stack.empty() == false ) {
-			_next	= _stack.pop();
-			
-			switch( get_file( filename_path( _next ), filename_name( _next ), _reload ) ) {
-				case 1 : ++_scripts; break;
-				case 2 : ++_funcs; break;
-				
-			}
-			_found += 1;
-			
-		}
-		delete _stack;
-		
 		log( "ScriptEngine.load", _found, " files(s) discovered, ", _scripts, " script(s) and ", _funcs, " functions loaded." );
 		
 	}

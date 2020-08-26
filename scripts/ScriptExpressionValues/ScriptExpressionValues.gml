@@ -51,7 +51,7 @@ function ScriptEngine_Function( _value ) constructor {
 				
 			}
 			//_func.file.local	= _args;
-			_result	= _func.target.execute( _engine, _args );
+			_result	= _func.execute( _engine, _args );
 			
 		} else {
 			switch ( queue.size() ) {

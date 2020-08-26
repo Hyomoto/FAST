@@ -1,16 +1,17 @@
-//list.start();
+test_validator( "ScriptEngine", 1, global.eng, function( _eng ) {
+	global.eng.run_script( "test" );
+	
+	return true;
+	
+});
 
-//while ( list.has_next() ) {
-//	var _next	= list.next();
+//var _script	= global.eng.scripts[? "test" ];
+
+//var _link	= undefined;
+
+//while ( _script.has_next( _link ) ) {
+//	_link	= _script.next( _link );
 	
-//	_next.start();
-	
-//	while ( _next.has_next() ) {
-//		var _line	= _next.next();
+//	syslog( _link.value );
 		
-//		//syslog( _line );
-//		syslog( _line.expression );
-		
-//	}
-	
 //}

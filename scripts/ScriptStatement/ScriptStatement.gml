@@ -1,12 +1,12 @@
 /// @func ScriptStatement
 /// @param expression
 function ScriptStatement( _expression ) constructor {
-	//static toString	= function() {
-	//	return ( keyword != "" ? keyword : "" ) + ( target != undefined ? "(" + string( target ) + ") " : "" ) + ( expression != undefined ? string( expression ) : "" ) + " " + string( execute );
+	static toString	= function() {
+		return ( keyword != "" ? keyword : "" ) + ( target != undefined ? "(" + string( target ) + ") " : "" ) + ( expression != undefined ? string( expression ) : "" ) + ( goto != -1 ? " => " + string( goto ) : "" );// + " " + string( execute );
 		
-	//}
+	}
 	execute		= function( _engine, _local ) {
-		if ( expression.size() == 0 ) { return undefined; }
+		if ( expression == undefined || expression.size() == 0 ) { return undefined; }
 		
 		return script_evaluate_expression( _engine, _local, expression );
 		

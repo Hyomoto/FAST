@@ -6,4 +6,4 @@
 ////global.eng.do_function( "test_if" );
 //syslog( "execution took ", _timer, " seconds" );
 
-//event_user( 0 );
+event_user( 0 );

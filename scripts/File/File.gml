@@ -3,6 +3,7 @@
 /// @param *read_only
 /// @desc	generic File handling object
 function File( _filename, _readonly ) : GenericOutput() constructor {
+// # Method Declaration
 	static reset	= function() {
 		last	= 0;
 		
@@ -79,6 +80,7 @@ function File( _filename, _readonly ) : GenericOutput() constructor {
 		return name + " (lines " + string( lines ) + ")";
 		
 	}
+// # Variable Declaration
 	writable	= ( _readonly == undefined ? true : _readonly == false );
 	name		= _filename;
 	list		= ds_list_create();
