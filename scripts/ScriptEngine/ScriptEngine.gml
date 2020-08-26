@@ -73,6 +73,7 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 			while ( file_text_eof( _file ) == false ) {
 				// get next line
 				_line	= _formatter.format( string_trim( file_text_read_string( _file ) ) ); file_text_readln( _file );
+				//_line	= string_trim( file_text_read_string( _file ) );file_text_readln( _file );
 				_name	= filename_name( _filename );
 				_name	= ( string_pos( ".", _name ) > 0 ? string_copy( _name, 1, string_pos( ".", _name ) - 1 ) : _name );
 				
@@ -98,12 +99,12 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 					
 				}
 				if ( string_pos( "<<", _line ) == 1 ) {
-					_line	= string_delete( _line, 1, 2 );
+					_line	= string_delete( _line, 1, 2 ) + "";
 					_logic	= 1;
 					
 				}
 				if ( string_pos( ">>", _line ) > 0 ) {
-					_line	= string_copy( _line, 1, string_pos( ">>", _line ) - 1 );
+					_line	= string_copy( _line, 1, string_pos( ">>", _line ) - 1 ) + "";
 					_logic	= 2;
 					
 				}

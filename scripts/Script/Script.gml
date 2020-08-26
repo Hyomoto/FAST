@@ -117,34 +117,4 @@ function Script() : DsChain() constructor {
 	final	= undefined;
 	args	= undefined;
 	
-// # Creation
-	//if ( _file != undefined && instanceof( _file ) == "FileScript" ) {
-	//	var _stack	= new DsStack();
-		
-	//	while ( _file.eof() == false ) {
-	//		var _final	= final;
-			
-	//		add( _file.read() );
-			
-	//		if ( is_string( final.value ) ) { continue; }
-	//		if ( final.value.close ) {
-	//			var _this	= _stack.pop();
-				
-	//			_this.value.goto	= _final;
-				
-	//		}
-	//		if ( final.value.open ) {
-	//			final.value.depth	= _stack.size();
-				
-	//			_stack.push( final );
-				
-	//		}
-			
-	//	}
-	//	_file.discard();
-		
-	//	delete _stack;
-		
-	//}
-	
 }
