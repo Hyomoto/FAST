@@ -7,27 +7,43 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 		return new ScriptStatement( _expression ).execute( self, {} );
 		
 	}
-	static execute	= function( _script, _local, _last ) {
-		var _package	= { script : _script, local : _local, last : _last, depth : -1 }
-		var _ex;
+	static execute	= function( _package ) {
+		var _script	= _package.script;
+		var _ex, _last;
 		
-		while ( _script.has_next( _last ) ) {
-			_last	= _script.next( _last );
-			_ex		= _last.value;
+		while ( _script.has_next( _package.last ) ) {
+			_package.last	= _script.next( _package.last );
+			_last			= _package.last;
+			_ex				= _last.value;
 			
 			if ( is_string( _ex ) ) {
-				syslog( "RTP: ", _last.value );
+				queue.enqueue_at_head( _package );
 				
-				return _last;
+				parser.parse( _ex );
+				
+				wait	= true;
+				
+				break;
 				
 			}
 			if ( _ex.ends ) {
-				return _ex.execute( self, _package.local );
+				if ( _package.script.args == undefined && _ex.keyword == "wait" ) {
+					if ( _script.has_next( _last ) ) {
+						wait	= new EventOnce( FAST.STEP, _ex.execute( self, _package ), _package, function( _package ) {
+							execute( _package );
+							
+						});
+						
+					}
+					return;
+					
+				}
+				return _ex.execute( self, _package );
 				
 			}
 			if ( _ex.close ) {
 				if ( _ex.keyword == "end" ) {
-					--_package.depth;
+					_package.depth -= 1;
 					
 					continue;
 					
@@ -35,16 +51,16 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 				
 			}
 			if ( _ex.open ) {
-				if ( _package.depth < _ex.depth && _ex.execute( self, _package.local ) ) {
-					++_package.depth;
+				if ( _package.depth < _ex.depth && _ex.execute( self, _package ) ) {
+					_package.depth	+= 1;
 					
 					continue;
 					
 				}
-				_last	= _ex.goto;
+				_package.last	= _ex.goto;
 				
 			} else {
-				_ex.execute( self, _package.local );
+				_ex.execute( self, _package );
 				
 			}
 			
@@ -63,7 +79,7 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 			return false;
 			
 		}
-		execute( _seek, {} );
+		execute( { script : _seek, local : {}, last : undefined, depth : -1 } );
 		
 	}
 	static run_function	= function( _name ) {
@@ -229,16 +245,75 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 		ds_map_replace( values, _key, _value );
 		
 	}
+	static enqueue	= function( _source ) {
+		var _target	= ( is_string( _source ) ? scripts[? _source ] : _source );
+		
+		if ( _target == undefined || instanceof( _target ) != "Script" ) {
+			log( "enqueue", "Script ", _source, " was not a valid script. Ignored!" );
+			
+			return;
+			
+		}
+		queue.enqueue( _target );
+		
+	}
+	static parse		= function() {
+		if ( wait == true ) {
+			var _package	= queue.head();
+			var _next		= _package.script.next( _package.last );
+			
+			if ( _package.script.has_next( _package.last ) ) {
+				if ( is_string( _next.value ) ) {
+					parser.parse( _next.value );
+					
+					_package.last	= _next;
+					
+				}
+				execute( queue.dequeue() );
+				
+			} else {
+				queue.dequeue();
+			
+				wait	= undefined;
+			
+			}
+			
+		}
+		return parser;
+		
+	}
+	static push		= function() {
+		var _i = 0; repeat( argument_count ) {
+			stack.push( argument[ _i++ ] );
+			
+		}
+		
+	}
+	static pop		= function() {
+		return stack.pop();
+		
+	}
+	static toString	= function() {
+		return "ScriptEngine(" + name + ") : Scripts in queue(" + string( queue.size() ) + ") : Wait(" + ( wait == undefined ? "false" : "true" ) + ")";
+		
+	}
 	static manager	= ScriptManager();
 	
+	event	= new Event( FAST.STEP, 0, undefined, function() {
+		while ( wait == undefined && queue.empty() == false ) {
+			execute( { script : queue.dequeue(), local : {}, last : undefined, depth : -1 } );
+			
+		}
+		
+	});
 	values	= ds_map_create();
 	funcs	= ds_map_create();
 	scripts	= ds_map_create();
+	queue	= new DsQueue();
+	stack	= new DsStack();
+	wait	= undefined;
 	debug	= _debug == true;
 	name	= _name;
-	queue	= new DsQueue();
-	run		= new DsLinkedList();
-	wait	= 0;
 	
 	ds_map_copy( funcs, ScriptManager().funcs );
 	

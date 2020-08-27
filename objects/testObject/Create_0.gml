@@ -4,7 +4,7 @@ global.eng	= new ScriptEngine( "test", "test/", true );
 
 syslog( "Compile took ", _timer, " seconds." );
 
-event_user( 0 );
+//event_user( 0 );
 
 //wait	= SPEED;
 //load	= file_get_directory( "test/" );

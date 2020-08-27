@@ -1,7 +1,7 @@
 <<
 var set count to 0
 var set total to 9
-
+trace(pop())
 set count to count + test_func()
 if test_return( 1 ) == 1
 	trace( "--> Passed" )
@@ -14,6 +14,7 @@ set count to count + test_if(0)
 set count to count + test_if(1)
 set count to count + test_if(2)
 set count to count + test_if(3)
+wait 30
 set count to count + test_args( 1, 2, 3 )
 set count to count + test_null( "BOID", 1, null )
 trace( string->count + " tests passed out of " + string->total )
@@ -22,3 +23,4 @@ if count == total
 end
 >>
 Testing parse!
+<<trace("OVER")>>

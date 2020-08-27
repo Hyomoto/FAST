@@ -1,8 +1,8 @@
 function ScriptEngine_Value( _value, _type ) constructor {
-	get		= function( _engine, _local ) {
+	get		= function( _engine, _package ) {
 		if ( type == SCRIPT_EXPRESSION_TYPE_VARIABLE ) {
-			if ( variable_struct_exists( _local, value ) ) {
-				return variable_struct_get( _local, value );
+			if ( variable_struct_exists( _package.local, value ) ) {
+				return variable_struct_get( _package.local, value );
 				
 			}
 			return _engine.get_value( value )
@@ -30,9 +30,9 @@ function ScriptEngine_Operator( _precedence ) constructor {
 	
 }
 function ScriptEngine_Function( _value ) constructor {
-	static get	= function( _engine, _local ) {
+	static get	= function( _engine, _package ) {
 		var _i = 0; repeat( array_length( args ) ) {
-			queue.enqueue( script_evaluate_expression( _engine, _local, args[ _i++ ] ) );
+			queue.enqueue( script_evaluate_expression( _engine, _package, args[ _i++ ] ) );
 			
 		}
 		var _func	= _engine.funcs[? func ];
@@ -42,29 +42,32 @@ function ScriptEngine_Function( _value ) constructor {
 			var _args	= {};
 			var _arg;
 			
-			//_func.file.reset();
-			
 			var _i = 0; repeat( array_length( _func.args ) ) {
 				_arg	= ( queue.empty() ? undefined : queue.dequeue() );
 				
 				variable_struct_set( _args, _func.args[ _i++ ], _arg );
 				
 			}
-			//_func.file.local	= _args;
-			_result	= _engine.execute( _func, _args );
+			_result	= _engine.execute( { script : _func, local : _args, last : undefined, depth : -1 } );
 			
 		} else {
-			switch ( queue.size() ) {
-				case 0 : _result	= _func(); break;
-				case 1 : _result	= _func( queue.dequeue() ); break;
-				case 2 : _result	= _func( queue.dequeue(), queue.dequeue() ); break;
-				case 3 : _result	= _func( queue.dequeue(), queue.dequeue(), queue.dequeue() ); break;
-				case 4 : _result	= _func( queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue() ); break;
-				case 5 : _result	= _func( queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue() ); break;
-				case 6 : _result	= _func( queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue() ); break;
-				case 7 : _result	= _func( queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue() ); break;
-				case 8 : _result	= _func( queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue() ); break;
-				default: _result	= _func( queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue() ); break;
+			if ( func == "pop" ) {
+				_result	= _engine.stack.pop();
+				
+			} else {
+				switch ( queue.size() ) {
+					case 0 : _result	= _func(); break;
+					case 1 : _result	= _func( queue.dequeue() ); break;
+					case 2 : _result	= _func( queue.dequeue(), queue.dequeue() ); break;
+					case 3 : _result	= _func( queue.dequeue(), queue.dequeue(), queue.dequeue() ); break;
+					case 4 : _result	= _func( queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue() ); break;
+					case 5 : _result	= _func( queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue() ); break;
+					case 6 : _result	= _func( queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue() ); break;
+					case 7 : _result	= _func( queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue() ); break;
+					case 8 : _result	= _func( queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue() ); break;
+					default: _result	= _func( queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue(), queue.dequeue() ); break;
+					
+				}
 				
 			}
 			
@@ -74,7 +77,7 @@ function ScriptEngine_Function( _value ) constructor {
 		return _result;
 		
 	}
-	toString	= function() {
+	static toString	= function() {
 		var _string	= "SE::Func -> " + string( func ) + "(";
 		
 		var _i = 0; repeat( array_length( args ) ) {
@@ -97,7 +100,7 @@ function ScriptEngine_Function( _value ) constructor {
 	func	= string_copy( _value, 1, _open - 1 );
 	type	= SCRIPT_EXPRESSION_TYPE_FUNCTION;
 	
-	while( true ) {
+	while( _l < string_length( _args ) ) {
 		_x = string_find_first( "\",", _args, _l );
 		
 		switch ( string_char_at( _args, _x ) ) {
@@ -119,13 +122,13 @@ function ScriptEngine_Function( _value ) constructor {
 				continue;
 				
 		}
-		_t	= string_trim( string_delete( _args, 1, _i ) );
-		
-		if ( _t != "" ) {
-			queue.enqueue( _t );
-			
-		}
 		break;
+		
+	}
+	_t	= string_trim( string_delete( _args, 1, _i ) );
+	
+	if ( _t != "" ) {
+		queue.enqueue( _t );
 		
 	}
 	args	= array_create( queue.size() );

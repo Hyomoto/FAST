@@ -1,8 +1,8 @@
 /// @func ScriptExpression
 /// @param expression
 function ScriptExpression( _string ) : DsLinkedList() constructor {
-	static get	= function( _engine, _local ) {
-		return script_evaluate_expression( _engine, _local, self );
+	static get	= function( _engine, _package ) {
+		return script_evaluate_expression( _engine, _package, self );
 		
 	}
 	var _manager= ScriptManager();
@@ -14,6 +14,7 @@ function ScriptExpression( _string ) : DsLinkedList() constructor {
 	
 	while ( _parser.has_next() ) {
 		_next	= _parser.next();
+		
 		_char	= string_char_at( _next, 1 );
 		_len	= string_length( _next );
 		

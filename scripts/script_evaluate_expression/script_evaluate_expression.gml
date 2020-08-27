@@ -2,19 +2,19 @@
 /// @param engine
 /// @param local
 /// @param ScriptExpression
-function script_evaluate_expression( _engine, _local, _expression ) {
-	function __script_evaluate_next( _engine, _local, _ex ) {
+function script_evaluate_expression( _engine, _package, _expression ) {
+	function __script_evaluate_next( _engine, _package, _ex ) {
 		var _next	= _ex.next();
 		
 		if ( instanceof( _next ) == "ScriptExpression" ) {
-			return script_evaluate_expression( _engine, _local, _next );
+			return script_evaluate_expression( _engine, _package, _next );
 			
 		}
 		if ( _next.type == SCRIPT_EXPRESSION_TYPE_OPERAND && _next.rao ) {
-			return _next.execute( __script_evaluate_next( _engine, _local, _ex ) );
+			return _next.execute( __script_evaluate_next( _engine, _package, _ex ) );
 			
 		}
-		return _next.get( _engine, _local );
+		return _next.get( _engine, _package );
 		
 	}
 	static __manager	= ScriptManager();
@@ -23,11 +23,11 @@ function script_evaluate_expression( _engine, _local, _expression ) {
 	
 	_expression.start();
 	
-	_left	= __script_evaluate_next( _engine, _local, _expression );	// seed left
+	_left	= __script_evaluate_next( _engine, _package, _expression );	// seed left
 	
 	while ( _expression.has_next() ) {
 		_next	= _expression.next();
-		_left	= _next.execute( _left, __script_evaluate_next( _engine, _local, _expression ) );
+		_left	= _next.execute( _left, __script_evaluate_next( _engine, _package, _expression ) );
 		
 	}
 	return _left;

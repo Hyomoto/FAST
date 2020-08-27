@@ -1,8 +1,21 @@
 /// @func DsQueue
 /// @param values...
 function DsQueue() : DsChain() constructor {
-	/// @func push
-	/// @param values...
+	static enqueue_at_head	= function() {
+		var _i = 0; repeat( argument_count ) {
+			var _link	= new ChainLink( argument[ _i++ ] );
+			
+			if ( links > 0 ) {
+				_link.chain	= chain;
+				
+			}
+			chain		= _link;
+			
+			++links;
+			
+		}
+		
+	}
 	static enqueue	= function() {
 		var _i = 0; repeat( argument_count ) {
 			var _link	= new ChainLink( argument[ _i++ ] );

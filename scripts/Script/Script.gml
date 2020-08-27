@@ -1,5 +1,9 @@
 /// @func Script
 function Script() : DsChain() constructor {
+	static toString	= function() {
+		return source;
+		
+	}
 // # Method Declaration
 	static first	= function() {
 		if ( links == 0 ) { return undefined; }

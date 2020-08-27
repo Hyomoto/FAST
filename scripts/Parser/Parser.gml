@@ -1,11 +1,20 @@
 /// @func Parser
-/// @param string
-/// @param *chars
+/// @param *string
 function Parser( _string ) constructor {
+	static toString	= function() {
+		return value;
+		
+	}
 	static parse	= function( _string ) {
 		value	= string_trim( _string );
 		length	= string_length( value );
 		last	= 0;
+		
+	}
+	static clear	= function() {
+		last	= 0;
+		length	= 0;
+		value	= "";
 		
 	}
 	static reset	= function() {
@@ -65,7 +74,7 @@ function Parser( _string ) constructor {
 	length	= 0;
 	last	= 0;
 	
-	if ( _string != "" ) {
+	if ( _string != undefined && _string != "" ) {
 		reset();
 		parse( _string );
 		

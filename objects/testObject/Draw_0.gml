@@ -1,4 +1,4 @@
-//draw_text( 16, 16, global.engine );
+draw_text( 16, 16, global.eng );
 
 //draw_set_color( PointerManager().interface.active ? c_white : c_dkgray ) ;
 

@@ -1,0 +1,3 @@
+<<queue "testA">>
+<<trace("TestA queued!")>>
+<<push "TestB">>

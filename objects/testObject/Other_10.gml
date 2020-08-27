@@ -1,5 +1,5 @@
-var _timer	= new Timer( "$S", 5 );
+//var _timer	= new Timer( "$S", 5 );
 
-global.eng.run_script( "test" );
+global.eng.enqueue( "testB" );
 
-syslog( "Execute took ", _timer, " seconds." );
+//syslog( "Execute took ", _timer, " seconds." );

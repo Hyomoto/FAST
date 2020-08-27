@@ -5,10 +5,10 @@ function ScriptStatement( _expression ) constructor {
 		return ( keyword != "" ? keyword : "" ) + ( target != undefined ? "(" + string( target ) + ") " : "" ) + ( expression != undefined ? string( expression ) : "" ) + ( goto != -1 ? " => " + string( goto ) : "" );// + " " + string( execute );
 		
 	}
-	execute		= function( _engine, _local ) {
+	execute		= function( _engine, _package ) {
 		if ( expression == undefined || expression.size() == 0 ) { return undefined; }
 		
-		return script_evaluate_expression( _engine, _local, expression );
+		return script_evaluate_expression( _engine, _package, expression );
 		
 	}
 	var _parser	= ScriptManager().parser;
@@ -42,16 +42,40 @@ function ScriptStatement( _expression ) constructor {
 		case "end"		: close= true; return;
 		case "wait"		: ends = true; break;
 		case "return"	: ends = true; break;
+		case "queue"	:
+			execute	= function( _engine, _package ) {
+				var _result	= _engine.scripts[? script_evaluate_expression( _engine, _package, expression ) ];
+				
+				if ( _result == undefined ) {
+					_engine.log( "ScriptStatement", "Script ", _result, " not found. Skipped!" );
+					
+					return;
+					
+				}
+				_engine.enqueue( _result );
+				
+			}
+			break;
+			
+		case "push"		: 
+			execute	= function( _engine, _package ) {
+				var _result	= script_evaluate_expression( _engine, _package, expression );
+				
+				_engine.stack.push( _result );
+				
+			}
+			break;
+			
 		case "set" :
 			target	= _parser.next();
 			
 			_parser.next();
 			
-			execute	= function( _engine, _local ) {
-				var _result	= script_evaluate_expression( _engine, _local, expression );
+			execute	= function( _engine, _package ) {
+				var _result	= script_evaluate_expression( _engine, _package, expression );
 				
-				if ( variable_struct_exists( _local, target ) || local ) {
-					variable_struct_set( _local, target, _result );
+				if ( variable_struct_exists( _package.local, target ) || local ) {
+					variable_struct_set( _package.local, target, _result );
 					
 				} else {
 					_engine.set_value( target, _result );

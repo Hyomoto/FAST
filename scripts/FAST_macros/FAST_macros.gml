@@ -1,6 +1,6 @@
 // # FAST engine version
-#macro __FAST_version	"3.3f"
-#macro __FAST_date		"08/03/2020"
+#macro __FAST_version	"3.3g"
+#macro __FAST_date		"08/26/2020"
 
 // # whether to include the built-in debugger
 #macro DEBUGGER_ENABLE	false
