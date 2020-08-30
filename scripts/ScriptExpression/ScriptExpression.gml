@@ -1,6 +1,52 @@
 /// @func ScriptExpression
 /// @param expression
 function ScriptExpression( _string ) : DsLinkedList() constructor {
+	static validate	= function( _engine, _script, _statement ) {
+		var _header	= "(line " + string( _statement.line ) + ") ";
+		var _last	= undefined;
+		var _next;
+		
+		start();
+		
+		while ( has_next() ) {
+			_next	= next();
+			
+			switch ( instanceof( _next ) ) {
+				case "ScriptEngine_Operator" :
+					if ( _last == undefined ) {
+						if ( _next.rao == false ) { _engine.errors.push( _header + "Statement expression starts with a left-hand operator: " + _next.value ); }
+						
+					} else {
+						if ( instanceof( _last ) == "ScriptEngine_Operator" && _next.rao == false ) {
+							_engine.errors.push( _header + "Statement expression illegal operator use: " + _last.value + _next.value ); }
+							
+					}
+					break;
+					
+				case "ScriptEngine_Value" :
+					if ( _last != undefined && instanceof( _last ) != "ScriptEngine_Operator" ) {
+						_engine.errors.push( _header + "Statement expression missing operator: " + _last.value + _next.value ); }
+					
+					if ( ScriptManager().is_reserved( _next.value ) > -1 ) {
+						_engine.errors.push( _header + "Statement expression variable uses reserved keyword: " + _next.value ); }
+						
+					break;
+					
+				case "ScriptEngine_Function" :
+					if ( _last != undefined && instanceof( _last ) != "ScriptEngine_Operator" ) {
+						_engine.errors.push( _header + "Statement expression missing operator: " + _last.value + _next.func ); }
+					
+					if ( ScriptManager().is_reserved( _next.func ) > -1 ) {
+						_engine.errors.push( _header + "Statement expression function name is reserved keyword: " + _next.func ); }
+					
+					break;
+					
+			}
+			_last	= _next;
+			
+		}
+		
+	}
 	static get	= function( _engine, _package ) {
 		return script_evaluate_expression( _engine, _package, self );
 		
@@ -8,7 +54,6 @@ function ScriptExpression( _string ) : DsLinkedList() constructor {
 	var _manager= ScriptManager();
 	var _parser	= _manager.parser;
 	var _next, _char, _len;
-	var _not	= false;
 	
 	_parser.parse( _string );
 	
@@ -33,7 +78,7 @@ function ScriptExpression( _string ) : DsLinkedList() constructor {
 			_parser.last	= _last;
 			
 		} else if ( string_pos( "->", _next ) > 0 && string_pos( "->", _next ) == _len - 1 ) { // cast
-			var _op	= add( new ScriptEngine_Operator( 5 ) ).value;
+			var _op	= add( new ScriptEngine_Operator( 5, 10 ) ).value;
 			
 			_op.execute	= _manager.casts[? string_copy( _next, 1, _len - 2 ) ];
 			_op.rao		= true;
@@ -80,7 +125,7 @@ function ScriptExpression( _string ) : DsLinkedList() constructor {
 			var _last	= _parser.last;
 			
 			add( new ScriptEngine_Function( _next ) );
-			
+						
 			_parser.parse( _string );
 			_parser.last	= _last;
 			

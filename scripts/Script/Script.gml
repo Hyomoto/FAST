@@ -67,16 +67,32 @@ function Script() : DsChain() constructor {
 		clearSuper();
 		
 	}
-	static validate	= function() {
+	static validate	= function( _engine, _quiet ) {
 		var _errors	= 0;
 		var _open	= 0;
 		var _last	= undefined;
 		
 		repeat( links ) {
 			_last	= next( _last );
+			_last.value.validate( _engine, self );
 			
-			if ( _last.close ) { --_open; }
-			if ( _last.open ) { ++_open; }
+			if ( _last.value.close ) { --_open; }
+			if ( _last.value.open ) { ++_open; }
+			
+		}
+		if ( _open > 0 ) { _engine.errors.push( source + " lacks closures, check for missing 'end' or 'loop'." ); }
+		if ( _open < 0 ) { _engine.errors.push( source + " has too many closures, check for extra 'end' or 'loop'." ); }
+		
+		if ( _quiet == false || _engine.errors.size() > 0 ) {
+			_engine.log( source, "Script validated with ", _engine.errors.size(), " errors." );
+		
+			if ( _engine.errors.size() > 0 ) {
+				while ( _engine.errors.size() > 0 ) {
+					_engine.log( source, _engine.errors.pop() );
+					
+				}
+				
+			}
 			
 		}
 		

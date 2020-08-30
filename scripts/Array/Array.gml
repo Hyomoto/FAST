@@ -50,7 +50,7 @@ function Array( _size ) constructor {
 	}
 	static contains	= function( _value ) {
 		var _i = 0; repeat( array_length( content ) ) {
-			if ( content[ _i ] == _value ) {
+			if ( content[ _i++ ] == _value ) {
 				return _i;
 				
 			}

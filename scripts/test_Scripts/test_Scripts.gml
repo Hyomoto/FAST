@@ -1,6 +1,10 @@
 function test_Scripts(){
 	var _timer	= new Timer( "$S", 5 );
-	global.eng.run_script( "testA" );
+	
+	//var _script	= global.eng.scripts[? "testB" ];
+	
+	//_script.validate( global.eng );
+	global.eng.run_script( "testB" );
 	//test_validator( "ScriptEngine", 1, global.eng, function( _eng ) {
 	//	//var _script	= global.eng.funcs[? "test_traversal" ];
 	//	//var _last	= undefined;

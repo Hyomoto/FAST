@@ -110,7 +110,7 @@ function ScriptManager(){
 		funcs[? "array" ]	= function( _array, _index ) { syslog( _index ); return _array[ _index ]; }
 		
 		reserved= new Array([
-			"if", "else", "elseif", "end", "wait", "return", "loop", "queue", "push", "pop", "set"
+			"var", "if", "else", "elseif", "end", "wait", "return", "loop", "queue", "push", "pop", "set"
 		]);
 	}
 	static instance	= new Feature( "FAST Script", "1.0", "08/22/2020", new manager() );

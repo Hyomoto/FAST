@@ -1,3 +1,6 @@
-<<queue "testA">>
-<<trace("TestA queued!")>>
-<<push "TestB">>
+<<
+var set count to 0
+if count < 200
+  set count to count + 1
+loop
+>>

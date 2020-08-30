@@ -1,6 +1,17 @@
 /// @func ScriptStatement
 /// @param expression
 function ScriptStatement( _expression ) constructor {
+	static validate	= function( _engine, _script ) {
+		if ( ScriptManager().is_reserved( target ) ) {
+			_engine.errors.push( "(line " + string( line ) + ") Statement tries to assign reserved keyword: " + target );
+			
+		}
+		if ( expression != undefined ) {
+			expression.validate( _engine, _script, self );
+			
+		}
+		
+	}
 	static toString	= function() {
 		return ( keyword != "" ? keyword : "" ) + ( target != undefined ? "(" + string( target ) + ") " : "" ) + ( expression != undefined ? string( expression ) : "" ) + ( goto != -1 ? " => " + "TRUE" : "" );// + " " + string( execute );
 		
@@ -25,6 +36,8 @@ function ScriptStatement( _expression ) constructor {
 	ends		= false;
 	depth		= -1;
 	goto		= -1;
+	illegal		= false;
+	line		= -1;
 	
 	_keyword	= _parser.next();
 	
@@ -70,6 +83,8 @@ function ScriptStatement( _expression ) constructor {
 			
 		case "set" :
 			target	= _parser.next();
+			
+			illegal	= ( ScriptManager().is_reserved( target ) > -1 );
 			
 			_parser.next();
 			

@@ -130,6 +130,7 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 		var _load, _line, _script;
 		var _file, _name;
 		var _found;
+		var _file_line	= 0;
 		
 		if ( filename_name( _filename ) != "" ) {
 			_load	= new DsStack( _filename );
@@ -145,6 +146,7 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 			_file		= file_text_open_read( _filename );
 			_script		= new Script();
 			_last		= 0;
+			_file_line	= 0;
 			
 			_formatter.comment	= false;
 			
@@ -153,6 +155,7 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 				_line	= _formatter.format( string_trim( file_text_read_string( _file ) ) ); file_text_readln( _file );
 				_name	= filename_name( _filename );
 				_name	= ( string_pos( ".", _name ) > 0 ? string_copy( _name, 1, string_pos( ".", _name ) - 1 ) : _name );
+				++_file_line;
 				
 				_script.source	= _filename;
 				
@@ -188,19 +191,20 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 				
 				if ( _line != "" ) {
 					if ( _logic ) {
-						//var _final	= _script.final;
-						
 						_script.add( new ScriptStatement( _line ) );
 						
 						if ( _script.final.value.close ) {
-							var _pop	= _goto.pop();
-							
-							_pop.value.goto = _script.final;
-							
-							if ( _script.final.value.keyword == "loop" ) {
-								_script.final.value.depth	= _goto.size() - 1;
+							if ( _goto.empty() == false ) {
+								var _pop	= _goto.pop();
 								
-								_script.final.value.goto = _pop;
+								_pop.value.goto = _script.final;
+								
+								if ( _script.final.value.keyword == "loop" ) {
+									_script.final.value.depth	= _goto.size() - 1;
+									
+									_script.final.value.goto = _pop;
+									
+								}
 								
 							}
 							
@@ -216,6 +220,7 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 						_script.add( _line );
 						
 					}
+					_script.final.value.line	= _file_line;
 					
 				}
 				if ( _logic == 2 ) {
@@ -225,6 +230,8 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 				
 			}
 			file_text_close( _file );
+			
+			_script.validate( self, true );
 			//log( "ScriptEngine.load->get_file", "File ", _filename, " added as function \"", _name, "\"" );
 			
 		}
