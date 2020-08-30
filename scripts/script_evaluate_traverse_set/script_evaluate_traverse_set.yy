@@ -3,10 +3,10 @@
   "isCompatibility": false,
   "parent": {
     "name": "Functions",
-    "path": "folders/FAST/Publisher/Functions.yy",
+    "path": "folders/FAST/Script/Functions.yy",
   },
   "resourceVersion": "1.0",
-  "name": "publisher_publish",
+  "name": "script_evaluate_traverse_set",
   "tags": [],
   "resourceType": "GMScript",
 }

@@ -67,6 +67,20 @@ function Script() : DsChain() constructor {
 		clearSuper();
 		
 	}
+	static validate	= function() {
+		var _errors	= 0;
+		var _open	= 0;
+		var _last	= undefined;
+		
+		repeat( links ) {
+			_last	= next( _last );
+			
+			if ( _last.close ) { --_open; }
+			if ( _last.open ) { ++_open; }
+			
+		}
+		
+	}
 // # Variable Declaration
 	source	= undefined;
 	final	= undefined;

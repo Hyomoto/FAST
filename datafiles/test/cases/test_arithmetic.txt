@@ -1,0 +1,21 @@
+function()
+var set count to 0
+var set total to 5
+trace( "Testing arithmetic..." )
+//test addition
+set count to count + (1 + 1 == 2)
+//test multiplication
+set count to count + (2 * 2 == 4)
+//test subtraction
+set count to count + (12- 4 == 8)
+//test division
+set count to count + (32/ 2 == 16)
+//test negative numbers
+set count to count + (-16+-16==-32)
+trace( string->count + " tests passed out of " + string->total )
+if count == total
+  trace( "--> Passed")
+  return 1
+end
+trace( "--> Failed")
+return 0

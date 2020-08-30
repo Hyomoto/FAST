@@ -28,6 +28,10 @@ function ScriptManager(){
 			funcs[? _name ]	= _function;
 			
 		}
+		static is_reserved	=function( _keyword ) {
+			return reserved.contains( _keyword );
+			
+		}
 		formatter	= new StringFormatter( "\":save,\t:replace", {
 			setup : function( _input ) {
 				flag = 0;
@@ -99,7 +103,15 @@ function ScriptManager(){
 		casts[? "real" ]	= function( _a ) { return string_to_real( string( _a ) ); }
 		
 		funcs[? "trace" ]	= function( _value ) { syslog( _value ); };
+		funcs[? "errors" ]	= function() { return errors.size(); }
+		funcs[? "error" ]	= function( _index ) { return errors.pop(); }
+		funcs[? "error_clear" ]	= function() { errors.clear() }
+		funcs[? "throw" ]	= function( _source, _error ) { errors.push( [ _source, _error ] ); }
+		funcs[? "array" ]	= function( _array, _index ) { syslog( _index ); return _array[ _index ]; }
 		
+		reserved= new Array([
+			"if", "else", "elseif", "end", "wait", "return", "loop", "queue", "push", "pop", "set"
+		]);
 	}
 	static instance	= new Feature( "FAST Script", "1.0", "08/22/2020", new manager() );
 	return instance.struct;

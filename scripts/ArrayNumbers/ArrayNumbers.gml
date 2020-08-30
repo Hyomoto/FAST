@@ -1,7 +1,7 @@
 /// @func ArrayNumbers
 /// @param size
 /// @param *default
-function ArrayNumbers( _size, _default ) : Array( _size, _default ) constructor {
+function ArrayNumbers( _size ) : Array( _size ) constructor {
 	static superSet	= set;
 	static set	= function( _index, _value ) {
 		if ( !is_real( _value ) ) { _value = 0; }

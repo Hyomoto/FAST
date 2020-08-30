@@ -1,7 +1,7 @@
 /// @func ArrayStrings
 /// @param size
 /// @param *default
-function ArrayStrings( _size, _default ) : Array( _size, _default ) constructor {
+function ArrayStrings( _size ) : Array( _size ) constructor {
 	static superSet	= set;
 	static set	= function( _index, _value ) {
 		if ( !is_string( _value ) ) { _value = string( _value ); }

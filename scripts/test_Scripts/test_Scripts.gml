@@ -1,25 +1,31 @@
 function test_Scripts(){
-	test_validator( "ScriptEngine", 1, global.eng, function( _eng ) {
-		var _script	= global.eng.scripts[? "test" ];
-		var _last	= undefined;
-		var _line	= 0;
+	var _timer	= new Timer( "$S", 5 );
+	global.eng.run_script( "testA" );
+	//test_validator( "ScriptEngine", 1, global.eng, function( _eng ) {
+	//	//var _script	= global.eng.funcs[? "test_traversal" ];
+	//	//var _last	= undefined;
+	//	//var _line	= 0;
 		
-		while( _script.has_next( _last ) ) {
-			_last	= _script.next( _last );
+	//	//while( _script.has_next( _last ) ) {
+	//	//	_last	= _script.next( _last );
 			
-			if ( is_string( _last.value ) ) {
-				syslog( _line++, " ", _last.value );
+	//	//	if ( is_string( _last.value ) ) {
+	//	//		syslog( _line++, " ", _last.value );
 				
-			} else {
-				syslog( _line++, " ", _last.value.expression );
+	//	//	} else {
+	//	//		syslog( _line++, " ", _last.value.expression );
 				
-			}
+	//	//	}
 			
-		}
-		global.eng.run_script( "test" );
+	//	//}
+	//	global.eng.run_script( "testA" );
 		
-		return true;
+	//	return true;
 		
-	});
+	//});
+	syslog( "Execute took ", _timer, " seconds." );
+	syslog( "Executed ", global.eng.lines, " lines." );
+	
+	global.eng.lines	= 0;
 	
 }

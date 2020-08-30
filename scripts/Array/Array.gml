@@ -17,7 +17,7 @@ forEach( function )	- performs the given function on each indice in the array
 toArray()			- returns the array
 toString()			- returns the array as a string
 */
-function Array( _size, _default ) constructor {
+function Array( _size ) constructor {
 	// interfaces
 	static sort	= function() {}
 	// functions
@@ -94,6 +94,8 @@ function Array( _size, _default ) constructor {
 		content	= _size;
 		
 	} else {
+		var _default	= ( argument_count > 1 ? argument[ 1 ] : undefined );
+		
 		content	= array_create( _size, _default );
 		
 	}

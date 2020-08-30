@@ -2,7 +2,7 @@
 /// @param expression
 function ScriptStatement( _expression ) constructor {
 	static toString	= function() {
-		return ( keyword != "" ? keyword : "" ) + ( target != undefined ? "(" + string( target ) + ") " : "" ) + ( expression != undefined ? string( expression ) : "" ) + ( goto != -1 ? " => " + string( goto ) : "" );// + " " + string( execute );
+		return ( keyword != "" ? keyword : "" ) + ( target != undefined ? "(" + string( target ) + ") " : "" ) + ( expression != undefined ? string( expression ) : "" ) + ( goto != -1 ? " => " + "TRUE" : "" );// + " " + string( execute );
 		
 	}
 	execute		= function( _engine, _package ) {
@@ -18,6 +18,7 @@ function ScriptStatement( _expression ) constructor {
 	
 	expression	= undefined;
 	target		= undefined;
+	ignore		= false;
 	local		= false;
 	open		= false;
 	close		= false;
@@ -42,6 +43,7 @@ function ScriptStatement( _expression ) constructor {
 		case "end"		: close= true; return;
 		case "wait"		: ends = true; break;
 		case "return"	: ends = true; break;
+		case "loop"		: close= true; return;
 		case "queue"	:
 			execute	= function( _engine, _package ) {
 				var _result	= _engine.scripts[? script_evaluate_expression( _engine, _package, expression ) ];
@@ -74,13 +76,7 @@ function ScriptStatement( _expression ) constructor {
 			execute	= function( _engine, _package ) {
 				var _result	= script_evaluate_expression( _engine, _package, expression );
 				
-				if ( variable_struct_exists( _package.local, target ) || local ) {
-					variable_struct_set( _package.local, target, _result );
-					
-				} else {
-					_engine.set_value( target, _result );
-					
-				}
+				script_evaluate_traverse_set( _engine, _package.local, target, _result );
 				
 			}
 			break;

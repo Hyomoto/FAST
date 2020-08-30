@@ -9,12 +9,19 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 	}
 	static execute	= function( _package ) {
 		var _script	= _package.script;
+		var _reread	= false;
 		var _ex, _last;
+		var _count	= 0;
 		
 		while ( _script.has_next( _package.last ) ) {
-			_package.last	= _script.next( _package.last );
+			if ( _reread == false ) {
+				_package.last	= _script.next( _package.last );
+				
+			}
 			_last			= _package.last;
 			_ex				= _last.value;
+			_reread			= false;
+			++lines;
 			
 			if ( is_string( _ex ) ) {
 				queue.enqueue_at_head( _package );
@@ -26,6 +33,7 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 				break;
 				
 			}
+			if( _ex.ignore ) { continue; }
 			if ( _ex.ends ) {
 				if ( _package.script.args == undefined && _ex.keyword == "wait" ) {
 					if ( _script.has_next( _last ) ) {
@@ -42,7 +50,15 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 				
 			}
 			if ( _ex.close ) {
-				if ( _ex.keyword == "end" ) {
+				if ( _ex.keyword == "loop" ) {
+					_package.depth -= 1;
+					
+					if ( _package.depth < _ex.depth ) { continue; }
+					
+					_package.last	= _ex.goto;
+					_reread			= true;
+					
+				} else if ( _ex.keyword == "end" ) {
 					_package.depth -= 1;
 					
 					continue;
@@ -58,6 +74,7 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 					
 				}
 				_package.last	= _ex.goto;
+				_reread			= true;
 				
 			} else {
 				_ex.execute( self, _package );
@@ -100,7 +117,7 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 			variable_struct_set( _args, _seek.args[ _i++ - 1 ], _arg );
 			
 		}
-		execute( _seek, _args );
+		execute( { script : _seek, local : _args, last : undefined, depth : -1 } );
 		
 	}
 	static load		= function( _filename, _reload ) {
@@ -171,12 +188,21 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 				
 				if ( _line != "" ) {
 					if ( _logic ) {
-						var _final	= _script.final;
+						//var _final	= _script.final;
 						
 						_script.add( new ScriptStatement( _line ) );
 						
 						if ( _script.final.value.close ) {
-							_goto.pop().value.goto = _final;
+							var _pop	= _goto.pop();
+							
+							_pop.value.goto = _script.final;
+							
+							if ( _script.final.value.keyword == "loop" ) {
+								_script.final.value.depth	= _goto.size() - 1;
+								
+								_script.final.value.goto = _pop;
+								
+							}
 							
 						}
 						if ( _script.final.value.open ) {
@@ -306,17 +332,24 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 		}
 		
 	});
+	parser	= new Parser();
 	values	= ds_map_create();
 	funcs	= ds_map_create();
 	scripts	= ds_map_create();
+	errors	= new DsStack();
 	queue	= new DsQueue();
 	stack	= new DsStack();
 	wait	= undefined;
 	debug	= _debug == true;
 	name	= _name;
+	lines	= 0;
 	
-	ds_map_copy( funcs, ScriptManager().funcs );
-	
+	var _next = ds_map_find_first( ScriptManager().funcs ); repeat( ds_map_size( ScriptManager().funcs ) ) {
+		ds_map_add( funcs, _next, method( self, ScriptManager().funcs[? _next ] ) );
+		
+		_next	= ds_map_find_next( ScriptManager().funcs, _next );
+		
+	}
 	if ( _filepath != undefined ) {
 		load( _filepath, false );
 		

@@ -39,18 +39,28 @@ function ScriptExpression( _string ) : DsLinkedList() constructor {
 			_op.rao		= true;
 			
 		} else if ( string_pos( _char, "/*+-" ) > 0 ) { // operator
-			var _op	= add( new ScriptEngine_Operator( 4 ) ).value;
+			var _last	= ( final == undefined ? undefined : final.value );
+			var _op		= add( new ScriptEngine_Operator( _char, 4 ) ).value;
 			
 			switch ( _next ) {
 				case "/" : _op.execute	= method( _op, function( _a, _b ) { return _a / _b; } ); _op.prec = 5; break;
 				case "*" : _op.execute	= method( _op, function( _a, _b ) { return _a * _b; } ); _op.prec = 5; break;
 				case "+" : _op.execute	= method( _op, function( _a, _b ) { return _a + _b; } ); break;
-				case "-" : _op.execute	= method( _op, function( _a, _b ) { return _a - _b; } ); break;
+				case "-" :
+					if ( _last == undefined || instanceof( _last ) == "ScriptEngine_Operator" ) {
+						_op.execute	= method( _op, function( _a ) { return -_a; } );
+						_op.rao		= true;
+						
+					} else {
+						_op.execute	= method( _op, function( _a, _b ) { return _a - _b; } );
+						
+					}
+					break;
 				
 			}
 			
 		} else if ( string_find_first( "!=<>&|", _char, 0 ) > 0) { // comparison
-			var _op	= add( new ScriptEngine_Operator( 0 ) ).value;
+			var _op	= add( new ScriptEngine_Operator( _next, 0 ) ).value;
 			
 			switch ( _next ) {
 				case ">" : _op.execute	= function( _a, _b ) { return _a > _b; }; break;
@@ -84,23 +94,23 @@ function ScriptExpression( _string ) : DsLinkedList() constructor {
 			add( new ScriptEngine_Value( 0, SCRIPT_EXPRESSION_TYPE_NUMBER ) );
 			
 		} else if ( _next == "or" ) {
-			var _op	= add( new ScriptEngine_Operator( 4 ) ).value;
+			var _op	= add( new ScriptEngine_Operator( "||", 4 ) ).value;
 			
 			_op.execute	= function( _a, _b ) { return _a || _b; };
 			
 		} else if ( _next == "and" ) {
-			var _op	= add( new ScriptEngine_Operator( 4 ) ).value;
+			var _op	= add( new ScriptEngine_Operator( "&&", 4 ) ).value;
 			
 			_op.execute	= function( _a, _b ) { return _a && _b; };
 			
 			
 		} else if ( _next == "is" ) {
-			var _op	= add( new ScriptEngine_Operator( 4 ) ).value;
+			var _op	= add( new ScriptEngine_Operator( "==", 4 ) ).value;
 			
 			_op.execute	= function( _a, _b ) { return _a == _b; };
 			
 		} else if ( _next == "not" ) { // not
-			var _op	= add( new ScriptEngine_Operator( 7 ) ).value;
+			var _op	= add( new ScriptEngine_Operator( _next, 7 ) ).value;
 			
 			_op.execute	= function( _a ) { return not _a };
 			_op.rao		= true;

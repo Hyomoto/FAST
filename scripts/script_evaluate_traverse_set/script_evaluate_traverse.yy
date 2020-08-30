@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Keyboard",
-    "path": "folders/FAST/Input/Inputs/Keyboard.yy",
+    "name": "Functions",
+    "path": "folders/FAST/Script/Functions.yy",
   },
   "resourceVersion": "1.0",
-  "name": "KeyboardKey",
+  "name": "script_evaluate_traverse",
   "tags": [],
   "resourceType": "GMScript",
 }
