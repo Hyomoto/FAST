@@ -35,19 +35,29 @@ The Array wrapper provides an expanded interface to interact with arrays.
 * get( a ) - Returns index a in the array, or undefined if it doesn't exist.
 * toArray() - Returns the array.
 * toString( a ) - Returns the array as a string with a as the divider.
+#### ArrayString
+Provides an array wrapper with an expanded interface to interact with arrays full of strings. Implements Array.
+* sort( ascending ) - Uses quicksort algorithm to alphabetically sort-in-place the array from A-Z when ascending is true, or Z-A when false.
+#### ArrayNumber
+Provides an array wrapper with an expanded interface to interact with arrays full of numbers. Implements Array.
+* sort( ascending ) - Uses quicksort algorithm to numerically sort-in-place the array in ascending order when ascending is true, or descending when false.
+* sum() - Returns the sum of all values in the array.
+* average() - Returns the average of all values in the array.
+* lowest() - Returns the lowest number in the array.
+* highest() - Returns the highest number in the array.
 ### Shapes
 The Shape data type is an interface to inherit and define shapes.
 * inside( x, y ) - Returns if the point lies within this shape's dimensions.
 * draw( x, y, outline ) - Draws the shape either solid, or outlined at x, y.
 * set( x, y ) - Sets the position of the shape to x, y.
 #### ShapeCircle( x, y, radius )
-Defines a circle at x, y with the given radius.
+Defines a circle at x, y with the given radius. Implements the Shape interface.
 #### ShapeEllipses( x, y, width, height )
-Defines an elipses at x, y with the given width and height.
+Defines an elipses at x, y with the given width and height. Implements the Shape interface.
 #### ShapePolygon( x1, y1... )
-Defines a polygon with the given list of points, will provide the final closing pair.
+Defines a polygon with the given list of points, will provide the final closing pair. Implements the Shape interface.
 #### ShapeRectangle( x, y, width, height )
-Defines a rectangle at x, y with the given width and height.
+Defines a rectangle at x, y with the given width and height. Implements the Shape interface.
 ### String( string )
 The String wrapper provides an expanded interface to interact with strings such as formatting.
 * formatter( a ) - An overwrittable interface that can be used to format the string when set() is called.
@@ -59,8 +69,9 @@ The String wrapper provides an expanded interface to interact with strings such 
 * toArray() - Returns the string as a character array.
 * toString() - Returns the string.
 #### StringNumber( string, format )
+Implements String.
 #### StringTime( string, decimals, format )
-Formats the string as a time with the given number of decimals and format.
+Formats the string as a time with the given number of decimals and format. Implements String.
 * decimals - The number of decimals to use.
 * format - ex: "$S seconds"
 ** $H will be converted into the number of hours
