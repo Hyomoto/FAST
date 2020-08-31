@@ -1,6 +1,6 @@
-/// @func DsNodeValue
+/// @func DsTree_Value
 /// @param value
-function DsNodeValue( _value ) constructor {
+function DsTree_Value( _value ) constructor {
 	static destroy	= function() {}
 	static is	= function( _type ) {
 		return type == _type;
@@ -35,7 +35,7 @@ function DsNodeValue( _value ) constructor {
 	}
 	static total	= 0;
 	
-	base		= DsNodeValue;
+	base		= DsTree_Value;
 	value		= _value;
 	writable	= true;
 	type		= "value";

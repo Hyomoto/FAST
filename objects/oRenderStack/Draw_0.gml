@@ -1,14 +1,10 @@
 if ( surface.update() ) {
-	surface.set()
+	surface.set( true )
 	
-	surface_set_target( __renderSurface );
-		draw_clear_alpha( renderClearColor, renderClearAlpha );
+	var _i = 0; repeat( ds_list_size( objects ) ) {
+		with( objects[| _i++ ].target ) { event_perform( ev_draw, 0 ); }
 		
-		var _i = 0; repeat( ds_list_size( objects ) ) {
-			objects[| _i++ ].draw();
-			
-		}
-	
+	}
 	surface.reset();
 	
 }

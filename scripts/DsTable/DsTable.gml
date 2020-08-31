@@ -1,8 +1,5 @@
 /// @func DsTable
 function DsTable() constructor {
-	map		= ds_map_create();
-	list	= ds_list_create();
-	
 	static add	= function( _key, _value ) {
 		ds_map_add( map, _key, _value );
 		ds_list_add( list, _value );
@@ -10,7 +7,7 @@ function DsTable() constructor {
 		return _value;
 		
 	}
-	static is_empty	= function() {
+	static empty	= function() {
 		return ds_map_empty( map );
 		
 	}
@@ -111,5 +108,7 @@ function DsTable() constructor {
 		ds_list_destroy( list );
 		
 	}
+	map		= ds_map_create();
+	list	= ds_list_create();
 	
 }

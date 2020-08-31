@@ -1,6 +1,6 @@
-/// @func DsNode
-/// @desc DsNode is a traversable data type
-function DsNode() constructor {
+/// @func DsTree
+/// @desc DsTree is a traversable tree-like data structure
+function DsTree() constructor {
 	// finds the node at the given path and returns it
 	static seek	= function( _path ) {
 		var _dot	= string_pos( ".", _path );
@@ -67,7 +67,7 @@ function DsNode() constructor {
 			_value	= table[? _key ];
 			
 			if ( _value.is( "node" ) ) {
-				if ( _value.base != DsNodeLink || _links ) {
+				if ( _value.base != DsTree_Link || _links ) {
 					_size	+= _value.value.size( _links );
 					
 				}
@@ -102,11 +102,11 @@ function DsNode() constructor {
 				
 			}
 			if ( _type == undefined ) {
-				if ( is_struct( _value ) ) { _value = new DsNodeStruct( _value ); }
-				else if ( is_string( _value ) ) { _value = new DsNodeString( _value ); }
-				else if ( is_real( _value ) ) { _value = new DsNodeNumber( _value ); }
-				else if ( is_array( _value ) ) { _value = new DsNodeArray( _value ); }
-				else { _value = new DsNodeValue( _value ); }
+				if ( is_struct( _value ) ) { _value = new DsTree_Struct( _value ); }
+				else if ( is_string( _value ) ) { _value = new DsTree_String( _value ); }
+				else if ( is_real( _value ) ) { _value = new DsTree_Number( _value ); }
+				else if ( is_array( _value ) ) { _value = new DsTree_Array( _value ); }
+				else { _value = new DsTree_Value( _value ); }
 				
 			} else {
 				if ( _type != 0 ) {
@@ -127,9 +127,9 @@ function DsNode() constructor {
 					_seek.destroy();
 					
 				}
-				_seek	= new DsNode();
+				_seek	= new DsTree();
 				
-				table[? _key ]	= new DsNodeNode( _seek );
+				table[? _key ]	= new DsTree_Branch( _seek );
 				
 				branch	= true;
 				
@@ -145,7 +145,7 @@ function DsNode() constructor {
 	// copies this node into the node provided, or a new one if not provided, and
 	// returns it
 	static copy		= function( _target ) {
-		var _new	= ( _target == undefined ? new DsNode() : _target );
+		var _new	= ( _target == undefined ? new DsTree() : _target );
 		var _key	= ds_map_find_first( table );
 		var _value, _seek;
 		
@@ -153,7 +153,7 @@ function DsNode() constructor {
 			_value	= table[? _key ];
 			_seek	= _new.seek( _key );
 			
-			if ( _seek != undefined && _seek.base == DsNodeNode && _value.base == DsNodeNode ) {
+			if ( _seek != undefined && _seek.base == DsTree_Branch && _value.base == DsTree_Branch ) {
 				_value.value.copy( _seek.value );
 				
 			} else {

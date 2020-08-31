@@ -2,7 +2,7 @@
 /// @param value
 /// @param decimals
 /// @param format
-function StringTime( _value, _decimals, _format ) : __String() constructor {
+function StringTime( _value, _decimals, _format ) : String() constructor {
 	static formatter	= function( _value ) {
 		var _string		= format;
 		var _hours		= string_pos( "$H", format ) > 0;

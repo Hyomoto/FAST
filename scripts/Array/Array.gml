@@ -75,18 +75,20 @@ function Array( _size ) constructor {
 		return undefined;
 		
 	}
-	static forEach	= function( _func ) {
-		var _i = 0; repeat( size() ) {
-			set( _i, _func( content[ _i ] ) );
+	//static forEach	= function( _func ) {
+	//	var _i = 0; repeat( size() ) {
+	//		set( _i, _func( content[ _i ] ) );
 			
-		}
+	//	}
 		
-	}
+	//}
 	static toArray	= function() {
 		return content;
 		
 	}
 	static toString	= function( _divider ) {
+		if ( is_string( _divider ) == false ) { _divider = ", " }
+		
 		return array_to_string( content, _divider );
 		
 	}

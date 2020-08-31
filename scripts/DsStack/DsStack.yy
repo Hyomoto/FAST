@@ -2,8 +2,8 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "DS",
-    "path": "folders/FAST/Data Types/DS.yy",
+    "name": "Data Types",
+    "path": "folders/FAST/Data Types.yy",
   },
   "resourceVersion": "1.0",
   "name": "DsStack",

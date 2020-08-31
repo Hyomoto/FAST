@@ -1,6 +1,6 @@
-/// @func DsNodeNode
+/// @func DsTree_Branch
 /// @param value
-function DsNodeNode( _value ) : DsNodeValue( _value ) constructor {
+function DsTree_Branch( _value ) : DsTree_Value( _value ) constructor {
 	static destroy	= function() {
 		value.destroy();
 		
@@ -20,7 +20,7 @@ function DsNodeNode( _value ) : DsNodeValue( _value ) constructor {
 		return _new;
 		
 	}
-	base		= DsNodeNode;
+	base		= DsTree_Branch;
 	type		= "node";
 	
 }

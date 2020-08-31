@@ -149,7 +149,7 @@ function ScriptExpression( _string ) : DsLinkedList() constructor {
 			_op.execute	= function( _a, _b ) { return _a && _b; };
 			
 			
-		} else if ( _next == "is" ) {
+		} else if ( _next == "is" || _next == "equals" ) {
 			var _op	= add( new ScriptEngine_Operator( "==", 4 ) ).value;
 			
 			_op.execute	= function( _a, _b ) { return _a == _b; };

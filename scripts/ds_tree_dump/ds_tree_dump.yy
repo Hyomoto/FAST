@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Node",
-    "path": "folders/FAST/Data Types/DS/Node.yy",
+    "name": "Functions",
+    "path": "folders/FAST/Data Types/DsTree/Functions.yy",
   },
   "resourceVersion": "1.0",
-  "name": "DsNodeStruct",
+  "name": "ds_tree_dump",
   "tags": [],
   "resourceType": "GMScript",
 }

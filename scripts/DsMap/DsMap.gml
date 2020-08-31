@@ -6,7 +6,7 @@ function DsMap() constructor {
 		return _value;
 		
 	}
-	static is_empty	= function() {
+	static empty	= function() {
 		return ds_map_empty( pointer );
 		
 	}
@@ -39,19 +39,16 @@ function DsMap() constructor {
 		ds_map_delete( pointer, _key );
 		
 	}
-	static dump	= function() {
-		var _key	= first();
-		
-		repeat ( size() ) {
-			show_debug_message( _key + " : " + string( find( _key ) ) );
-			
-			_key	= next( _key );
-			
-		}
-		
-	}
 	static destroy	= function() {
 		ds_map_destroy( pointer );
+		
+	}
+	static read		= function( _string ) {
+		ds_map_read( pointer, _string );
+		
+	}
+	static toString	= function() {
+		return ds_map_write( pointer );
 		
 	}
 	pointer	= ds_map_create();

@@ -1,7 +1,7 @@
 /// @func DatabaseManager
 function DatabaseManager() {
 	static database	= function() constructor {
-		static	__undefined	= new DsNodeValue( undefined );
+		static	__undefined	= new DsTree_Value( undefined );
 		static add_datatype	= function( _key, _function ) {
 			if ( ds_map_find_value( table, _key ) != undefined ) {
 				log_notify( undefined, "FAST_Database.add_datatype", "Data type ", _key, " was previously defined. It has been overwritten." );
@@ -61,7 +61,7 @@ function DatabaseManager() {
 			}
 			
 		}
-		// reads entires and converts them to DsNodeValues
+		// reads entires and converts them to DsTree_Values
 		static parse		= function( _value, _file ) {
 			switch ( string_char_at( _value, 1 ) ) {
 				case "$" :
@@ -92,7 +92,7 @@ function DatabaseManager() {
 					return _static.copy();
 					
 				case "\"" :
-					return new DsNodeString( string_copy( _value, 2, string_length( _value ) - 2 ) );
+					return new DsTree_String( string_copy( _value, 2, string_length( _value ) - 2 ) );
 					
 			}
 			//var _result	= 0;
@@ -109,7 +109,7 @@ function DatabaseManager() {
 				
 			//}
 			if ( type == undefined ) {
-				return new DsNodeNumber( string_to_real( _value ) );
+				return new DsTree_Number( string_to_real( _value ) );
 				
 			}
 			return get_datatype( _value );
@@ -140,11 +140,11 @@ function DatabaseManager() {
 				++_i;
 				
 			}
-			return new DsNodeArray( _array );
+			return new DsTree_Array( _array );
 			
 		});
 		add_datatype( "link", function( _input, _file ) {
-			var _link	= new DsNodeLink( _input );
+			var _link	= new DsTree_Link( _input );
 			
 			add_link( _link );
 			

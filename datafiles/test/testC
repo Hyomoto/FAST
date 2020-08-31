@@ -1,0 +1,8 @@
+<<if quest == true>>
+This is my test text!
+<<parse("Code-injected text!")>>
+<<else>>
+Alternate text, ho!
+<<wait>>
+<<end>>
+Final Text!

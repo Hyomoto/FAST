@@ -2,15 +2,6 @@
 //	provides basic draw-order handling
 // return the width of the provided surface
 ro		= function( _id ) constructor {
-	static event	= function() {
-		with ( target ) { include( object_index ); }
-		
-	}
-	static destroy	= function() {
-		with ( target ) { instance_destroy(); }
-		
-	}
-	sort	= _id.depth;
 	target	= _id;
 	
 }
@@ -28,14 +19,27 @@ add		= function( _id ) {
 	_id.visible	= false;
 	
 }
-resize	= function( _width, _height ) {
-	surface.width	= _width;
-	surface.height	= _height;
+remove	= function( _id ) {
+	var _i = 0; repeat( ds_list_size( objects ) ) {
+		if ( objects[| _i++ ].target == _id ) {
+			ds_list_delete( objects, --_i );
+			
+			_id.visible	= true;
+			
+			break;
+			
+		}
+		
+	}
 	
 }
-position= function( _x, _y ) {
+size	= function( _x, _y, _w, _h ) {
+	surface.resize( _w, _h );
+	
 	x	= _x;
 	y	= _y;
+	
+	return id;
 	
 }
 // when cleanup is true, also removes children

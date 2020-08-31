@@ -125,4 +125,9 @@ function DsLinkedList() : DsChain() constructor {
 	step	= undefined;
 	steps	= 0;
 	
+	var _i = 0; repeat( argument_count ) {
+		add( argument[ _i++ ] );
+		
+	}
+	
 }

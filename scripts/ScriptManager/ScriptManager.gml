@@ -108,7 +108,14 @@ function ScriptManager(){
 		funcs[? "error_clear" ]	= function() { errors.clear() }
 		funcs[? "throw" ]	= function( _source, _error ) { errors.push( [ _source, _error ] ); }
 		funcs[? "array" ]	= function( _array, _index ) { syslog( _index ); return _array[ _index ]; }
-		
+		funcs[? "parse" ]	= function() {
+			var _string = ""; var _i = 0; repeat( argument_count ) {
+				_string += string( argument[ _i++ ] );
+				
+			}
+			parse( _string );
+			
+		}
 		reserved= new Array([
 			"var", "if", "else", "elseif", "end", "wait", "return", "loop", "queue", "push", "pop", "set"
 		]);

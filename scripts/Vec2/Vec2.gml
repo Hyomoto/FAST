@@ -31,6 +31,10 @@ function Vec2( _x, _y ) constructor {
 		return x * _vec.x + y * _vec.y;
 		
 	}
+	static toArray	= function() {
+		return [ x, y ];
+		
+	}
 	static toString	= function() {
 		return string( x ) + ", " + string( y );
 		

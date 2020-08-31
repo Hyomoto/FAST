@@ -2,8 +2,8 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Scripts",
-    "path": "folders/FAST/System/Scripts.yy",
+    "name": "Events",
+    "path": "folders/FAST/Events.yy",
   },
   "resourceVersion": "1.0",
   "name": "EventOnce",

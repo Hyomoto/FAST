@@ -1,15 +1,15 @@
-/// @func ds_node_dump
+/// @func ds_tree_dump
 /// @param node
 /// @param *level
 /// @desc	dumps the contents of a node
-function ds_node_dump( _node, _level ) {
+function ds_tree_dump( _node, _level ) {
 	_level	= ( is_undefined( _level ) ? 0 : _level );
 	
-	if ( instanceof( _node ) == "DsNodeNode" ) {
+	if ( instanceof( _node ) == "DsTree_Branch" ) {
 		_node	= _node.value;
 		
 	}
-	if ( instanceof( _node ) != "DsNode" ) {
+	if ( instanceof( _node ) != "DsTree" ) {
 		syslog( "Provided argument is not a node." );
 		
 		return;
@@ -27,7 +27,7 @@ function ds_node_dump( _node, _level ) {
 		_value	= _table[? _key ];
 		
 		if ( _value.is( "node" ) ) {
-			if ( _value.base == DsNodeLink ) {
+			if ( _value.base == DsTree_Link ) {
 				syslog( _tab, _key, "(id:", _value.value.table ,") *= {" );
 				
 			} else {

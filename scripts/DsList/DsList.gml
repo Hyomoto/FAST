@@ -30,7 +30,7 @@ function DsList() constructor {
 	static size	= function() {
 		return ds_list_size( pointer );
 	}
-	static is_empty	= function() {
+	static empty	= function() {
 		return ds_list_empty( pointer );
 		
 	}
@@ -54,17 +54,24 @@ function DsList() constructor {
 		
 	}
 	static destroy	= function() { ds_list_destroy( pointer ); }
-	static dump	= function() {
-		var _space	= string_repeat( " ", ceil( log10( size() ) ) );
-		var _i = 0;
+	static toString	= function() {
+		var _string	 = "";
 		
-		repeat ( size() ) {
-			show_debug_message( _space + string( _i ) + " : " + string( find_index( _i ) ) );
+		var _i = 0; repeat ( size() ) {
+			if ( _i > 0 ) { _string += ", " }
+			
+			_string	+= pointer[| _i++ ];
 			
 		}
+		return _string;
 		
 	}
 	pointer	= ds_list_create();
+	
+	var _i = 0; repeat( argument_count ) {
+		add( argument[ _i++ ] );
+		
+	}
 	
 }
 

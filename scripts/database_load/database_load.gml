@@ -15,7 +15,7 @@ function database_load( _filename, _target ) {
 	var _raw, _indicator, _hand, _assign, _value, _last_value;
 	// if no target was provided, database is loaded into a new node
 	if ( _target == undefined ) {
-		_target	= new DsNode();
+		_target	= new DsTree();
 		
 	}
 	var _root	= _target;
@@ -160,7 +160,7 @@ function database_load( _filename, _target ) {
 					}
 					// node opening
 					if ( array_length( _hand ) == 1 ) {
-						//_last_value	= ( _default == undefined ? new DsNode() : _default.copy() );
+						//_last_value	= ( _default == undefined ? new DsTree() : _default.copy() );
 						
 						if ( _template != undefined ) {
 							_last_value	= _template.copy( _last_value );
@@ -180,13 +180,13 @@ function database_load( _filename, _target ) {
 						ds_stack_push( _templates, _default );
 						
 						if ( _seek == undefined || _seek.is( "node" ) == false ) {
-							_last_value	= ( _default == undefined ? new DsNode() : _default.copy() );
+							_last_value	= ( _default == undefined ? new DsTree() : _default.copy() );
 							
 							if ( _template != undefined && _template.is( "node" ) == true ) {
 								_last_value	= _template.value.copy( _last_value );
 								
 							}
-							_target.set( _break[ 0 ], _last_value, DsNodeNode );
+							_target.set( _break[ 0 ], _last_value, DsTree_Branch );
 							_target	= _last_value;
 							
 							database.records++;
