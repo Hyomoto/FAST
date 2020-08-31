@@ -68,6 +68,12 @@ Formats the string as a time with the given number of decimals and format.
 ** $S will be converted into the number of seconds, sans hours and minutes if provided.
 ### Data Structures
 * [DsLinkedList](#dslinkedlist-values-)
+* [DsList](#dslist-values-)
+* [DsTree](#dstree)
+* [DsMap](#dsmap)
+* [DsQueue](#dsqueue-values-)
+* [DsStack](#dsstack-values-)
+* [DsTable](#dstable)
 #### DsLinkedList( values... )
 Provides a garbage-collected, linear-traversable data structure. Adds the values as provided.
 * clear() - Clears all entries.
