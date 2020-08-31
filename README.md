@@ -67,6 +67,7 @@ Formats the string as a time with the given number of decimals and format.
 ** $M will be converted into the number of minutes, sans hours if provided
 ** $S will be converted into the number of seconds, sans hours and minutes if provided.
 ### Data Structures
+* [DsLinkedList](#ds-linked-list)
 #### DsLinkedList( values... )
 Provides a garbage-collected, linear-traversable data structure. Adds the values as provided.
 * clear() - Clears all entries.
