@@ -19,8 +19,8 @@ FAST contains a large number of helpful data types, including some helpful wrapp
 * [Array](#array)
 * [String](#string-string-)
 * [Data Structures](#data-structures)
-* [Pair](#pair-a,b-)
-* [Vec2](#vec2-x,y-)
+* [Pair](#pair-a-b-)
+* [Vec2](#vec2-x-y-)
 ### Array
 The Array wrapper provides an expanded interface to interact with arrays.
 * sort() - An interface to provide sort functionality for arrays.
@@ -183,7 +183,13 @@ A simple garbage-collected, two-dimensional vector structure.
 ## File Handling
 The File interface is designed to open a file, read its contents into an internal data structure, and then close the file.  This allows for files read into the game to be manipulated more easily, and provides a consistent interface no matter what format the file that is being read from may be written in.
 ### File( filename, \*read_only )
-```var _file = new File( "filename" )```
+```GML
+var _file = new File( "filename" );
+
+while ( _file.eof() == false ) {
+  var _read = _file.next();
+}
+```
 The File interface provides a common framework to seek, open, write to, and save files.
 * reset() - Returns file progress to the start.
 * exists( a ) - Returns if file a exists.
