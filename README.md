@@ -17,10 +17,10 @@ Runtime 2.3.0.401
 ## Data Types
 FAST contains a large number of helpful data types, including some helpful wrappers for the built-in data structures to make them easier to work with.
 * [Array](#array)
-* [String](#string)
+* [String](#string-string-)
 * [Data Structures](#data-structures)
-* [Pair](#pair)
-* [Vec2](#vec2)
+* [Pair](#pair-a,b-)
+* [Vec2](#vec2-x,y-)
 ### Array
 The Array wrapper provides an expanded interface to interact with arrays.
 * sort() - An interface to provide sort functionality for arrays.
@@ -168,7 +168,7 @@ A simple garbage-collected, two-value structure. Sets the initial values to a an
 * equals( Pair ) - Returns if the provided Pair matches this one.
 * a - the a value.
 * b - the b value.
-### Vec2
+### Vec2( x, y )
 A simple garbage-collected, two-dimensional vector structure.
 * set( x, y ) - Sets the x and y values of this vector.
 * add( Vec2 ) - Adds Vec2 to this one.
@@ -181,6 +181,24 @@ A simple garbage-collected, two-dimensional vector structure.
 ## Database
 ## Events
 ## File Handling
+The File interface is designed to open a file, read its contents into an internal data structure, and then close the file.  This allows for files read into the game to be manipulated more easily, and provides a consistent interface no matter what format the file that is being read from may be written in.
+### File( filename, \*read_only )
+```var _file = new File( "filename" )```
+The File interface provides a common framework to seek, open, write to, and save files.
+* reset() - Returns file progress to the start.
+* exists( a ) - Returns if file a exists.
+* read() - Returns the next readable piece of the file.
+* peek( a ) - Returns the value at position a of the file, or undefined if it doesn't exist.
+* poke( a, b ) - Writes b to position a of the file, if it exists.
+* remaining() - Returns how much of the file is left to read.
+* eof() - Returns if the end of the file has been reached.
+* close() - Attempts to write this file to the disk, replacing the one originally read from. If read_only was true, this operation should always fail.
+* discard() - Discards this file without writing any changes to the disk.
+* clear() - Erases the contents of this file.
+* toArray() - Returns this file as an array.
+* toString() - Returns the name of the source file and lines read, used for debugging.
+### FileText( filename, read_only )
+Provides a file wrapper for reading plain text files. Implements the File interface.
 ## Input Handling
 ## Logging
 ## Publisher
