@@ -187,7 +187,7 @@ The File interface is designed to open a file, read its contents into an interna
 var _file = new File( "filename" );
 
 while ( _file.eof() == false ) {
-  var _read = _file.next();
+  var _read = _file.read();
 }
 ```
 The File interface provides a common framework to seek, open, write to, and save files.
@@ -204,7 +204,7 @@ The File interface provides a common framework to seek, open, write to, and save
 * toArray() - Returns this file as an array.
 * toString() - Returns the name of the source file and lines read, used for debugging.
 ### FileText( filename, read_only )
-Provides a file wrapper for reading plain text files. Implements the File interface.
+Provides a file wrapper for reading from, and writing to, plain text files. Implements the File interface.
 ## Input Handling
 ## Logging
 ## Publisher
