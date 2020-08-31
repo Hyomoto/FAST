@@ -1,5 +1,5 @@
-# FASTv33
-FAST for Gamemaker Studio 2
+# FAST v3.3
+Flexible Assistant Toolkit for Gamemaker Studio 2
 ## Compatability
 IDE     2.3.0.529
 Runtime 2.3.0.401
