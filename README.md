@@ -123,14 +123,6 @@ myVec = new Vec2( 2, 5 );
 * dot( Vec2 ) - Returns the dot product of this vector and Vec2.
 * toArray() - Returns this vector as an array.
 * toString() - Returns this vector as an array as a string.
-* [Database](#database)
-* [File Handling](#file-handling)
-* [Input Handling](#input-handling)
-* [Logging](#logging)
-* [Publisher](#publisher)
-* [Render](#render)
-* [Scripting](#scripting)
-* [Misc Functions](#misc-functions)
 ### Data Structures
 * [DsChain](#dschain)
 * [DsLinkedList](#dslinkedlist-values-)
@@ -305,6 +297,14 @@ Lastly, FAST includes general purpose functions to fill in some of the missing f
 
 
 # Other Stuff
+* [Database](#database)
+* [File Handling](#file-handling)
+* [Input Handling](#input-handling)
+* [Logging](#logging)
+* [Publisher](#publisher)
+* [Render](#render)
+* [Scripting](#scripting)
+* [Misc Functions](#misc-functions)
 ### Shapes
 Shape is an interface that is used to define shapes. This data type is used heavily by the Pointer feature for creating GUI interactions, but is provided as a generic data type to allow future extensions.
 * inside( x, y ) - Returns if the point lies within this shape's dimensions.
