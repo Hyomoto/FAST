@@ -220,7 +220,7 @@ The File interface provides a common framework to seek, open, write to, and save
 Provides a file wrapper for reading from, and writing to, plain text files. Implements the File interface.
 ## Input Handling
 ## Logging
-FAST provides a general purpose logging system to write to the output, files, or any feature that implements the GenericOutput interface.
+FAST provides a general purpose logging system to handle outputs based on the current ERROR_LEVEL. Implements the Logger constructor which can write to anything that implements the GenericOutput interface.
 ### Logger( name, length, output... )
 ```GML
 logger = new Logger( "Debug", 144, System, new FileText( "logs/debug.txt" ) );
