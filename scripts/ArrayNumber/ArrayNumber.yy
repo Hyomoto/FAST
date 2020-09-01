@@ -6,7 +6,7 @@
     "path": "folders/FAST/Data Types/Array.yy",
   },
   "resourceVersion": "1.0",
-  "name": "ArrayStrings",
+  "name": "ArrayNumber",
   "tags": [],
   "resourceType": "GMScript",
 }

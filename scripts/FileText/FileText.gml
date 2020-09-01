@@ -13,7 +13,7 @@ function FileText( _filename, _readonly ) : File( _filename, _readonly ) constru
 				
 			} else {
 				var _i = 0; repeat( ds_list_size( list ) ) {
-					file_text_write_string( _file, list[| _i++ ] );
+					file_text_write_string( _file, string( list[| _i++ ] ) );
 					file_text_writeln( _file );
 				
 				}

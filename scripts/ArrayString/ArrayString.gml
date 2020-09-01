@@ -1,11 +1,10 @@
-/// @func ArrayStrings
+/// @func ArrayString
 /// @param size
 /// @param *default
-function ArrayStrings( _size ) : Array( _size ) constructor {
-	static superSet	= set;
+function ArrayString( _size ) : Array( _size ) constructor {
+	static set_Array = set;
 	static set	= function( _index, _value ) {
-		if ( !is_string( _value ) ) { _value = string( _value ); }
-		return superSet( _index, _value );
+		return set_Array( _index, string( _value ) );
 		
 	}
 	static sort	= function( _ascending ) {

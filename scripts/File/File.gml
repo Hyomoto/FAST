@@ -28,12 +28,19 @@ function File( _filename, _readonly ) : GenericOutput() constructor {
 		return undefined;
 		
 	}
-	static peek		= function() {
-		if ( last < lines ) {
-			return list[| last ];
+	static peek		= function( _index ) {
+		if ( _index >= 0 && _index < lines ) {
+			return list[|  _index  ];
 			
 		}
 		return undefined;
+		
+	}
+	static poke		= function( _index, _value ) {
+		if ( _index >= 0 && _index < lines ) {
+			list[| _index ]	= _value;
+			
+		}
 		
 	}
 	static write	= function( _value ) {
@@ -44,14 +51,6 @@ function File( _filename, _readonly ) : GenericOutput() constructor {
 			
 		}
 		ds_list_add( list, _value );
-		
-	}
-	static get_line	= function( _line ) {
-		if ( _line >= 0 && _line < lines ) {
-			return list[| _line ];
-			
-		}
-		return undefined;
 		
 	}
 	static remaining= function() {
@@ -74,6 +73,18 @@ function File( _filename, _readonly ) : GenericOutput() constructor {
 	};
 	static clear	= function() {
 		ds_list_clear( list );
+		
+	}
+	static toArray	= function() {
+		var _array	= array_create( lines );
+		
+		var _i = 0; repeat( lines ) {
+			_array[ _i ] = list[| _i ];
+			
+			++_i;
+			
+		}
+		return _array;
 		
 	}
 	static toString	= function() {
