@@ -48,7 +48,7 @@ Provides an array wrapper with an expanded interface to interact with arrays ful
 * lowest() - Returns the lowest number in the array.
 * highest() - Returns the highest number in the array.
 ### Shapes
-The Shape data type is an interface to inherit and define shapes.
+Shape is an interface that is used to define shapes. This data type is used heavily by the Pointer feature for creating GUI interactions, but is provided as a generic data type to allow future extensions.
 * inside( x, y ) - Returns if the point lies within this shape's dimensions.
 * draw( x, y, outline ) - Draws the shape either solid, or outlined at x, y.
 * set( x, y ) - Sets the position of the shape to x, y.
