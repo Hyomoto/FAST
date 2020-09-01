@@ -11,8 +11,8 @@ Runtime 2.3.0.401
 # Core
 The Core module of FAST is what all other modules build on top of.
 ## Features
-* [Data Structures](#data-structures)
 * [Data Types](#data-types)
+* [Data Structures](#data-structures)
 * [Events](#events)
 * [Functions](#functions)
 * [System](#system)
@@ -131,24 +131,10 @@ myVec = new Vec2( 2, 5 );
 * [Render](#render)
 * [Scripting](#scripting)
 * [Misc Functions](#misc-functions)
-
-### Shapes
-Shape is an interface that is used to define shapes. This data type is used heavily by the Pointer feature for creating GUI interactions, but is provided as a generic data type to allow future extensions.
-* inside( x, y ) - Returns if the point lies within this shape's dimensions.
-* draw( x, y, outline ) - Draws the shape either solid, or outlined at x, y.
-* set( x, y ) - Sets the position of the shape to x, y.
-#### ShapeCircle( x, y, radius )
-Defines a circle at x, y with the given radius. Implements the Shape interface.
-#### ShapeEllipses( x, y, width, height )
-Defines an elipses at x, y with the given width and height. Implements the Shape interface.
-#### ShapePolygon( x1, y1... )
-Defines a polygon with the given list of points, will provide the final closing pair. Implements the Shape interface.
-#### ShapeRectangle( x, y, width, height )
-Defines a rectangle at x, y with the given width and height. Implements the Shape interface.
-
 ### Data Structures
 * [DsChain](#dschain)
 * [DsLinkedList](#dslinkedlist-values-)
+* [DsWalkable](#dswalkable-values-)
 * [DsList](#dslist-values-)
 * [DsTree](#dstree)
 * [DsMap](#dsmap)
@@ -165,7 +151,20 @@ Provides a linked-list style interface to build garbage-collected data structure
 #### DsLinkedList( values... )
 Provides a garbage-collected, linear-traversable data structure. Adds the values as provided. Implements DsChain.
 * clear() - Clears all entries.
-* empty() - Returns if the linked list is empty.
+* empty() - Returns true if the list is empty.
+* first() - Returns the first link in the list.
+* size() - Returns the number of links in the list.
+* add( a ) - Adds a new link with value a to the end of the list.
+* remove( a ) - Removes link a from the list.
+* find( a, b ) - Returns the first link that contains value a. If b is specified, starts search there instead of the first link.
+* has_next( a ) - Returns if there are further entries after link a.
+* next( a ) - Returns the next link after link a.  If the end of the list has been reached, will return the first link.
+* toArray() - Returns the links in the list as an array.
+* toString() - Returns the links in the list as an array converted to a string.
+#### DsWalkable( values... )
+Provides a garbage-collected, linear-traversable data structure with state memory. Adds the values as provided. Implements DsChain.
+* clear() - Clears all entries.
+* empty() - Returns true if the list is empty.
 * size() - Returns the number of entries.
 * add() - Adds a new entry to the end of the list.
 * remove() - Removes the first matching entry.
@@ -250,6 +249,49 @@ Provides a data structure that behaves as a map and a list. Must be destroyed wi
 * destroy() - Destroys the data structures in the table.
 * toArray() - Returns the key value pairs as nested arrays.
 * toString() - Retursn the table as key value pairs as nested arrays as a string.
+## Functions
+Lastly, FAST includes general purpose functions to fill in some of the missing features in GML.
+* [Arrays](#array-functions)
+* [Draw](#draw-functions)
+* [Include](#include-functions)
+* [Integer](#integer-functions)
+* [String](#string-functions)
+### Array Functions
+* array_concat( a... ) - Returns a concantated array build from the provided arrays.
+* array_contains( a, b ) - Returns the index of array a that contains b, or -1 if it isn't found.
+* array_difference( a, b... ) - Returns array a with b subtracted from it.
+* array_unique( a ) - Returns an array containing the unique entries in a.
+* array_union( a... ) - Returns an array containing all the unique entires of the provided arrays.
+* array_sort( a, start, end, ascending, pivot, compare ) - See internal documentation, provides a general-purpose quicksort algorithm for sort-in-place operations on arrays.
+* array_to_string( a, b ) - Returns the contents of array separated by b as a string.
+### Include Functions
+* include( object ) - Runs the current event from object.
+### Integer Functions
+* integer_wrap( value, a, b ) - Returns value wrapped between a and b.
+### String Functions
+* string_con( a... ) - Returns a concantated string containing a...
+* string_explode( a, b, trim ) - Returns an array of string broken up by b.  If trim is true, whitespace will be removed from each entry.
+* string_explode_reverse( a, b, trim ) - Returns an array of string broken up by b in reverse order.  If trim is true, whitespace will be removed from each entry.
+* string_find_first( chars, string, start ) - Returns the position of the first character in chars found in string, or 0 if none are found. If start is provided, the search will begin at the following character.
+* string_justify( a, b, align, character ) - Returns a with white space added to confirm to a character width of b and an alignment of align (fa_left, fa_center, fa_right). If character is supplied, that will be used instead of " ".
+* string_trim( a ) - Returns a with the preceeding and following whitespace removed.
+* string_to_real( a ) - Converts a to a number, or 0 if it can not be converted.  Supports 0x hexadecimal and 0.0 formats.
+# Other Stuff
+### Shapes
+Shape is an interface that is used to define shapes. This data type is used heavily by the Pointer feature for creating GUI interactions, but is provided as a generic data type to allow future extensions.
+* inside( x, y ) - Returns if the point lies within this shape's dimensions.
+* draw( x, y, outline ) - Draws the shape either solid, or outlined at x, y.
+* set( x, y ) - Sets the position of the shape to x, y.
+#### ShapeCircle( x, y, radius )
+Defines a circle at x, y with the given radius. Implements the Shape interface.
+#### ShapeEllipses( x, y, width, height )
+Defines an elipses at x, y with the given width and height. Implements the Shape interface.
+#### ShapePolygon( x1, y1... )
+Defines a polygon with the given list of points, will provide the final closing pair. Implements the Shape interface.
+#### ShapeRectangle( x, y, width, height )
+Defines a rectangle at x, y with the given width and height. Implements the Shape interface.
+
+
 
 ## Database
 The FAST database is a DsTree-based data loading system. It uses a lua-like language to write database files, and supports features such as overwriting, custom data types, inheritance, templating, and macros. It was designed for projects like RPGs that have large amounts of external data, but is also useful for implementing localization.
@@ -323,33 +365,6 @@ Oh, hello again! I didn't expect to see you so soon.
 Hello, my name is Shelly. Pleased to meet you!
 << end >>
 ```
-## Misc Functions
-Lastly, FAST includes general purpose functions to fill in some of the missing features in GML.
-* [Arrays](#array-functions)
-* [Draw](#draw-functions)
-* [Include](#include-functions)
-* [Integer](#integer-functions)
-* [String](#string-functions)
-### Array Functions
-* array_concat( a... ) - Returns a concantated array build from the provided arrays.
-* array_contains( a, b ) - Returns the index of array a that contains b, or -1 if it isn't found.
-* array_difference( a, b... ) - Returns array a with b subtracted from it.
-* array_unique( a ) - Returns an array containing the unique entries in a.
-* array_union( a... ) - Returns an array containing all the unique entires of the provided arrays.
-* array_sort( a, start, end, ascending, pivot, compare ) - See internal documentation, provides a general-purpose quicksort algorithm for sort-in-place operations on arrays.
-* array_to_string( a, b ) - Returns the contents of array separated by b as a string.
 ### Draw Functions
 * draw_bar( sprite, index, x, y, width, percent ) - Draws a bar using a 3-slice method using the sprite provided, and with width(in pixels) filled to percent(0 to 1).
 * draw_text_bubble( sprite, index, x, y, width ) - Draws a "text bubble" using a 5-frame sprite with the given width(in pixels).
-### Include Functions
-* include( object ) - Runs the current event from object.
-### Integer Functions
-* integer_wrap( value, a, b ) - Returns value wrapped between a and b.
-### String Functions
-* string_con( a... ) - Returns a concantated string containing a...
-* string_explode( a, b, trim ) - Returns an array of string broken up by b.  If trim is true, whitespace will be removed from each entry.
-* string_explode_reverse( a, b, trim ) - Returns an array of string broken up by b in reverse order.  If trim is true, whitespace will be removed from each entry.
-* string_find_first( chars, string, start ) - Returns the position of the first character in chars found in string, or 0 if none are found. If start is provided, the search will begin at the following character.
-* string_justify( a, b, align, character ) - Returns a with white space added to confirm to a character width of b and an alignment of align (fa_left, fa_center, fa_right). If character is supplied, that will be used instead of " ".
-* string_trim( a ) - Returns a with the preceeding and following whitespace removed.
-* string_to_real( a ) - Converts a to a number, or 0 if it can not be converted.  Supports 0x hexadecimal and 0.0 formats.
