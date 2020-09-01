@@ -1,8 +1,10 @@
 # FAST v3.3
-Flexible Assistant Toolkit for Gamemaker Studio 2
+Flexible Assistant Toolkit for Gamemaker Studio 2 - There are a lot of tasks in GML that seem cumbersome because of inconsistencies in the interal functions in GML. This library serves as a platform for extending the language with generally useful features.  It consists of lightweight System core, and include-on-demand features that can be pruned or added as desired. This includes concrete features like universal mouse, keyboard and gampad support, automatic resolution handling, and a Lua-like scripting language, to abstract features such as interface structures to provide common implementation patterns and data structure wrappers to enhance built-in GML features. Because all of FAST's features are built on the System core, someone who wishes to write extensions to the FAST library can be confident that their systems will work and interact seamlessly with other FAST features. In fact, extensibility is the whole point. While FAST does contain some concrete implementations, all of them are based on common interfaces that can be inherited and extended as desired.
 ## Compatability
+```
 IDE     2.3.0.529
 Runtime 2.3.0.401
+```
 ## Table of contents
 * [Data Types](#data-types)
 * [Database](#database)
