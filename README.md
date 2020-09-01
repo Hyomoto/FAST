@@ -6,24 +6,24 @@ IDE     2.3.0.529
 Runtime 2.3.0.401
 ```
 ## Table of contents
+* [Core](#core)
+
+# Core
+The Core module of FAST is what all other modules build on top of.
+## Features
+* [Data Structures](#data-structures)
 * [Data Types](#data-types)
-* [Database](#database)
 * [Events](#events)
-* [File Handling](#file-handling)
-* [Input Handling](#input-handling)
-* [Logging](#logging)
-* [Publisher](#publisher)
-* [Render](#render)
-* [Scripting](#scripting)
-* [Misc Functions](#misc-functions)
-## Data Types
+* [Functions](#functions)
+* [System](#system)
+### Data Types
 FAST contains a large number of helpful data types, including wrappers for the built-in data structures to make them easier to work with and interfaces to build new structures from.
 * [Array](#array)
 * [String](#string-string-)
 * [Data Structures](#data-structures)
 * [Pair](#pair-a-b-)
 * [Vec2](#vec2-x-y-)
-### Array
+#### Array
 The Array wrapper provides an expanded interface to interact with arrays.
 * sort() - An interface to provide sort functionality for arrays.
 * size() - Returns the size of the array.
@@ -37,16 +37,81 @@ The Array wrapper provides an expanded interface to interact with arrays.
 * get( a ) - Returns index a in the array, or undefined if it doesn't exist.
 * toArray() - Returns the array.
 * toString( a ) - Returns the array as a string with a as the divider.
-#### ArrayString
+##### ArrayString
 Provides an array wrapper with an expanded interface to interact with arrays full of strings. Implements Array.
 * sort( ascending ) - Uses quicksort algorithm to alphabetically sort-in-place the array from A-Z when ascending is true, or Z-A when false.
-#### ArrayNumber
+##### ArrayNumber
 Provides an array wrapper with an expanded interface to interact with arrays full of numbers. Implements Array.
 * sort( ascending ) - Uses quicksort algorithm to numerically sort-in-place the array in ascending order when ascending is true, or descending when false.
 * sum() - Returns the sum of all values in the array.
 * average() - Returns the average of all values in the array.
 * lowest() - Returns the lowest number in the array.
 * highest() - Returns the highest number in the array.
+#### String( string )
+The String wrapper provides an expanded interface to interact with strings such as formatting.
+* formatter( a ) - An overwrittable interface that can be used to format the string when set() is called.
+* set( a ) - Sets the string to a as returned from formatter().
+* draw( x, y, font, color ) - Draws the string at x, y with the given font and color.
+* draw_ext( x, y, font, color, halign, valign ) - Draws the string at x, y with the given font, color and alignments.
+* width( a ) - Returns the width of the string in font a.
+* height( a ) - Returns the height of the string in font a.
+* toArray() - Returns the string as a character array.
+* toString() - Returns the string.
+##### StringNumber( string, format )
+Implements String.
+##### StringTime( string, decimals, format )
+Formats the string as a time with the given number of decimals and format. Implements String.
+* decimals - The number of decimals to use.
+* format - ex: "$S seconds"
+** $H will be converted into the number of hours
+** $M will be converted into the number of minutes, sans hours if provided
+** $S will be converted into the number of seconds, sans hours and minutes if provided.
+#### Pair( a, b )
+A simple garbage-collected, two-value structure. Sets the initial values to a and b.
+* equals( a, b ) - Returns if the structure a, b values match a, b.
+* equals( Pair ) - Returns if the provided Pair matches this one.
+* a - the a value.
+* b - the b value.
+#### Surface( w, h )
+The Surface wrapper provides a simplified interface for dealing with surfaces. They can be set to redraw periodically, or only on request.  A surface will always redraw if it is flushed from VRAM.
+```GML
+if ( surface.update() ) {
+  surface.set();
+    draw_text( 10, 10, "Hello World!" );
+  surface.reset();
+}
+surface.draw( 0, 0 );
+```
+* create() - Recreates the surface.
+* free() - Frees the surface.
+* set() - Sets the surface as the current draw target.
+* reset() - Pops the surface if it is the current draw target.
+* draw( x, y ) - Draws the surface at x, y.
+* update( force ) - Returns true if the surface should be redrawn, and will recreate the surface if it doesn't exist.
+#### Timer( \*format, \*decimal_places )
+The Timer is a simple way to get a formatted difference between two times in your program. If format and decimal_places are defined, they will override the default "$S" and 1 respectively.
+* reset() - Resets the timer.
+* elapsed() - Returns how much time has elapsed since the timer was last reset().
+* toString() - Returns a StringTime formatted string with the time elapsed.
+#### Vec2( x, y )
+A simple garbage-collected, two-dimensional vector structure.
+* set( x, y ) - Sets the x and y values of this vector.
+* add( Vec2 ) - Adds Vec2 to this one.
+* subtract( Vec2 ) - Subtracts Vec2 from this one.
+* Multiply( Vec2 ) - Multplies this vectory by Vec2.
+* Divide( Vec2 ) - Divides this vector by Vec2.
+* dot( Vec2 ) - Returns the dot product of this vector and Vec2.
+* toArray() - Returns this vector as an array.
+* toString() - Returns this vector as an array as a string.
+* [Database](#database)
+* [File Handling](#file-handling)
+* [Input Handling](#input-handling)
+* [Logging](#logging)
+* [Publisher](#publisher)
+* [Render](#render)
+* [Scripting](#scripting)
+* [Misc Functions](#misc-functions)
+
 ### Shapes
 Shape is an interface that is used to define shapes. This data type is used heavily by the Pointer feature for creating GUI interactions, but is provided as a generic data type to allow future extensions.
 * inside( x, y ) - Returns if the point lies within this shape's dimensions.
@@ -60,25 +125,7 @@ Defines an elipses at x, y with the given width and height. Implements the Shape
 Defines a polygon with the given list of points, will provide the final closing pair. Implements the Shape interface.
 #### ShapeRectangle( x, y, width, height )
 Defines a rectangle at x, y with the given width and height. Implements the Shape interface.
-### String( string )
-The String wrapper provides an expanded interface to interact with strings such as formatting.
-* formatter( a ) - An overwrittable interface that can be used to format the string when set() is called.
-* set( a ) - Sets the string to a as returned from formatter().
-* draw( x, y, font, color ) - Draws the string at x, y with the given font and color.
-* draw_ext( x, y, font, color, halign, valign ) - Draws the string at x, y with the given font, color and alignments.
-* width( a ) - Returns the width of the string in font a.
-* height( a ) - Returns the height of the string in font a.
-* toArray() - Returns the string as a character array.
-* toString() - Returns the string.
-#### StringNumber( string, format )
-Implements String.
-#### StringTime( string, decimals, format )
-Formats the string as a time with the given number of decimals and format. Implements String.
-* decimals - The number of decimals to use.
-* format - ex: "$S seconds"
-** $H will be converted into the number of hours
-** $M will be converted into the number of minutes, sans hours if provided
-** $S will be converted into the number of seconds, sans hours and minutes if provided.
+
 ### Data Structures
 * [DsChain](#dschain)
 * [DsLinkedList](#dslinkedlist-values-)
@@ -183,22 +230,7 @@ Provides a data structure that behaves as a map and a list. Must be destroyed wi
 * destroy() - Destroys the data structures in the table.
 * toArray() - Returns the key value pairs as nested arrays.
 * toString() - Retursn the table as key value pairs as nested arrays as a string.
-### Pair( a, b )
-A simple garbage-collected, two-value structure. Sets the initial values to a and b.
-* equals( a, b ) - Returns if the structure a, b values match a, b.
-* equals( Pair ) - Returns if the provided Pair matches this one.
-* a - the a value.
-* b - the b value.
-### Vec2( x, y )
-A simple garbage-collected, two-dimensional vector structure.
-* set( x, y ) - Sets the x and y values of this vector.
-* add( Vec2 ) - Adds Vec2 to this one.
-* subtract( Vec2 ) - Subtracts Vec2 from this one.
-* Multiply( Vec2 ) - Multplies this vectory by Vec2.
-* Divide( Vec2 ) - Divides this vector by Vec2.
-* dot( Vec2 ) - Returns the dot product of this vector and Vec2.
-* toArray() - Returns this vector as an array.
-* toString() - Returns this vector as an array as a string.
+
 ## Database
 The FAST database is a DsTree-based data loading system. It uses a lua-like language to write database files, and supports features such as overwriting, custom data types, inheritance, templating, and macros. It was designed for projects like RPGs that have large amounts of external data, but is also useful for implementing localization.
 ## Events
