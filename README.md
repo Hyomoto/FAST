@@ -1,5 +1,5 @@
 # FAST v3.3
-Flexible Assistant Toolkit for Gamemaker Studio 2 - There are a lot of tasks in GML that seem cumbersome because of inconsistencies in the interal functions in GML. This library serves as a platform for extending the language with generally useful features.  It consists of lightweight System core, and include-on-demand features that can be pruned or added as desired. This includes concrete features like universal mouse, keyboard and gampad support, automatic resolution handling, and a Lua-like scripting language, to abstract features such as interface structures to provide common implementation patterns and data structure wrappers to enhance built-in GML features. Because all of FAST's features are built on the System core, someone who wishes to write extensions to the FAST library can be confident that their systems will work and interact seamlessly with other FAST features. In fact, extensibility is the whole point. While FAST does contain some concrete implementations, all of them are based on common interfaces that can be inherited and extended as desired.
+Flexible Assistant Toolkit for Gamemaker Studio 2 - There are many tasks in GML that seem cumbersome because of inconsistencies and omissions in the internal functions in GML. FAST serves as a platform for extending the language with general-purpose features.  It consists of a lightweight System core and include-on-demand features that can be pruned or added as desired. It includes concrete features like universal mouse, keyboard and gamepad support, automatic resolution handling, and a Lua-like scripting language, to more abstract features such as interface structures to provide common implementation patterns and data structure wrappers that enhance built-in GML features. Because all of FAST's features build on the System core, anyone who wishes to write extensions to the FAST library can be confident that their systems will work seamlessly with other FAST features. Extensibility is the whole point. While FAST contains concrete implementations, they all derive from standard interfaces that can be inherited and extended as desired.
 ## Compatability
 ```
 IDE     2.3.0.529
@@ -220,6 +220,7 @@ The File interface provides a common framework to seek, open, write to, and save
 Provides a file wrapper for reading from, and writing to, plain text files. Implements the File interface.
 ## Input Handling
 ## Logging
+
 ## Publisher
 ## Render
 ## Scripting
