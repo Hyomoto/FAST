@@ -3,7 +3,7 @@
   "isCompatibility": false,
   "parent": {
     "name": "DsTree",
-    "path": "folders/FAST/Data Types/DsTree.yy",
+    "path": "folders/FAST/Core/Data Structures/DsTree.yy",
   },
   "resourceVersion": "1.0",
   "name": "DsTree",

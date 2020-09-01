@@ -3,7 +3,7 @@
   "isCompatibility": false,
   "parent": {
     "name": "Events",
-    "path": "folders/FAST/Events.yy",
+    "path": "folders/FAST/Core/Events.yy",
   },
   "resourceVersion": "1.0",
   "name": "Event",

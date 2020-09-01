@@ -3,7 +3,7 @@
   "isCompatibility": false,
   "parent": {
     "name": "Data Types",
-    "path": "folders/FAST/Data Types.yy",
+    "path": "folders/FAST/Core/Data Types.yy",
   },
   "resourceVersion": "1.0",
   "name": "Timer",

@@ -1,9 +1,9 @@
 /// @func test_DsLinkedList
-function test_DsLinkedList(){
+function test_DsWalkable(){
 	var _timer	= new Timer( "$S", 5 );
 	
-	syslog( "> Testing DsLinkedList" );
-	var _ex		= new DsLinkedList();
+	syslog( "> Testing DsWalkable" );
+	var _ex		= new DsWalkable();
 	test_validator( "add()", 10, _ex, function( _ex ) {
 		var _size	= _ex.size();
 		

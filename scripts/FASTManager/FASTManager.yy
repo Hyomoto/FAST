@@ -2,8 +2,8 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "System",
-    "path": "folders/FAST/System.yy",
+    "name": "Core",
+    "path": "folders/FAST/Core.yy",
   },
   "resourceVersion": "1.0",
   "name": "FASTManager",

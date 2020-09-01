@@ -1,6 +1,6 @@
 /// @func ScriptExpression
 /// @param expression
-function ScriptExpression( _string ) : DsLinkedList() constructor {
+function ScriptExpression( _string ) : DsWalkable() constructor {
 	static validate	= function( _engine, _script, _statement ) {
 		var _header	= "(line " + string( _statement.line ) + ") ";
 		var _last	= undefined;

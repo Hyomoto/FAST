@@ -1,3 +1,4 @@
+
 fast	= FASTManager();
 
 syslog( string_repeat( "~", 40 ) );

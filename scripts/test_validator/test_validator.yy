@@ -2,8 +2,8 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Misc Functions",
-    "path": "folders/FAST/Misc Functions.yy",
+    "name": "TEST_CASES",
+    "path": "folders/TEST_CASES.yy",
   },
   "resourceVersion": "1.0",
   "name": "test_validator",

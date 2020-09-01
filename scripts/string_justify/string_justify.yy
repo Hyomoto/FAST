@@ -3,7 +3,7 @@
   "isCompatibility": false,
   "parent": {
     "name": "string",
-    "path": "folders/FAST/System/Misc Functions/string.yy",
+    "path": "folders/FAST/Core/Functions/string.yy",
   },
   "resourceVersion": "1.0",
   "name": "string_justify",

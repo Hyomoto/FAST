@@ -2,8 +2,8 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Input",
-    "path": "folders/FAST/Input.yy",
+    "name": "Input Handling",
+    "path": "folders/FAST/Input Handling.yy",
   },
   "resourceVersion": "1.0",
   "name": "GenericInput",

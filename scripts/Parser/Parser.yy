@@ -3,7 +3,7 @@
   "isCompatibility": false,
   "parent": {
     "name": "Scripts",
-    "path": "folders/FAST/System/Scripts.yy",
+    "path": "folders/FAST/Core/Scripts.yy",
   },
   "resourceVersion": "1.0",
   "name": "Parser",

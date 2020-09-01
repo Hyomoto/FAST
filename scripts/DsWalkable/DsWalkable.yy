@@ -6,7 +6,7 @@
     "path": "folders/FAST/Core/Data Structures.yy",
   },
   "resourceVersion": "1.0",
-  "name": "DsMap",
+  "name": "DsWalkable",
   "tags": [],
   "resourceType": "GMScript",
 }

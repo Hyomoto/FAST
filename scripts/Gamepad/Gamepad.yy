@@ -3,7 +3,7 @@
   "isCompatibility": false,
   "parent": {
     "name": "Scripts",
-    "path": "folders/FAST/Input/Gamepad/Scripts.yy",
+    "path": "folders/FAST/Input Handling/Gamepad/Scripts.yy",
   },
   "resourceVersion": "1.0",
   "name": "Gamepad",

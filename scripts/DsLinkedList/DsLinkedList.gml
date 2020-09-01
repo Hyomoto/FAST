@@ -1,90 +1,27 @@
 /// @func DsLinkedList
+/// @param values...
 function DsLinkedList() : DsChain() constructor {
 // # Method Declaration
-	static remove		= function( _link ) {
-		if ( links == 0 ) { return; }
-		
-		var _seek	= chain;
-		var _last	= undefined;
-		
-		while ( _seek != undefined ) {
-			if ( _seek == _link ) {
-				if ( _link == step ) {
-					next();
-					
-				}
-				if ( _last != undefined ) {
-					_last.chain	= _link.chain;
-					
-				}
-				if ( _link == chain ) {
-					chain	= _link.chain;
-					
-				}
-				if ( _link == final ) {
-					final	= _last;
-					
-				}
-				--links;
-				
-				return true;
-				
-			}
-			_last	= _seek;
-			_seek	= _seek.chain;
-			
-		}
-		return false;
-		
-	}
-	static clearSuper	= clear;
-	static clear	= function() {
-		final	= undefined;
-		step	= undefined;
-		steps	= 0;
-		
-		clearSuper();
-		
-	}
-	static start	= function( _at ) {
-		step	= undefined;
-		steps	= 0;
-		
-		repeat( _at == undefined ? 0 : _at ) { next(); }
-		
-	}
 	static first	= function() {
 		if ( links == 0 ) { return undefined; }
 		
-		return chain.value;
+		return chain;
 		
 	}
-	static has_next	= function() {
-		return ( links == 0 ? false : step == undefined || step.chain != undefined );
+	static has_next	= function( _last ) {
+		return ( links == 0 ? false : _last == undefined || _last.chain != undefined );
 		
 	}
-	static remaining	= function() {
-		return links - steps;
-		
-	}
-	static next		= function() {
+	static next		= function( _last ) {
 		if ( links == 0 ) { return undefined; }
-		if ( step == undefined || step.chain == undefined ) {
-			step	= chain;
-			steps	= 1;
+		if ( _last == undefined || _last.chain == undefined ) {
+			_last	= chain;
 			
 		} else {
-			step	= step.chain;
-			steps	+= 1;
+			_last	= _last.chain;
 			
 		}
-		return step.value;
-		
-	}
-	static peek	= function() {
-		if ( links == 0 ) { return undefined; }
-		
-		return ( step == undefined ? chain.value : step.value );
+		return _last;
 		
 	}
 	static find	= function( _value ) {
@@ -120,10 +57,15 @@ function DsLinkedList() : DsChain() constructor {
 		return _link;
 		
 	}
+	static clear_DsChain	= clear;
+	static clear	= function() {
+		final	= undefined;
+		
+		clear_DsChain();
+		
+	}
 // # Variable Declaration
 	final	= undefined;
-	step	= undefined;
-	steps	= 0;
 	
 	var _i = 0; repeat( argument_count ) {
 		add( argument[ _i++ ] );

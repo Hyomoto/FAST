@@ -2,8 +2,8 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Misc Functions",
-    "path": "folders/FAST/Misc Functions.yy",
+    "name": "file",
+    "path": "folders/FAST/Core/Functions/file.yy",
   },
   "resourceVersion": "1.0",
   "name": "file_get_directory",

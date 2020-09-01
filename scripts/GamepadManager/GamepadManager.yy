@@ -3,7 +3,7 @@
   "isCompatibility": false,
   "parent": {
     "name": "Gamepad",
-    "path": "folders/FAST/Input/Gamepad.yy",
+    "path": "folders/FAST/Input Handling/Gamepad.yy",
   },
   "resourceVersion": "1.0",
   "name": "GamepadManager",

@@ -128,7 +128,7 @@
   "maintainGms1Font": false,
   "parent": {
     "name": "Fonts",
-    "path": "folders/FAST/System/Resources/Fonts.yy",
+    "path": "folders/FAST/Core/Resources/Fonts.yy",
   },
   "resourceVersion": "1.0",
   "name": "font_sys_debug",
