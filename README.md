@@ -249,6 +249,29 @@ Provides a data structure that behaves as a map and a list. Must be destroyed wi
 * destroy() - Destroys the data structures in the table.
 * toArray() - Returns the key value pairs as nested arrays.
 * toString() - Retursn the table as key value pairs as nested arrays as a string.
+## Events
+The FAST event system allows for quickly writing and calling custom events without having to rely on spawning objects. They can be set to have a delay, and discard themselves after running or on-demand. The following event would be run once, thirty frames later, during the step event, and print Hello World! to the Output.
+```GML
+event = new EventOnce( FAST.STEP, 30, self, function() {
+  show_debug_message( "Hello World!" );
+});
+```
+Events can be created for the following times:
+FAST.CREATE - Will be run when FAST is created. This event is only run once when the program starts.
+FAST.GAME_END - Will be run during the Game End event. This event is only run once when the program ends.
+FAST.ROOM_START - Will be run during the room start event.
+FAST.ROOM_END - Will be run during the room end event.
+FAST.STEP - Will run during the step event.
+FAST.STEP_BEGIN - Will run during the begin step event.
+FAST.STEP_END - Will run during the end step event.
+### Event( event, frames, parameters, function )
+Creates a new event that will be run every number of frames until discard() is called on it.
+* discard() - Discards this event.
+* toString() - Returns this event as a string, used for debugging.
+### EventOnce( event, frames, parameters, function )
+Creates a new event that will be run after frames has passed, and then be discarded.
+* discard() - Discards this event.
+* toString() - Returns this event as a string, used for debugging.
 ## Functions
 Lastly, FAST includes general purpose functions to fill in some of the missing features in GML.
 * [Arrays](#array-functions)
@@ -300,13 +323,7 @@ Defines a rectangle at x, y with the given width and height. Implements the Shap
 
 ## Database
 The FAST database is a DsTree-based data loading system. It uses a lua-like language to write database files, and supports features such as overwriting, custom data types, inheritance, templating, and macros. It was designed for projects like RPGs that have large amounts of external data, but is also useful for implementing localization.
-## Events
-The FAST event system allows for quickly writing and calling custom events without having to rely on spawning objects. They can be set to have a delay, or discard themselves after running. The following event would be run once, thirty frames later, during the step event, and print Hello World! to the Output.
-```GML
-event = new EventOnce( FAST.STEP, 30, self, function() {
-  show_debug_message( "Hello World!" );
-});
-```
+
 ## File Handling
 The File interface is designed to open a file, read its contents into an internal data structure, and then close the file.  This allows for files read into the game to be manipulated more easily, and provides a consistent interface no matter what format the file that is being read from may be written in.
 ### File( filename, \*read_only )
