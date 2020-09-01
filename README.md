@@ -222,7 +222,9 @@ Provides a file wrapper for reading from, and writing to, plain text files. Impl
 ## Logging
 FAST provides a general purpose logging system to write to the output, files, or any feature that implements the GenericOutput interface.
 ### Logger( name, length, output... )
-```logger = new Logger( "Debug", 144, System, new FileText( "logs/debug.txt" ) );```
+```GML
+logger = new Logger( "Debug", 144, System, new FileText( "logs/debug.txt" ) );
+```
 The Logger constructor creates a new logging interface that pushes inputs into the given outputs. Additionally, it will attempt to close any those outputs when the program ends, ie: writing loose entries to files. Name is prepended to when the Logger is written to, for disinguishing between different outputs. Length will wrap the string at-or-near the given length. You may include as many outputs as desired, and anything that implements the GenericOutput interface will work. This includes System, which will write to the output, or FileText, which will write to an external file.
 * write( string ) - Writes the string to the log.
 * close() - Closes the log and removes it from the system.
