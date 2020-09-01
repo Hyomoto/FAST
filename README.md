@@ -25,6 +25,12 @@ FAST contains a large number of helpful data types, including wrappers for the b
 * [Vec2](#vec2-x-y-)
 #### Array
 The Array wrapper provides an expanded interface to interact with arrays.
+```GML
+// use an existing array
+myArray = new Array([ 10, 20, 40 ]);
+// create a new array with the given dimensions
+myArray = new Array( 10 );
+```
 * sort() - An interface to provide sort functionality for arrays.
 * size() - Returns the size of the array.
 * swap( a, b ) - Swaps element a and b in the array.
@@ -49,6 +55,9 @@ Provides an array wrapper with an expanded interface to interact with arrays ful
 * highest() - Returns the highest number in the array.
 #### String( string )
 The String wrapper provides an expanded interface to interact with strings such as formatting.
+```GML
+myString = new String( "Hello World!" );
+```
 * formatter( a ) - An overwrittable interface that can be used to format the string when set() is called.
 * set( a ) - Sets the string to a as returned from formatter().
 * draw( x, y, font, color ) - Draws the string at x, y with the given font and color.
@@ -68,6 +77,9 @@ Formats the string as a time with the given number of decimals and format. Imple
 ** $S will be converted into the number of seconds, sans hours and minutes if provided.
 #### Pair( a, b )
 A simple garbage-collected, two-value structure. Sets the initial values to a and b.
+```GML
+myPair = ( "Hello", "World!" );
+```
 * equals( a, b ) - Returns if the structure a, b values match a, b.
 * equals( Pair ) - Returns if the provided Pair matches this one.
 * a - the a value.
@@ -90,11 +102,19 @@ surface.draw( 0, 0 );
 * update( force ) - Returns true if the surface should be redrawn, and will recreate the surface if it doesn't exist.
 #### Timer( \*format, \*decimal_places )
 The Timer is a simple way to get a formatted difference between two times in your program. If format and decimal_places are defined, they will override the default "$S" and 1 respectively.
+```GML
+var _timer = new Timer();
+
+show_debug_message( _timer );
+```
 * reset() - Resets the timer.
 * elapsed() - Returns how much time has elapsed since the timer was last reset().
 * toString() - Returns a StringTime formatted string with the time elapsed.
 #### Vec2( x, y )
 A simple garbage-collected, two-dimensional vector structure.
+```GML
+myVec = new Vec2( 2, 5 );
+```
 * set( x, y ) - Sets the x and y values of this vector.
 * add( Vec2 ) - Adds Vec2 to this one.
 * subtract( Vec2 ) - Subtracts Vec2 from this one.
