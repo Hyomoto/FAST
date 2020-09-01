@@ -273,6 +273,11 @@ Hello, my name is Shelly. Pleased to meet you!
 ```
 ## Misc Functions
 Lastly, FAST includes general purpose functions to fill in some of the missing features in GML.
+* [Arrays](#array-functions)
+* [Draw](#draw-functions)
+* [Include](#include-functions)
+* [Integer](#integer-functions)
+* [String](#string-functions)
 ### Array Functions
 * array_concat( a... ) - Returns a concantated array build from the provided arrays.
 * array_contains( a, b ) - Returns the index of array a that contains b, or -1 if it isn't found.
