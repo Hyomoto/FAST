@@ -3,6 +3,8 @@
 /// @param height
 function Surface( _width, _height ) constructor {
 	static create	= function() {
+		surface_free( surface );
+		
 		surface	= surface_create( width, height );
 		
 	}
@@ -29,7 +31,10 @@ function Surface( _width, _height ) constructor {
 		
 	}
 	static reset	= function() {
-		surface_reset_target();
+		if ( surface_get_target() == surface ) {
+			surface_reset_target();
+			
+		}
 		
 	}
 	static free		= function() {

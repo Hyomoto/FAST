@@ -1,7 +1,8 @@
 /// @func file_get_directory
 /// @param directory
-function file_get_directory( _directory ) {
-	var _return	= new DsStack();
+/// @param sub_directories
+function file_get_directory( _directory, _sub ) {
+	var _return	= new DsQueue();
 	var _paths	= new DsStack();
 	var _path, _file;
 	
@@ -14,10 +15,13 @@ function file_get_directory( _directory ) {
 		while ( _file != "" ) {
 			// file_attributes is broken, this is a workaround
 			if ( file_exists( _path + _file ) == false ) {
-				_paths.push( _path + _file + "/" );
+				if ( _sub ) {
+					_paths.push( _path + _file + "/" );
+					
+				}
 				
 			} else {
-				_return.push( _path + _file );
+				_return.enqueue( _path + _file );
 				
 			}
 			_file	= file_find_next();

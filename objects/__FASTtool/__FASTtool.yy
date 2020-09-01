@@ -31,7 +31,7 @@
   "overriddenProperties": [],
   "parent": {
     "name": "Objects",
-    "path": "folders/FAST/Core/Objects.yy",
+    "path": "folders/FAST/Core/System/Objects.yy",
   },
   "resourceVersion": "1.0",
   "name": "__FASTtool",

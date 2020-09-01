@@ -81,7 +81,7 @@
   ],
   "parent": {
     "name": "Sprites",
-    "path": "folders/FAST/Core/Resources/Sprites.yy",
+    "path": "folders/FAST/Core/System/Sprites.yy",
   },
   "resourceVersion": "1.0",
   "name": "gfx_debug_tiles_01",

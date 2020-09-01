@@ -27,7 +27,7 @@ function DsLinkedList() : DsChain() constructor {
 	static find	= function( _value ) {
 		if ( links == 0 ) { return undefined; }
 		
-		var _seek	= chain;
+		var _seek	= ( argument_count == 1 ? chain : argument[ 1 ] );
 		
 		while ( _seek != undefined ) {
 			if ( _seek.value == _value ) {
