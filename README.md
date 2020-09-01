@@ -17,7 +17,7 @@ Runtime 2.3.0.401
 * [Scripting](#scripting)
 * [Misc Functions](#misc-functions)
 ## Data Types
-FAST contains a large number of helpful data types, including wrappers for the built-in data structures to make them easier to work with, and interfaces to build new structures from.
+FAST contains a large number of helpful data types, including wrappers for the built-in data structures to make them easier to work with and interfaces to build new structures from.
 * [Array](#array)
 * [String](#string-string-)
 * [Data Structures](#data-structures)
