@@ -252,7 +252,7 @@ Provides a data structure that behaves as a map and a list. Must be destroyed wi
 ## Functions
 Lastly, FAST includes general purpose functions to fill in some of the missing features in GML.
 * [Arrays](#array-functions)
-* [Draw](#draw-functions)
+* [File](#file-functions)
 * [Include](#include-functions)
 * [Integer](#integer-functions)
 * [String](#string-functions)
@@ -264,6 +264,8 @@ Lastly, FAST includes general purpose functions to fill in some of the missing f
 * array_union( a... ) - Returns an array containing all the unique entires of the provided arrays.
 * array_sort( a, start, end, ascending, pivot, compare ) - See internal documentation, provides a general-purpose quicksort algorithm for sort-in-place operations on arrays.
 * array_to_string( a, b ) - Returns the contents of array separated by b as a string.
+### File Functions
+* file_get_directory( a, b ) - Returns a DsQueue of all files in directory a.  If b is true, includes all files in sub-directories as well.
 ### Include Functions
 * include( object ) - Runs the current event from object.
 ### Integer Functions
@@ -276,6 +278,9 @@ Lastly, FAST includes general purpose functions to fill in some of the missing f
 * string_justify( a, b, align, character ) - Returns a with white space added to confirm to a character width of b and an alignment of align (fa_left, fa_center, fa_right). If character is supplied, that will be used instead of " ".
 * string_trim( a ) - Returns a with the preceeding and following whitespace removed.
 * string_to_real( a ) - Converts a to a number, or 0 if it can not be converted.  Supports 0x hexadecimal and 0.0 formats.
+
+
+
 # Other Stuff
 ### Shapes
 Shape is an interface that is used to define shapes. This data type is used heavily by the Pointer feature for creating GUI interactions, but is provided as a generic data type to allow future extensions.
