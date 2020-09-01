@@ -200,7 +200,14 @@ A simple garbage-collected, two-dimensional vector structure.
 * toArray() - Returns this vector as an array.
 * toString() - Returns this vector as an array as a string.
 ## Database
+The FAST database is a DsTree-based data loading system. It uses a lua-like language to write database files, and supports features such as overwriting, custom data types, inheritance, templating, and macros. It was designed for projects like RPGs that have large amounts of external data, but is also useful for implementing localization.
 ## Events
+The FAST event system allows for quickly writing and calling custom events without having to rely on spawning objects. They can be set to have a delay, or discard themselves after running. The following event would be run once, thirty frames later, during the step event, and print Hello World! to the Output.
+```GML
+event = new EventOnce( FAST.STEP, 30, self, function() {
+  show_debug_message( "Hello World!" );
+});
+```
 ## File Handling
 The File interface is designed to open a file, read its contents into an internal data structure, and then close the file.  This allows for files read into the game to be manipulated more easily, and provides a consistent interface no matter what format the file that is being read from may be written in.
 ### File( filename, \*read_only )
@@ -246,6 +253,46 @@ When the ERROR_LEVEL is >= ERROR_NONFATAL, will write the id (use undefined if c
 #### log_critical( id, event, value... )
 When the ERROR_LEVEL is >= ERROR_CRITICAL, will write the id (use undefined if called from a source that does not have an id), along with the event, and finally any additional text to System and "log/critical.txt"
 ## Publisher
+The FAST publisher system allows subscribing to specific "events" and, when called, will pass messages to the subscribing objects for processing.
 ## Render
+The FAST render offers a simple system for supporting a large number of resolutions by either using the built-in views, or custom requirements if needed.
 ## Scripting
+The FAST scripting system utilizes Yarn-like external text files to write code which can be executed in game. Scripts can contain commands, but also support plain-text parsing for passing information into the game, or wait commands which will halt processing. Additionally, scripts can be written as functions which do not provide external parsing but can take arguments and return values the same as internal functions. Additionally, scripts can be written as functions which behave like internal functions and can have arguments or return values. Functions can not pause execution, but they can return values.
+```GML
+scriptEngine.run_script( "girlA" );
+
+myDialogue = scriptEngine.next();
+```
+```
+// girlA.txt
+<< if spokeTo.girlA>>
+Oh, hello again! I didn't expect to see you so soon.
+<< else >>
+Hello, my name is Shelly. Pleased to meet you!
+<< end >>
+```
 ## Misc Functions
+Lastly, FAST includes general purpose functions to fill in some of the missing features in GML.
+### Array Functions
+* array_concat( a... ) - Returns a concantated array build from the provided arrays.
+* array_contains( a, b ) - Returns the index of array a that contains b, or -1 if it isn't found.
+* array_difference( a, b... ) - Returns array a with b subtracted from it.
+* array_unique( a ) - Returns an array containing the unique entries in a.
+* array_union( a... ) - Returns an array containing all the unique entires of the provided arrays.
+* array_sort( a, start, end, ascending, pivot, compare ) - See internal documentation, provides a general-purpose quicksort algorithm for sort-in-place operations on arrays.
+* array_to_string( a, b ) - Returns the contents of array separated by b as a string.
+### Draw Functions
+* draw_bar( sprite, index, x, y, width, percent ) - Draws a bar using a 3-slice method using the sprite provided, and with width(in pixels) filled to percent(0 to 1).
+* draw_text_bubble( sprite, index, x, y, width ) - Draws a "text bubble" using a 5-frame sprite with the given width(in pixels).
+### Include Functions
+* include( object ) - Runs the current event from object.
+### Integer Functions
+* integer_wrap( value, a, b ) - Returns value wrapped between a and b.
+### String Functions
+* string_con( a... ) - Returns a concantated string containing a...
+* string_explode( a, b, trim ) - Returns an array of string broken up by b.  If trim is true, whitespace will be removed from each entry.
+* string_explode_reverse( a, b, trim ) - Returns an array of string broken up by b in reverse order.  If trim is true, whitespace will be removed from each entry.
+* string_find_first( chars, string, start ) - Returns the position of the first character in chars found in string, or 0 if none are found. If start is provided, the search will begin at the following character.
+* string_justify( a, b, align, character ) - Returns a with white space added to confirm to a character width of b and an alignment of align (fa_left, fa_center, fa_right). If character is supplied, that will be used instead of " ".
+* string_trim( a ) - Returns a with the preceeding and following whitespace removed.
+* string_to_real( a ) - Converts the string to a number, or 0 if it fails.  Supports 0x hexadecimal format.
