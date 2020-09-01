@@ -300,4 +300,4 @@ Lastly, FAST includes general purpose functions to fill in some of the missing f
 * string_find_first( chars, string, start ) - Returns the position of the first character in chars found in string, or 0 if none are found. If start is provided, the search will begin at the following character.
 * string_justify( a, b, align, character ) - Returns a with white space added to confirm to a character width of b and an alignment of align (fa_left, fa_center, fa_right). If character is supplied, that will be used instead of " ".
 * string_trim( a ) - Returns a with the preceeding and following whitespace removed.
-* string_to_real( a ) - Converts the string to a number, or 0 if it fails.  Supports 0x hexadecimal format.
+* string_to_real( a ) - Converts a to a number, or 0 if it can not be converted.  Supports 0x hexadecimal and 0.0 formats.
