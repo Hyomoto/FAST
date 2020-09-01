@@ -17,7 +17,7 @@ Runtime 2.3.0.401
 * [Scripting](#scripting)
 * [Misc Functions](#misc-functions)
 ## Data Types
-FAST contains a large number of helpful data types, including some helpful wrappers for the built-in data structures to make them easier to work with.
+FAST contains a large number of helpful data types, including wrappers for the built-in data structures to make them easier to work with, and interfaces to build new structures from.
 * [Array](#array)
 * [String](#string-string-)
 * [Data Structures](#data-structures)
@@ -80,6 +80,7 @@ Formats the string as a time with the given number of decimals and format. Imple
 ** $M will be converted into the number of minutes, sans hours if provided
 ** $S will be converted into the number of seconds, sans hours and minutes if provided.
 ### Data Structures
+* [DsChain](#dschain)
 * [DsLinkedList](#dslinkedlist-values-)
 * [DsList](#dslist-values-)
 * [DsTree](#dstree)
@@ -87,12 +88,19 @@ Formats the string as a time with the given number of decimals and format. Imple
 * [DsQueue](#dsqueue-values-)
 * [DsStack](#dsstack-values-)
 * [DsTable](#dstable)
+#### DsChain
+Provides a linked-list style interface to build garbage-collected data structures.
+* clear() - Clears the data structure.
+* empty() - Returns if the data structure is empty.
+* size() - Returns the size of the data structure.
+* toArray() - Returns the data structure as an array.
+* toString() - Returns the data structure as an array as a string.
 #### DsLinkedList( values... )
-Provides a garbage-collected, linear-traversable data structure. Adds the values as provided.
+Provides a garbage-collected, linear-traversable data structure. Adds the values as provided. Implements DsChain.
 * clear() - Clears all entries.
 * empty() - Returns if the linked list is empty.
 * size() - Returns the number of entries.
-* add() - Adds a new entry to the end.
+* add() - Adds a new entry to the end of the list.
 * remove() - Removes the first matching entry.
 * start() - Returns processing to the start of the list.
 * first() - Returns the first entry.
@@ -139,7 +147,7 @@ Provides a wrapper for the built-in ds_map data structure. Must be destroyed wit
 * read( a ) - Reads a and converts it into entries in the map.
 * toString() - Returns the map as a string which can be read with read()
 #### DsQueue( values... )
-Provides a garbage-collected queue, operates on a first-in-first-out basis. Enqueues the values as provided.
+Provides a garbage-collected queue, operates on a first-in-first-out basis. Enqueues the values as provided. Implements DsChain.
 * enqueue( a... ) - Adds the entries into the queue in order given.
 * enqueue_at_head() - Adds the entries into the head of the queue in the order given.
 * dequeue() - Removes the entry at the head of the queue and returns it.
@@ -151,7 +159,7 @@ Provides a garbage-collected queue, operates on a first-in-first-out basis. Enqu
 * toArray() - Returns the queue as an array.
 * toString() - Returns the queue as an array as a string.
 #### DsStack( values... )
-Provides a garbage-collected stack, operates on a first-in-last-out basis. Pushes the values to the stack as provided.
+Provides a garbage-collected stack, operates on a first-in-last-out basis. Pushes the values to the stack as provided. Implements DsChain.
 * push( a... ) - Pushes the entries onto the stack in the order given.
 * pop() - Removes the entry on the top of the stack and returns it.
 * top() - Returns the entry on the top of the stack.
@@ -217,7 +225,7 @@ The File interface provides a common framework to seek, open, write to, and save
 * toArray() - Returns this file as an array.
 * toString() - Returns the name of the source file and lines read, used for debugging.
 ### FileText( filename, read_only )
-Provides a file wrapper for reading from, and writing to, plain text files. Implements the File interface.
+Provides a file wrapper for reading from, and writing to, plain text files. Implements File.
 ## Input Handling
 ## Logging
 FAST provides a general purpose logging system to handle outputs based on the current ERROR_LEVEL. Implements the Logger constructor which can write to anything that implements the GenericOutput interface.
