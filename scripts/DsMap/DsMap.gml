@@ -47,6 +47,10 @@ function DsMap() constructor {
 		ds_map_read( pointer, _string );
 		
 	}
+	static is		= function( _data_type ) {
+		return _data_type == DsMap;
+		
+	}
 	static toString	= function() {
 		return ds_map_write( pointer );
 		

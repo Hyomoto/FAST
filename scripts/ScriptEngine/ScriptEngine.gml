@@ -24,13 +24,7 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 			++lines;
 			
 			if ( is_string( _ex ) ) {
-				//toParse.enqueue( _ex );
-				
-				//queue.enqueue_at_head( _package );
-				
 				parse( _ex );
-				
-				//wait	= true;
 				
 				continue;
 				
@@ -132,7 +126,7 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 		execute( { script : _seek, local : _args, last : undefined, depth : -1 } );
 		
 	}
-	static file_load	= function( _filename, _reload, _formatter ) { syslog( _filename );
+	static file_load	= function( _filename, _reload, _formatter ) {
 		var _file		= file_text_open_read( _filename );
 		var _script		= new Script();
 		var _last		= 0;
@@ -229,8 +223,6 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 	}
 	static load_async	= function( _filename, _reload, _period ) {
 		var _formatter	= ScriptManager().formatter;
-		var _scripts	= 0;
-		var _funcs		= 0;
 		var _load, _found;
 		
 		if ( filename_name( _filename ) != "" ) {
@@ -248,7 +240,7 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 			var _time	= get_timer();
 			
 			do {
-				switch ( file_load( _package.load.pop(), _package.reload, _package.format ) ) {
+				switch ( file_load( _package.load.dequeue(), _package.reload, _package.format ) ) {
 					case 1 : _package.funcs += 1; break;
 					default: _package.scripts+=1; break;
 					
@@ -265,15 +257,7 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 				
 			}
 			
-		});		
-		//while ( _load.empty() == false ) {
-		//	switch ( file_load( _load.pop(), _reload, _formatter ) ) {
-		//		case 1 : ++_funcs; break;
-		//		default: ++_scripts; break;
-				
-		//	}
-			
-		//}
+		});
 		
 	}
 	static load		= function( _filename, _reload ) {
@@ -398,6 +382,10 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 	}
 	static is_waiting	= function() {
 		return wait != undefined;
+		
+	}
+	static is		= function( _data_type ) {
+		return _data_type == ScriptEngine;
 		
 	}
 	static toString	= function() {

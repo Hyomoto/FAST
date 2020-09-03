@@ -1,7 +1,8 @@
 /// @func file_get_directory
 /// @param directory
 /// @param sub_directories
-function file_get_directory( _directory, _sub ) {
+function file_get_directory( _directory ) {
+	var _sub	= ( argument_count > 1 ? argument[ 1 ] : true );
 	var _return	= new DsQueue();
 	var _paths	= new DsStack();
 	var _path, _file;

@@ -84,6 +84,10 @@ function InputDevice() constructor {
 		event	= undefined;
 		
 	}
+	static is		= function( _data_type ) {
+		return _data_type == InputDevice;
+		
+	}
 	inputs	= array_create( argument_count );
 	target	= noone;
 	event	= undefined;

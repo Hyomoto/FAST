@@ -54,11 +54,27 @@ function DsList() constructor {
 		
 	}
 	static destroy	= function() { ds_list_destroy( pointer ); }
+	static is		= function( _data_type ) {
+		return _data_type == DsList;
+		
+	}
+	static toArray	= function() {
+		var _array	= array_create( ds_list_size( pointer ) );
+		
+		var _i = 0; repeat( array_length( _array ) ) {
+			_array[ _i ] = pointer[| _i ];
+			
+			++_i;
+			
+		}
+		
+	}
 	static toString	= function() {
+		var _d	= ( argument_count > 0 ? argument[ 0 ] : ", " );
 		var _string	 = "";
 		
 		var _i = 0; repeat ( size() ) {
-			if ( _i > 0 ) { _string += ", " }
+			if ( _i > 0 ) { _string += _d }
 			
 			_string	+= pointer[| _i++ ];
 			

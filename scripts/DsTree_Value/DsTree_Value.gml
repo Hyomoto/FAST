@@ -29,6 +29,10 @@ function DsTree_Value( _value ) constructor {
 		writable	= true;
 		
 	}
+	static is		= function( _data_type ) {
+		return _data_type == DsTree_Value;
+		
+	}
 	static toString	= function() {
 		return string( value ) + " (" + type + ")";
 		

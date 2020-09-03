@@ -9,6 +9,10 @@ function EventOnce( _event, _delay, _parameters, _function ) constructor {
 		FAST.delete_event( self );
 		
 	}
+	static is		= function( _data_type ) {
+		return _data_type == Event;
+		
+	}
 	static toString	= function() {
 		return "Event : Trigger " + string( tick ) + ", " + string( tock ) + ", Once? " + ( once ? "true" : "false" );
 		

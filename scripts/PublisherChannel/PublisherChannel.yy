@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "validate",
-    "path": "folders/FAST/Unsorted/validate.yy",
+    "name": "Scripts",
+    "path": "folders/FAST/Publisher/Scripts.yy",
   },
   "resourceVersion": "1.0",
-  "name": "validate_array",
+  "name": "PublisherChannel",
   "tags": [],
   "resourceType": "GMScript",
 }

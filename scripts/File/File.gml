@@ -75,6 +75,10 @@ function File( _filename, _readonly ) : GenericOutput() constructor {
 		ds_list_clear( list );
 		
 	}
+	static is		= function( _data_type ) {
+		return _data_type == File;
+		
+	}
 	static toArray	= function() {
 		var _array	= array_create( lines );
 		

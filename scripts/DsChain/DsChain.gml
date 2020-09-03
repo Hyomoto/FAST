@@ -24,6 +24,10 @@ function DsChain() constructor {
 		return links;
 		
 	}
+	static is		= function( _data_type ) {
+		return _data_type == DsChain;
+		
+	}
 	static toArray	= function() {
 		var _array	= array_create( links );
 		var _next	= chain;

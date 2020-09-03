@@ -44,6 +44,10 @@ function Surface( _width, _height ) constructor {
 		}
 		
 	}
+	static is		= function( _data_type ) {
+		return _data_type == Surface;
+		
+	}
 	surface	= -1;
 	width	= _width;
 	height	= _height;

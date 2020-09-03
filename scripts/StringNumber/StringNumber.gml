@@ -9,6 +9,8 @@ function StringNumber( _string ) : String() constructor {
 	static formatter	= function( _string ) {
 		var _decimal	= string_pos( ".", _string );
 		var _dround		= string_count( "#", string_delete( _string, 1, _decimal ) );
+		// *#.##, *,###.#####, 
+		
 		
 		
 	}

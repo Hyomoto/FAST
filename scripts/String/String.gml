@@ -63,6 +63,10 @@ function String() constructor {
 		return _height;
 		
 	}
+	static is		= function( _data_type ) {
+		return _data_type == String;
+		
+	}
 	static toArray	= function() {
 		var _array	= array_create( length );
 		

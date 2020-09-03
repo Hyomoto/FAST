@@ -75,13 +75,10 @@ function Array( _size ) constructor {
 		return undefined;
 		
 	}
-	//static forEach	= function( _func ) {
-	//	var _i = 0; repeat( size() ) {
-	//		set( _i, _func( content[ _i ] ) );
-			
-	//	}
+	static is		= function( _data_type ) {
+		return _data_type == Array;
 		
-	//}
+	}
 	static toArray	= function() {
 		return content;
 		

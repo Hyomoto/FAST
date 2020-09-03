@@ -45,6 +45,10 @@ function Logger( _name, _length, _output ) constructor {
 		}
 		
 	}
+	static is		= function( _data_type ) {
+		return _data_type == Logger;
+		
+	}
 	outputs	= array_create( argument_count - 2 );
 	
 	var _i = 2; repeat( argument_count - 2 ) {

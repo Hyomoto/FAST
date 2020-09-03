@@ -63,6 +63,10 @@ function DsQueue() : DsChain() constructor {
 		clearSuper();
 		
 	}
+	static is		= function( _data_type ) {
+		return _data_type == DsQueue;
+		
+	}
 	var _i = 0; repeat( argument_count ) {
 		enqueue( argument[ _i++ ] );
 		

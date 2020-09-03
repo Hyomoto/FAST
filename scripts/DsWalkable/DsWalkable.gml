@@ -1,49 +1,12 @@
 /// @func DsWalkable
-function DsWalkable() : DsChain() constructor {
+function DsWalkable() : DsLinkedList() constructor {
 // # Method Declaration
-	static remove		= function( _link ) {
-		if ( links == 0 ) { return; }
-		
-		var _seek	= chain;
-		var _last	= undefined;
-		
-		while ( _seek != undefined ) {
-			if ( _seek == _link ) {
-				if ( _link == step ) {
-					next();
-					
-				}
-				if ( _last != undefined ) {
-					_last.chain	= _link.chain;
-					
-				}
-				if ( _link == chain ) {
-					chain	= _link.chain;
-					
-				}
-				if ( _link == final ) {
-					final	= _last;
-					
-				}
-				--links;
-				
-				return true;
-				
-			}
-			_last	= _seek;
-			_seek	= _seek.chain;
-			
-		}
-		return false;
-		
-	}
-	static clearSuper	= clear;
+	static clear_DsLinkedList	= clear;
 	static clear	= function() {
-		final	= undefined;
+		clear_DsLinkedList();
+		
 		step	= undefined;
 		steps	= 0;
-		
-		clearSuper();
 		
 	}
 	static start	= function( _at ) {
@@ -51,12 +14,6 @@ function DsWalkable() : DsChain() constructor {
 		steps	= 0;
 		
 		repeat( _at == undefined ? 0 : _at ) { next(); }
-		
-	}
-	static first	= function() {
-		if ( links == 0 ) { return undefined; }
-		
-		return chain.value;
 		
 	}
 	static has_next	= function() {
@@ -87,41 +44,14 @@ function DsWalkable() : DsChain() constructor {
 		return ( step == undefined ? chain.value : step.value );
 		
 	}
-	static find	= function( _value ) {
-		if ( links == 0 ) { return undefined; }
-		
-		var _seek	= chain;
-		
-		while ( _seek != undefined ) {
-			if ( _seek.value == _value ) {
-				return _seek;
-				
-			}
-			_seek	= _seek.chain;
-			
-		}
-		return undefined;
-		
+	static poke	= function( _value ) {
+		// insert a value at the current read position
 	}
-	static add	= function( _value ) {
-		var _link	= new ChainLink( _value );
-		
-		if ( final == undefined ) { 
-			chain		= _link;
-			
-		} else {
-			final.chain	= _link;
-			
-		}
-		final		= _link;
-		
-		++links;
-		
-		return _link;
+	static is		= function( _data_type ) {
+		return _data_type == DsWalkable;
 		
 	}
 // # Variable Declaration
-	final	= undefined;
 	step	= undefined;
 	steps	= 0;
 	

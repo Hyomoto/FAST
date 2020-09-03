@@ -3,7 +3,7 @@
   "isCompatibility": false,
   "parent": {
     "name": "draw",
-    "path": "folders/FAST/Unsorted/draw.yy",
+    "path": "folders/OTHER/draw.yy",
   },
   "resourceVersion": "1.0",
   "name": "draw_bubble",

@@ -1,6 +1,6 @@
 /// @func ScriptParser
 /// @param string
-function ScriptParser( _string ) : Parser ( _string ) constructor {
+function ScriptParser( _string ) : Parser( _string ) constructor {
 	static next		= function() {
 		var _op		= undefined;
 		var _cp		= undefined;

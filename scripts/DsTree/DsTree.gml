@@ -180,6 +180,10 @@ function DsTree() constructor {
 		ds_map_delete( table, _key );
 		
 	}
+	static is		= function( _data_type ) {
+		return _data_type == DsTree;
+		
+	}
 	// returns this node as a string
 	static toString	= function() {
 		return "node :: map " + string( table ) + ", entries " + string( ds_map_size( table ) );

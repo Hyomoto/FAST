@@ -34,6 +34,10 @@ function DsStack() : DsChain() constructor {
 		return _link.value;
 		
 	}
+	static is		= function( _data_type ) {
+		return _data_type == DsStack;
+		
+	}
 	var _i = 0; repeat( argument_count ) {
 		push( argument[ _i++ ] );
 		

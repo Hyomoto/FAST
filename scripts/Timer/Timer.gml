@@ -18,6 +18,10 @@ function Timer() constructor {
 		return text.toString();
 		
 	}
+	static is		= function( _data_type ) {
+		return _data_type == Timer;
+		
+	}
 	var _format		= ( argument_count > 0 ? argument[ 0 ] : "$S" );
 	var _decimals	= ( argument_count > 1 ? argument[ 1 ] : 1 );
 	

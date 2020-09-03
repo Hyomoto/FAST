@@ -87,6 +87,10 @@ function DsTable() constructor {
 		ds_list_delete( list, _index );
 		
 	}
+	static is		= function( _data_type ) {
+		return _data_type == DsTable;
+		
+	}
 	static toArray	= function() {
 		var _array	= array_create( size() );
 		

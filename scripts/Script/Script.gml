@@ -99,6 +99,10 @@ function Script() : DsChain() constructor {
 		clearSuper();
 		
 	}
+	static is		= function( _data_type ) {
+		return _data_type == Script;
+		
+	}
 // # Variable Declaration
 	source	= undefined;
 	final	= undefined;

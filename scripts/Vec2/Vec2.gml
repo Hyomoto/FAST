@@ -39,6 +39,10 @@ function Vec2( _x, _y ) constructor {
 		return string( x ) + ", " + string( y );
 		
 	}
+	static is		= function( _data_type ) {
+		return _data_type == Vec2;
+		
+	}
 	set( _x, _y );
 	
 }
