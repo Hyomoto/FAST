@@ -88,7 +88,7 @@ myPair = ( "Hello", "World!" );
 * a - the a value.
 * b - the b value.
 #### Surface( w, h )
-The Surface wrapper provides a simplified interface for dealing with surfaces. They can be set to redraw periodically, or only on request.  A surface will always redraw if it is flushed from VRAM.
+The Surface wrapper provides an expanded interface for dealing with surfaces. They can be set to redraw periodically, or only on request.  A surface will always redraw if it is flushed from VRAM.
 ```GML
 if ( surface.update() ) {
   surface.set();
@@ -104,7 +104,7 @@ surface.draw( 0, 0 );
 * draw( x, y ) - Draws the surface at x, y.
 * update( force ) - Returns true if the surface should be redrawn, and will recreate the surface if it doesn't exist.
 #### Timer( \*format, \*decimal_places )
-The Timer is a simple way to get a formatted difference between two times in your program. If format and decimal_places are defined, they will override the default "$S" and 1 respectively.
+The Timer provides the difference between two times in your program. It can be used to get the raw time or, if drawn, as a formatted string. If format and decimal_places are defined, they will override the default "$S" and 1 respectively.
 ```GML
 var _timer = new Timer();
 
@@ -114,7 +114,7 @@ show_debug_message( _timer );
 * elapsed() - Returns how much time has elapsed since the timer was last reset().
 * toString() - Returns a StringTime formatted string with the time elapsed.
 #### Vec2( x, y )
-A simple garbage-collected, two-dimensional vector structure.
+A garbage-collected, two-dimensional vector structure.
 ```GML
 myVec = new Vec2( 2, 5 );
 ```
@@ -137,14 +137,14 @@ myVec = new Vec2( 2, 5 );
 * [DsStack](#dsstack-values-)
 * [DsTable](#dstable)
 #### DsChain
-Provides a linked-list style interface to build garbage-collected data structures.
+A linked-list style interface to build garbage-collected data structures.
 * clear() - Clears the data structure.
 * empty() - Returns if the data structure is empty.
 * size() - Returns the size of the data structure.
 * toArray() - Returns the data structure as an array.
 * toString() - Returns the data structure as an array as a string.
 #### DsLinkedList( values... )
-Provides a garbage-collected, linear-traversable data structure. Adds the values as provided. Implements DsChain.
+A garbage-collected, linear-traversable data structure. Adds the values as provided. Implements DsChain.
 * clear() - Clears all entries.
 * empty() - Returns true if the list is empty.
 * first() - Returns the first link in the list.
@@ -157,7 +157,7 @@ Provides a garbage-collected, linear-traversable data structure. Adds the values
 * toArray() - Returns the links in the list as an array.
 * toString() - Returns the links in the list as an array converted to a string.
 #### DsWalkable( values... )
-Provides a garbage-collected, linear-traversable data structure with state memory. Adds the values as provided. Implements DsChain.
+A garbage-collected, linear-traversable data structure with state memory. Adds the values as provided. Implements DsChain.
 * clear() - Clears all entries.
 * empty() - Returns true if the list is empty.
 * size() - Returns the number of entries.
@@ -170,7 +170,7 @@ Provides a garbage-collected, linear-traversable data structure with state memor
 * toArray() - Returns the entries in the linked list as an array.
 * toString() - Returns the linked list as an array converted to a string.
 #### DsList( values... )
-Provides a wrapper for the built-in ds_list data structure. Adds the values as provided. Must be destroyed with destroy() to prevent memory leak.
+A wrapper for the built-in ds_list data structure. Adds the values as provided. Must be destroyed with destroy() to prevent memory leak.
 * add( a... ) - Adds the given entries.
 * insert( a, b ) - Inserts a at index b.
 * remove_value( a ) - Seeks and deletes the first value that matches a.
@@ -184,7 +184,7 @@ Provides a wrapper for the built-in ds_list data structure. Adds the values as p
 * destroy() - Destroys the internal ds_list.
 * toString() - Returns the list as a comma-separated string.
 #### DsTree
-The DsTree is a walkable tree data structure with support for custom data types, symbolic links and branch copying. Must be destroyed with destroy() to prevent memory leak.
+A walkable branching data structure with support for custom data types, symbolic links and deep copying. Must be destroyed with destroy() to prevent memory leak.
 * seek( a ) - Returns the branch at a.
 * lock( a ) - Sets a to be read-only.
 * unlock( a ) - Sets a to be writable.
@@ -196,7 +196,7 @@ The DsTree is a walkable tree data structure with support for custom data types,
 * destroy() - Destroys this branch and all sub-branches, excluding symbolic links.
 * toString() - Returns this branch as a string, used for debug purposes.
 #### DsMap
-Provides a wrapper for the built-in ds_map data structure. Must be destroyed with destroy() to prevent memory leak.
+A wrapper for the built-in ds_map data structure. Must be destroyed with destroy() to prevent memory leak.
 * add( a, b ) - Adds key a with value b, will not replace a if it already exists.
 * replace( a, b ) - Replaces key a with value b, will create key a if it does not exist.
 * remove( a ) - Removes key a if it exists.
@@ -208,7 +208,7 @@ Provides a wrapper for the built-in ds_map data structure. Must be destroyed wit
 * read( a ) - Reads a and converts it into entries in the map.
 * toString() - Returns the map as a string which can be read with read()
 #### DsQueue( values... )
-Provides a garbage-collected queue, operates on a first-in-first-out basis. Enqueues the values as provided. Implements DsChain.
+A garbage-collected queue, operates on a first-in-first-out basis. Enqueues the values as provided. Implements DsChain.
 * enqueue( a... ) - Adds the entries into the queue in order given.
 * enqueue_at_head() - Adds the entries into the head of the queue in the order given.
 * dequeue() - Removes the entry at the head of the queue and returns it.
@@ -220,7 +220,7 @@ Provides a garbage-collected queue, operates on a first-in-first-out basis. Enqu
 * toArray() - Returns the queue as an array.
 * toString() - Returns the queue as an array as a string.
 #### DsStack( values... )
-Provides a garbage-collected stack, operates on a first-in-last-out basis. Pushes the values to the stack as provided. Implements DsChain.
+A garbage-collected stack, operates on a first-in-last-out basis. Pushes the values to the stack as provided. Implements DsChain.
 * push( a... ) - Pushes the entries onto the stack in the order given.
 * pop() - Removes the entry on the top of the stack and returns it.
 * top() - Returns the entry on the top of the stack.
@@ -230,7 +230,7 @@ Provides a garbage-collected stack, operates on a first-in-last-out basis. Pushe
 * toArray() - Returns the stack as an array.
 * toString() - Returns the stack as an array as a string.
 #### DsTable
-Provides a data structure that behaves as a map and a list. Must be destroyed with destroy() to prevent memory leak.
+A data structure that behaves as a map and a list. Must be destroyed with destroy() to prevent memory leak.
 * add( a, b ) - Adds key a with value b to the table.
 * empty() - Returns if the table is empty.
 * size() - Returns the number of entries in the table.
@@ -245,7 +245,7 @@ Provides a data structure that behaves as a map and a list. Must be destroyed wi
 * toArray() - Returns the key value pairs as nested arrays.
 * toString() - Retursn the table as key value pairs as nested arrays as a string.
 ## Events
-The FAST event system allows for quickly writing and calling custom events without having to rely on spawning objects. They can be set to have a delay, and discard themselves after running or on-demand. The following event would be run once, thirty frames later, during the step event, and print Hello World! to the Output.
+The FAST event system allows for configurable timing events without relying on spawning objects. They can be set with a delay, and discard themselves as needed. The following event would be run once, thirty frames later, during the step event, and print Hello World! to the Output.
 ```GML
 event = new EventOnce( FAST.STEP, 30, self, function() {
   show_debug_message( "Hello World!" );
