@@ -23,6 +23,8 @@ FAST contains a large number of helpful data types, including wrappers for the b
 * [String](#string-string-)
 * [Data Structures](#data-structures)
 * [Pair](#pair-a-b-)
+* [Surface](#surface-w-h-)
+* [Timer](#timer-format-decimal_places-)
 * [Vec2](#vec2-x-y-)
 #### Array
 The Array wrapper provides an expanded interface to interact with arrays.
