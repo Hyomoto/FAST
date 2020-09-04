@@ -269,6 +269,14 @@ Creates a new event that will be run after frames has passed, and then be discar
 The FAST parser is used to read and format strings. It can perform formatting using the StringFormatter interface, or break them into chunks using the Parser interface.
 ### Parser( string )
 Takes the provided string and breaks it into chunks that can be read out similar to a file.
+```GML
+var _parser = new Parser( "Hello World!" );
+
+while ( _parser.has_next() ) {
+  show_debug_message( _parser.next() );
+  
+}
+```
 * parse( a ) - Replaces the currently read string with a.
 * clear() - Clears the string being parsed.
 * reset() - Resets processing to the start of the current string.
@@ -277,6 +285,22 @@ Takes the provided string and breaks it into chunks that can be read out similar
 * next_line() - Returns the rest of the current string.
 * toArray() - Returns the current string processed as an array.
 * toString() - Returns the current string.
+### StringFormatter( format, \*functions )
+The StringFormatter interface is a powerful formatting tool that can be used alongside the parser to assist with reading complex, instructional strings. It works by providing a format, which is a comma-separated list of rules, and using them to edit strings provided. However, the formatter can also be provided a structure containing the functions which make up the rules which can be called. The FAST database uses it to remove comments, strip white space, and rearrange code into an easier to parse format, while FAST Scripts utlilze the StringFormatter to swap tabs for spaces. The StringFormatter *must* have destroy() called on it or it will cause a memory leak.
+#### StringFormatter Rules
+Rules utilize the structure of "&:rule" where & is a character, and rule is the action that is taken on that character. While rules can be rewritten as needed, by default the StringFormatter provides these common rules:
+* strip - Removes this character from the string.
+* push - Inserts a \n before this character, pushing it to a new line.
+* ignore - Toggles the ignore flag, which ignores all rules until another ignore character is found. For example, \":ignore would cause anything between quotations to be ignored.
+```GML
+var _formatter = new StringFormatter( " :strip,\t:strip" );
+
+var _string = _formatter.format( "  Hello   World!" );
+```
+#### StringFormatter Methods
+rules( a ) - Reads a and converts it into new rules.
+format( a ) - Formats a with the current rules and returns it.
+destroy() - Cleans up internal data structures. Must be called before being garbage collected, or will cause a memory leak!
 ## Functions
 Lastly, FAST includes general purpose functions to fill in some of the missing features in GML.
 * [Arrays](#array-functions)
