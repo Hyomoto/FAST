@@ -14,6 +14,7 @@ The Core module of FAST is what all other modules build on top of.
 * [Data Types](#data-types)
 * [Data Structures](#data-structures)
 * [Events](#events)
+* [Parser](#parser)
 * [Functions](#functions)
 * [System](#system)
 ### Data Types
@@ -249,13 +250,13 @@ event = new EventOnce( FAST.STEP, 30, self, function() {
 });
 ```
 Events can be created for the following times:
-FAST.CREATE - Will be run when FAST is created. This event is only run once when the program starts.
-FAST.GAME_END - Will be run during the Game End event. This event is only run once when the program ends.
-FAST.ROOM_START - Will be run during the room start event.
-FAST.ROOM_END - Will be run during the room end event.
-FAST.STEP - Will run during the step event.
-FAST.STEP_BEGIN - Will run during the begin step event.
-FAST.STEP_END - Will run during the end step event.
+* FAST.CREATE - Will be run when FAST is created. This event is only run once when the program starts.
+* FAST.GAME_END - Will be run during the Game End event. This event is only run once when the program ends.
+* FAST.ROOM_START - Will be run during the room start event.
+* FAST.ROOM_END - Will be run during the room end event.
+* FAST.STEP - Will run during the step event.
+* FAST.STEP_BEGIN - Will run during the begin step event.
+* FAST.STEP_END - Will run during the end step event.
 ### Event( event, frames, parameters, function )
 Creates a new event that will be run every number of frames until discard() is called on it.
 * discard() - Discards this event.
@@ -264,6 +265,18 @@ Creates a new event that will be run every number of frames until discard() is c
 Creates a new event that will be run after frames has passed, and then be discarded.
 * discard() - Discards this event.
 * toString() - Returns this event as a string, used for debugging.
+## Parser
+The FAST parser is used to read and format strings. It can perform formatting using the StringFormatter interface, or break them into chunks using the Parser interface.
+### Parser( string )
+Takes the provided string and breaks it into chunks that can be read out similar to a file.
+* parse( a ) - Replaces the currently read string with a.
+* clear() - Clears the string being parsed.
+* reset() - Resets processing to the start of the current string.
+* has_next() - Returns true if the current string has not been fully read.
+* next() - Returns the next piece of the current string.
+* next_line() - Returns the rest of the current string.
+* toArray() - Returns the current string processed as an array.
+* toString() - Returns the current string.
 ## Functions
 Lastly, FAST includes general purpose functions to fill in some of the missing features in GML.
 * [Arrays](#array-functions)
