@@ -7,7 +7,8 @@ Runtime 2.3.0.401
 ```
 ## Table of contents
 * [Core](#core)
-
+* [Database](#database)
+* [File Handling](#file-handling)
 # Core
 The Core module of FAST is what all other modules build on top of.
 ## Features
@@ -332,40 +333,9 @@ Lastly, FAST includes general purpose functions to fill in some of the missing f
 * string_justify( a, b, align, character ) - Returns a with white space added to confirm to a character width of b and an alignment of align (fa_left, fa_center, fa_right). If character is supplied, that will be used instead of " ".
 * string_trim( a ) - Returns a with the preceeding and following whitespace removed.
 * string_to_real( a ) - Converts a to a number, or 0 if it can not be converted.  Supports 0x hexadecimal and 0.0 formats.
-
-
-
-# Other Stuff
-* [Database](#database)
-* [File Handling](#file-handling)
-* [Input Handling](#input-handling)
-* [Logging](#logging)
-* [Publisher](#publisher)
-* [Render](#render)
-* [Scripting](#scripting)
-* [Misc Functions](#misc-functions)
-### Shapes
-Shape is an interface that is used to define shapes. This data type is used heavily by the Pointer feature for creating GUI interactions, but is provided as a generic data type to allow future extensions.
-* inside( x, y ) - Returns if the point lies within this shape's dimensions.
-* draw( x, y, outline ) - Draws the shape either solid, or outlined at x, y.
-* set( x, y ) - Sets the position of the shape to x, y.
-#### ShapeCircle( x, y, radius )
-Defines a circle at x, y with the given radius. Implements the Shape interface.
-#### ShapeEllipses( x, y, width, height )
-Defines an elipses at x, y with the given width and height. Implements the Shape interface.
-#### ShapePolygon( x1, y1... )
-Defines a polygon with the given list of points, will provide the final closing pair. Implements the Shape interface.
-#### ShapeRectangle( x, y, width, height )
-Defines a rectangle at x, y with the given width and height. Implements the Shape interface.
-
-
-
-## Database
-The FAST database is a DsTree-based data loading system. It uses a lua-like language to write database files, and supports features such as overwriting, custom data types, inheritance, templating, and macros. It was designed for projects like RPGs that have large amounts of external data, but is also useful for implementing localization.
-
-## File Handling
+# File Handling
 The File interface is designed to open a file, read its contents into an internal data structure, and then close the file.  This allows for files read into the game to be manipulated more easily, and provides a consistent interface no matter what format the file that is being read from may be written in.
-### File( filename, \*read_only )
+## File( filename, \*read_only )
 ```GML
 var _file = new File( "filename" );
 
@@ -388,6 +358,31 @@ The File interface provides a common framework to seek, open, write to, and save
 * toString() - Returns the name of the source file and lines read, used for debugging.
 ### FileText( filename, read_only )
 Provides a file wrapper for reading from, and writing to, plain text files. Implements File.
+# Database
+The FAST database is a DsTree-based data loading system. It uses a lua-like language to write database files, and supports features such as overwriting, custom data types, inheritance, templating, and macros. It was designed for projects like RPGs that have large amounts of external data, but is also useful for implementing localization.
+# Other Stuff
+* [Database](#database)
+* [Input Handling](#input-handling)
+* [Logging](#logging)
+* [Publisher](#publisher)
+* [Render](#render)
+* [Scripting](#scripting)
+* [Misc Functions](#misc-functions)
+### Shapes
+Shape is an interface that is used to define shapes. This data type is used heavily by the Pointer feature for creating GUI interactions, but is provided as a generic data type to allow future extensions.
+* inside( x, y ) - Returns if the point lies within this shape's dimensions.
+* draw( x, y, outline ) - Draws the shape either solid, or outlined at x, y.
+* set( x, y ) - Sets the position of the shape to x, y.
+#### ShapeCircle( x, y, radius )
+Defines a circle at x, y with the given radius. Implements the Shape interface.
+#### ShapeEllipses( x, y, width, height )
+Defines an elipses at x, y with the given width and height. Implements the Shape interface.
+#### ShapePolygon( x1, y1... )
+Defines a polygon with the given list of points, will provide the final closing pair. Implements the Shape interface.
+#### ShapeRectangle( x, y, width, height )
+Defines a rectangle at x, y with the given width and height. Implements the Shape interface.
+
+
 ## Input Handling
 ## Logging
 FAST provides a general purpose logging system to handle outputs based on the current ERROR_LEVEL. Implements the Logger constructor which can write to anything that implements the GenericOutput interface.
