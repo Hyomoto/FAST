@@ -7,13 +7,15 @@ Runtime 2.3.0.401
 ```
 ## Table of contents
 * [Core](#core)
-
+* [Database](#database)
+* [File Handling](#file-handling)
 # Core
 The Core module of FAST is what all other modules build on top of.
 ## Features
 * [Data Types](#data-types)
 * [Data Structures](#data-structures)
 * [Events](#events)
+* [Parser](#parser)
 * [Functions](#functions)
 * [System](#system)
 ### Data Types
@@ -22,6 +24,8 @@ FAST contains a large number of helpful data types, including wrappers for the b
 * [String](#string-string-)
 * [Data Structures](#data-structures)
 * [Pair](#pair-a-b-)
+* [Surface](#surface-w-h-)
+* [Timer](#timer-format-decimal_places-)
 * [Vec2](#vec2-x-y-)
 #### Array
 The Array wrapper provides an expanded interface to interact with arrays.
@@ -85,7 +89,7 @@ myPair = ( "Hello", "World!" );
 * a - the a value.
 * b - the b value.
 #### Surface( w, h )
-The Surface wrapper provides a simplified interface for dealing with surfaces. They can be set to redraw periodically, or only on request.  A surface will always redraw if it is flushed from VRAM.
+The Surface wrapper provides an expanded interface for dealing with surfaces. They can be set to redraw periodically, or only on request.  A surface will always redraw if it is flushed from VRAM.
 ```GML
 if ( surface.update() ) {
   surface.set();
@@ -101,7 +105,7 @@ surface.draw( 0, 0 );
 * draw( x, y ) - Draws the surface at x, y.
 * update( force ) - Returns true if the surface should be redrawn, and will recreate the surface if it doesn't exist.
 #### Timer( \*format, \*decimal_places )
-The Timer is a simple way to get a formatted difference between two times in your program. If format and decimal_places are defined, they will override the default "$S" and 1 respectively.
+The Timer provides the difference between two times in your program. It can be used to get the raw time or, if drawn, as a formatted string. If format and decimal_places are defined, they will override the default "$S" and 1 respectively.
 ```GML
 var _timer = new Timer();
 
@@ -111,7 +115,7 @@ show_debug_message( _timer );
 * elapsed() - Returns how much time has elapsed since the timer was last reset().
 * toString() - Returns a StringTime formatted string with the time elapsed.
 #### Vec2( x, y )
-A simple garbage-collected, two-dimensional vector structure.
+A garbage-collected, two-dimensional vector structure.
 ```GML
 myVec = new Vec2( 2, 5 );
 ```
@@ -134,14 +138,14 @@ myVec = new Vec2( 2, 5 );
 * [DsStack](#dsstack-values-)
 * [DsTable](#dstable)
 #### DsChain
-Provides a linked-list style interface to build garbage-collected data structures.
+A linked-list style interface to build garbage-collected data structures.
 * clear() - Clears the data structure.
 * empty() - Returns if the data structure is empty.
 * size() - Returns the size of the data structure.
 * toArray() - Returns the data structure as an array.
 * toString() - Returns the data structure as an array as a string.
 #### DsLinkedList( values... )
-Provides a garbage-collected, linear-traversable data structure. Adds the values as provided. Implements DsChain.
+A garbage-collected, linear-traversable data structure. Adds the values as provided. Implements DsChain.
 * clear() - Clears all entries.
 * empty() - Returns true if the list is empty.
 * first() - Returns the first link in the list.
@@ -154,7 +158,7 @@ Provides a garbage-collected, linear-traversable data structure. Adds the values
 * toArray() - Returns the links in the list as an array.
 * toString() - Returns the links in the list as an array converted to a string.
 #### DsWalkable( values... )
-Provides a garbage-collected, linear-traversable data structure with state memory. Adds the values as provided. Implements DsChain.
+A garbage-collected, linear-traversable data structure with state memory. Adds the values as provided. Implements DsChain.
 * clear() - Clears all entries.
 * empty() - Returns true if the list is empty.
 * size() - Returns the number of entries.
@@ -167,7 +171,7 @@ Provides a garbage-collected, linear-traversable data structure with state memor
 * toArray() - Returns the entries in the linked list as an array.
 * toString() - Returns the linked list as an array converted to a string.
 #### DsList( values... )
-Provides a wrapper for the built-in ds_list data structure. Adds the values as provided. Must be destroyed with destroy() to prevent memory leak.
+A wrapper for the built-in ds_list data structure. Adds the values as provided. Must be destroyed with destroy() to prevent memory leak.
 * add( a... ) - Adds the given entries.
 * insert( a, b ) - Inserts a at index b.
 * remove_value( a ) - Seeks and deletes the first value that matches a.
@@ -181,7 +185,7 @@ Provides a wrapper for the built-in ds_list data structure. Adds the values as p
 * destroy() - Destroys the internal ds_list.
 * toString() - Returns the list as a comma-separated string.
 #### DsTree
-The DsTree is a walkable tree data structure with support for custom data types, symbolic links and branch copying. Must be destroyed with destroy() to prevent memory leak.
+A walkable branching data structure with support for custom data types, symbolic links and deep copying. Must be destroyed with destroy() to prevent memory leak.
 * seek( a ) - Returns the branch at a.
 * lock( a ) - Sets a to be read-only.
 * unlock( a ) - Sets a to be writable.
@@ -193,7 +197,7 @@ The DsTree is a walkable tree data structure with support for custom data types,
 * destroy() - Destroys this branch and all sub-branches, excluding symbolic links.
 * toString() - Returns this branch as a string, used for debug purposes.
 #### DsMap
-Provides a wrapper for the built-in ds_map data structure. Must be destroyed with destroy() to prevent memory leak.
+A wrapper for the built-in ds_map data structure. Must be destroyed with destroy() to prevent memory leak.
 * add( a, b ) - Adds key a with value b, will not replace a if it already exists.
 * replace( a, b ) - Replaces key a with value b, will create key a if it does not exist.
 * remove( a ) - Removes key a if it exists.
@@ -205,7 +209,7 @@ Provides a wrapper for the built-in ds_map data structure. Must be destroyed wit
 * read( a ) - Reads a and converts it into entries in the map.
 * toString() - Returns the map as a string which can be read with read()
 #### DsQueue( values... )
-Provides a garbage-collected queue, operates on a first-in-first-out basis. Enqueues the values as provided. Implements DsChain.
+A garbage-collected queue, operates on a first-in-first-out basis. Enqueues the values as provided. Implements DsChain.
 * enqueue( a... ) - Adds the entries into the queue in order given.
 * enqueue_at_head() - Adds the entries into the head of the queue in the order given.
 * dequeue() - Removes the entry at the head of the queue and returns it.
@@ -217,7 +221,7 @@ Provides a garbage-collected queue, operates on a first-in-first-out basis. Enqu
 * toArray() - Returns the queue as an array.
 * toString() - Returns the queue as an array as a string.
 #### DsStack( values... )
-Provides a garbage-collected stack, operates on a first-in-last-out basis. Pushes the values to the stack as provided. Implements DsChain.
+A garbage-collected stack, operates on a first-in-last-out basis. Pushes the values to the stack as provided. Implements DsChain.
 * push( a... ) - Pushes the entries onto the stack in the order given.
 * pop() - Removes the entry on the top of the stack and returns it.
 * top() - Returns the entry on the top of the stack.
@@ -227,7 +231,7 @@ Provides a garbage-collected stack, operates on a first-in-last-out basis. Pushe
 * toArray() - Returns the stack as an array.
 * toString() - Returns the stack as an array as a string.
 #### DsTable
-Provides a data structure that behaves as a map and a list. Must be destroyed with destroy() to prevent memory leak.
+A data structure that behaves as a map and a list. Must be destroyed with destroy() to prevent memory leak.
 * add( a, b ) - Adds key a with value b to the table.
 * empty() - Returns if the table is empty.
 * size() - Returns the number of entries in the table.
@@ -242,20 +246,20 @@ Provides a data structure that behaves as a map and a list. Must be destroyed wi
 * toArray() - Returns the key value pairs as nested arrays.
 * toString() - Retursn the table as key value pairs as nested arrays as a string.
 ## Events
-The FAST event system allows for quickly writing and calling custom events without having to rely on spawning objects. They can be set to have a delay, and discard themselves after running or on-demand. The following event would be run once, thirty frames later, during the step event, and print Hello World! to the Output.
+The FAST event system allows for configurable timing events without relying on spawning objects. They can be set with a delay, and discard themselves as needed. The following event would be run once, thirty frames later, during the step event, and print Hello World! to the Output.
 ```GML
 event = new EventOnce( FAST.STEP, 30, self, function() {
   show_debug_message( "Hello World!" );
 });
 ```
 Events can be created for the following times:
-FAST.CREATE - Will be run when FAST is created. This event is only run once when the program starts.
-FAST.GAME_END - Will be run during the Game End event. This event is only run once when the program ends.
-FAST.ROOM_START - Will be run during the room start event.
-FAST.ROOM_END - Will be run during the room end event.
-FAST.STEP - Will run during the step event.
-FAST.STEP_BEGIN - Will run during the begin step event.
-FAST.STEP_END - Will run during the end step event.
+* FAST.CREATE - Will be run when FAST is created. This event is only run once when the program starts.
+* FAST.GAME_END - Will be run during the Game End event. This event is only run once when the program ends.
+* FAST.ROOM_START - Will be run during the room start event.
+* FAST.ROOM_END - Will be run during the room end event.
+* FAST.STEP - Will run during the step event.
+* FAST.STEP_BEGIN - Will run during the begin step event.
+* FAST.STEP_END - Will run during the end step event.
 ### Event( event, frames, parameters, function )
 Creates a new event that will be run every number of frames until discard() is called on it.
 * discard() - Discards this event.
@@ -264,6 +268,42 @@ Creates a new event that will be run every number of frames until discard() is c
 Creates a new event that will be run after frames has passed, and then be discarded.
 * discard() - Discards this event.
 * toString() - Returns this event as a string, used for debugging.
+## Parser
+The FAST parser is used to read and format strings. It can perform formatting using the StringFormatter interface, or break them into chunks using the Parser interface.
+### Parser( string )
+Takes the provided string and breaks it into chunks that can be read out similar to a file.
+```GML
+var _parser = new Parser( "Hello World!" );
+
+while ( _parser.has_next() ) {
+  show_debug_message( _parser.next() );
+  
+}
+```
+* parse( a ) - Replaces the currently read string with a.
+* clear() - Clears the string being parsed.
+* reset() - Resets processing to the start of the current string.
+* has_next() - Returns true if the current string has not been fully read.
+* next() - Returns the next piece of the current string.
+* next_line() - Returns the rest of the current string.
+* toArray() - Returns the current string processed as an array.
+* toString() - Returns the current string.
+### StringFormatter( format, \*functions )
+The StringFormatter interface is a powerful formatting tool that can be used alongside the parser to assist with reading complex, instructional strings. It works by providing a format, which is a comma-separated list of rules, and using them to edit strings provided. However, the formatter can also be provided a structure containing the functions which make up the rules which can be called. The FAST database uses it to remove comments, strip white space, and rearrange code into an easier to parse format, while FAST Scripts utlilze the StringFormatter to swap tabs for spaces. The StringFormatter *must* have destroy() called on it or it will cause a memory leak.
+#### StringFormatter Rules
+Rules utilize the structure of "&:rule" where & is a character, and rule is the action that is taken on that character. While rules can be rewritten as needed, by default the StringFormatter provides these common rules:
+* strip - Removes this character from the string.
+* push - Inserts a \n before this character, pushing it to a new line.
+* ignore - Toggles the ignore flag, which ignores all rules until another ignore character is found. For example, \":ignore would cause anything between quotations to be ignored.
+```GML
+var _formatter = new StringFormatter( " :strip,\t:strip" );
+
+var _string = _formatter.format( "  Hello   World!" );
+```
+#### StringFormatter Methods
+rules( a ) - Reads a and converts it into new rules.
+format( a ) - Formats a with the current rules and returns it.
+destroy() - Cleans up internal data structures. Must be called before being garbage collected, or will cause a memory leak!
 ## Functions
 Lastly, FAST includes general purpose functions to fill in some of the missing features in GML.
 * [Arrays](#array-functions)
@@ -293,40 +333,9 @@ Lastly, FAST includes general purpose functions to fill in some of the missing f
 * string_justify( a, b, align, character ) - Returns a with white space added to confirm to a character width of b and an alignment of align (fa_left, fa_center, fa_right). If character is supplied, that will be used instead of " ".
 * string_trim( a ) - Returns a with the preceeding and following whitespace removed.
 * string_to_real( a ) - Converts a to a number, or 0 if it can not be converted.  Supports 0x hexadecimal and 0.0 formats.
-
-
-
-# Other Stuff
-* [Database](#database)
-* [File Handling](#file-handling)
-* [Input Handling](#input-handling)
-* [Logging](#logging)
-* [Publisher](#publisher)
-* [Render](#render)
-* [Scripting](#scripting)
-* [Misc Functions](#misc-functions)
-### Shapes
-Shape is an interface that is used to define shapes. This data type is used heavily by the Pointer feature for creating GUI interactions, but is provided as a generic data type to allow future extensions.
-* inside( x, y ) - Returns if the point lies within this shape's dimensions.
-* draw( x, y, outline ) - Draws the shape either solid, or outlined at x, y.
-* set( x, y ) - Sets the position of the shape to x, y.
-#### ShapeCircle( x, y, radius )
-Defines a circle at x, y with the given radius. Implements the Shape interface.
-#### ShapeEllipses( x, y, width, height )
-Defines an elipses at x, y with the given width and height. Implements the Shape interface.
-#### ShapePolygon( x1, y1... )
-Defines a polygon with the given list of points, will provide the final closing pair. Implements the Shape interface.
-#### ShapeRectangle( x, y, width, height )
-Defines a rectangle at x, y with the given width and height. Implements the Shape interface.
-
-
-
-## Database
-The FAST database is a DsTree-based data loading system. It uses a lua-like language to write database files, and supports features such as overwriting, custom data types, inheritance, templating, and macros. It was designed for projects like RPGs that have large amounts of external data, but is also useful for implementing localization.
-
-## File Handling
+# File Handling
 The File interface is designed to open a file, read its contents into an internal data structure, and then close the file.  This allows for files read into the game to be manipulated more easily, and provides a consistent interface no matter what format the file that is being read from may be written in.
-### File( filename, \*read_only )
+## File( filename, \*read_only )
 ```GML
 var _file = new File( "filename" );
 
@@ -349,6 +358,31 @@ The File interface provides a common framework to seek, open, write to, and save
 * toString() - Returns the name of the source file and lines read, used for debugging.
 ### FileText( filename, read_only )
 Provides a file wrapper for reading from, and writing to, plain text files. Implements File.
+# Database
+The FAST database is a DsTree-based data loading system. It uses a lua-like language to write database files, and supports features such as overwriting, custom data types, inheritance, templating, and macros. It was designed for projects like RPGs that have large amounts of external data, but is also useful for implementing localization.
+# Other Stuff
+* [Database](#database)
+* [Input Handling](#input-handling)
+* [Logging](#logging)
+* [Publisher](#publisher)
+* [Render](#render)
+* [Scripting](#scripting)
+* [Misc Functions](#misc-functions)
+### Shapes
+Shape is an interface that is used to define shapes. This data type is used heavily by the Pointer feature for creating GUI interactions, but is provided as a generic data type to allow future extensions.
+* inside( x, y ) - Returns if the point lies within this shape's dimensions.
+* draw( x, y, outline ) - Draws the shape either solid, or outlined at x, y.
+* set( x, y ) - Sets the position of the shape to x, y.
+#### ShapeCircle( x, y, radius )
+Defines a circle at x, y with the given radius. Implements the Shape interface.
+#### ShapeEllipses( x, y, width, height )
+Defines an elipses at x, y with the given width and height. Implements the Shape interface.
+#### ShapePolygon( x1, y1... )
+Defines a polygon with the given list of points, will provide the final closing pair. Implements the Shape interface.
+#### ShapeRectangle( x, y, width, height )
+Defines a rectangle at x, y with the given width and height. Implements the Shape interface.
+
+
 ## Input Handling
 ## Logging
 FAST provides a general purpose logging system to handle outputs based on the current ERROR_LEVEL. Implements the Logger constructor which can write to anything that implements the GenericOutput interface.
