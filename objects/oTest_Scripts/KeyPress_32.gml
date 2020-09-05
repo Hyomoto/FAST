@@ -7,7 +7,7 @@ if ( global.eng.is_waiting() == false ) {
 	
 }
 while ( global.eng.has_next() || global.eng.parser.has_next() ) {
-	syslog( global.eng.parser.remaining() );
+	syslog( global.eng.parser.next_line() );
 	
 	if ( global.eng.has_next() ) {
 		global.eng.next();

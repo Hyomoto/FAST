@@ -69,7 +69,9 @@ function GamepadManager() {
 			return portList[ _port ].gamepad;
 			
 		}
-		publisher_subscribe( "gamepad discovered", function( _pad ) {
+		publisher	= new Publisher( "gamepad lost", "gamepad discovered" );
+		
+		publisher.subscriber_add( "gamepad discovered", function( _pad ) {
 			var _i = 0; repeat( GAMEPAD_MAXIMUM_VIRTUAL_PORTS ) {
 				var _port	= portList[ _i++ ];
 				
@@ -84,7 +86,7 @@ function GamepadManager() {
 			ds_queue_enqueue( _pad );
 			
 		});
-		publisher_subscribe( "gamepad lost", function( _pad ) {
+		publisher.subscriber_add( "gamepad lost", function( _pad ) {
 			var _i = 0; repeat( GAMEPAD_MAXIMUM_VIRTUAL_PORTS ) {
 				var _port	= portList[ _i++ ];
 				

@@ -22,7 +22,7 @@ function File( _filename, _readonly ) : GenericOutput() constructor {
 	}
 	static read		= function() {
 		if ( last < lines ) {
-			return list[| last++ ];
+			return contents[| last++ ];
 			
 		}
 		return undefined;
@@ -30,7 +30,7 @@ function File( _filename, _readonly ) : GenericOutput() constructor {
 	}
 	static peek		= function( _index ) {
 		if ( _index >= 0 && _index < lines ) {
-			return list[|  _index  ];
+			return contents[|  _index  ];
 			
 		}
 		return undefined;
@@ -38,19 +38,14 @@ function File( _filename, _readonly ) : GenericOutput() constructor {
 	}
 	static poke		= function( _index, _value ) {
 		if ( _index >= 0 && _index < lines ) {
-			list[| _index ]	= _value;
+			contents[| _index ]	= _value;
 			
 		}
 		
 	}
 	static write	= function( _value ) {
-		if ( writable == false ) {
-			log_notify( undefined, instanceof( self ) + ".write", "Called on ", name, ", which is a read only file. Ignored." );
-			
-			return;
-			
-		}
-		ds_list_add( list, _value );
+		ds_list_add( contents, _value );
+		++lines;
 		
 	}
 	static remaining= function() {
@@ -61,18 +56,29 @@ function File( _filename, _readonly ) : GenericOutput() constructor {
 		return last	== lines;
 		
 	}
-	// closes the file, preserving changes
+	// writes the file to disk
+	static save			= function() {
+		if ( writable ) {
+			// save goes here
+			
+		} else {
+			log_notify( undefined, instanceof( self ) + ".close", "Called on ", name, ", which is a read only file. Ignored." );
+			
+		}
+	}
+	// saves and closes the file
 	static close	= function() {
-		discard();
+		save();
+		destroy();
 		
 	}
-	// closes the file, discarding changes
-	static discard		= function() {
-		ds_list_destroy( list );
+	// closes the file without saving it
+	static destroy		= function() {
+		ds_list_destroy( contents );
 		
 	};
 	static clear	= function() {
-		ds_list_clear( list );
+		ds_list_clear( contents );
 		
 	}
 	static is		= function( _data_type ) {
@@ -83,7 +89,7 @@ function File( _filename, _readonly ) : GenericOutput() constructor {
 		var _array	= array_create( lines );
 		
 		var _i = 0; repeat( lines ) {
-			_array[ _i ] = list[| _i ];
+			_array[ _i ] = contents[| _i ];
 			
 			++_i;
 			
@@ -92,13 +98,13 @@ function File( _filename, _readonly ) : GenericOutput() constructor {
 		
 	}
 	static toString	= function() {
-		return name + " (lines " + string( lines ) + ")";
+		return name;
 		
 	}
 // # Variable Declaration
 	writable	= ( _readonly == undefined ? true : _readonly == false );
 	name		= _filename;
-	list		= ds_list_create();
+	contents		= ds_list_create();
 	last		= 0;
 	lines		= 0;
 	

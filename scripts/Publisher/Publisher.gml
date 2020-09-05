@@ -1,34 +1,43 @@
 /// @func Publisher
-function Publisher() {
+function Publisher() constructor {
 	static channel_notify	= function( _channel, _message ) {
+		_channel	= ds_map_find_value( channels, _channel );
 		
+		if ( _channel == undefined ) { return; }
+		
+		var _next = undefined;
+		
+		while ( _channel.has_next( _next ) ) {
+			_next	= _channel.next( _next );
+			
+		}
 		
 	}
 	static channel_add	= function( _channel ) {
-		if ( ds_map_find_value( _channel ) == undefined ) {
+		if ( ds_map_find_value( channels, _channel ) == undefined ) {
 			ds_map_add( channels, _channel, new PublisherChannel() );
 			
 		}
 		
 	}
 	static channel_remove	= function( _channel ) {
-		if ( ds_map_find_value( _channel ) != undefined ) {
+		if ( ds_map_find_value( channels, _channel ) != undefined ) {
 			ds_map_delete( channels, _channel );
 			
 		}
 		
 	}
 	static subscriber_add	= function( _channel, _function ) {
-		var _channel	= ds_map_find_value( channels, _channel );
+		_channel	= ds_map_find_value( channels, _channel );
 		
 		if ( _channel != undefined ) {
-			_channel.add( _subscriber );
+			return _channel.add( _function );
 			
 		}
 		
 	}
 	static subscriber_remove	= function( _channel, _subscriber ) {
-		var _channel	= ds_map_find_value( channels, _channel );
+		_channel	= ds_map_find_value( channels, _channel );
 		
 		if ( _channel != undefined ) {
 			var _seek	= _channel.find( _subscriber );
@@ -41,43 +50,6 @@ function Publisher() {
 		}
 		
 	}
-	//static channel_find	= function( _channel, _create ) {
-	//	var _result	= ds_map_find_value( channels, _channel );
-			
-	//	if ( is_undefined( _result ) && ( _create == undefined || _create == true ) ) {
-	//		_result	= new Publisher();
-				
-	//		ds_map_add( channels, _channel, _result );
-				
-	//	}
-	//	return _result;
-		
-	//}
-	//static listener_add	= function( _id, _channel, _function ) {
-	//	_channel	= channel_find( _channel );
-			
-	//	if ( _channel.find( _id ) == undefined ) {
-	//		var _link	= _channel.subscribe( _id, _function );
-				
-	//	}
-			
-	//}
-	//static listener_remove	= function( _id, _channel ) {
-	//	_channel	= channel_find( _channel, false );
-			
-	//	if ( _channel == undefined ) { return; }
-			
-	//	_channel.unsubscribe( _id );
-			
-	//}
-	//static listener_notify	= function( _channel, _message ) {
-	//	_channel	= channel_find( _channel, false );
-			
-	//	if ( _channel == undefined ) { return; }
-			
-	//	_channel.notify( _message );
-			
-	//}
 	static toString	= function() {
 		var _next	= ds_map_find_first( channels );
 		var _string	= "";
@@ -98,7 +70,7 @@ function Publisher() {
 	channels	= ds_map_create();
 	
 	var _i = 0; repeat( argument_count ) {
-		
+		channel_add( argument[ _i ] );
 		
 	}
 	

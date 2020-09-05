@@ -55,7 +55,7 @@ function StringFormatter( _format, _functions ) constructor {
 		return input.value;
 		
 	}
-	static close	= function() {
+	static destroy	= function() {
 		ds_map_destroy( ruleset );
 		
 	}

@@ -2,9 +2,7 @@
 /// @param filename
 /// @param *read_only
 function FileText( _filename, _readonly ) : File( _filename, _readonly ) constructor {
-	// closes the file, preserving changes
-	static closeSuper	= close;
-	static close	= function() {
+	static save	= function() {
 		if ( writable ) {
 			var _file	= file_text_open_write( name );
 			
@@ -12,10 +10,10 @@ function FileText( _filename, _readonly ) : File( _filename, _readonly ) constru
 				log_notify( undefined, instanceof( self ) + ".close", "Could not write to ", name, ". Ignored." );
 				
 			} else {
-				var _i = 0; repeat( ds_list_size( list ) ) {
-					file_text_write_string( _file, string( list[| _i++ ] ) );
+				var _i = 0; repeat( ds_list_size( contents ) ) {
+					file_text_write_string( _file, string( contents[| _i++ ] ) );
 					file_text_writeln( _file );
-				
+					
 				}
 				file_text_close( _file );
 				
@@ -27,7 +25,6 @@ function FileText( _filename, _readonly ) : File( _filename, _readonly ) constru
 			log_notify( undefined, instanceof( self ) + ".close", "Called on ", name, ", which is a read only file. Ignored." );
 			
 		}
-		closeSuper();
 		
 	}
 	if ( exists( _filename ) == false ) {
@@ -41,11 +38,11 @@ function FileText( _filename, _readonly ) : File( _filename, _readonly ) constru
 		_string	= file_text_read_string( _file ); file_text_readln( _file );
 		_last	= 0;
 		
-		ds_list_add( list, _string );
+		ds_list_add( contents, _string );
 		
 	}
 	file_text_close( _file );
 	
-	lines	= ds_list_size( list );
+	lines	= ds_list_size( contents );
 	
 }

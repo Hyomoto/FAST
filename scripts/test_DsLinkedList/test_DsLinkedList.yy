@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Parser",
-    "path": "folders/FAST/Core/Parser.yy",
+    "name": "Core",
+    "path": "folders/TEST_CASES/Core.yy",
   },
   "resourceVersion": "1.0",
-  "name": "Parser",
+  "name": "test_DsLinkedList",
   "tags": [],
   "resourceType": "GMScript",
 }

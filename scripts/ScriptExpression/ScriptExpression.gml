@@ -84,7 +84,7 @@ function ScriptExpression( _string ) : DsWalkable() constructor {
 			_op.rao		= true;
 			
 		} else if ( string_pos( _char, "/*+-" ) > 0 ) { // operator
-			var _last	= ( final == undefined ? undefined : final.value );
+			var _last	= ( last == undefined ? undefined : last.value );
 			var _op		= add( new ScriptEngine_Operator( _char, 4 ) ).value;
 			
 			switch ( _next ) {

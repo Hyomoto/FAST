@@ -2,8 +2,8 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "TEST_CASES",
-    "path": "folders/TEST_CASES.yy",
+    "name": "Scripts",
+    "path": "folders/TEST_CASES/Scripts.yy",
   },
   "resourceVersion": "1.0",
   "name": "test_Scripts",

@@ -246,7 +246,7 @@ function database_load( _filename, _target ) {
 		
 	}
 	// close file
-	_file.discard();
+	_file.destroy();
 	// return populated node
 	return _target;
 	

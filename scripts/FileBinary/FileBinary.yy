@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Parser",
-    "path": "folders/FAST/Core/Parser.yy",
+    "name": "Scripts",
+    "path": "folders/FAST/File Handling/Scripts.yy",
   },
   "resourceVersion": "1.0",
-  "name": "Parser",
+  "name": "FileBinary",
   "tags": [],
   "resourceType": "GMScript",
 }

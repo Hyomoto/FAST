@@ -90,8 +90,8 @@ function FileFAST( _filename, _readonly ) : File( _filename, _readonly ) constru
 		if ( writable ) {
 			var _file	= file_text_open_write( name );
 			
-			var _i = 0; repeat( ds_list_size( list ) ) {
-				file_text_write_string( _file, list[| _i++ ] );
+			var _i = 0; repeat( ds_list_size( contents ) ) {
+				file_text_write_string( _file, contents[| _i++ ] );
 				file_text_writeln( _file );
 				
 			}
@@ -156,12 +156,12 @@ function FileFAST( _filename, _readonly ) : File( _filename, _readonly ) constru
 				_pos	= string_pos( "\n", _read );
 				
 				if ( _pos == 0 ) {
-					ds_list_add( list, new fragment( _read, _name, _line ) );
+					ds_list_add( contents, new fragment( _read, _name, _line ) );
 					
 					break;
 					
 				} else if ( _pos > 1 ) {
-					ds_list_add( list, new fragment( string_copy( _read, 1, _pos - 1 ), _name, _line ) );
+					ds_list_add( contents, new fragment( string_copy( _read, 1, _pos - 1 ), _name, _line ) );
 					
 				}
 				_read	= string_delete( _read, 1, _pos );
@@ -177,7 +177,7 @@ function FileFAST( _filename, _readonly ) : File( _filename, _readonly ) constru
 	
 	load( _filename );
 	
-	lines	= ds_list_size( list );
+	lines	= ds_list_size( contents );
 	name	= _filename;
 	
 }
