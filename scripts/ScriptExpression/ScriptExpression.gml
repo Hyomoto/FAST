@@ -36,8 +36,8 @@ function ScriptExpression( _string ) : DsWalkable() constructor {
 					if ( _last != undefined && instanceof( _last ) != "ScriptEngine_Operator" ) {
 						_engine.errors.push( _header + "Statement expression missing operator: " + _last.value + _next.func ); }
 					
-					if ( ScriptManager().is_reserved( _next.func ) > -1 ) {
-						_engine.errors.push( _header + "Statement expression function name is reserved keyword: " + _next.func ); }
+					//if ( ScriptManager().is_reserved( _next.func ) > -1 ) {
+					//	_engine.errors.push( _header + "Statement expression function name is reserved keyword: " + _next.func ); }
 					
 					break;
 					
@@ -84,7 +84,7 @@ function ScriptExpression( _string ) : DsWalkable() constructor {
 			_op.rao		= true;
 			
 		} else if ( string_pos( _char, "/*+-" ) > 0 ) { // operator
-			var _last	= ( last == undefined ? undefined : last.value );
+			var _last	= ( final == undefined ? undefined : final.value );
 			var _op		= add( new ScriptEngine_Operator( _char, 4 ) ).value;
 			
 			switch ( _next ) {

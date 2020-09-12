@@ -1,4 +1,5 @@
 /// @func ScriptEngine
+/// @param name
 /// @param filepath
 /// @param *debug?
 function ScriptEngine( _name, _filepath, _debug ) constructor {
@@ -126,14 +127,13 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 		execute( { script : _seek, local : _args, last : undefined, depth : -1 } );
 		
 	}
-	static file_load	= function( _filename, _reload, _formatter ) {
+	static file_load	= function( _filename, _formatter ) {
 		var _file		= file_text_open_read( _filename );
 		var _script		= new Script();
 		var _last		= 0;
 		var _file_line	= 0;
 		var _goto		= new DsStack();
 		var	_logic		= 0;
-		var _type		= 0;
 		var _name, _line;
 		
 		_formatter.comment	= false;
@@ -146,20 +146,16 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 			++_file_line;
 			
 			_script.source	= _filename;
+			_script.name	= _name;
 			
 			if ( _last++ == 0 ) {
 				if ( string_copy( _line, 1, 9 ) == "function(" ) {
 					_script.args	= string_explode( string_copy( _line, 10, string_length( _line ) - 11 ), ",", true );
 					_logic			= 3;
 					
-					funcs[? _name ]	= _script;
-					
-					_type	= 1;
+					_script.isFunction	= true;
 					
 					continue;
-					
-				} else {
-					scripts[? _name ]	= _script;
 					
 				}
 				
@@ -218,7 +214,7 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 		
 		_script.validate( self, true );
 		
-		return _type;
+		return _script;
 		
 	}
 	static load_async	= function( _filename, _reload, _period ) {
@@ -240,9 +236,11 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 			var _time	= get_timer();
 			
 			do {
-				switch ( file_load( _package.load.dequeue(), _package.reload, _package.format ) ) {
-					case 1 : _package.funcs += 1; break;
-					default: _package.scripts+=1; break;
+				var _script	= file_load( _package.load.dequeue(), _package.reload, _package.format );
+				
+				switch ( _script.isFunction ) {
+					case true	: _package.funcs += 1; funcs[? _script.name ]	= _script; break;
+					default		: _package.scripts+=1; scripts[? _script.name ]= _script; break;
 					
 				}
 				
@@ -276,9 +274,11 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 		_found	= _load.size();
 		
 		while ( _load.empty() == false ) {
-			switch ( file_load( _load.pop(), _reload, _formatter ) ) {
-				case 1 : ++_funcs; break;
-				default: ++_scripts; break;
+			var _script	= file_load( _load.dequeue(), _reload, _formatter );
+			
+			switch ( _script.isFunction ) {
+				case true	: _funcs += 1; funcs[? _script.name ]	= _script; break;
+				default		: _scripts+=1; scripts[? _script.name ]= _script; break;
 				
 			}
 			

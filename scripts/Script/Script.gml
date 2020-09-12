@@ -104,8 +104,11 @@ function Script() : DsChain() constructor {
 		
 	}
 // # Variable Declaration
+	name	= "";
 	source	= undefined;
 	final	= undefined;
 	args	= undefined;
+	
+	isFunction	= false;
 	
 }

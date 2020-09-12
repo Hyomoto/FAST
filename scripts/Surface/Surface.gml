@@ -1,11 +1,19 @@
 /// @func Surface
 /// @param width
 /// @param height
-function Surface( _width, _height ) constructor {
+/// @param per_frame?
+function Surface( _width, _height, _per_frame ) constructor {
 	static create	= function() {
 		surface_free( surface );
 		
 		surface	= surface_create( width, height );
+		
+	}
+	static resize	= function( _width, _height ) {
+		width	= _width;
+		height	= _height;
+		
+		surface_free( surface );
 		
 	}
 	static update	= function( _forced ) {
@@ -19,7 +27,13 @@ function Surface( _width, _height ) constructor {
 			redraw	= _forced;
 			
 		}
-		return redraw;
+		if ( redraw ) {
+			redraw	= perFrame;
+			
+			return true;
+			
+		}
+		return false;
 		
 	}
 	static draw	= function( _x, _y ) {
@@ -28,6 +42,14 @@ function Surface( _width, _height ) constructor {
 	}
 	static set	= function() {
 		surface_set_target( surface );
+		
+	}
+	static per_frame	= function( _per_frame ) {
+		perFrame	= _per_frame;
+		
+	}
+	static refresh	= function() {
+		redraw	= true;
 		
 	}
 	static reset	= function() {
@@ -48,9 +70,10 @@ function Surface( _width, _height ) constructor {
 		return _data_type == Surface;
 		
 	}
-	surface	= -1;
-	width	= _width;
-	height	= _height;
-	redraw	= false;
+	surface		= -1;
+	width		= _width;
+	height		= _height;
+	redraw		= false;
+	perFrame	= ( _per_frame == undefined ? true : _per_frame );
 	
 }

@@ -25,6 +25,7 @@ function script_evaluate_traverse( _engine, _package, _string ) {
 		_i		= 1;
 		
 	}
+	
 	// then ref
 	repeat( max( 0, array_length( _path ) - _i ) ) {
 		if ( _ref == undefined ) {

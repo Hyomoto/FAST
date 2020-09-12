@@ -39,6 +39,7 @@ function ScriptEngine_Operator( _value, _precedence ) constructor {
 function ScriptEngine_Function( _value ) constructor {
 	static get	= function( _engine, _package ) {
 		var _args	= array_create( array_length( args ) );
+		var _func;
 		
 		var _i = 0; repeat( array_length( args ) ) {
 			_args[ _i ]	= script_evaluate_expression( _engine, _package, args[ _i ] );
@@ -46,11 +47,17 @@ function ScriptEngine_Function( _value ) constructor {
 			++_i;
 			
 		}
-		if ( func == "pop" ) {
-			return _engine.stack.pop();
+		if ( string_pos( ".", func ) == 0 ) {
+			if ( func == "pop" ) {
+				return _engine.stack.pop();
+			
+			}
+			_func	= _engine.funcs[? func ];
+			
+		} else {
+			_func	= script_evaluate_traverse( _engine, _package.local, func );
 			
 		}
-		var _func	= _engine.funcs[? func ];
 		var _result	= undefined;
 		
 		if ( _func == undefined ) {
