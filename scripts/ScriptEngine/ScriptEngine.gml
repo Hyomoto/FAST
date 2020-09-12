@@ -236,7 +236,7 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 			var _time	= get_timer();
 			
 			do {
-				var _script	= file_load( _package.load.dequeue(), _package.reload, _package.format );
+				var _script	= file_load( _package.load.dequeue(), _package.format );
 				
 				switch ( _script.isFunction ) {
 					case true	: _package.funcs += 1; funcs[? _script.name ]	= _script; break;
@@ -274,7 +274,7 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 		_found	= _load.size();
 		
 		while ( _load.empty() == false ) {
-			var _script	= file_load( _load.dequeue(), _reload, _formatter );
+			var _script	= file_load( _load.dequeue(), _formatter );
 			
 			switch ( _script.isFunction ) {
 				case true	: _funcs += 1; funcs[? _script.name ]	= _script; break;
