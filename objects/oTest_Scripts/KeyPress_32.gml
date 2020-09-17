@@ -1,5 +1,8 @@
 //test_Scripts();
+
 if ( global.eng.is_waiting() == false ) {
+	timer.reset();
+	
 	global.eng.run_script( "testA" );
 	
 } else {
@@ -15,3 +18,4 @@ while ( global.eng.has_next() || global.eng.parser.has_next() ) {
 	}
 	
 }
+syslog( "Took ", timer, " seconds." );

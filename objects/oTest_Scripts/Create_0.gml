@@ -1,8 +1,8 @@
-var _timer	= new Timer( "$S", 5 );
+timer	= new Timer( "$S", 5 );
 
 global.eng	= new ScriptEngine( "test", undefined, true );
 
-syslog( "Compile took ", _timer, " seconds." );
+syslog( "Compile took ", timer, " seconds." );
 
 global.eng.set_value( "quest", true );
 
