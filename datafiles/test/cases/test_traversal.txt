@@ -1,6 +1,6 @@
 function()
-var set count to 0
-var set total to 3
+set local count to 0
+set local total to 3
 set a to {}
 set a.b to 10
 trace( "Testing traversal..." )

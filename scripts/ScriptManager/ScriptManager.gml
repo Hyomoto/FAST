@@ -117,7 +117,7 @@ function ScriptManager(){
 			
 		}
 		reserved= new Array([
-			"var", "if", "else", "elseif", "end", "wait", "return", "loop", "queue", "push", "pop", "set"
+			"local", "if", "else", "elseif", "end", "wait", "return", "loop", "queue", "push", "pop", "set"
 		]);
 	}
 	static instance	= new Feature( "FAST Script", "1.0", "08/22/2020", new manager() );

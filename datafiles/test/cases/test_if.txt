@@ -1,5 +1,5 @@
 function( compare )
-var set result to null
+set local result to null
 trace( "Testing if/else branching..." )
 if compare == 0
 	set result to 0

@@ -1,13 +1,13 @@
 /// @func ScriptStatement
 /// @param expression
-function ScriptStatement( _expression ) constructor {
-	static validate	= function( _engine, _script ) {
-		if ( ScriptManager().is_reserved( target ) ) {
-			_engine.errors.push( "(line " + string( line ) + ") Statement tries to assign reserved keyword: " + target );
+function ScriptStatement( _expression, _script ) constructor {
+	static validate	= function( _script ) {
+		if ( ScriptManager().is_reserved( target ) ) { _script.errors += 1;
+			ScriptManager().system.write( _script.source + "(line " + string( line ) + ") Statement tries to assign reserved keyword: " + target );
 			
 		}
 		if ( expression != undefined ) {
-			expression.validate( _engine, _script, self );
+			expression.validate( _script, self );
 			
 		}
 		
@@ -37,16 +37,11 @@ function ScriptStatement( _expression ) constructor {
 	depth		= -1;
 	goto		= -1;
 	illegal		= false;
-	line		= -1;
+	line		= ( _script == undefined ? -1 : _script.lines + 1 );
+	errors		= 0;
 	
 	_keyword	= _parser.next();
 	
-	if ( _keyword == "var" ) {
-		local	= true;
-		
-		_keyword	= _parser.next();
-		
-	}
 	keyword		= _keyword;
 	
 	switch ( _keyword ) {
@@ -57,20 +52,20 @@ function ScriptStatement( _expression ) constructor {
 		case "wait"		: ends = true; break;
 		case "return"	: ends = true; break;
 		case "loop"		: close= true; return;
-		case "queue"	:
-			execute	= function( _engine, _package ) {
-				var _result	= _engine.scripts[? script_evaluate_expression( _engine, _package, expression ) ];
+		//case "queue"	:
+		//	execute	= function( _engine, _package ) {
+		//		var _result	= _engine.scripts[? script_evaluate_expression( _engine, _package, expression ) ];
 				
-				if ( _result == undefined ) {
-					_engine.log( "ScriptStatement", "Script ", _result, " not found. Skipped!" );
+		//		if ( _result == undefined ) {
+		//			_engine.log( "ScriptStatement", "Script ", _result, " not found. Skipped!" );
 					
-					return;
+		//			return;
 					
-				}
-				_engine.enqueue( _result );
+		//		}
+		//		_engine.enqueue( _result );
 				
-			}
-			break;
+		//	}
+		//	break;
 			
 		case "push"		: 
 			execute	= function( _engine, _package ) {
@@ -84,10 +79,20 @@ function ScriptStatement( _expression ) constructor {
 		case "set" :
 			target	= _parser.next();
 			
+			if ( target == "local" ) {
+				local	= true;
+				
+				target	= _parser.next();
+				
+			}
 			illegal	= ( ScriptManager().is_reserved( target ) > -1 );
 			
-			_parser.next();
+			var _to	= _parser.next();
 			
+			if ( _to != "to" ) {
+				errors	+= 1;
+				
+			}
 			execute	= function( _engine, _package ) {
 				var _result	= script_evaluate_expression( _engine, _package, expression );
 				

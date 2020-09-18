@@ -1,5 +1,100 @@
 /// @func Script
 function Script() : DsChain() constructor {
+	static execute	= function( _engine ) {
+		if ( errors > 0 ) {
+			_engine.log( "execute", "Cannot execute \"", source, "\" because it contains errors!" );
+			
+			return undefined;
+			
+		}
+		var _package	= _engine.executionStack.top();
+		var _reread		= false;
+		var _ex, _last;
+		
+		while ( has_next( _package.last ) ) {
+			if ( _reread == false ) {
+				_package.last	= next( _package.last );
+				
+			}
+			_last			= _package.last;
+			_ex				= _last.value;
+			_reread			= false;
+			
+			if ( is_string( _ex ) ) {
+				_engine.parseQueue.enqueue( _ex );
+				
+				continue;
+				
+			}
+			if( _ex.ignore ) { continue; }
+			if ( _ex.ends ) {
+				if ( args == undefined && _ex.keyword == "wait" ) {
+					//if ( has_next( _last ) ) {
+					//	var _time	= _ex.execute( self, _package );
+						
+					//	if ( _time != undefined ) {
+					//		wait	= new EventOnce( FAST.STEP, _time, _package, function( _package ) {
+					//			execute( _package );
+							
+					//		});
+							
+					//	} else {
+					//		queue.enqueue_at_head( _package );
+							
+					//		wait	= true;
+							
+					//	}
+						
+					//}
+					//return;
+					_engine.executionStop	= true;
+					
+					return;
+					
+				}
+				_engine.executionStack.pop();
+				
+				return _ex.execute( _engine, _package );
+				
+			}
+			if ( _ex.close ) {
+				if ( _ex.keyword == "loop" ) {
+					_package.depth -= 1;
+					
+					if ( _package.depth < _ex.depth ) { continue; }
+					
+					_package.last	= _ex.goto;
+					_reread			= true;
+					
+				} else if ( _ex.keyword == "end" ) {
+					_package.depth -= 1;
+					
+					continue;
+					
+				}
+				
+			}
+			if ( _ex.open ) {
+				if ( _package.depth < _ex.depth && _ex.execute( _engine, _package ) ) {
+					_package.depth	+= 1;
+					
+					continue;
+					
+				}
+				_package.last	= _ex.goto;
+				_reread			= true;
+				
+			} else {
+				_ex.execute( _engine, _package );
+				
+			}
+			
+		}
+		_engine.executionStack.pop();
+		
+		return undefined;
+		
+	}
 	static validate	= function( _engine, _quiet ) {
 		var _open	= 0;
 		var _last	= undefined;
@@ -9,17 +104,19 @@ function Script() : DsChain() constructor {
 			
 			if ( is_string( _last.value ) ) { continue; }
 			
-			_last.value.validate( _engine, self );
+			_last.value.validate( self );
 			
 			if ( _last.value.close ) { --_open; }
 			if ( _last.value.open ) { ++_open; }
 			
 		}
-		if ( _open > 0 ) { _engine.errors.push( source + " lacks closures, check for missing 'end' or 'loop'." ); }
-		if ( _open < 0 ) { _engine.errors.push( source + " has too many closures, check for extra 'end' or 'loop'." ); }
+		if ( _open > 0 ) { _errors.enqueue( source + " lacks closures, check for missing 'end' or 'loop'." ); }
+		if ( _open < 0 ) { _errors.enqueue( source + " has too many closures, check for extra 'end' or 'loop'." ); }
 		
 		if ( _quiet == false || _engine.errors.size() > 0 ) {
-			_engine.log( source, "Script validated with ", _engine.errors.size(), " errors." );
+			errors	= _engine.errors.size();
+			
+			_engine.log( source, "Script validated with ", errors, " errors." );
 			
 			if ( _engine.errors.size() > 0 ) {
 				while ( _engine.errors.size() > 0 ) {
@@ -108,6 +205,8 @@ function Script() : DsChain() constructor {
 	source	= undefined;
 	final	= undefined;
 	args	= undefined;
+	errors	= 0;
+	lines	= 0;
 	
 	isFunction	= false;
 	

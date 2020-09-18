@@ -50,7 +50,7 @@ function ScriptEngine_Function( _value ) constructor {
 		if ( string_pos( ".", func ) == 0 ) {
 			if ( func == "pop" ) {
 				return _engine.stack.pop();
-			
+				
 			}
 			_func	= _engine.funcs[? func ];
 			
@@ -61,7 +61,7 @@ function ScriptEngine_Function( _value ) constructor {
 		var _result	= undefined;
 		
 		if ( _func == undefined ) {
-			_engine.errors.push( [ "ScriptEngine_Function", "Function \"" + func + "\" not defined. Failed." ] );
+			_engine.log( "ScriptEngine_Function", "Function \"" + func + "\" not defined. Failed." );
 			
 			return;
 			
@@ -75,7 +75,9 @@ function ScriptEngine_Function( _value ) constructor {
 				++_i;
 				
 			}
-			_result	= _engine.execute( { script : _func, local : _local, last : undefined, depth : -1 } );
+			_engine.executionStack.push( { local : _local, last : undefined, depth : -1 } );
+			
+			_result	= _func.execute( _engine );
 			
 		} else {
 			switch ( array_length( _args ) ) {

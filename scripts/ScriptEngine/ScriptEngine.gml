@@ -8,108 +8,30 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 		return new ScriptStatement( _expression ).execute( self, {} );
 		
 	}
-	static execute	= function( _package ) {
-		var _script	= _package.script;
-		var _reread	= false;
-		var _ex, _last;
-		var _count	= 0;
-		
-		while ( _script.has_next( _package.last ) ) {
-			if ( _reread == false ) {
-				_package.last	= _script.next( _package.last );
-				
-			}
-			_last			= _package.last;
-			_ex				= _last.value;
-			_reread			= false;
-			++lines;
-			
-			if ( is_string( _ex ) ) {
-				parse( _ex );
-				
-				continue;
-				
-			}
-			if( _ex.ignore ) { continue; }
-			if ( _ex.ends ) {
-				if ( _package.script.args == undefined && _ex.keyword == "wait" ) {
-					if ( _script.has_next( _last ) ) {
-						var _time	= _ex.execute( self, _package );
-						
-						if ( _time != undefined ) {
-							wait	= new EventOnce( FAST.STEP, _time, _package, function( _package ) {
-								execute( _package );
-							
-							});
-							
-						} else {
-							queue.enqueue_at_head( _package );
-							
-							wait	= true;
-							
-						}
-						
-					}
-					return;
-					
-				}
-				return _ex.execute( self, _package );
-				
-			}
-			if ( _ex.close ) {
-				if ( _ex.keyword == "loop" ) {
-					_package.depth -= 1;
-					
-					if ( _package.depth < _ex.depth ) { continue; }
-					
-					_package.last	= _ex.goto;
-					_reread			= true;
-					
-				} else if ( _ex.keyword == "end" ) {
-					_package.depth -= 1;
-					
-					continue;
-					
-				}
-				
-			}
-			if ( _ex.open ) {
-				if ( _package.depth < _ex.depth && _ex.execute( self, _package ) ) {
-					_package.depth	+= 1;
-					
-					continue;
-					
-				}
-				_package.last	= _ex.goto;
-				_reread			= true;
-				
-			} else {
-				_ex.execute( self, _package );
-				
-			}
-			
-		}
-		return undefined;
-		
-	}
 	// runs a script as part of the engine
 	static run_script	= function( _name ) {
-		var _seek	= scripts[? _name ];
+		var _script	= scripts[? _name ];
 		var _result;
 		
-		if ( _seek == undefined ) {
+		var _i = 1; repeat( argument_count - 1 ) {
+			stack.push( argument[ _i++ ] );
+			
+		}
+		if ( _script == undefined ) {
 			log( "ScriptEngine.execute", "Script \"", _name, "\" does not exist. Skipped!" );
 			
 			return false;
 			
 		}
-		execute( { script : _seek, local : {}, last : undefined, depth : -1 } );
+		executionStack.push( { local : {}, last : undefined, depth : -1 } );
+		
+		_script.execute( self );
 		
 	}
 	static run_function	= function( _name ) {
-		var _seek	= funcs[? _name ];
+		var _script	= funcs[? _name ];
 		
-		if ( _seek == undefined ) {
+		if ( _script == undefined ) {
 			log( "ScriptEngine.execute", "Function \"", _name, "\" does not exist. Skipped!" );
 			
 			return false;
@@ -118,13 +40,15 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 		var _args	= {};
 		var _arg;
 		
-		var _i = 1; repeat( array_length( _seek.args ) ) {
+		var _i = 1; repeat( array_length( _script.args ) ) {
 			_arg	= ( _i < argument_count ? argument[ _i ] : undefined );
 			
-			variable_struct_set( _args, _seek.args[ _i++ - 1 ], _arg );
+			variable_struct_set( _args, _script.args[ _i++ - 1 ], _arg );
 			
 		}
-		execute( { script : _seek, local : _args, last : undefined, depth : -1 } );
+		executionStack.push( { local : _args, last : undefined, depth : -1 } );
+		
+		_script.execute( self );
 		
 	}
 	static load_async	= function( _filename, _reload, _period ) {
@@ -168,7 +92,6 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 		
 	}
 	static load		= function( _filename, _reload ) {
-		var _formatter	= ScriptManager().formatter;
 		var _scripts	= 0;
 		var _funcs		= 0;
 		var _load, _found;
@@ -212,21 +135,21 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 		}
 		
 	}
-	static log_low	= function( _event ) {
-		static logger	= ScriptManager().logger;
+	//static log_low	= function( _event ) {
+	//	static logger	= ScriptManager().logger;
 		
-		if ( debug ) {
-			var _string	= name + " [" + _event + "] ";
+	//	if ( debug ) {
+	//		var _string	= name + " [" + _event + "] ";
 			
-			var _i = 1; repeat( argument_count - 1 ) {
-				_string	+= string( argument[ _i++ ] );
+	//		var _i = 1; repeat( argument_count - 1 ) {
+	//			_string	+= string( argument[ _i++ ] );
 				
-			}
-			logger.write( _string );
+	//		}
+	//		logger.write( _string );
 			
-		}
+	//	}
 		
-	}
+	//}
 	static get_value	= function( _key ) {
 		return ds_map_find_value( values, _key );
 		
@@ -235,56 +158,56 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 		ds_map_replace( values, _key, _value );
 		
 	}
-	static proceed	= function() {
-		if ( wait == true ) { wait = undefined; }
+	//static proceed	= function() {
+	//	if ( wait == true ) { wait = undefined; }
 		
-		execute( queue.dequeue() );
+	//	execute( queue.dequeue() );
 		
-	}
-	static enqueue	= function( _source ) {
-		var _target	= ( is_string( _source ) ? scripts[? _source ] : _source );
+	//}
+	//static enqueue	= function( _source ) {
+	//	var _target	= ( is_string( _source ) ? scripts[? _source ] : _source );
 		
-		if ( _target == undefined || instanceof( _target ) != "Script" ) {
-			log( "enqueue", "Script ", _source, " was not a valid script. Ignored!" );
+	//	if ( _target == undefined || instanceof( _target ) != "Script" ) {
+	//		log( "enqueue", "Script ", _source, " was not a valid script. Ignored!" );
 			
-			return;
+	//		return;
 			
-		}
-		queue.enqueue( _target );
+	//	}
+	//	queue.enqueue( _target );
 		
-	}
-	static parse		= function( _string ) {
-		if ( parser.has_next() == false ) {
-			parser.parse( _string );
+	//}
+	//static parse		= function( _string ) {
+	//	if ( parser.has_next() == false ) {
+	//		parser.parse( _string );
 			
-		} else {
-			toParse.enqueue( _string );
+	//	} else {
+	//		toParse.enqueue( _string );
 			
-		}
+	//	}
 		
-	}
-	static has_next	= function() {
-		return toParse.empty() == false;
+	//}
+	//static has_next	= function() {
+	//	return toParse.empty() == false;
 		
-	}
-	static next		= function() {
-		if ( has_next() ) {
-			parser.parse( toParse.dequeue() );
+	//}
+	//static next		= function() {
+	//	if ( has_next() ) {
+	//		parser.parse( toParse.dequeue() );
 			
-		}
+	//	}
 		
-	}
-	static push		= function() {
-		var _i = 0; repeat( argument_count ) {
-			stack.push( argument[ _i++ ] );
+	//}
+	//static push		= function() {
+	//	var _i = 0; repeat( argument_count ) {
+	//		stack.push( argument[ _i++ ] );
 			
-		}
+	//	}
 		
-	}
-	static pop		= function() {
-		return stack.pop();
+	//}
+	//static pop		= function() {
+	//	return stack.pop();
 		
-	}
+	//}
 	static is_running	= function() {
 		return queue.size() > 0;
 		
@@ -304,14 +227,25 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 	static manager	= ScriptManager();
 	
 	event	= new Event( FAST.STEP, 0, undefined, function() {
+		executionStop	= false;
+		
 		while ( wait == undefined && queue.empty() == false ) {
-			execute( { script : queue.dequeue(), local : {}, last : undefined, depth : -1 } );
+			executionStack.push( { local : {}, last : undefined, depth : -1 } );
+			
+			queue.dequeue().execute( self );
+			
+			if ( executionStop ) { break; }
 			
 		}
 		
 	});
-	parser	= new Parser();
-	toParse	= new DsQueue();
+	//parser	= new Parser();
+	//toParse	= new DsQueue();
+	executionStack	= new DsStack();
+	executionStop	= false;
+	
+	parseQueue		= new DsQueue();
+	
 	values	= ds_map_create();
 	funcs	= ds_map_create();
 	scripts	= ds_map_create();
@@ -321,7 +255,6 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 	wait	= undefined;
 	debug	= _debug == true;
 	name	= _name;
-	lines	= 0;
 	loading	= 0;
 	
 	var _next = ds_map_find_first( ScriptManager().funcs ); repeat( ds_map_size( ScriptManager().funcs ) ) {

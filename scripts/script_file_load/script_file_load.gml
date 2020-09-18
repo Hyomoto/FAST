@@ -8,7 +8,8 @@ function script_file_load( _filename ) {
 	var _file_line	= 0;
 	var _goto		= new DsStack();
 	var	_logic		= 0;
-	var _name, _line;
+	var _errors		= 0;
+	var _name, _line, _statement;
 	
 	_formatter.comment	= false;
 	
@@ -46,31 +47,30 @@ function script_file_load( _filename ) {
 		}
 		if ( _line != "" ) {
 			if ( _logic ) {
-				_script.add( new ScriptStatement( _line ) );
+				_statement	= _script.add( new ScriptStatement( _line, _script ) );
 				
-				if ( _script.final.value.close ) {
+				if ( _statement.value.close ) {
 					if ( _goto.empty() == false ) {
 						var _pop	= _goto.pop();
 						
-						_pop.value.goto = _script.final;
+						_pop.value.goto = _statement;
 						
-						if ( _script.final.value.keyword == "loop" ) {
-							_script.final.value.depth	= _goto.size() - 1;
-							
-							_script.final.value.goto = _pop;
+						if ( _statement.value.keyword == "loop" ) {
+							_statement.value.depth	= _goto.size() - 1;
+							_statement.value.goto	= _pop;
 							
 						}
 						
 					}
 					
 				}
-				if ( _script.final.value.open ) {
-					_script.final.value.depth	= _goto.size();
+				if ( _statement.value.open ) {
+					_statement.value.depth	= _goto.size();
 					
-					_goto.push( _script.final );
+					_goto.push( _statement );
 					
 				}
-				_script.final.value.line	= _file_line;
+				//_script.final.value.line	= _file_line;
 				
 			} else {
 				_script.add( _line );
@@ -80,6 +80,12 @@ function script_file_load( _filename ) {
 		}
 		if ( _logic == 2 ) {
 			_logic	= 0;
+			
+		}
+		_script.lines	+= 1;
+		
+		if ( _errors < _script.errors ) {
+			ScriptManager().system.write( "Error in \"", _script.source, "\" at line ", _script.lines, "." );
 			
 		}
 		
