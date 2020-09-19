@@ -76,6 +76,7 @@ function String() constructor {
 			++_i;
 			
 		}
+		return _array;
 		
 	}
 	static toString	= function() {
