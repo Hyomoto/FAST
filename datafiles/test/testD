@@ -1,0 +1,7 @@
+<<
+set local x to 0
+
+wait until x == 0
+
+trace( "Complete!")
+>>

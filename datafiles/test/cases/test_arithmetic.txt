@@ -1,6 +1,6 @@
 function()
-var set count to 0
-var set total to 5
+set local count to 0
+set local total to 5
 trace( "Testing arithmetic..." )
 //test addition
 set count to count + (1 + 1 == 2)

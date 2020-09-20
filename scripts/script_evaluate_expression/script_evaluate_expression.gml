@@ -18,8 +18,8 @@ function script_evaluate_expression( _engine, _package, _expression ) {
 		
 	}
 	static __manager	= ScriptManager();
-	var _prec	= 0;	// operator precedence
-	var _left, _right, _next;
+	
+	var _left, _next;
 	
 	_expression.start();
 	

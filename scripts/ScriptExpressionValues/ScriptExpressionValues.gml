@@ -50,9 +50,9 @@ function ScriptEngine_Function( _value ) constructor {
 		if ( string_pos( ".", func ) == 0 ) {
 			if ( func == "pop" ) {
 				return _engine.stack.pop();
-			
+				
 			}
-			_func	= _engine.funcs[? func ];
+			_func	= _engine.scripts[? func ];
 			
 		} else {
 			_func	= script_evaluate_traverse( _engine, _package.local, func );
@@ -61,7 +61,7 @@ function ScriptEngine_Function( _value ) constructor {
 		var _result	= undefined;
 		
 		if ( _func == undefined ) {
-			_engine.errors.push( [ "ScriptEngine_Function", "Function \"" + func + "\" not defined. Failed." ] );
+			_engine.log( "ScriptEngine_Function", "Function \"" + func + "\" not defined. Failed." );
 			
 			return;
 			
@@ -69,13 +69,25 @@ function ScriptEngine_Function( _value ) constructor {
 		if ( is_struct( _func ) ) {
 			var _local	= {};
 			
-			var _i = 0; repeat( array_length( _func.args ) ) {
-				variable_struct_set( _local, _func.args[ _i ], _args[ _i ] );
+			if( _func.isFunction ) {
+				var _i = 0; repeat( array_length( _func.args ) ) {
+					variable_struct_set( _local, _func.args[ _i ], _args[ _i ] );
 				
-				++_i;
+					++_i;
+				
+				}
+				
+			} else {
+				var _i = 0; repeat( array_length( _args ) ) {
+					_engine.stack.push( _args[ _i ] );
+					
+					++_i;
+				
+				}
 				
 			}
-			_result	= _engine.execute( { script : _func, local : _local, last : undefined, depth : -1 } );
+			_engine.executionStack.push( { script : _func, local : _local, last : undefined, depth : -1 } );
+			_result	= _func.execute( _engine );
 			
 		} else {
 			switch ( array_length( _args ) ) {

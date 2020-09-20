@@ -46,8 +46,8 @@ function StringFormatter( _format, _functions ) constructor {
 			
 			pre( _raw );
 			
-			var _i = 0; repeat( array_length( _func ) ) {
-				_func[ _i++ ]( input );
+			input.index = 0; repeat( array_length( _func ) ) {
+				_func[ input.index++ ]( input );
 				
 			}
 			
@@ -64,7 +64,7 @@ function StringFormatter( _format, _functions ) constructor {
 	keys		= "";
 	last		= 0;
 	flag		= 0;
-	input		= { value : "" }
+	input		= { value : "", index : 0 }
 	
 	functions	= ( functions != undefined ? functions : {
 		setup : function() {

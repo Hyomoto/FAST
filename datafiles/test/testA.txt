@@ -1,7 +1,7 @@
 <<
-var set count to 0
-var set total to 11
-trace(pop())
+set local count to 0
+set local total to 11
+
 set count to count + real->test_func()
 if test_return( 1 ) == 1
 	trace( "--> Passed" )
@@ -14,6 +14,7 @@ set count to count + real->test_traversal()
 set count to count + real->test_cast()
 set count to count + real->test_if(0)
 set count to count + real->test_if(1)
+test_wait( 120 )
 set count to count + real->test_if(2)
 set count to count + real->test_if(3)
 set count to count + real->test_args( 1, 2, 3 )
@@ -29,3 +30,4 @@ else
 	loop
 end
 >>
+Test to parse!

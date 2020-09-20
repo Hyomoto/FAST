@@ -1,8 +1,8 @@
 /// @func ScriptExpression
 /// @param expression
 function ScriptExpression( _string ) : DsWalkable() constructor {
-	static validate	= function( _engine, _script, _statement ) {
-		var _header	= "(line " + string( _statement.line ) + ") ";
+	static validate	= function( _script, _statement ) {
+		var _header	= _script.source + "(line " + string( _statement.line ) + ") ";
 		var _last	= undefined;
 		var _next;
 		
@@ -14,30 +14,31 @@ function ScriptExpression( _string ) : DsWalkable() constructor {
 			switch ( instanceof( _next ) ) {
 				case "ScriptEngine_Operator" :
 					if ( _last == undefined ) {
-						if ( _next.rao == false ) { _engine.errors.push( _header + "Statement expression starts with a left-hand operator: " + _next.value ); }
+						if ( _next.rao == false ) { _script.errors += 1;
+							ScriptManager().system.write( _header + "Statement expression starts with a left-hand operator: " + _next.value ); }
 						
 					} else {
-						if ( instanceof( _last ) == "ScriptEngine_Operator" && _next.rao == false ) {
-							_engine.errors.push( _header + "Statement expression illegal operator use: " + _last.value + _next.value ); }
+						if ( instanceof( _last ) == "ScriptEngine_Operator" && _next.rao == false ) { _script.errors += 1;
+							ScriptManager().system.write( _header + "Statement expression illegal operator use: " + string( _last.value ) + string( _next.value ) ); }
 							
 					}
 					break;
 					
 				case "ScriptEngine_Value" :
-					if ( _last != undefined && instanceof( _last ) != "ScriptEngine_Operator" ) {
-						_engine.errors.push( _header + "Statement expression missing operator: " + _last.value + _next.value ); }
+					if ( _last != undefined && instanceof( _last ) != "ScriptEngine_Operator" ) { _script.errors += 1;
+						ScriptManager().system.write( _header + "Statement expression missing operator: " + string( _last.value ) + " " + string( _next.value ) ); }
 					
-					if ( ScriptManager().is_reserved( _next.value ) > -1 ) {
-						_engine.errors.push( _header + "Statement expression variable uses reserved keyword: " + _next.value ); }
+					if ( ScriptManager().is_reserved( _next.value ) > -1 ) { _script.errors += 1;
+						ScriptManager().system.write( _header + "Statement uses reserved keyword, " + string( _next.value ) + ", as variable name." ); }
 						
 					break;
 					
 				case "ScriptEngine_Function" :
-					if ( _last != undefined && instanceof( _last ) != "ScriptEngine_Operator" ) {
-						_engine.errors.push( _header + "Statement expression missing operator: " + _last.value + _next.func ); }
+					if ( _last != undefined && instanceof( _last ) != "ScriptEngine_Operator" ) { _script.errors += 1;
+						ScriptManager().system.write( _header + "Statement expression missing operator: " + _last.value + _next.func ); }
 					
 					//if ( ScriptManager().is_reserved( _next.func ) > -1 ) {
-					//	_engine.errors.push( _header + "Statement expression function name is reserved keyword: " + _next.func ); }
+					//	ScriptManager().system.write( _header + "Statement expression function name is reserved keyword: " + _next.func ); }
 					
 					break;
 					
@@ -78,7 +79,7 @@ function ScriptExpression( _string ) : DsWalkable() constructor {
 			_parser.last	= _last;
 			
 		} else if ( string_pos( "->", _next ) > 0 && string_pos( "->", _next ) == _len - 1 ) { // cast
-			var _op	= add( new ScriptEngine_Operator( 5, 10 ) ).value;
+			var _op	= add( new ScriptEngine_Operator( "cast", 10 ) ).value;
 			
 			_op.execute	= _manager.casts[? string_copy( _next, 1, _len - 2 ) ];
 			_op.rao		= true;
