@@ -293,7 +293,8 @@ The StringFormatter interface is a powerful formatting tool that can be used alo
 #### StringFormatter Rules
 Rules utilize the structure of "&:rule" where & is a character, and rule is the action that is taken on that character. While rules can be rewritten as needed, by default the StringFormatter provides these common rules:
 * strip - Removes this character from the string.
-* push - Inserts a \n before this character, pushing it to a new line.
+* push - Inserts a \n after this character, continuing on a new line.
+* pull - Inserts a \n before this character, pushing it to a new line.
 * ignore - Toggles the ignore flag, which ignores all rules until another ignore character is found. For example, \":ignore would cause anything between quotations to be ignored.
 ```GML
 var _formatter = new StringFormatter( " :strip,\t:strip" );
@@ -407,19 +408,61 @@ The FAST publisher system allows subscribing to specific "events" and, when call
 ## Render
 The FAST render offers a simple system for supporting a large number of resolutions by either using the built-in views, or custom requirements if needed.
 ## Scripting
-The FAST scripting system utilizes Yarn-like external text files to write code which can be executed in game. Scripts can contain commands, but also support plain-text parsing for passing information into the game, or wait commands which will halt processing. Additionally, scripts can be written as functions which do not provide external parsing but can take arguments and return values the same as internal functions. Additionally, scripts can be written as functions which behave like internal functions and can have arguments or return values. Functions can not pause execution, but they can return values.
+The FAST scripting system utilizes external text files to write code which can be executed in game. Scripts can contain commands and logical operations, but also support plain-text parsing for passing information into the game, and wait commands which will halt script processing. Additionally, scripts can be written as functions which behave more like internal functions, and support passing arguments by name.
+### ScriptEngine( name, \*filepath, \*debug )
 ```GML
-scriptEngine.run_script( "girlA" );
-
-myDialogue = scriptEngine.next();
+var _engine = new ScriptEngine( "Battle", "scripts/battle", true ).inherit();
 ```
+The ScriptEngine constructor creates a new engine for executing scripts. While GML does not support parallel execution, you can make as many engines as you need without them interfering with one another. That said, scripts are decently fast but will serve as a source of performance drain on lower-end hardware. While each engine does not take up significant processing power on it's own, running many scripts per frame can. If a filepath is provided, the ScriptEngine will load all files it finds in the given directory/sub-directories. When debug is active, additional safety protocols are used to prevent scripts from crashing the program. This comes at a cost to performance, thus it is possible to turn debugging off to save performance once scripts have been debugged properly. The filepath and debug arguments are optional, and will default to undefined and false if not provided.
+* inherit() - Will inherit global functions from ScriptManager(), returns self so it can be called alongside new if desired.
+* execute_string( a ) - Converts a to a script expression which is then executed and the result returned.
+* execute( a, args... ) - Will run script a with the given arguments. If a is a function, these arguments will be provided as named arguments, otherwise they will be pushed to the variable stack.
+* load( a, reload ) - Loads a as a script.  If a is a directory, will load all files in the directory/sub-directories. If reload is true, scripts will be overwritten.
+* load_async( a, reload, period ) - The same as load() except loads files asynchronously. Period specifies how long to load scripts before returning execution.
+* log( event, strings... ) - Writes to the ScriptEngine logger. Formats as engine name \[event\] strings...
+* get_value( a ) - Returns the value of key a.
+* set_value( a, b ) - Sets value of key a to b.
+* get_queue() - Returns the DsQueue used by this ScriptEngine for storing parse strings.
+* set_queue() - Sets the DsQueue used by this ScriptEngine for storing parse strings.
+* proceed() - Continues processing if ScriptEngine is waiting. Can override any wait, but must be used to continue a generic "wait" command.
+* is_running() - Returns true if the ScriptEngine is processing scripts.
+* is_waiting() - Returns true if the ScriptEngine is currently waiting.
+#### Writing Scripts
+FAST Scripts use a human-readable syntax that consists of 11 reserved keywords. Each line can contain only one keyword and expression, and there are two formats for writing scripts: parse scripts and function scripts. While they both support the same features, they use a slightly different syntax. Function scripts are purely logical and are defined using the function() header:
+```function( x, y )
+return x + y
 ```
-// girlA.txt
-<< if spokeTo.girlA>>
-Oh, hello again! I didn't expect to see you so soon.
+This would define a function script that takes the arguments x and y, and then returns their sum. Parse scripts are used to return strings that can then be operated on, and have a special syntax.  Any arguments passed to a parse script will be pushed to the variable stack and can be retrieved with pop(). Lastly logical blocks/statements *must* be encapsulated with << and >>, anything outside of these will be treated as a parse string. This format is primarily designed for features where logical operations are helpful, but return values must be operated on. For example, we could use a script to decide what dialogue an NPC will use:
+```
+<< if spoke_with_NPC == false >>
+Hello, have we met before?
 << else >>
-Hello, my name is Shelly. Pleased to meet you!
+Hello again, how are you?
 << end >>
+```
+##### Keywords
+* if/elseif/else/end - Used to create logical blocks. Every if block *must* have a corresponding end.
+```if x == 0
+else if x == 1
+else
+end
+```
+* set/set local - Used to set values. These values are set on the ScriptEngine and can be retrieved using get_value(), local variables can also be created by following set with local.
+```set hit_points to 10
+set local tries to 4
+```
+* return - Ends script processing. If an expression is provided, will return that as well.
+```return 10 * 2```
+* push/pop - Pushes and pops values to/from the variable stack. Variables provided to a parse function must be retrieved this way.
+```
+set local target to pop()
+
+push( target.name )
+```
+* wait/wait until - Causes script execution to halt, and resume once the wait condition completes. Using wait by itself will perform a general wait which can only be cleared by calling proceed() on the ScriptEngine. Calling wait with an expression will wait the given number of frames. Lastly, wait until will continue once the expression returns true.
+```wait
+wait 30
+wait until target.x == 0
 ```
 ### Draw Functions
 * draw_bar( sprite, index, x, y, width, percent ) - Draws a bar using a 3-slice method using the sprite provided, and with width(in pixels) filled to percent(0 to 1).
