@@ -21,6 +21,16 @@ function Parser() constructor {
 		return ( last < length );
 		
 	}
+	static peek	= function() {
+		var _next	= string_find_first( " \t", value, last );
+		
+		if ( _next == 0 ) {
+			return [ string_trim( string_copy( value, last, length - last + 1 ) ), length ];
+			
+		}
+		return [ string_trim( string_copy( value, last, _next - last ) ), _next + 1 ];
+		
+	}
 	static next		= function() {
 		if ( has_next() == false ) {
 			return undefined;
@@ -28,26 +38,11 @@ function Parser() constructor {
 		}
 		var _string;
 		
-		static seek	= function() {
-			var _next	= string_find_first( " \t", value, last );
-			var _string;
-			
-			if ( _next == 0 ) {
-				_string	= string_copy( value, last, length - last + 1 );
-				
-				last	= length;
-				
-			} else {
-				_string	= string_copy( value, last, _next - last );
-				
-				last	= _next + 1;
-				
-			}
-			return string_trim( _string );
-			
-		}
 		do {
-			_string	= seek();
+			var _peek	= peek();
+			
+			_string	= _peek[ 0 ];
+			last	= _peek[ 1 ];
 			
 		} until ( _string != "" );
 		

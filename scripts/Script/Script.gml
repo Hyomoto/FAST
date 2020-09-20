@@ -12,6 +12,8 @@ function Script() : DsChain() constructor {
 		var _ex, _last;
 		
 		while ( has_next( _package.last ) ) {
+			if ( _engine.executionStop ) { return; }
+			
 			if ( _reread == false ) {
 				_package.last	= next( _package.last );
 				
@@ -21,14 +23,45 @@ function Script() : DsChain() constructor {
 			_reread			= false;
 			
 			if ( is_string( _ex ) ) {
-				_engine.parseQueue.enqueue( _ex );
-				
+				if ( _engine.parseQueue != undefined ) {
+					_engine.parseQueue.enqueue( _ex );
+					
+				}
 				continue;
 				
 			}
 			if( _ex.ignore ) { continue; }
 			if ( _ex.ends ) {
 				if ( args == undefined && _ex.keyword == "wait" ) {
+					_engine.wait	= ScriptManager().WaitCondition( _engine, self );
+					//_engine.queue.enqueue_at_head( self );
+					_engine.executionStop	= true;
+					
+					if ( _ex.expression != undefined ) {
+						if ( _ex.wait_on ) {
+							with ( _engine ) {
+								wait.expression	= _ex;
+								wait.package	= _package;
+								wait.update		= method( wait, function() {
+									if ( expression.execute( script, package ) ) { engine.wait = undefined; }
+									
+								});
+								
+							}
+							
+						} else {
+							with ( _engine ) {
+								wait.time		= _ex.execute( self, _package );
+								wait.update		= method( wait, function() {
+									if ( --time <= 0 ) { engine.wait = undefined; }
+								
+								});
+							
+							}
+							
+						}
+						
+					}
 					//if ( has_next( _last ) ) {
 					//	var _time	= _ex.execute( self, _package );
 						
@@ -47,7 +80,6 @@ function Script() : DsChain() constructor {
 						
 					//}
 					//return;
-					_engine.executionStop	= true;
 					
 					return;
 					
@@ -110,8 +142,8 @@ function Script() : DsChain() constructor {
 			if ( _last.value.open ) { ++_open; }
 			
 		}
-		if ( _open > 0 ) { _errors.enqueue( source + " lacks closures, check for missing 'end' or 'loop'." ); }
-		if ( _open < 0 ) { _errors.enqueue( source + " has too many closures, check for extra 'end' or 'loop'." ); }
+		if ( _open > 0 ) { _engine.errors.push( source + " lacks closures, check for missing 'end' or 'loop'." ); }
+		if ( _open < 0 ) { _engine.errors.push( source + " has too many closures, check for extra 'end' or 'loop'." ); }
 		
 		if ( _quiet == false || _engine.errors.size() > 0 ) {
 			errors	= _engine.errors.size();

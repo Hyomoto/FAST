@@ -36,7 +36,8 @@ function ScriptStatement( _expression, _script ) constructor {
 	ends		= false;
 	depth		= -1;
 	goto		= -1;
-	illegal		= false;
+	wait_on		= false;
+	//illegal		= false;
 	line		= ( _script == undefined ? -1 : _script.lines + 1 );
 	errors		= 0;
 	
@@ -49,7 +50,16 @@ function ScriptStatement( _expression, _script ) constructor {
 		case "else"		: _parser.parse( "1" ); _expression = "1";
 		case "elseif"	: close= true; open = true; break;
 		case "end"		: close= true; return;
-		case "wait"		: ends = true; break;
+		case "wait"		:
+			if ( _parser.peek()[ 0 ] == "until" ) {
+				_parser.next();
+				
+				wait_on	= true;
+				
+			}
+			ends = true;
+			
+			break;
 		case "return"	: ends = true; break;
 		case "loop"		: close= true; return;
 		//case "queue"	:
@@ -85,7 +95,7 @@ function ScriptStatement( _expression, _script ) constructor {
 				target	= _parser.next();
 				
 			}
-			illegal	= ( ScriptManager().is_reserved( target ) > -1 );
+			errors	+= ScriptManager().is_reserved( target ) > -1;
 			
 			var _to	= _parser.next();
 			

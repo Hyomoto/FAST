@@ -8,6 +8,14 @@
 /// @func ScriptManager
 function ScriptManager(){
 	static manager	= function() constructor {
+		static WaitCondition	= function( _engine, _script ) {
+			return {
+				update	: function() {},
+				engine	: _engine,
+				script	: _script
+			}
+			
+		}
 		static add_cast	= function( _name, _cast, _rebind ) {
 			if ( casts[? _name ] != undefined && _rebind != true ) {
 				log_notify( undefined, "ScriptManager().add_cast", "Cast \"", _name, "\" already in use. Skipped." );

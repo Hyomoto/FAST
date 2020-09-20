@@ -92,8 +92,6 @@ function script_file_load( _filename ) {
 	}
 	file_text_close( _file );
 	
-	_script.validate( self, true );
-	
 	return _script;
 	
 }

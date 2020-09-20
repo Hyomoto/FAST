@@ -1,17 +1,30 @@
 //test_Scripts();
-
-if ( global.eng.is_waiting() == false ) {
-	timer.reset();
-	
-	global.eng.run_script( "testA" );
-	
-} else {
-//	global.eng.proceed();
+if ( event == undefined ) {
+	event	= new Event( FAST.STEP, 0, undefined, function() {
+		if ( event.mode == 0 ) {
+			global.eng.execute( "testA", 10 );
+			
+			timer.reset();
+			
+			event.mode	 = 1;
+			
+		} else {
+			if ( global.eng.executionStack.empty() ) {
+				while ( global.eng.parseQueue.empty() == false ) {
+					syslog( global.eng.parseQueue.dequeue() );
+					
+				}
+				syslog( "Took ", timer, " seconds." );
+				syslog( "Execution stack is ", global.eng.executionStack.empty() ? "empty." : "not empty." );
+				syslog( "Variable stack is ", global.eng.stack.empty() ? "empty." : "not empty." );
+				
+				event	= event.discard();
+				
+			}
+			
+		}
+		
+	});
+	event.mode	= 0;
 	
 }
-while ( global.eng.parseQueue.empty() == false ) {
-	syslog( global.eng.parseQueue.dequeue() );
-	
-}
-syslog( "Took ", timer, " seconds." );
-syslog( "Execution stack is ", global.eng.executionStack.empty() ? "empty." : "not empty." );

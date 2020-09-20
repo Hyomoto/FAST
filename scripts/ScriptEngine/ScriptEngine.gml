@@ -3,50 +3,50 @@
 /// @param filepath
 /// @param *debug?
 function ScriptEngine( _name, _filepath, _debug ) constructor {
+	static inherit	= function() {
+		var _next = ds_map_find_first( ScriptManager().funcs ); repeat( ds_map_size( ScriptManager().funcs ) ) {
+			ds_map_add( scripts, _next, method( self, ScriptManager().funcs[? _next ] ) );
+			
+			_next	= ds_map_find_next( ScriptManager().funcs, _next );
+			
+		}
+		return self;
+		
+	}
 	// converts the given string into a statement that is then executed
 	static execute_string	= function( _expression ) {
-		return new ScriptStatement( _expression ).execute( self, {} );
+		return new ScriptStatement( _expression ).execute( self, { local : {}, last : undefined, depth : -1 } );
 		
 	}
 	// runs a script as part of the engine
-	static run_script	= function( _name ) {
+	static execute	= function( _name ) {
 		var _script	= scripts[? _name ];
 		var _result;
 		
-		var _i = 1; repeat( argument_count - 1 ) {
-			stack.push( argument[ _i++ ] );
-			
-		}
 		if ( _script == undefined ) {
 			log( "ScriptEngine.execute", "Script \"", _name, "\" does not exist. Skipped!" );
 			
 			return false;
 			
 		}
-		executionStack.push( { local : {}, last : undefined, depth : -1 } );
+		var _local	= {};
 		
-		_script.execute( self );
-		
-	}
-	static run_function	= function( _name ) {
-		var _script	= funcs[? _name ];
-		
-		if ( _script == undefined ) {
-			log( "ScriptEngine.execute", "Function \"", _name, "\" does not exist. Skipped!" );
-			
-			return false;
-			
+		if( _script.isFunction ) {
+			var _i = 1; repeat( argument_count - 1 ) {
+				variable_struct_set( _local, _script.args[ _i ], argument[ _i ] );
+				
+				++_i;
+				
+			}
+				
+		} else {
+			var _i = 1; repeat( argument_count - 1 ) {
+				stack.push( argument[ _i++ ] );
+				
+			}
+				
 		}
-		var _args	= {};
-		var _arg;
-		
-		var _i = 1; repeat( array_length( _script.args ) ) {
-			_arg	= ( _i < argument_count ? argument[ _i ] : undefined );
-			
-			variable_struct_set( _args, _script.args[ _i++ - 1 ], _arg );
-			
-		}
-		executionStack.push( { local : _args, last : undefined, depth : -1 } );
+		executionStack.push( { script : _script, local : _local, last : undefined, depth : -1 } );
 		
 		_script.execute( self );
 		
@@ -65,26 +65,28 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 		
 		if ( _found == 0 ) { return; }
 		
-		wait	= new Event( FAST.STEP, 0, { load : _load, reload : _reload, period : _period, funcs: 0, scripts : 0, total : _load.size() }, function( _package ) {
+		wait	= ScriptManager().WaitCondition( self, undefined );
+		wait.load	= _load;
+		//wait.reload	= _reload;
+		wait.period	= _period;
+		wait.funcs	= 0;
+		wait.scripts	= 0;
+		wait.total	= _load.size();
+		wait.update	= method( wait, function() {
 			var _time	= get_timer();
 			
 			do {
-				var _script	= script_file_load( _package.load.dequeue() );
+				var _script	= script_file_load( load.dequeue() );
 				
-				switch ( _script.isFunction ) {
-					case true	: _package.funcs += 1; funcs[? _script.name ]	= _script; break;
-					default		: _package.scripts+=1; scripts[? _script.name ]= _script; break;
-					
-				}
+				_script.validate( engine, true );
 				
-			} until ( _package.load.empty() || get_timer() - _time > _package.period );
+				engine.scripts[? _script.name ]= _script;
+				
+			} until ( load.empty() || get_timer() - _time > period );
 			
-			if ( _package.load.empty() == true ) {
-				log( "ScriptEngine.load", _package.total, " files(s) discovered, ", _package.scripts, " script(s) and ", _package.funcs, " functions loaded." );
-				
-				wait.discard();
-				
-				wait	= undefined;
+			if ( load.empty() == true ) {
+				engine.log( "ScriptEngine.load", total, " files(s) discovered, ", scripts, " script(s) and ", funcs, " functions loaded." );
+				engine.wait	= undefined;
 				
 			}
 			
@@ -108,11 +110,9 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 		while ( _load.empty() == false ) {
 			var _script	= script_file_load( _load.dequeue() );
 			
-			switch ( _script.isFunction ) {
-				case true	: _funcs += 1; funcs[? _script.name ]	= _script; break;
-				default		: _scripts+=1; scripts[? _script.name ]= _script; break;
-				
-			}
+			_script.validate( self, true );
+			
+			scripts[? _script.name ]= _script;
 			
 		}
 		log( "ScriptEngine.load", _found, " files(s) discovered, ", _scripts, " script(s) and ", _funcs, " functions loaded." );
@@ -135,21 +135,6 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 		}
 		
 	}
-	//static log_low	= function( _event ) {
-	//	static logger	= ScriptManager().logger;
-		
-	//	if ( debug ) {
-	//		var _string	= name + " [" + _event + "] ";
-			
-	//		var _i = 1; repeat( argument_count - 1 ) {
-	//			_string	+= string( argument[ _i++ ] );
-				
-	//		}
-	//		logger.write( _string );
-			
-	//	}
-		
-	//}
 	static get_value	= function( _key ) {
 		return ds_map_find_value( values, _key );
 		
@@ -158,58 +143,20 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 		ds_map_replace( values, _key, _value );
 		
 	}
-	//static proceed	= function() {
-	//	if ( wait == true ) { wait = undefined; }
+	static get_queue	= function() {
+		return parseQueue;
 		
-	//	execute( queue.dequeue() );
+	}
+	static set_queue	= function( _queue ) {
+		parseQueue	= _queue;
 		
-	//}
-	//static enqueue	= function( _source ) {
-	//	var _target	= ( is_string( _source ) ? scripts[? _source ] : _source );
+	}
+	static proceed	= function() {
+		wait	= undefined;
 		
-	//	if ( _target == undefined || instanceof( _target ) != "Script" ) {
-	//		log( "enqueue", "Script ", _source, " was not a valid script. Ignored!" );
-			
-	//		return;
-			
-	//	}
-	//	queue.enqueue( _target );
-		
-	//}
-	//static parse		= function( _string ) {
-	//	if ( parser.has_next() == false ) {
-	//		parser.parse( _string );
-			
-	//	} else {
-	//		toParse.enqueue( _string );
-			
-	//	}
-		
-	//}
-	//static has_next	= function() {
-	//	return toParse.empty() == false;
-		
-	//}
-	//static next		= function() {
-	//	if ( has_next() ) {
-	//		parser.parse( toParse.dequeue() );
-			
-	//	}
-		
-	//}
-	//static push		= function() {
-	//	var _i = 0; repeat( argument_count ) {
-	//		stack.push( argument[ _i++ ] );
-			
-	//	}
-		
-	//}
-	//static pop		= function() {
-	//	return stack.pop();
-		
-	//}
+	}
 	static is_running	= function() {
-		return queue.size() > 0;
+		return queue.empty() == false || executionStack.empty() == false;
 		
 	}
 	static is_waiting	= function() {
@@ -221,7 +168,7 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 		
 	}
 	static toString	= function() {
-		return "ScriptEngine(" + name + ") : Scripts in queue(" + string( queue.size() ) + ") : Wait(" + ( wait == undefined ? "false" : "true" ) + ")";
+		return "ScriptEngine(" + name + ") : Scripts in queue(" + string( queue.size() + executionStack.size() ) + ") : Run(" + ( is_running() ? "true" : "false" ) + ") : Wait(" + ( is_waiting() ? "true" : "false" ) + ")";
 		
 	}
 	static manager	= ScriptManager();
@@ -229,10 +176,14 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 	event	= new Event( FAST.STEP, 0, undefined, function() {
 		executionStop	= false;
 		
-		while ( wait == undefined && queue.empty() == false ) {
-			executionStack.push( { local : {}, last : undefined, depth : -1 } );
-			
-			queue.dequeue().execute( self );
+		if ( wait != undefined ) { wait.update(); }
+		
+		while ( wait == undefined && ( queue.empty() == false || executionStack.empty() == false ) ) {
+			if ( executionStack.empty() ) {
+				executionStack.push( { script : queue.dequeue(), local : {}, last : undefined, depth : -1 } );
+				
+			}
+			executionStack.top().script.execute( self );
 			
 			if ( executionStop ) { break; }
 			
@@ -257,12 +208,6 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 	name	= _name;
 	loading	= 0;
 	
-	var _next = ds_map_find_first( ScriptManager().funcs ); repeat( ds_map_size( ScriptManager().funcs ) ) {
-		ds_map_add( funcs, _next, method( self, ScriptManager().funcs[? _next ] ) );
-		
-		_next	= ds_map_find_next( ScriptManager().funcs, _next );
-		
-	}
 	if ( _filepath != undefined ) {
 		load( _filepath, false );
 		
