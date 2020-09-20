@@ -430,7 +430,8 @@ The ScriptEngine constructor creates a new engine for executing scripts. While G
 * is_waiting() - Returns true if the ScriptEngine is currently waiting.
 #### Writing Scripts
 FAST Scripts use a human-readable syntax that consists of 11 reserved keywords. Each line can contain only one keyword and expression, and there are two formats for writing scripts: parse scripts and function scripts. While they both support the same features, they use a slightly different syntax. Function scripts are purely logical and are defined using the function() header:
-```function( x, y )
+```
+function( x, y )
 return x + y
 ```
 This would define a function script that takes the arguments x and y, and then returns their sum. Parse scripts are used to return strings that can then be operated on, and have a special syntax.  Any arguments passed to a parse script will be pushed to the variable stack and can be retrieved with pop(). Lastly logical blocks/statements *must* be encapsulated with << and >>, anything outside of these will be treated as a parse string. This format is primarily designed for features where logical operations are helpful, but return values must be operated on. For example, we could use a script to decide what dialogue an NPC will use:
@@ -443,13 +444,15 @@ Hello again, how are you?
 ```
 ##### Keywords
 * if/elseif/else/end - Used to create logical blocks. Every if block *must* have a corresponding end.
-```if x == 0
+```
+if x == 0
 else if x == 1
 else
 end
 ```
 * set/set local - Used to set values. These values are set on the ScriptEngine and can be retrieved using get_value(), local variables can also be created by following set with local.
-```set hit_points to 10
+```
+set hit_points to 10
 set local tries to 4
 ```
 * return - Ends script processing. If an expression is provided, will return that as well.
@@ -461,7 +464,8 @@ set local target to pop()
 push( target.name )
 ```
 * wait/wait until - Causes script execution to halt, and resume once the wait condition completes. Using wait by itself will perform a general wait which can only be cleared by calling proceed() on the ScriptEngine. Calling wait with an expression will wait the given number of frames. Lastly, wait until will continue once the expression returns true.
-```wait
+```
+wait
 wait 30
 wait until target.x == 0
 ```
