@@ -14,6 +14,7 @@ if ( event == undefined ) {
 					syslog( global.eng.parseQueue.dequeue() );
 					
 				}
+				syslog( "Execution was ", global.eng.stack.pop() ? "successful." : "unsuccessful." );
 				syslog( "Took ", timer, " seconds." );
 				syslog( "Execution stack is ", global.eng.executionStack.empty() ? "empty." : "not empty." );
 				syslog( "Variable stack is ", global.eng.stack.empty() ? "empty." : "not empty." );

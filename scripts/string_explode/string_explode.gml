@@ -13,7 +13,7 @@ function string_explode( _string, _divider, _trim ) {
 	var _next;
 	
 	var _i = 0; repeat ( array_length( _array ) - 1 ) {
-		_next	= string_pos_ext( _divider, _string, _last );
+		_next	= string_pos_ext( _divider, _string, _last - 1 );
 		_array[ _i++ ]	= ( _trim ? string_trim( string_copy( _string, _last, _next - _last ) ) : string_copy( _string, _last, _next - _last ) );
 		
 		_last	= _next + _sep;

@@ -14,20 +14,17 @@ set count to count + real->test_traversal()
 set count to count + real->test_cast()
 set count to count + real->test_if(0)
 set count to count + real->test_if(1)
-test_wait( pop() )
 set count to count + real->test_if(2)
 set count to count + real->test_if(3)
 set count to count + real->test_args( 1, 2, 3 )
 set count to count + real->test_null( "BOID", 1, null )
 trace( string->count + " tests passed out of " + string->total )
-if ( count == total ) && ( errors() == 0 )
+if count == total
 	trace( "All tests passed!" )
+	push 1
 else
-	trace( "Failed tests, check log for details.  Errors below:" )
-
-	if errors() > 0
-		trace( error() )
-	loop
+	trace( "Failed tests, check log for details." )
+	push 0
 end
 >>
 Test to parse!
