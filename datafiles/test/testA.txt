@@ -9,6 +9,9 @@ if test_return( 1 ) == 1
 else
 	trace( "--> Failed" )
 end
+if pop() == true
+ test_wait( pop() )
+end
 set count to count + real->test_arithmetic()
 set count to count + real->test_traversal()
 set count to count + real->test_cast()

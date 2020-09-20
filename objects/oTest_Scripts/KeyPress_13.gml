@@ -14,7 +14,7 @@ event	= new Event( FAST.STEP_BEGIN, 0, cycle, function( _cycle ) {
 	timer.reset();
 	
 	repeat( _repeat ) {
-		global.eng.execute( "testA" );
+		global.eng.execute( "testA", 0 );
 	
 		if ( global.eng.executionStack.empty() ) {
 			while ( global.eng.parseQueue.empty() == false ) {

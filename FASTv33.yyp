@@ -1377,7 +1377,6 @@
     {"CopyToMask":-1,"filePath":"datafiles/test","resourceVersion":"1.0","name":"testD","resourceType":"GMIncludedFile",},
     {"CopyToMask":-1,"filePath":"datafiles/test/cases","resourceVersion":"1.0","name":"test_func.txt","resourceType":"GMIncludedFile",},
     {"CopyToMask":-1,"filePath":"datafiles/base","resourceVersion":"1.0","name":"animate.ffd","resourceType":"GMIncludedFile",},
-    {"CopyToMask":-1,"filePath":"datafiles","resourceVersion":"1.0","name":"DEV.wflvl","resourceType":"GMIncludedFile",},
     {"CopyToMask":-1,"filePath":"datafiles/base","resourceVersion":"1.0","name":"effects.ffd","resourceType":"GMIncludedFile",},
     {"CopyToMask":-1,"filePath":"datafiles/base","resourceVersion":"1.0","name":"spells.ffd","resourceType":"GMIncludedFile",},
     {"CopyToMask":-1,"filePath":"datafiles/base","resourceVersion":"1.0","name":"shops.ffd","resourceType":"GMIncludedFile",},

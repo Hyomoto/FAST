@@ -2,7 +2,7 @@
 if ( event == undefined ) {
 	event	= new Event( FAST.STEP, 0, undefined, function() {
 		if ( event.mode == 0 ) {
-			global.eng.execute( "testA", 10 );
+			global.eng.execute( "testA", 10, 1 );
 			
 			timer.reset();
 			
