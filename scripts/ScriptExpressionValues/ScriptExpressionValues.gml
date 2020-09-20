@@ -5,7 +5,7 @@ function ScriptEngine_Value( _value, _type ) constructor {
 				return {};
 				
 			}
-			return script_evaluate_traverse( _engine, _package.local, value );
+			return script_evaluate_traverse( _engine, _package, value );
 			
 			//if ( variable_struct_exists( _package.local, value ) ) {
 			//	return variable_struct_get( _package.local, value );
@@ -47,21 +47,21 @@ function ScriptEngine_Function( _value ) constructor {
 			++_i;
 			
 		}
-		if ( string_pos( ".", func ) == 0 ) {
-			if ( func == "pop" ) {
+		if ( string_pos( ".", value ) == 0 ) {
+			if ( value == "pop" ) {
 				return _engine.stack.pop();
 				
 			}
-			_func	= _engine.scripts[? func ];
+			_func	= _engine.scripts[? value ];
 			
 		} else {
-			_func	= script_evaluate_traverse( _engine, _package.local, func );
+			_func	= script_evaluate_traverse( _engine, _package, value );
 			
 		}
 		var _result	= undefined;
 		
 		if ( _func == undefined ) {
-			_engine.log( "ScriptEngine_Function", "Function \"" + func + "\" not defined. Failed." );
+			_engine.log( "ScriptEngine_Function", "Function \"" + value + "\" not defined. Failed." );
 			
 			return;
 			
@@ -86,7 +86,7 @@ function ScriptEngine_Function( _value ) constructor {
 				}
 				
 			}
-			_engine.executionStack.push( { script : _func, local : _local, last : undefined, depth : -1 } );
+			_engine.executionStack.push( { script : _func, statement : undefined, local : _local, last : undefined, depth : -1 } );
 			_result	= _func.execute( _engine );
 			
 		} else {
@@ -109,7 +109,7 @@ function ScriptEngine_Function( _value ) constructor {
 		
 	}
 	static toString	= function() {
-		var _string	= "SE::Func -> " + string( func ) + "(";
+		var _string	= "SE::Func -> " + string( value ) + "(";
 		
 		var _i = 0; repeat( array_length( args ) ) {
 			if ( _i > 0 ) { _string	+= ", "; }
@@ -128,7 +128,7 @@ function ScriptEngine_Function( _value ) constructor {
 	var _x, _t;
 	
 	queue	= new DsQueue();
-	func	= string_copy( _value, 1, _open - 1 );
+	value	= string_copy( _value, 1, _open - 1 );
 	type	= SCRIPT_EXPRESSION_TYPE_FUNCTION;
 	
 	while( _l < string_length( _args ) ) {

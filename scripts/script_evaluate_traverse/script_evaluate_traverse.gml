@@ -10,11 +10,12 @@ function script_evaluate_traverse( _engine, _package, _string ) {
 		
 	}
 	var _path	= string_explode( _string, ".", false );
+	var _local	= _package.local;
 	var _ref, _i = 0;
 	
 	// seek
-	if ( variable_struct_exists( _package, _path[ 0 ] ) ) {
-		_ref	= _package;
+	if ( variable_struct_exists( _local, _path[ 0 ] ) ) {
+		_ref	= _local;
 		
 	} else {
 		if ( array_length( _path ) == 1 ) {
@@ -25,13 +26,14 @@ function script_evaluate_traverse( _engine, _package, _string ) {
 		_i		= 1;
 		
 	}
-	
 	// then ref
 	repeat( max( 0, array_length( _path ) - _i ) ) {
 		if ( _ref == undefined ) {
-			_engine.errors.push( [ "script_evaluate_traverse", "Path could not be traversed at \"" + _path[ _i ] + "\". Failed." ] );
-			
-			return;
+			if ( _package.script != undefined ) {
+				throw( _package.script.source + " failed at line " + string( _package.statement.line + _package.script.isFunction ) + " because " + string( _path[ _i ] ) + " could not be found!" );
+				
+			}
+			throw( "Expression could not be evaluated because " + string( _path[ _i ] ) + " could not be found!" );
 			
 		}
 		// recurse
@@ -42,9 +44,14 @@ function script_evaluate_traverse( _engine, _package, _string ) {
 			_ref	= variable_instance_get( _ref, _path[ _i ] );
 			
 		} else {
-			_engine.errors.push( [ "script_evaluate_traverse", "Path could not be traversed at \"" + _path[ _i ] + "\". Failed." ] );
+			if ( _package.script != undefined ) {
+				throw( _package.script.source + " failed at line " + string( _package.statement.line + _package.script.isFunction ) + " because " + string( _path[ _i ] ) + " could not be found!" );
+				
+			}
+			throw( "Expression could not be evaluated because " + string( _path[ _i ] ) + " could not be found!" );
+			//_engine.errors.push( [ "script_evaluate_traverse", "Path could not be traversed at \"" + _path[ _i ] + "\". Failed." ] );
 			
-			return;
+			//return;
 			
 		}
 		++_i;

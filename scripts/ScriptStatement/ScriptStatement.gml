@@ -1,6 +1,6 @@
 /// @func ScriptStatement
 /// @param expression
-function ScriptStatement( _expression, _script ) constructor {
+function ScriptStatement( _expression ) constructor {
 	static validate	= function( _script ) {
 		if ( ScriptManager().is_reserved( target ) ) { _script.errors += 1;
 			ScriptManager().system.write( _script.source + "(line " + string( line ) + ") Statement tries to assign reserved keyword: " + target );
@@ -38,7 +38,7 @@ function ScriptStatement( _expression, _script ) constructor {
 	goto		= -1;
 	wait_on		= false;
 	//illegal		= false;
-	line		= ( _script == undefined ? -1 : _script.lines + 1 );
+	line		= ( argument_count == 1 ? -1 : argument[ 1 ].lines + 1 );
 	errors		= 0;
 	
 	_keyword	= _parser.next();

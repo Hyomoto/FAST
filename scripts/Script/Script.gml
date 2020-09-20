@@ -2,9 +2,7 @@
 function Script() : DsChain() constructor {
 	static execute	= function( _engine ) {
 		if ( errors > 0 ) {
-			_engine.log( "execute", "Cannot execute \"", source, "\" because it contains errors!" );
-			
-			return undefined;
+			throw( "Cannot execute \"" + source + "\" because it contains errors!" );
 			
 		}
 		var _package	= _engine.executionStack.top();
@@ -21,6 +19,8 @@ function Script() : DsChain() constructor {
 			_last			= _package.last;
 			_ex				= _last.value;
 			_reread			= false;
+			
+			_package.statement	= _ex;
 			
 			if ( is_string( _ex ) ) {
 				if ( _engine.parseQueue != undefined ) {
@@ -43,7 +43,7 @@ function Script() : DsChain() constructor {
 								wait.expression	= _ex;
 								wait.package	= _package;
 								wait.update		= method( wait, function() {
-									if ( expression.execute( script, package ) ) { engine.wait = undefined; }
+									if ( expression.execute( engine, package ) ) { engine.wait = undefined; }
 									
 								});
 								

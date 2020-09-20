@@ -27,7 +27,7 @@ function ScriptExpression( _string ) : DsWalkable() constructor {
 				case "ScriptEngine_Value" :
 					if ( _last != undefined && instanceof( _last ) != "ScriptEngine_Operator" ) { _script.errors += 1;
 						ScriptManager().system.write( _header + "Statement expression missing operator: " + string( _last.value ) + " " + string( _next.value ) ); }
-					
+						
 					if ( ScriptManager().is_reserved( _next.value ) > -1 ) { _script.errors += 1;
 						ScriptManager().system.write( _header + "Statement uses reserved keyword, " + string( _next.value ) + ", as variable name." ); }
 						

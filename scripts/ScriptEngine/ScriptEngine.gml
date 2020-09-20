@@ -15,13 +15,12 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 	}
 	// converts the given string into a statement that is then executed
 	static execute_string	= function( _expression ) {
-		return new ScriptStatement( _expression ).execute( self, { local : {}, last : undefined, depth : -1 } );
+		return new ScriptStatement( _expression ).execute( self, { script : undefined, statement : undefined, local : {}, last : undefined, depth : -1 } );
 		
 	}
 	// runs a script as part of the engine
 	static execute	= function( _name ) {
 		var _script	= scripts[? _name ];
-		var _result;
 		
 		if ( _script == undefined ) {
 			log( "ScriptEngine.execute", "Script \"", _name, "\" does not exist. Skipped!" );
@@ -46,9 +45,9 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 			}
 				
 		}
-		executionStack.push( { script : _script, local : _local, last : undefined, depth : -1 } );
+		executionStack.push( { script : _script, statement : undefined, local : _local, last : undefined, depth : -1 } );
 		
-		_script.execute( self );
+		execution();
 		
 	}
 	static load_async	= function( _filename, _reload, _period ) {
@@ -81,11 +80,12 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 				_script.validate( engine, true );
 				
 				engine.scripts[? _script.name ]= _script;
+				++scripts;
 				
 			} until ( load.empty() || get_timer() - _time > period );
 			
 			if ( load.empty() == true ) {
-				engine.log( "ScriptEngine.load", total, " files(s) discovered, ", scripts, " script(s) and ", funcs, " functions loaded." );
+				engine.log( "ScriptEngine.load", total, " files(s) discovered, ", scripts, " loaded." );
 				engine.wait	= undefined;
 				
 			}
@@ -173,23 +173,6 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 	}
 	static manager	= ScriptManager();
 	
-	event	= new Event( FAST.STEP, 0, undefined, function() {
-		executionStop	= false;
-		
-		if ( wait != undefined ) { wait.update(); }
-		
-		while ( wait == undefined && ( queue.empty() == false || executionStack.empty() == false ) ) {
-			if ( executionStack.empty() ) {
-				executionStack.push( { script : queue.dequeue(), local : {}, last : undefined, depth : -1 } );
-				
-			}
-			executionStack.top().script.execute( self );
-			
-			if ( executionStop ) { break; }
-			
-		}
-		
-	});
 	//parser	= new Parser();
 	//toParse	= new DsQueue();
 	executionStack	= new DsStack();
@@ -206,8 +189,59 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 	wait	= undefined;
 	debug	= _debug == true;
 	name	= _name;
-	loading	= 0;
 	
+	execution	= ( debug ? function() {
+		try {
+			executionStack.top().script.execute( self );
+			
+		} catch( _ex ) {
+			log( "execute", _ex );
+			
+			executionStack.clear();
+			queue.clear();
+			stack.clear();
+			
+		}
+		
+	}
+	: function() {
+		executionStack.top().script.execute( self );
+		
+	});
+	
+	event	= new Event( FAST.STEP, 0, undefined, function() {
+		executionStop	= false;
+		
+		if ( wait != undefined ) {
+			try {
+				wait.update();
+				
+			} catch( _ex ) {
+				log( "execute", _ex );
+				
+				wait	= undefined;
+				
+				executionStack.clear();
+				queue.clear();
+				stack.clear();
+				
+				return;
+				
+			}
+			
+		}
+		while ( wait == undefined && ( queue.empty() == false || executionStack.empty() == false ) ) {
+			if ( executionStack.empty() ) {
+				executionStack.push( { script : queue.dequeue(), statement : undefined, local : {}, last : undefined, depth : -1 } );
+				
+			}
+			execution();
+			
+			if ( executionStop ) { break; }
+			
+		}
+		
+	});
 	if ( _filepath != undefined ) {
 		load( _filepath, false );
 		

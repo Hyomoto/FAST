@@ -1,15 +1,14 @@
 function()
 set local count to 0
-set local total to 3
+set local total to 2
 set a to {}
 set a.b to 10
 trace( "Testing traversal..." )
 set count to count + (count==0)
 set count to count + (a.b==10)
-set count to count + (a.b.c==null)
+//set count to count + (a.b.c==null)
 trace( string->count + " tests passed out of " + string->total )
-if ( ( errors() == 1 ) && ( count == total ) )
-  error_clear()
+if ( count == total )
   trace( "--> Passed")
   return 1
 end
