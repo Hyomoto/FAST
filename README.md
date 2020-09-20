@@ -9,6 +9,7 @@ Runtime 2.3.0.401
 * [Core](#core)
 * [Database](#database)
 * [File Handling](#file-handling)
+* [Scripting](#scripting)
 # Core
 The Core module of FAST is what all other modules build on top of.
 ## Features
