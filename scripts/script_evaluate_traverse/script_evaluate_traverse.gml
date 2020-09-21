@@ -10,12 +10,11 @@ function script_evaluate_traverse( _engine, _package, _string ) {
 		
 	}
 	var _path	= string_explode( _string, ".", false );
-	var _local	= _package.local;
 	var _ref, _i = 0;
 	
 	// seek
-	if ( variable_struct_exists( _local, _path[ 0 ] ) ) {
-		_ref	= _local;
+	if ( variable_struct_exists( _package.local, _path[ 0 ] ) ) {
+		_ref	= _package.local;
 		
 	} else {
 		if ( array_length( _path ) == 1 ) {

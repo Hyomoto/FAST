@@ -32,7 +32,7 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 		
 		if( _script.isFunction ) {
 			var _i = 1; repeat( argument_count - 1 ) {
-				variable_struct_set( _local, _script.args[ _i ], argument[ _i ] );
+				variable_struct_set( _local, _script.args[ _i - 1 ], argument[ _i ] );
 				
 				++_i;
 				
@@ -54,7 +54,7 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 		var _load, _found;
 		
 		if ( filename_name( _filename ) != "" ) {
-			_load	= new DsStack( _filename );
+			_load	= new DsQueue( _filename );
 			
 		} else {
 			_load	= file_get_directory( _filename );
@@ -95,11 +95,10 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 	}
 	static load		= function( _filename, _reload ) {
 		var _scripts	= 0;
-		var _funcs		= 0;
 		var _load, _found;
 		
 		if ( filename_name( _filename ) != "" ) {
-			_load	= new DsStack( _filename );
+			_load	= new DsQueue( _filename );
 			
 		} else {
 			_load	= file_get_directory( _filename );
@@ -113,9 +112,10 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 			_script.validate( self, true );
 			
 			scripts[? _script.name ]= _script;
+			++_scripts;
 			
 		}
-		log( "ScriptEngine.load", _found, " files(s) discovered, ", _scripts, " script(s) and ", _funcs, " functions loaded." );
+		log( "ScriptEngine.load", _found, " files(s) discovered, ", _scripts, " loaded." );
 		
 	}
 	static log	= function( _event ) {

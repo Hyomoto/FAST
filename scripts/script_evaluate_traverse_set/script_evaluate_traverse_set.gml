@@ -7,8 +7,8 @@ function script_evaluate_traverse_set( _engine, _package, _string, _set ) {
 	var _path	= string_explode( _string, ".", false );
 	var _ref, _i = 0;
 	// seek
-	if ( variable_struct_exists( _package, _path[ 0 ] ) || local ) {
-		_ref	= _package;
+	if ( variable_struct_exists( _package.local, _path[ 0 ] ) || local ) {
+		_ref	= _package.local;
 		
 	} else {
 		if ( array_length( _path ) == 1 ) {

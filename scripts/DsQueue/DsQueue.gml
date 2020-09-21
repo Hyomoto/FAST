@@ -67,10 +67,11 @@ function DsQueue() : DsChain() constructor {
 		return _data_type == DsQueue;
 		
 	}
+	last	= self;
+	
 	var _i = 0; repeat( argument_count ) {
 		enqueue( argument[ _i++ ] );
 		
 	}
-	last	= self;
 	
 }
