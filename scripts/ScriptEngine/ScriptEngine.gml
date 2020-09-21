@@ -136,11 +136,11 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 		
 	}
 	static get_value	= function( _key ) {
-		return ds_map_find_value( values, _key );
+		return variable_struct_get( values, _key );
 		
 	}
 	static set_value	= function( _key, _value ) {
-		ds_map_replace( values, _key, _value );
+		variable_struct_set( values, _key, _value );
 		
 	}
 	static get_queue	= function() {
@@ -180,7 +180,7 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 	
 	parseQueue		= new DsQueue();
 	
-	values	= ds_map_create();
+	values	= {};
 	funcs	= ds_map_create();
 	scripts	= ds_map_create();
 	errors	= new DsStack();

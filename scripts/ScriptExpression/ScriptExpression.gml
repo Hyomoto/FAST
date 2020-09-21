@@ -2,7 +2,7 @@
 /// @param expression
 function ScriptExpression( _string ) : DsWalkable() constructor {
 	static validate	= function( _script, _statement ) {
-		var _header	= _script.source + "(line " + string( _statement.line ) + ") ";
+		var _header	= _script.source + "(line " + string( _statement.line + _script.isFunction ) + ") ";
 		var _last	= undefined;
 		var _next;
 		
@@ -15,18 +15,20 @@ function ScriptExpression( _string ) : DsWalkable() constructor {
 				case "ScriptEngine_Operator" :
 					if ( _last == undefined ) {
 						if ( _next.rao == false ) { _script.errors += 1;
-							ScriptManager().system.write( _header + "Statement expression starts with a left-hand operator: " + _next.value ); }
+							ScriptManager().log( _header, "Statement expression starts with a left-hand operator: ", _next.value ); }
 						
-					} else {
-						if ( instanceof( _last ) == "ScriptEngine_Operator" && _next.rao == false ) { _script.errors += 1;
-							ScriptManager().system.write( _header + "Statement expression illegal operator use: " + string( _last.value ) + string( _next.value ) ); }
-							
+					} else if ( instanceof( _last ) == "ScriptEngine_Operator" && _next.rao == false ) { _script.errors += 1;
+						ScriptManager().log( _header, "Statement expression illegal operator use: ", _last.value, " ", _next.value );
+						
+					} else if ( has_next() == false ) { _script.errors += 1;
+						ScriptManager().log( _header, "Statement expression is incomplete." );
+						
 					}
 					break;
 					
 				case "ScriptEngine_Value" :
 					if ( _last != undefined && instanceof( _last ) != "ScriptEngine_Operator" ) { _script.errors += 1;
-						ScriptManager().system.write( _header + "Statement expression missing operator: " + string( _last.value ) + " " + string( _next.value ) ); }
+						ScriptManager().log( _header, "Statement expression missing operator: ", _last.value, " ", _next.value ); }
 						
 					if ( ScriptManager().is_reserved( _next.value ) > -1 ) { _script.errors += 1;
 						ScriptManager().system.write( _header + "Statement uses reserved keyword, " + string( _next.value ) + ", as variable name." ); }

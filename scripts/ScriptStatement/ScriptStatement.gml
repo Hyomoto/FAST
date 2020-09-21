@@ -106,7 +106,7 @@ function ScriptStatement( _expression ) constructor {
 			execute	= function( _engine, _package ) {
 				var _result	= script_evaluate_expression( _engine, _package, expression );
 				
-				script_evaluate_traverse_set( _engine, _package.local, target, _result );
+				script_evaluate_traverse_set( _engine, _package, target, _result );
 				
 			}
 			break;

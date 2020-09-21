@@ -8,7 +8,7 @@ syslog( "Compile took ", timer, " seconds." );
 global.eng.set_value( "quest", true );
 
 global.eng.load_async( "test/", false, 1000 );
-//global.eng.scripts[? "trace" ]	= function() {}
+global.eng.scripts[? "trace" ]	= function() {}
 
 //event_user( 0 );
 
@@ -20,4 +20,3 @@ global.eng.load_async( "test/", false, 1000 );
 //var _formatter	= new StringFormatter("\t:strip,\n:strip,[:strip,]:strip, :strip,{:pull");
 
 //syslog( _formatter.format( "[DEMO] {" ) );
-

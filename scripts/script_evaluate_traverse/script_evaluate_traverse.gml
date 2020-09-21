@@ -2,103 +2,47 @@
 /// @param engine
 /// @param package
 /// @param path
-/// @param *set
+/// @param *stop
 function script_evaluate_traverse( _engine, _package, _string ) {
-	static __internal_seek	= function( _engine, _ref, _target ) {
-		
-		return undefined;
+	static __ref_get	= function( _ref, _string ) {
+		if ( is_struct( _ref ) ) {
+			if ( variable_struct_exists( _ref, _string ) ) {
+				return variable_struct_get( _ref, _string ); }
+				
+			throw( "struct variable " + _string + " is undeclared." );
+			
+		} else if ( instance_exists( _ref ) ) {
+			if ( variable_instance_exists( _ref, _string ) ) {
+				return variable_instance_get( _ref, _string ) }
+				
+			throw( "instance variable " + object_get_name( _ref.object_index ) + "(" + string( _ref ) + ")." + _string + " is undeclared." );
+			
+		}
+		throw( "reference " + string( _ref ) + " couldn't be found." );
 		
 	}
 	var _path	= string_explode( _string, ".", false );
-	var _ref, _i = 0;
+	var _stop	= ( argument_count == 3 ? array_length( _path ) : argument[ 3 ] );
+	var _ref;
 	
-	// seek
 	if ( variable_struct_exists( _package.local, _path[ 0 ] ) ) {
 		_ref	= _package.local;
 		
 	} else {
-		if ( array_length( _path ) == 1 ) {
-			return _engine.get_value( _path[ 0 ] );
-			
-		}
-		_ref	= _engine.get_value( _path[ 0 ] );
-		_i		= 1;
+		_ref	= _engine.values;
 		
 	}
-	// then ref
-	repeat( max( 0, array_length( _path ) - _i ) ) {
-		if ( _ref == undefined ) {
-			if ( _package.script != undefined ) {
-				throw( _package.script.source + " failed at line " + string( _package.statement.line + _package.script.isFunction ) + " because " + string( _path[ _i ] ) + " could not be found!" );
-				
-			}
-			throw( "Expression could not be evaluated because " + string( _path[ _i ] ) + " could not be found!" );
+	try {
+		var _i = 0; repeat( _stop ) {
+			_ref	= __ref_get( _ref, _path[ _i++ ] );
 			
 		}
-		// recurse
-		if ( is_struct( _ref ) && variable_struct_exists( _ref, _path[ _i ] ) ) {
-			_ref	= variable_struct_get( _ref, _path[ _i ] );
-			
-		} else if ( instance_exists( _ref ) && variable_instance_exists( _ref, _path[ _i ] ) ) {
-			_ref	= variable_instance_get( _ref, _path[ _i ] );
-			
-		} else {
-			if ( _package.script != undefined ) {
-				throw( _package.script.source + " failed at line " + string( _package.statement.line + _package.script.isFunction ) + " because " + string( _path[ _i ] ) + " could not be found!" );
-				
-			}
-			throw( "Expression could not be evaluated because " + string( _path[ _i ] ) + " could not be found!" );
-			//_engine.errors.push( [ "script_evaluate_traverse", "Path could not be traversed at \"" + _path[ _i ] + "\". Failed." ] );
-			
-			//return;
-			
-		}
-		++_i;
+	} catch ( _ex ) {
+		var _header	= ( _package.script == undefined ? "Expression failed because " : _package.script.source + " failed at line " + string( _package.statement.line + _package.script.isFunction ) + " because " );
+		
+		throw( _header + _ex );
 		
 	}
 	return _ref;
 	
 }
-//	var _set	= ( argument_count > 3 ? argument[ 3 ] : undefined );
-//	var _rep	= array_length( _path ) - 1;
-//	var _lookup = undefined;
-	
-//	if ( _rep == 0 ) {
-//		if ( variable_struct_exists( _package.local, _path[ _i ] ) || local ) {
-//			if ( argument_count > 3 ) {
-//				variable_struct_set( _package.local, _path[ _i ], _set );
-				
-//			} else { 
-//				return variable_struct_get( _package.local, _path[ _i ] );
-				
-//			}
-			
-//		} else {
-//			if ( argument_count > 3 ) {
-//				_engine.set_value( _path[ _i ], _set );
-				
-//			} else {
-//				return _engine.get_value( _path[ _i ] )
-			
-//		}
-	
-//	} else {
-//		if ( variable_struct_exists( _package.local, _path[ _i ] ) || local ) {
-//			_lookup	= variable_struct_get( _package.local, _path[ _i ] );
-			
-//		}
-//		_lookup	= _engine.get_value( _path[ _i ] );
-		
-//		var _i = 0; repeat( _rep ) {
-//			if ( is_struct( _lookup ) == false && instance_exists( _lookup ) == false ) {
-//				_engine.errors.push( [ "script_evaluate_traverse", "Could not traverse " + array_to_string( _path, "." ) + ". Failed." ] );
-				
-//				return;
-				
-//			}
-			
-//		}
-		
-//	}
-	
-//}

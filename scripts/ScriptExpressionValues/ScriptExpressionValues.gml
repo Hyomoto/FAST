@@ -7,12 +7,6 @@ function ScriptEngine_Value( _value, _type ) constructor {
 			}
 			return script_evaluate_traverse( _engine, _package, value );
 			
-			//if ( variable_struct_exists( _package.local, value ) ) {
-			//	return variable_struct_get( _package.local, value );
-				
-			//}
-			//return _engine.get_value( value )
-			
 		}
 		return value;
 		
@@ -38,8 +32,9 @@ function ScriptEngine_Operator( _value, _precedence ) constructor {
 }
 function ScriptEngine_Function( _value ) constructor {
 	static get	= function( _engine, _package ) {
+		if ( value == "pop" ) { return _engine.stack.pop(); }
+		
 		var _args	= array_create( array_length( args ) );
-		var _func;
 		
 		var _i = 0; repeat( array_length( args ) ) {
 			_args[ _i ]	= script_evaluate_expression( _engine, _package, args[ _i ] );
@@ -47,17 +42,7 @@ function ScriptEngine_Function( _value ) constructor {
 			++_i;
 			
 		}
-		if ( string_pos( ".", value ) == 0 ) {
-			if ( value == "pop" ) {
-				return _engine.stack.pop();
-				
-			}
-			_func	= _engine.scripts[? value ];
-			
-		} else {
-			_func	= script_evaluate_traverse( _engine, _package, value );
-			
-		}
+		var _func	= ( traverse ? script_evaluate_traverse( _engine, _package, value ) : _engine.scripts[? value ] );
 		var _result	= undefined;
 		
 		if ( _func == undefined ) {
@@ -72,9 +57,9 @@ function ScriptEngine_Function( _value ) constructor {
 			if( _func.isFunction ) {
 				var _i = 0; repeat( array_length( _func.args ) ) {
 					variable_struct_set( _local, _func.args[ _i ], _args[ _i ] );
-				
+					
 					++_i;
-				
+					
 				}
 				
 			} else {
@@ -82,7 +67,7 @@ function ScriptEngine_Function( _value ) constructor {
 					_engine.stack.push( _args[ _i ] );
 					
 					++_i;
-				
+					
 				}
 				
 			}
@@ -101,7 +86,7 @@ function ScriptEngine_Function( _value ) constructor {
 				case 7 : _result	= _func( _args[ 0 ], _args[ 1 ], _args[ 2 ], _args[ 3 ], _args[ 4 ], _args[ 5 ], _args[ 6 ] ); break;
 				case 8 : _result	= _func( _args[ 0 ], _args[ 1 ], _args[ 2 ], _args[ 3 ], _args[ 4 ], _args[ 5 ], _args[ 6 ], _args[ 7 ] ); break;
 				default: _result	= _func( _args[ 0 ], _args[ 1 ], _args[ 2 ], _args[ 3 ], _args[ 4 ], _args[ 5 ], _args[ 6 ], _args[ 7 ], _args[ 8 ] ); break;
-					
+				
 			}
 			
 		}
@@ -130,6 +115,7 @@ function ScriptEngine_Function( _value ) constructor {
 	queue	= new DsQueue();
 	value	= string_copy( _value, 1, _open - 1 );
 	type	= SCRIPT_EXPRESSION_TYPE_FUNCTION;
+	traverse= string_pos( ".", value );
 	
 	while( _l < string_length( _args ) ) {
 		_x = string_find_first( "\",(", _args, _l );

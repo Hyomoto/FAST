@@ -32,7 +32,7 @@ function Script() : DsChain() constructor {
 			}
 			if( _ex.ignore ) { continue; }
 			if ( _ex.ends ) {
-				if ( args == undefined && _ex.keyword == "wait" ) {
+				if ( _ex.keyword == "wait" ) {
 					_engine.wait	= ScriptManager().WaitCondition( _engine, self );
 					//_engine.queue.enqueue_at_head( self );
 					_engine.executionStop	= true;

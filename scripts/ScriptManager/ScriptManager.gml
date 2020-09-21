@@ -36,8 +36,18 @@ function ScriptManager(){
 			funcs[? _name ]	= _function;
 			
 		}
-		static is_reserved	=function( _keyword ) {
+		static is_reserved	= function( _keyword ) {
 			return reserved.contains( _keyword );
+			
+		}
+		static log	= function() {
+			var _string	= "";
+			
+			var _i = 0; repeat( argument_count ) {
+				_string	+= string( argument[ _i++ ] );
+				
+			}
+			system.write( _string );
 			
 		}
 		formatter	= new StringFormatter( "\":save,\t:replace", {
