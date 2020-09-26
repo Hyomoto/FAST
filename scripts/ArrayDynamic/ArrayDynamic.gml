@@ -78,10 +78,6 @@ function ArrayDynamic( _size ) : Array( _size ) constructor {
 		++length;
 		
 	}
-	static is		= function( _data_type ) {
-		return _data_type == Array;
-		
-	}
 	static toArray	= function() {
 		if ( array_length( content ) == length ) {
 			return content;
