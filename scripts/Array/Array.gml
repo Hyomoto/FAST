@@ -75,6 +75,14 @@ function Array( _size ) constructor {
 		return undefined;
 		
 	}
+	static resize	= function( _size, _default ) {
+		var _array	= array_create( _size, _default );
+		
+		array_copy( _array, 0, content, 0, min( array_length( _array ), array_length( content ) ) );
+		
+		content	= _array;
+		
+	}
 	static is		= function( _data_type ) {
 		return _data_type == Array;
 		
@@ -100,3 +108,9 @@ function Array( _size ) constructor {
 	}
 	
 }
+struct = {
+	value : function(  _event, _delay, _parameters, _function ) : Eventer(  _event, _delay, _parameters, _function ) constructor {}
+}
+var _new = new struct.value( FAST.STEP_BEGIN, 10, undefined, function() {
+	syslog( "hello" );
+});

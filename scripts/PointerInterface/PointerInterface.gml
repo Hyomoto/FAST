@@ -151,7 +151,7 @@ function PointerInterface( _shape ) constructor {
 	static set_dirty	= function() {
 		if ( dirty =! undefined || size <= 1 ) { return; }
 		
-		dirty	= new EventOnce( FAST.NEXT_STEP, 0, undefined, function() {
+		dirty	= new EventerOnce( FAST.NEXT_STEP, 0, undefined, function() {
 			sort();
 		});
 		

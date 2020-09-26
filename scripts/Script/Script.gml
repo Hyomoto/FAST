@@ -66,7 +66,7 @@ function Script() : DsChain() constructor {
 					//	var _time	= _ex.execute( self, _package );
 						
 					//	if ( _time != undefined ) {
-					//		wait	= new EventOnce( FAST.STEP, _time, _package, function( _package ) {
+					//		wait	= new EventerOnce( FAST.STEP, _time, _package, function( _package ) {
 					//			execute( _package );
 							
 					//		});

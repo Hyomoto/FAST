@@ -119,7 +119,7 @@ function GamepadManager() {
 			++_i;
 			
 		}
-		var _event	= new EventOnce( FAST.STEP_BEGIN, 0, undefined, function() {
+		var _event	= new EventerOnce( FAST.STEP_BEGIN, 0, undefined, function() {
 			var _i = 0; repeat ( gamepad_get_device_count() ) {
 				if ( gamepad_is_connected( _i ) ) {
 					ds_queue_enqueue( padQueue, _i );

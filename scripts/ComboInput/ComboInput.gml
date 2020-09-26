@@ -4,7 +4,7 @@ function ComboInput() constructor {
 	static raw		= function() {
 		if ( down() ) {
 			if ( event == undefined ) {
-				event	= new Event( FAST.STEP, 0, undefined, function() {
+				event	= new Eventer( FAST.STEP, 0, undefined, function() {
 					if ( down() == false ) {
 						last		= false;
 						event.once	= true;

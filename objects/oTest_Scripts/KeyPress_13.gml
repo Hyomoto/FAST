@@ -1,6 +1,6 @@
 cycle	= 100;
 total	= 0;
-event	= new Event( FAST.STEP_BEGIN, 0, cycle, function( _cycle ) {
+event	= new Eventer( FAST.STEP_BEGIN, 0, cycle, function( _cycle ) {
 	if ( --cycle == 0 ) {
 		syslog( "Took ", string_format( total / _cycle / 1000000, 0, 5 ), " seconds." );
 		syslog( "Execution stack is ", global.eng.executionStack.empty() ? "empty." : "not empty." );
