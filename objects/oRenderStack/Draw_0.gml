@@ -2,7 +2,7 @@ if ( surface.update() ) {
 	surface.set( true )
 	
 	var _i = 0; repeat( ds_list_size( objects ) ) {
-		with( objects[| _i++ ].target ) { event_perform( ev_draw, 0 ); }
+		with( objects[| _i++ ] ) { event_perform( ev_draw, 0 ); }
 		
 	}
 	surface.reset();

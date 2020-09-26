@@ -6,6 +6,6 @@ function DsTree_Link( _value ) : DsTree_Value( _value ) constructor {
 		
 	}
 	base		= DsTree_Link;
-	type		= "value";
+	type		= "node";
 	
 }

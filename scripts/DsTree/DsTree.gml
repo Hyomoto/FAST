@@ -7,7 +7,7 @@ function DsTree() constructor {
 		var _key	= ( _dot == 0 ? _path : string_copy( _path, 1, _dot - 1 ) );
 		var _value	= table[? _key ];
 		
-		if ( _dot > 0 && _value != undefined && _value.is( "node" ) == false ) {
+		if ( _dot > 0 && _value != undefined && _value.type != "node" ) {
 			_value	= undefined;
 			
 		}

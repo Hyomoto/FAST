@@ -9,10 +9,15 @@ function ds_tree_dump( _node, _level ) {
 		_node	= _node.value;
 		
 	}
-	if ( instanceof( _node ) != "DsTree" ) {
-		syslog( "Provided argument is not a node." );
+	try {
+		if ( _node.is( DsTree ) == false ) {
+			syslog( "Provided argument is not a tree!" );
 		
-		return;
+			return;
+		}
+		
+	} catch ( _ex ) {
+		syslog( "Provided argument is not a tree!" );
 		
 	}
 	var _tab	= string_repeat( "	", _level );
@@ -26,7 +31,7 @@ function ds_tree_dump( _node, _level ) {
 	while ( _key != undefined ) {
 		_value	= _table[? _key ];
 		
-		if ( _value.is( "node" ) ) {
+		if ( _value.type == "node" ) {
 			if ( _value.base == DsTree_Link ) {
 				syslog( _tab, _key, "(id:", _value.value.table ,") *= {" );
 				
@@ -35,7 +40,7 @@ function ds_tree_dump( _node, _level ) {
 				syslog( _tab, _key, "(id:", _value.value.table,") := {" );
 				
 			}
-			ds_node_dump( _value.value, _level + 1 );
+			ds_tree_dump( _value.value, _level + 1 );
 			
 			syslog( _tab, "}" );
 			
