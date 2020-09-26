@@ -13,7 +13,7 @@ difference( array )	- returns the array minus the values contained in the provid
 contains( value )	- searches the array and returns the index the value was found, or -1
 set( index, value )	- sets the array index to the given value
 get( *index )		- returns the value at the given index, or the array if no index is provided
-forEach( function )	- performs the given function on each indice in the array
+
 toArray()			- returns the array
 toString()			- returns the array as a string
 */
@@ -108,9 +108,3 @@ function Array( _size ) constructor {
 	}
 	
 }
-struct = {
-	value : function(  _event, _delay, _parameters, _function ) : Eventer(  _event, _delay, _parameters, _function ) constructor {}
-}
-var _new = new struct.value( FAST.STEP_BEGIN, 10, undefined, function() {
-	syslog( "hello" );
-});
