@@ -6,7 +6,7 @@
     "path": "folders/FAST/Core/Events.yy",
   },
   "resourceVersion": "1.0",
-  "name": "EventOnce",
+  "name": "EventerOnce",
   "tags": [],
   "resourceType": "GMScript",
 }
