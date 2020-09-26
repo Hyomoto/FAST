@@ -23,8 +23,8 @@ function Array( _size ) constructor {
 	// functions
 	static size	= function() { return array_length( content ); }
 	static swap	= function( _indexA, _indexB ) {
-		if ( _indexA < 0 && _indexB >= array_length( content ) ) { return; }
-		if ( _indexA < 0 && _indexB >= array_length( content ) ) { return; }
+		if ( _indexA < 0 && _indexB >= size() ) { return; }
+		if ( _indexA < 0 && _indexB >= size() ) { return; }
 		
 		var _hold	= content[ _indexA ];
 		
@@ -33,23 +33,23 @@ function Array( _size ) constructor {
 		
 	}
 	static unique	= function() {
-		return array_unique( content );
+		return array_unique( toArray() );
 		
 	}
 	static concat	= function( _target ) {
-		return array_concat( content, _target );
+		return array_concat( toArray(), _target );
 		
 	}
 	static difference	= function( _target ) {
-		return array_difference( content, _target );
+		return array_difference( toArray(), _target );
 		
 	}
 	static union	= function ( _target ) {
-		return array_union( content, _target );
+		return array_union( toArray(), _target );
 		
 	}
 	static contains	= function( _value ) {
-		var _i = 0; repeat( array_length( content ) ) {
+		var _i = 0; repeat( size() ) {
 			if ( content[ _i++ ] == _value ) {
 				return _i;
 				

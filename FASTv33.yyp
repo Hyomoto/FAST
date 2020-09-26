@@ -71,6 +71,7 @@
     {"id":{"name":"MouseButton","path":"scripts/MouseButton/MouseButton.yy",},"order":0,},
     {"id":{"name":"MouseWheel","path":"scripts/MouseWheel/MouseWheel.yy",},"order":1,},
     {"id":{"name":"Pair","path":"scripts/Pair/Pair.yy",},"order":1,},
+    {"id":{"name":"ArrayDynamic","path":"scripts/ArrayDynamic/ArrayDynamic.yy",},"order":3,},
     {"id":{"name":"Parser","path":"scripts/Parser/Parser.yy",},"order":0,},
     {"id":{"name":"PointerDevice","path":"scripts/PointerDevice/PointerDevice.yy",},"order":0,},
     {"id":{"name":"PointerInterface","path":"scripts/PointerInterface/PointerInterface.yy",},"order":1,},
