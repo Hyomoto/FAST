@@ -96,7 +96,7 @@ function PointerInterface( _shape ) constructor {
 		
 	}
 	static sort	= function() {
-		array_sort( objects, 0, size - 1, false,
+		array_quicksort( objects, 0, size - 1, false,
 			function( _value ) { return _value.depth },
 			function( _value, _pivot, _ascending ) {
 				return ( _ascending ? _value.depth <= _pivot : _value.depth >= _pivot );

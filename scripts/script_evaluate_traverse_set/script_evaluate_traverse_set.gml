@@ -9,7 +9,14 @@ function script_evaluate_traverse_set( _engine, _package, _string, _set ) {
 	var _ref	= script_evaluate_traverse( _engine, _package, _string, array_length( _path ) - 1 );
 	var _key	= _path[ array_length( _path ) - 1 ];
 	
-	if ( is_struct( _ref ) ) {
+	if ( array_length( _path ) == 1 && local ) {
+		_ref	= _package.local;
+		
+	}
+	if ( _path[ 0 ] == "global" ) {
+		variable_global_set( _key, _set );
+		
+	} else if ( is_struct( _ref ) ) {
 		variable_struct_set( _ref, _key, _set );
 		
 	} else if ( instance_exists( _ref ) ) {

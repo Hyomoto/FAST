@@ -62,25 +62,6 @@ function Script() : DsChain() constructor {
 						}
 						
 					}
-					//if ( has_next( _last ) ) {
-					//	var _time	= _ex.execute( self, _package );
-						
-					//	if ( _time != undefined ) {
-					//		wait	= new EventerOnce( FAST.STEP, _time, _package, function( _package ) {
-					//			execute( _package );
-							
-					//		});
-							
-					//	} else {
-					//		queue.enqueue_at_head( _package );
-							
-					//		wait	= true;
-							
-					//	}
-						
-					//}
-					//return;
-					
 					return;
 					
 				}
@@ -98,7 +79,7 @@ function Script() : DsChain() constructor {
 					_package.last	= _ex.goto;
 					_reread			= true;
 					
-				} else if ( _ex.keyword == "end" ) {
+				} else if ( _ex.keyword == "end" && _package.depth > _ex.depth ) {
 					_package.depth -= 1;
 					
 					continue;

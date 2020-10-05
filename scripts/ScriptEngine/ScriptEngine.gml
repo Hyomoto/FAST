@@ -20,7 +20,7 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 	}
 	// runs a script as part of the engine
 	static execute	= function( _name ) {
-		var _script	= scripts[? _name ];
+		var _script	= ( is_string( _name ) ? scripts[? _name ] : _name );
 		
 		if ( _script == undefined ) {
 			log( "ScriptEngine.execute", "Script \"", _name, "\" does not exist. Skipped!" );
@@ -37,10 +37,10 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 				++_i;
 				
 			}
-				
+			
 		} else {
-			var _i = 1; repeat( argument_count - 1 ) {
-				stack.push( argument[ _i++ ] );
+			var _i = argument_count; repeat( argument_count - 1 ) {
+				stack.push( argument[ --_i ] );
 				
 			}
 				

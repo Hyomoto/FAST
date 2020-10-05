@@ -1,11 +1,11 @@
-/// @func array_sort
+/// @func array_quicksort
 /// @param array	- the array to be sorted
 /// @param start	- the indice to start sorting at
 /// @param end		- the last indice to sort
 /// @param ascending?	- whether the sort should be ascending or descending
 /// @param *pivot	- used to override the comparison used in the pivot, has format function( _value )
 /// @param *compare	- used to override the comparison used when sorting, has format function( _pivot, _value, _ascending )
-function array_sort( _array, _start, _end, _ascending, _pivot, _compare ) {
+function array_quicksort( _array, _start, _end, _ascending, _pivot, _compare ) {
 	// if the start is equal to or less than the end, abort
 	if ( _start >= _end ) { return; }
 	// set up the default comparison, if not provided
@@ -33,7 +33,7 @@ function array_sort( _array, _start, _end, _ascending, _pivot, _compare ) {
 	_array[@ _i ]	= _array[ _end ];
 	_array[@ _end ]	= _hold;
 	
-	array_sort( _array, _start, _i - 1, _ascending, _pivot, _compare );
-	array_sort( _array, _i + 1, _end, _ascending, _pivot, _compare );
+	array_quicksort( _array, _start, _i - 1, _ascending, _pivot, _compare );
+	array_quicksort( _array, _i + 1, _end, _ascending, _pivot, _compare );
 	
 }

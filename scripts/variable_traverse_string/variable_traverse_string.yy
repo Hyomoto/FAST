@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "array",
-    "path": "folders/FAST/Core/Functions/array.yy",
+    "name": "variable",
+    "path": "folders/FAST/Core/Functions/variable.yy",
   },
   "resourceVersion": "1.0",
-  "name": "array_sort",
+  "name": "variable_traverse_string",
   "tags": [],
   "resourceType": "GMScript",
 }

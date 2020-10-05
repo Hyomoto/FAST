@@ -42,7 +42,25 @@ function ScriptEngine_Function( _value ) constructor {
 			++_i;
 			
 		}
-		var _func	= ( traverse ? script_evaluate_traverse( _engine, _package, value ) : _engine.scripts[? value ] );
+		var _ref, _func;
+		
+		if ( traverse == "" ) {
+			_func	= _engine.scripts[? value ];
+			_ref	= _engine;
+			
+		} else {
+			_ref	= script_evaluate_traverse( _engine, _package, traverse );
+			
+			if ( _ref == undefined ) {
+				_engine.log( "ScriptEngine_Function", "Function at \"" + traverse + "\" not defined. Failed." );
+				
+				return;
+				
+			}
+			if ( is_struct( _ref ) ) { _func	= variable_struct_get( _ref, value ); }
+			else { _func	= variable_instance_get( _ref, value ); }
+			
+		}
 		var _result	= undefined;
 		
 		if ( _func == undefined ) {
@@ -51,50 +69,53 @@ function ScriptEngine_Function( _value ) constructor {
 			return;
 			
 		}
-		if ( is_struct( _func ) ) {
-			var _local	= {};
-			
-			if( _func.isFunction ) {
-				var _i = 0; repeat( array_length( _func.args ) ) {
-					variable_struct_set( _local, _func.args[ _i ], _args[ _i ] );
+		with( _ref ) {
+			if ( is_struct( _func ) ) {
+				var _local	= {};
+				
+				if( _func.isFunction ) {
+					var _i = 0; repeat( array_length( _func.args ) ) {
+						variable_struct_set( _local, _func.args[ _i ], _args[ _i ] );
+						
+						++_i;
+						
+					}
 					
-					++_i;
+				} else {
+					var _i = 0; repeat( array_length( _args ) ) {
+						_engine.stack.push( _args[ _i ] );
+						
+						++_i;
+						
+					}
 					
 				}
+				_engine.executionStack.push( { script : _func, statement : undefined, local : _local, last : undefined, depth : -1 } );
+				_result	= _func.execute( _engine );
 				
 			} else {
-				var _i = 0; repeat( array_length( _args ) ) {
-					_engine.stack.push( _args[ _i ] );
-					
-					++_i;
+				switch ( array_length( _args ) ) {
+					case 0 : _result	= _func(); break;
+					case 1 : _result	= _func( _args[ 0 ] ); break;
+					case 2 : _result	= _func( _args[ 0 ], _args[ 1 ] ); break;
+					case 3 : _result	= _func( _args[ 0 ], _args[ 1 ], _args[ 2 ] ); break;
+					case 4 : _result	= _func( _args[ 0 ], _args[ 1 ], _args[ 2 ], _args[ 3 ] ); break;
+					case 5 : _result	= _func( _args[ 0 ], _args[ 1 ], _args[ 2 ], _args[ 3 ], _args[ 4 ] ); break;
+					case 6 : _result	= _func( _args[ 0 ], _args[ 1 ], _args[ 2 ], _args[ 3 ], _args[ 4 ], _args[ 5 ] ); break;
+					case 7 : _result	= _func( _args[ 0 ], _args[ 1 ], _args[ 2 ], _args[ 3 ], _args[ 4 ], _args[ 5 ], _args[ 6 ] ); break;
+					case 8 : _result	= _func( _args[ 0 ], _args[ 1 ], _args[ 2 ], _args[ 3 ], _args[ 4 ], _args[ 5 ], _args[ 6 ], _args[ 7 ] ); break;
+					default: _result	= _func( _args[ 0 ], _args[ 1 ], _args[ 2 ], _args[ 3 ], _args[ 4 ], _args[ 5 ], _args[ 6 ], _args[ 7 ], _args[ 8 ] ); break;
 					
 				}
 				
 			}
-			_engine.executionStack.push( { script : _func, statement : undefined, local : _local, last : undefined, depth : -1 } );
-			_result	= _func.execute( _engine );
-			
-		} else {
-			switch ( array_length( _args ) ) {
-				case 0 : _result	= _func(); break;
-				case 1 : _result	= _func( _args[ 0 ] ); break;
-				case 2 : _result	= _func( _args[ 0 ], _args[ 1 ] ); break;
-				case 3 : _result	= _func( _args[ 0 ], _args[ 1 ], _args[ 2 ] ); break;
-				case 4 : _result	= _func( _args[ 0 ], _args[ 1 ], _args[ 2 ], _args[ 3 ] ); break;
-				case 5 : _result	= _func( _args[ 0 ], _args[ 1 ], _args[ 2 ], _args[ 3 ], _args[ 4 ] ); break;
-				case 6 : _result	= _func( _args[ 0 ], _args[ 1 ], _args[ 2 ], _args[ 3 ], _args[ 4 ], _args[ 5 ] ); break;
-				case 7 : _result	= _func( _args[ 0 ], _args[ 1 ], _args[ 2 ], _args[ 3 ], _args[ 4 ], _args[ 5 ], _args[ 6 ] ); break;
-				case 8 : _result	= _func( _args[ 0 ], _args[ 1 ], _args[ 2 ], _args[ 3 ], _args[ 4 ], _args[ 5 ], _args[ 6 ], _args[ 7 ] ); break;
-				default: _result	= _func( _args[ 0 ], _args[ 1 ], _args[ 2 ], _args[ 3 ], _args[ 4 ], _args[ 5 ], _args[ 6 ], _args[ 7 ], _args[ 8 ] ); break;
-				
-			}
+			return _result;
 			
 		}
-		return _result;
 		
 	}
 	static toString	= function() {
-		var _string	= "SE::Func -> " + string( value ) + "(";
+		var _string	= "SE::Func -> " + ( traverse != "" ? traverse + "." + string( value ) : string( value ) ) + "(";
 		
 		var _i = 0; repeat( array_length( args ) ) {
 			if ( _i > 0 ) { _string	+= ", "; }
@@ -114,9 +135,18 @@ function ScriptEngine_Function( _value ) constructor {
 	
 	queue	= new DsQueue();
 	value	= string_copy( _value, 1, _open - 1 );
+	traverse= "";
 	type	= SCRIPT_EXPRESSION_TYPE_FUNCTION;
-	traverse= string_pos( ".", value );
 	
+	while ( string_pos( ".", value ) > 0 ) {
+		if ( traverse != "" ) { traverse += "."; }
+		
+		var _point	= string_pos( ".", value );
+		
+		traverse	+= string_copy( value, 1, _point - 1 );
+		value		= string_delete( value, 1, _point );
+		
+	}
 	while( _l < string_length( _args ) ) {
 		_x = string_find_first( "\",(", _args, _l );
 		

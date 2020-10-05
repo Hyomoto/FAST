@@ -8,7 +8,7 @@ function ArrayString( _size ) : Array( _size ) constructor {
 		
 	}
 	static sort	= function( _ascending ) {
-		array_sort( content, 0, size() - 1, _ascending,
+		array_quicksort( content, 0, size() - 1, _ascending,
 			function( _value ) { return string_lower( _value ) },
 			function( _value, _pivot, _ascending ) {
 				var _p, _v;
