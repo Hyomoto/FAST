@@ -15,10 +15,11 @@ function database_load( _filename ) {
 	var _templates	= ds_stack_create();
 	var _default	= undefined;
 	var _root		= _target;
+	var _continue	= true;
 	var _raw, _indicator, _hand, _assign, _value, _last_value;
 	
 	// parse file into database
-	while ( _file.eof() == false ) {
+	while ( _file.eof() == false && _continue ) {
 		_raw		= _file.read();
 		// clear templates
 		if ( _last_file != _file.name ) {
@@ -45,7 +46,7 @@ function database_load( _filename ) {
 				var _value	= database.parse( _hand[ LEFT ], _file );
 				
 				if ( _last_value.is( "number" ) == false || _value.is( "number" ) == false ) {
-					log_nonfatal( undefined, "FAST_database_load", _file, " Value ", _hand[ LEFT ], " can not be used with '+'! Skipped." );
+					database.log( " Value ", _hand[ LEFT ], " can not be used with '+'! Skipped." );
 					
 					database.warnings++;
 					
@@ -59,7 +60,7 @@ function database_load( _filename ) {
 			// assign static value
 			case "@" :
 				if ( _assign == false ) {
-					log_nonfatal( undefined, "FAST_database_load", _file, " Static ", _hand[ LEFT ], " has no assignment. Skipped." );
+					database.log( " Static ", _hand[ LEFT ], " has no assignment. Skipped." );
 					
 					database.warnings++;
 					
@@ -84,7 +85,7 @@ function database_load( _filename ) {
 						var _seek	= _root.seek( _break[ 1 ] );
 						
 						if ( _seek == undefined || _seek.is( "node" ) == false ) {
-							log_nonfatal( undefined, "FAST_database_load", _file, " Template ", _break[ 1 ], " was not found. Skipped." );
+							database.log( " Template ", _break[ 1 ], " was not found. Skipped." );
 							
 							database.warnings++;
 							
@@ -99,7 +100,7 @@ function database_load( _filename ) {
 						
 					case "include" :
 						if ( array_length( _break ) == 1 ) {
-							log_nonfatal( undefined, "FAST_database_load", _file, " Include has no assignment. Skipped." );
+							database.log( " Include has no assignment. Skipped." );
 							
 							database.warnings++;
 							
@@ -109,7 +110,7 @@ function database_load( _filename ) {
 						var _seek	= _root.seek( _break[ 1 ] );
 						
 						if ( _seek == undefined || _seek.is( "node" ) == false ) {
-							log_nonfatal( undefined, "FAST_database_load", _file, " Include template ", _break[ 1 ], " was not found. Skipped." );
+							database.log( " Include template ", _break[ 1 ], " was not found. Skipped." );
 							
 							database.warnings++;
 							
@@ -140,8 +141,11 @@ function database_load( _filename ) {
 				// node closure
 				if ( _hand[ LEFT ] == "}" ) {
 					if ( ds_stack_size( database.stack ) == 0 ) {
-						log_critical( undefined, "database_load", _file, " Node closure '}' without matching opener! Aborted." );
-						throw("see output log");
+						database.log( " Node closure '}' without matching opener! Aborted." );
+						
+						_continue	= false;
+						
+						break;
 						
 					}
 					_target		= ds_stack_pop( database.stack );
@@ -158,7 +162,7 @@ function database_load( _filename ) {
 						_template	= _root.seek( _break[ 1 ] );
 						
 						if ( _template == undefined ) {
-							log_nonfatal( undefined, "FAST_database_load", _file, " Template ", _break[ 1 ], " was not found. Skipped." );
+							database.log( _file, " Template ", _break[ 1 ], " was not found. Skipped." );
 							
 							database.errors++;
 							
@@ -209,13 +213,33 @@ function database_load( _filename ) {
 						
 					// value assignment
 					} else {
-						var _value	= database.parse( _hand[ RIGHT ], _file );
-						
-						_target.set( _hand[ LEFT ], _value, false );
-						
-						database.records++;
-						
-						_last_value	= _value;
+						try {
+							var _value	= database.parse( _hand[ RIGHT ], _file );
+							
+							_target.set( _hand[ LEFT ], _value, false );
+							
+							database.records++;
+							
+							_last_value	= _value;
+							
+						} catch ( _ex ) {
+							var _string		= ( is_array( _ex ) ? _ex[ 1 ] : string( _ex ) );
+							
+							database.log( "Error in ", _file.name, " at line ", string( _file.line ), ", " + _string );
+							
+							database.errors++;
+							
+							if ( is_array( _ex ) ) {
+								_continue = _ex[ 0 ] == true;
+								
+								if ( _continue == false ) {
+									database.log( "Unrecoverable error, database load aborted." );
+									
+								}
+								
+							}
+							
+						}
 						
 					}
 					
@@ -227,15 +251,18 @@ function database_load( _filename ) {
 	}
 	// check for lack of closures
 	if ( ds_stack_size( database.stack ) > 0 ) {
-		log_critical( undefined, "database_load", _file, " Node closure '}' missing! Aborted." );
-		throw("see output log");
+		database.log( _file, " Matching closure '}' is missing! Database is likely corrupted." );
+		
+		database.warnings++;
+		
+		ds_stack_clear( database.stack );
 		
 	}
 	// resolve links
 	database.resolve_links( _target );
 	
 	if ( ds_queue_size( database.links ) > 0 ) {
-		log_nonfatal( undefined, "FAST_database_load", _file, " Could not resolve ", ds_queue_size( database.links ), " symbolic links. Skipped." );
+		database.log( _file, " Could not resolve ", ds_queue_size( database.links ), " symbolic links. Skipped." );
 		
 		database.errors++;
 		
@@ -248,10 +275,13 @@ function database_load( _filename ) {
 	ds_stack_destroy( _templates );
 	
 	// log results
-	log_notify( undefined, "database_load", "file ", _filename, " loaded, ", _file.includes, " includes, took ", _timer, "." );
-	log_notify( undefined, "database_load", "found ", database.records, " records with ", database.warnings, " warnings, and ", database.errors, " errors." );
+	database.log( "File ", _filename, " loaded, ", _file.includes, " includes, took ", _timer, "." );
+	database.log( "Found ", database.records, " records with ", database.warnings, " warnings, and ", database.errors, " errors." );
 	if ( database.errors + database.warnings > 0 ) {
-		log_nonfatal( undefined, "database_load", "Issues detected during load! Check log for details." );
+		database.log( "..Issues detected during load! Check log for details." );
+		
+		database.errors		= 0;
+		database.warnings	= 0;
 		
 	}
 	// close file

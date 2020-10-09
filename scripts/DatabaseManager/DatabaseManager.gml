@@ -2,6 +2,17 @@
 function DatabaseManager() {
 	static database	= function() constructor {
 		static	__undefined	= new DsTree_Value( undefined );
+		static logger	= new Logger( "database", FAST_LOGGER_DEFAULT_LENGTH, System, new FileText( "log/database.txt", false, true ) );
+		static log	= function() {
+			var _string	= "";
+			
+			var _i = 0; repeat( argument_count ) {
+				_string	+= string( argument[ _i++ ] );
+				
+			}
+			logger.write( _string );
+			
+		}
 		static add_datatype	= function( _key, _function ) {
 			if ( ds_map_find_value( table, _key ) != undefined ) {
 				log_notify( undefined, "DatabaseManager.add_datatype", "Data type ", _key, " was previously defined. It has been overwritten." );

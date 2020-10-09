@@ -14,8 +14,6 @@ function File( _filename, _readonly ) : GenericOutput() constructor {
 	}
 	static exists	= function( _filename ) {
 		if ( _filename == undefined || file_exists( _filename ) == false ) {
-			log_notify( undefined, "File", "\"", _filename, "\" not found." );
-			
 			return false;
 			
 		} else {

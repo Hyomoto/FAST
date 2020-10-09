@@ -1,8 +1,8 @@
 /// @func FileText
 /// @param filename
-/// @param new?
 /// @param *read_only
-function FileText( _filename, _new, _readonly ) : File( _filename, _readonly ) constructor {
+/// @param *new?
+function FileText( _filename, _readonly, _new ) : File( _filename, _readonly ) constructor {
 	static save_File	= save;
 	static save	= function( _append ) {
 		if ( save_File() ) {
