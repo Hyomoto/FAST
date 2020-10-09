@@ -23,8 +23,8 @@ function Surface( _width, _height, _per_frame ) constructor {
 			redraw	= true;
 			
 		}
-		if ( _forced != undefined ) {
-			redraw	= _forced;
+		if ( _forced == true ) {
+			redraw	= true;
 			
 		}
 		if ( redraw ) {

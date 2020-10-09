@@ -110,7 +110,7 @@ function Gamepad() constructor {
 	lstick		= new inputAxis( gp_axislh, gp_axislv, self );
 	rstick		= new inputAxis( gp_axisrh, gp_axisrv, self );
 	
-	port		= GamepadInit().get_port( self );
+	port		= GamepadManager().get_port( self );
 	padIndex	= -1;
 	
 	if ( port == undefined ) {

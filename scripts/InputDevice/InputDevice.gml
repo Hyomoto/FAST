@@ -61,29 +61,29 @@ function InputDevice() constructor {
 		variable_struct_set( self, _input, inputs[ _index ] );
 		
 	}
-	static set_target	= function( _target ) {
-		if ( event == undefined ) {
-			event	= new Eventer( FAST.STEP, 0, undefined, function() {
-				with ( target ) {
-					event_user( 15 );
+	//static set_target	= function( _target ) {
+	//	if ( event == undefined ) {
+	//		event	= new Eventer( FAST.STEP, 0, undefined, function() {
+	//			with ( target ) {
+	//				event_user( 15 );
 					
-				}
+	//			}
 				
-			});
+	//		});
 			
-		}
-		target	= _target;
-		target.inputDevice	= self;
+	//	}
+	//	target	= _target;
+	//	target.inputDevice	= self;
 		
-	}
-	static reset_target	= function() {
-		FAST.delete_event( event );
+	//}
+	//static reset_target	= function() {
+	//	FAST.delete_event( event );
 		
-		target.inputDevice	= undefined;
-		target	= noone;
-		event	= undefined;
+	//	target.inputDevice	= undefined;
+	//	target	= noone;
+	//	event	= undefined;
 		
-	}
+	//}
 	static is		= function( _data_type ) {
 		return _data_type == InputDevice;
 		

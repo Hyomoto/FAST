@@ -25,7 +25,13 @@ function Logger( _name, _length, _output ) constructor {
 			
 		}
 		var _i = 0; repeat( array_length( outputs ) ) {
-			outputs[ _i++ ].write( _value );
+			outputs[ _i ].write( _value );
+			
+			if ( outputs[ _i ].size() >= writeAt ) {
+				outputs[ _i ].save();
+				
+			}
+			++_i;
 			
 		}
 		
@@ -35,7 +41,7 @@ function Logger( _name, _length, _output ) constructor {
 			outputs[ _i++ ].close( _value );
 			
 		}
-		syslog( "Logger ", name, " has been closed." );
+		System.write( "Logger ", name, " has been closed." );
 		
 	}
 	static clear	= function( _value ) {
@@ -59,6 +65,7 @@ function Logger( _name, _length, _output ) constructor {
 	}
 	name	= _name;
 	length	= _length;
+	writeAt	= 40;
 	
 	clear();
 	write( "log opened: " + date_datetime_string(date_current_datetime()) );

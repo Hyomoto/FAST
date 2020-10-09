@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Array",
-    "path": "folders/FAST/Core/Data Types/Array.yy",
+    "name": "Events",
+    "path": "folders/FAST/Core/Events.yy",
   },
   "resourceVersion": "1.0",
-  "name": "Array",
+  "name": "EventOnce",
   "tags": [],
   "resourceType": "GMScript",
 }

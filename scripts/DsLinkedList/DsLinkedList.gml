@@ -63,10 +63,11 @@ function DsLinkedList() : DsChain() constructor {
 	static find	= function( _value ) {
 		if ( links == 0 ) { return undefined; }
 		
-		var _seek	= ( argument_count == 1 ? chain : argument[ 1 ] );
+		var _func	= ( argument_count > 1 ? argument[ 1 ] : function( _a, _b ) { return _a == _b; } );
+		var _seek	= chain;
 		
 		while ( _seek != undefined ) {
-			if ( _seek.value == _value ) {
+			if ( _func( _seek.value, _value ) ) {
 				return _seek;
 				
 			}

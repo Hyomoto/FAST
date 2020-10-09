@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Scripts",
-    "path": "folders/FAST/Core/Data Structures/DsTree/Scripts.yy",
+    "name": "Events",
+    "path": "folders/FAST/Core/Events.yy",
   },
   "resourceVersion": "1.0",
-  "name": "DsTree_Node",
+  "name": "Event",
   "tags": [],
   "resourceType": "GMScript",
 }

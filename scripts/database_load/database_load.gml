@@ -2,29 +2,28 @@
 /// @param filename
 /// @param *target
 /// @desc	
-function database_load( _filename, _target ) {
+function database_load( _filename ) {
 	static database	= DatabaseManager();
 	static LEFT		= 0;
 	static RIGHT	= 1;
 	
-	var _file	= new FileFAST( _filename, true );
-	var _timer	= new Timer( "$S seconds", 2 );
+	// if no target was provided, database is loaded into a new node
+	var _target		= ( argument_count > 1 ? argument[ 1 ] : new DsTree() );
+	var _file		= new FileFAST( _filename, true );
+	var _timer		= new Timer( "$S seconds", 2 );
 	var _last_file	= _filename;
 	var _templates	= ds_stack_create();
 	var _default	= undefined;
+	var _root		= _target;
 	var _raw, _indicator, _hand, _assign, _value, _last_value;
-	// if no target was provided, database is loaded into a new node
-	if ( _target == undefined ) {
-		_target	= new DsTree();
-		
-	}
-	var _root	= _target;
 	
 	// parse file into database
 	while ( _file.eof() == false ) {
 		_raw		= _file.read();
 		// clear templates
 		if ( _last_file != _file.name ) {
+			DatabaseManager().type	= undefined;
+			
 			_root.remove( "template" );
 			
 			_last_file	= _file.name;
@@ -121,6 +120,16 @@ function database_load( _filename, _target ) {
 						
 						break;
 						
+					case "datatype" :
+						if ( _break[ 1 ] == "" ) {
+							DatabaseManager().type	= undefined;
+							
+						} else {
+							DatabaseManager().type	= _break[ 1 ];
+							
+						}
+						break;
+						
 					default :
 						syslog( _break );
 						
@@ -160,7 +169,7 @@ function database_load( _filename, _target ) {
 					}
 					// node opening
 					if ( array_length( _hand ) == 1 ) {
-						//_last_value	= ( _default == undefined ? new DsTree() : _default.copy() );
+						_last_value	= ( _default == undefined ? new DsTree() : _default.copy() );
 						
 						if ( _template != undefined ) {
 							_last_value	= _template.copy( _last_value );

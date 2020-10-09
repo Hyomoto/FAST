@@ -4,7 +4,7 @@ function DatabaseManager() {
 		static	__undefined	= new DsTree_Value( undefined );
 		static add_datatype	= function( _key, _function ) {
 			if ( ds_map_find_value( table, _key ) != undefined ) {
-				log_notify( undefined, "FAST_Database.add_datatype", "Data type ", _key, " was previously defined. It has been overwritten." );
+				log_notify( undefined, "DatabaseManager.add_datatype", "Data type ", _key, " was previously defined. It has been overwritten." );
 				
 				++warnings;
 				
@@ -63,7 +63,9 @@ function DatabaseManager() {
 		}
 		// reads entires and converts them to DsTree_Values
 		static parse		= function( _value, _file ) {
-			switch ( string_char_at( _value, 1 ) ) {
+			var _first	= string_char_at( _value, 1 );
+			
+			switch ( _first ) {
 				case "$" :
 					var _break	= string_explode( _value, ":", false );
 					var _type	= get_datatype( string_delete( _break[ 0 ], 1, 1 ) );
@@ -91,28 +93,21 @@ function DatabaseManager() {
 					}
 					return _static.copy();
 					
-				case "\"" :
-					return new DsTree_String( string_copy( _value, 2, string_length( _value ) - 2 ) );
+				default :
+					var _type	= ( type == undefined ? undefined : get_datatype( type ) );
+					
+					if ( _type == undefined ) {
+						if ( _first == "\"" ) {
+							return new DsTree_String( string_copy( _value, 2, string_length( _value ) - 2 ) );
+							
+						}
+						return new DsTree_Number( string_to_real( _value ) );
+						
+					}
+					return _type( _value, _file );
 					
 			}
-			//var _result	= 0;
-			
-			//try {
-				//_result	= real( _value );
-				
-			//} catch ( _ex ) {
-			//	log_nonfatal( undefined, "FAST_database_load.lookup", _file, " Value ", _value, " could not be interpreted. Ignored." );
-				
-			//	++warnings;
-				
-			//	return __undefined;
-				
-			//}
-			if ( type == undefined ) {
-				return new DsTree_Number( string_to_real( _value ) );
-				
-			}
-			return get_datatype( _value );
+			throw( "DatabaseManager().parse unexpectedly failed! This shouldn't be possible." );
 			
 		}
 		table	= ds_map_create();

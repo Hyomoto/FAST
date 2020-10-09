@@ -171,6 +171,8 @@ function FileFAST( _filename, _readonly ) : File( _filename, _readonly ) constru
 		}
 		file_text_close( _file );
 		
+		return true;
+		
 	}
 	includes	= 0;
 	line		= 0;

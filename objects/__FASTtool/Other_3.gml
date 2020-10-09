@@ -1,5 +1,5 @@
-syslog( "FAST is shutting down..." );
+System.write( "FAST is shutting down..." );
 
 fast.call_events( fast.GAME_END );
 
-syslog( "Complete." );
+System.write( "Complete." );

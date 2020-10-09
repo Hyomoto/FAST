@@ -8,6 +8,10 @@ function File( _filename, _readonly ) : GenericOutput() constructor {
 		last	= 0;
 		
 	}
+	static size		= function() {
+		return lines;
+		
+	}
 	static exists	= function( _filename ) {
 		if ( _filename == undefined || file_exists( _filename ) == false ) {
 			log_notify( undefined, "File", "\"", _filename, "\" not found." );
@@ -57,14 +61,16 @@ function File( _filename, _readonly ) : GenericOutput() constructor {
 		
 	}
 	// writes the file to disk
-	static save			= function() {
+	static save			= function( _append ) {
 		if ( writable ) {
-			// save goes here
+			return true;
 			
 		} else {
 			log_notify( undefined, instanceof( self ) + ".close", "Called on ", name, ", which is a read only file. Ignored." );
 			
 		}
+		return false;
+		
 	}
 	// saves and closes the file
 	static close	= function() {
@@ -101,11 +107,12 @@ function File( _filename, _readonly ) : GenericOutput() constructor {
 		return name;
 		
 	}
-// # Variable Declaration
+// # Variable Declaration	
 	writable	= ( _readonly == undefined ? true : _readonly == false );
 	name		= _filename;
-	contents		= ds_list_create();
+	contents	= ds_list_create();
 	last		= 0;
 	lines		= 0;
+	saveIndex	= 0;
 	
 }

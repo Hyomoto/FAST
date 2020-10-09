@@ -1,9 +1,11 @@
 /// @func ds_tree_dump
 /// @param node
 /// @param *level
+/// @param *output
 /// @desc	dumps the contents of a node
-function ds_tree_dump( _node, _level ) {
-	_level	= ( is_undefined( _level ) ? 0 : _level );
+function ds_tree_dump( _node ) {
+	var _level	= ( argument_count > 1 ? argument[ 1 ] : 0 );
+	var _output	= ( argument_count > 2 ? argument[ 2 ] : System );
 	
 	if ( instanceof( _node ) == "DsTree_Branch" ) {
 		_node	= _node.value;
@@ -11,13 +13,13 @@ function ds_tree_dump( _node, _level ) {
 	}
 	try {
 		if ( _node.is( DsTree ) == false ) {
-			syslog( "Provided argument is not a tree!" );
+			_output.write( "Provided argument is not a tree!" );
 		
 			return;
 		}
 		
 	} catch ( _ex ) {
-		syslog( "Provided argument is not a tree!" );
+		_output.write( "Provided argument is not a tree!" );
 		
 	}
 	var _tab	= string_repeat( "	", _level );
@@ -26,26 +28,26 @@ function ds_tree_dump( _node, _level ) {
 	
 	_key	= ds_map_find_first( _table );
 	
-	syslog( _tab, "<node ", _node.table," has ", ds_map_size( _table ), " records>" );
+	_output.write( _tab, "<node ", _node.table," has ", ds_map_size( _table ), " records>" );
 	
 	while ( _key != undefined ) {
 		_value	= _table[? _key ];
 		
 		if ( _value.type == "node" ) {
 			if ( _value.base == DsTree_Link ) {
-				syslog( _tab, _key, "(id:", _value.value.table ,") *= {" );
+				_output.write( _tab, _key, "(id:", _value.value.table ,") *= {" );
 				
 			} else {
 				
-				syslog( _tab, _key, "(id:", _value.value.table,") := {" );
+				_output.write( _tab, _key, "(id:", _value.value.table,") := {" );
 				
 			}
 			ds_tree_dump( _value.value, _level + 1 );
 			
-			syslog( _tab, "}" );
+			_output.write( _tab, "}" );
 			
 		} else {
-			syslog( _tab, _key, " = ", _value );
+			_output.write( _tab, _key, " = ", _value );
 			
 		}
 		_key	= ds_map_find_next( _table, _key );
