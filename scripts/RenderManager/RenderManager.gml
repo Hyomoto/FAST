@@ -5,7 +5,7 @@ function RenderManager() {
 		static update_window	= function() {
 			if ( event != undefined ) { return; }
 			
-			event	= new EventerOnce( FAST.STEP, 0, undefined, function() {
+			event	= event_create( FAST.STEP, 0, undefined, function() {
 				var _scale	= min( display_get_width() / render_width, display_get_height() / render_height );
 				
 				_scale	*= scale_value;
@@ -18,7 +18,7 @@ function RenderManager() {
 				
 				surface_resize( application_surface, render_width, render_height );
 				
-			});
+			}, true );
 			
 		}
 		static set_precision	= function( _precision ) {

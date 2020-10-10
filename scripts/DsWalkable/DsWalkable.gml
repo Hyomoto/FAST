@@ -13,12 +13,11 @@ function DsWalkable() : DsLinkedList() constructor {
 		step	= undefined;
 		steps	= 0;
 		repeat ( (is_undefined( _at ) ||
-								_at > links ||
+								_at >= size() ||
 								_at < 0)
 				? 0 : _at) { next(); }
 		
 	}
-	
 	static has_next	= function() {
 		return ( links == 0 ? false : step == undefined || step.chain != undefined );
 		
@@ -50,9 +49,9 @@ function DsWalkable() : DsLinkedList() constructor {
 	static poke	= function( _value ) {
 		// insert a value at the current read position
 	}
-	
+	static is_DsLinkedList	= is;
 	static is		= function( _data_type ) {
-		return _data_type == DsWalkable;
+		return _data_type == DsWalkable || is_DsLinkedList();
 		
 	}
 // # Variable Declaration

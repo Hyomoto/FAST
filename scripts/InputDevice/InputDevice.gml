@@ -6,7 +6,7 @@ function InputDevice() constructor {
 			var _i = 0; repeat( size ) {
 				if ( inputs[ _i++ ].down() ){
 					if ( event == undefined ) {
-						event	= new Eventer( FAST.STEP, 0, undefined, function() {
+						event	= new FAST_Event( FAST.STEP, 0, undefined, function() {
 							if ( raw() == false ) {
 								last		= false;
 								event.once	= true;
@@ -63,7 +63,7 @@ function InputDevice() constructor {
 	}
 	//static set_target	= function( _target ) {
 	//	if ( event == undefined ) {
-	//		event	= new Eventer( FAST.STEP, 0, undefined, function() {
+	//		event	= new FAST_Event( FAST.STEP, 0, undefined, function() {
 	//			with ( target ) {
 	//				event_user( 15 );
 					

@@ -119,7 +119,7 @@ function GamepadManager() {
 			++_i;
 			
 		}
-		var _event	= new EventerOnce( FAST.STEP_BEGIN, 0, undefined, function() {
+		var _event	= event_create( FAST.STEP_BEGIN, 0, undefined, function() {
 			var _i = 0; repeat ( gamepad_get_device_count() ) {
 				if ( gamepad_is_connected( _i ) ) {
 					ds_queue_enqueue( padQueue, _i );
@@ -139,7 +139,7 @@ function GamepadManager() {
 				
 			}
 			
-		});
+		}, true );
 		
 	}
 	static instance	= new Feature( "FAST Gamepad", "1.0", "07/12/2020", new gamepad() );

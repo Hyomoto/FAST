@@ -1,7 +1,7 @@
-/// @func ArrayDynamic
+/// @func ArrayList
 /// @param size
 /// @param *default
-/// @desc returns an array-as-a-struct
+/// @desc returns an array-as-a-struct that behaves like a list
 /* methods
 sort()				- used as a template interface for constructors that inherit Array
 size()				- returns the size of the array
@@ -13,11 +13,13 @@ difference( array )	- returns the array minus the values contained in the provid
 contains( value )	- searches the array and returns the index the value was found, or -1
 set( index, value )	- sets the array index to the given value
 get( *index )		- returns the value at the given index, or the array if no index is provided
-
+insert( value, index ) - inserts the value at the given index
+remove( index )		- removes the given index
+add( value )		- adds the value to the end of the array, resizing it if necessary
 toArray()			- returns the array
 toString()			- returns the array as a string
 */
-function ArrayDynamic( _size ) : Array( _size ) constructor {
+function ArrayList( _size ) : Array( _size ) constructor {
 	// functions
 	static size	= function() { return length; }
 	
@@ -68,9 +70,9 @@ function ArrayDynamic( _size ) : Array( _size ) constructor {
 		--length;
 		
 	}
-	static append	= function( _value ) {
+	static add	= function( _value ) {
 		if ( length == array_length( content ) ) {
-			resize_Array( ceil( length * aggression ), undefined );
+			resize_Array( max( length + 1, ceil( length * aggression ) ), undefined );
 			
 		}
 		content[ length ]	= _value;

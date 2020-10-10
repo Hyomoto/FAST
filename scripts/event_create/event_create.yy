@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Events",
-    "path": "folders/FAST/Core/Events.yy",
+    "name": "Functions",
+    "path": "folders/FAST/Core/Events/Functions.yy",
   },
   "resourceVersion": "1.0",
-  "name": "Event",
+  "name": "event_create",
   "tags": [],
   "resourceType": "GMScript",
 }

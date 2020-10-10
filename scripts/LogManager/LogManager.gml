@@ -18,7 +18,7 @@ function LogManager() {
 			
 		}
 		// close out all open loggers when program ends
-		close	= new EventerOnce( FAST.GAME_END, 0, undefined, function() {
+		close	= event_create( FAST.GAME_END, 0, undefined, function() {
 			System.write( "FAST Logging is shutting down..." );
 			
 			var _i	= 0; repeat( ds_list_size( list ) ) {
@@ -26,7 +26,7 @@ function LogManager() {
 				
 			}
 			
-		});
+		}, true );
 		list	= ds_list_create();
 		
 	}

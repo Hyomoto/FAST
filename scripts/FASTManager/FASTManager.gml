@@ -15,7 +15,7 @@ function FASTManager() {
 		NEXT_STEP	= STEP_BEGIN;
 		
 		/// @func delete_event
-		/// @param Eventer
+		/// @param FAST_Event
 		static delete_event	= function( _event ) {
 			var _list	= _event.list;
 			
