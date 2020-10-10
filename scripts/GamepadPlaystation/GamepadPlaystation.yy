@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Special",
-    "path": "folders/FAST/Input Handling/Special.yy",
+    "name": "Scripts",
+    "path": "folders/FAST/Input Handling/Gamepad/Scripts.yy",
   },
   "resourceVersion": "1.0",
-  "name": "ComboInput",
+  "name": "GamepadPlaystation",
   "tags": [],
   "resourceType": "GMScript",
 }

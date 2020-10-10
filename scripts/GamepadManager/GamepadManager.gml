@@ -142,7 +142,7 @@ function GamepadManager() {
 		}, true );
 		
 	}
-	static instance	= new Feature( "FAST Gamepad", "1.0", "07/12/2020", new gamepad() );
+	static instance	= new Feature( "FAST Gamepad", "1.0a", "10/10/2020", new gamepad() );
 	return instance.struct;
 	
 }

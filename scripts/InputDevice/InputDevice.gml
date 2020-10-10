@@ -56,6 +56,12 @@ function InputDevice() constructor {
 	static add_input	= function( _input, _index ) {
 		_index	= ( is_undefined( _index ) ? array_length( inputs ) : _index );
 		
+		if ( variable_struct_exists( self, _input ) ) {
+			log_nonfatal( undefined, "InputDevice.add_input", "Input \"", _input, "\" already defined!" );
+			
+			return;
+			
+		}
 		inputs[ _index ]	= new input( _input );
 		
 		variable_struct_set( self, _input, inputs[ _index ] );
@@ -89,8 +95,6 @@ function InputDevice() constructor {
 		
 	}
 	inputs	= array_create( argument_count );
-	target	= noone;
-	event	= undefined;
 	
 	var _i = 0; repeat( argument_count ) {
 		add_input( argument[ _i ], _i );

@@ -2,17 +2,17 @@
 /// @param filename
 /// @param *read_only
 /// @param *new?
-function FileText( _filename, _readonly, _new ) : File( _filename, _readonly ) constructor {
+function FileText( _filename, _readonly, _new ) : File( _readonly ) constructor {
 	static save_File	= save;
 	static save	= function( _append ) {
 		if ( save_File() ) {
-			var _file	= ( _append == true ? file_text_open_append( name ) : file_text_open_write( name ) );
+			var _file	= ( _append == true && saveIndex > 0 ? file_text_open_append( name ) : file_text_open_write( name ) );
 			
 			if ( _file == -1 ) {
 				log_notify( undefined, instanceof( self ) + ".close", "Could not write to ", name, ". Ignored." );
 				
 			} else {
-				var _i = ( _append == true ? saveIndex : 0 ); repeat( lines - _i ) {
+				var _i = ( _append == true ? saveIndex : 0 ); repeat( size() - _i ) {
 					file_text_write_string( _file, string( contents[| _i++ ] ) );
 					file_text_writeln( _file );
 					
@@ -26,17 +26,9 @@ function FileText( _filename, _readonly, _new ) : File( _filename, _readonly ) c
 		}
 		
 	}
-	if ( _new == true ) {
-		if ( exists( _filename ) ) {
-			file_delete( _filename );
-			
-		}
-		
-	} else {
-		if ( exists( _filename ) == false ) {
-			return;
-			
-		}
+	name	= _filename;
+	
+	if ( _new != true && exists() ) {
 		var _file	= file_text_open_read( _filename );
 		var _string, _last;
 		
@@ -49,7 +41,7 @@ function FileText( _filename, _readonly, _new ) : File( _filename, _readonly ) c
 		}
 		file_text_close( _file );
 		
-		lines	= ds_list_size( contents );
+		saveIndex	= size();
 		
 	}
 	

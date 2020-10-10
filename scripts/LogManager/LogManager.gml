@@ -30,7 +30,7 @@ function LogManager() {
 		list	= ds_list_create();
 		
 	}
-	static instance = new Feature( "FAST Logging", "1.1", "08/03/2020", new manager() );
+	static instance = new Feature( "FAST Logging", "1.1a", "10/10/2020", new manager() );
 	return instance.struct;
 	
 }

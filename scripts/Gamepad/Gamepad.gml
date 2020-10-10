@@ -87,29 +87,6 @@ function Gamepad() constructor {
 		gamepad_set_axis_deadzone( padIndex, _amount );
 		
 	}
-	dpad_left	= new input( gp_padl, self );
-	dpad_right	= new input( gp_padr, self );
-	dpad_up		= new input( gp_padu, self );
-	dpad_down	= new input( gp_padd, self );
-	
-	face_1		= new input( gp_face1, self );
-	face_2		= new input( gp_face2, self );
-	face_3		= new input( gp_face3, self );
-	face_4		= new input( gp_face4, self );
-	
-	rbutton		= new input( gp_shoulderr, self );
-	lbutton		= new input( gp_shoulderl, self );
-	rstick		= new input( gp_stickr, self );
-	lstick		= new input( gp_stickl, self );
-	select		= new input( gp_select, self );
-	start		= new input( gp_start, self );
-	
-	rtrigger	= new input( gp_shoulderrb, self );
-	ltrigger	= new input( gp_shoulderlb, self );
-	
-	lstick		= new inputAxis( gp_axislh, gp_axislv, self );
-	rstick		= new inputAxis( gp_axisrh, gp_axisrv, self );
-	
 	port		= GamepadManager().get_port( self );
 	padIndex	= -1;
 	

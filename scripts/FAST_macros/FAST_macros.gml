@@ -2,6 +2,8 @@
 #macro __FAST_version	"3.3h"
 #macro __FAST_date		"10/09/2020"
 
+#macro FAST_DISABLE_EVENTS	false
+
 // # whether to include the built-in debugger
 #macro DEBUGGER_ENABLE	false
 

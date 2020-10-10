@@ -1,7 +1,7 @@
 /// @func FileFAST
 /// @param filename
 /// @param *read_only
-function FileFAST( _filename, _readonly ) : File( _filename, _readonly ) constructor {
+function FileFAST( _filename, _readonly, _new ) : File( _readonly ) constructor {
 	static FASTformatter	= new StringFormatter( " :strip,	:strip,\":save,{:push,}:pull+push,;:strip+push,+:pull", {
 		setup : function( _input ) {
 			flag = 0;
@@ -70,9 +70,24 @@ function FileFAST( _filename, _readonly ) : File( _filename, _readonly ) constru
 	});
 	FASTformatter.comment	= false;
 	
-	static readSuper	= read;
+	static fragment	= function( _string, _file, _line ) constructor {
+		static toString	= function() {
+			return value;
+			
+		}
+		value	= _string;
+		file	= _file;
+		line	= _line;
+		
+	}
+	static write_File	= write;
+	static write	= function( _value ) {
+		write_File( new fragment( _value, name, size() ) );
+		
+	}
+	static read_File	= read;
 	static read		= function() {
-		var _read	= readSuper();
+		var _read	= read_File();
 		
 		if ( _read != undefined ) {
 			line	= _read.line;
@@ -85,44 +100,31 @@ function FileFAST( _filename, _readonly ) : File( _filename, _readonly ) constru
 		
 	}
 	// closes the file, preserving changes
-	static closeSuper	= close;
-	static close	= function() {
-		if ( writable ) {
+	static save_File	= close;
+	static save	= function() {
+		if ( save_File() ) {
 			var _file	= file_text_open_write( name );
 			
 			var _i = 0; repeat( ds_list_size( contents ) ) {
-				file_text_write_string( _file, contents[| _i++ ] );
+				file_text_write_string( _file, contents[| _i++ ].value );
 				file_text_writeln( _file );
 				
 			}
 			file_text_close( _file );
 			
-		} else {
-			log_notify( undefined, "FileFAST.close", "Close called on read only file. Ignored." );
-			
 		}
-		closeSuper();
 		
 	}
 	static toString	= function() {
 		return name + " (line " + string( line ) + ")";
 		
 	}
-	static load	= function( _filename ) {
-		static fragment	= function( _string, _file, _line ) constructor {
-			static toString	= function() {
-				return value;
-				
-			}
-			value	= _string;
-			file	= _file;
-			line	= _line;
-			
-		}
-		if ( exists( _filename ) == false ) {
-			return false;
-			
-		}
+	includes	= 0;
+	line		= 0;
+	
+	if ( _new != true ) {
+		if ( exists() == false ) { return; }
+		
 		var _name	= filename_name( _filename );
 		var _file	= file_text_open_read( _filename );
 		var _line	= 0;
@@ -171,15 +173,6 @@ function FileFAST( _filename, _readonly ) : File( _filename, _readonly ) constru
 		}
 		file_text_close( _file );
 		
-		return true;
-		
 	}
-	includes	= 0;
-	line		= 0;
-	
-	load( _filename );
-	
-	lines	= ds_list_size( contents );
-	name	= _filename;
 	
 }

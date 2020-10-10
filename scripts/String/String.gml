@@ -2,13 +2,12 @@
 /// @param string
 /// @desc	Provides a wrapper for basic strings.
 function String() constructor {
-	static formatter	= function( _value ) {
-		return string( _value );
+	static size	= function() {
+		return string_length( _content );
 		
 	}
-	static set	= function( _value ) {
-		value	= formatter( _value );
-		length	= string_length( _value );
+	static set	= function( _content ) {
+		content	= _content;
 		
 	}
 	static draw	= function( _x, _y, _font, _color ) {
@@ -18,7 +17,7 @@ function String() constructor {
 		draw_set_font( _font );
 		draw_set_color( _color );
 		
-		draw_text( _x, _y, value );
+		draw_text( _x, _y, content );
 		
 		draw_set_font( _ofont );
 		draw_set_color( _ocolor );
@@ -43,7 +42,7 @@ function String() constructor {
 		
 		draw_set_font( _font );
 		
-		_width	= string_width( value );
+		_width	= string_width( content );
 		
 		draw_set_font( _ofont );
 		
@@ -56,7 +55,7 @@ function String() constructor {
 		
 		draw_set_font( _font );
 		
-		_height	= string_height( value );
+		_height	= string_height( content );
 		
 		draw_set_font( _ofont );
 		
@@ -68,10 +67,10 @@ function String() constructor {
 		
 	}
 	static toArray	= function() {
-		var _array	= array_create( length );
+		var _array	= array_create( size() );
 		
-		var _i = 0; repeat( length ) {
-			_array[ _i ]	= string_char_at( value, _i );
+		var _i = 0; repeat( array_length( _array ) ) {
+			_array[ _i ]	= string_char_at( content, _i );
 			
 			++_i;
 			
@@ -80,11 +79,10 @@ function String() constructor {
 		
 	}
 	static toString	= function() {
-		return value;
+		return content;
 		
 	}
-	value	= "";
-	length	= 0;
+	content	= "";
 	
 	if ( argument_count > 0 ) {
 		set( argument[ 0 ] );

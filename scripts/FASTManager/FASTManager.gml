@@ -1,7 +1,9 @@
 #macro FAST		( FASTManager() )
 
-room_instance_add( room_first, 0, 0, __FASTtool );
-
+if ( FAST_DISABLE_EVENTS != true ) {
+	room_instance_add( room_first, 0, 0, __FASTtool );
+	
+}
 function FASTManager() {
 	static manager	= function() constructor {
 		static CREATE		= ds_list_create();

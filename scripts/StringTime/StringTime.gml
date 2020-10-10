@@ -3,7 +3,8 @@
 /// @param decimals
 /// @param format
 function StringTime( _value, _decimals, _format ) : String() constructor {
-	static formatter	= function( _value ) {
+	static set_String	= set;
+	static set	= function( _value ) {
 		var _string		= format;
 		var _hours		= string_pos( "$H", format ) > 0;
 		var _minutes	= string_pos( "$M", format ) > 0;
@@ -26,7 +27,7 @@ function StringTime( _value, _decimals, _format ) : String() constructor {
 			_string	= string_replace( _string, "$S", _second );
 			
 		}
-		return _string;
+		set_String( _string );
 		
 	}
 	format		= _format;

@@ -1,7 +1,8 @@
 /// @func FileBinary
 /// @param filename
 /// @param *read_only
-function FileBinary( _filename, _readonly ) : File( _filename, _readonly ) constructor {
+/// @param *new?
+function FileBinary( _filename, _readonly, _new ) : File( _readonly ) constructor {
 	static __types = {
 		FLOAT : {
 			tag : 0x1,
@@ -136,38 +137,39 @@ function FileBinary( _filename, _readonly ) : File( _filename, _readonly ) const
 		}
 		
 	}
-	if ( exists( _filename ) == false ) {
-		return;
-		
-	}
+	name	= _filename;
+	
 	var _buffer	= buffer_create( 1024, buffer_grow, 1 );
-	var _file	= file_bin_open( _filename, 0 );
-	var _read;
 	
-	var _i = 0; repeat( file_bin_size( _file ) ) {
-		buffer_write( _buffer, buffer_u8, file_bin_read_byte( _file ) );
+	if ( _new != true && exists() ) {
+		var _file	= file_bin_open( _filename, 0 );
 		
-	}
-	file_bin_close( _file );
-	
-	buffer_seek( _buffer, buffer_seek_start, 0 );
-	
-	var _key, _action;
-	
-	while( true ) {
-		_key	= buffer_read( _buffer, buffer_u8 );
-		
-		if ( _key == 0x0 ) { break; }
-		
-		_action = type_by_key( _key );
-		
-		if ( _action == undefined ) {
-			log_nonfatal( undefined, "FileBinary", "File ", name, " could not be read, file may have been corrupted. Aborted." );
-			
-			break;
+		repeat( file_bin_size( _file ) ) {
+			buffer_write( _buffer, buffer_u8, file_bin_read_byte( _file ) );
 			
 		}
-		write( _action.read( method( self, type_by_key ), _buffer ) );
+		file_bin_close( _file );
+		
+		buffer_seek( _buffer, buffer_seek_start, 0 );
+		
+		var _key, _action;
+		
+		while( true ) {
+			_key	= buffer_read( _buffer, buffer_u8 );
+			
+			if ( _key == 0x0 ) { break; }
+			
+			_action = type_by_key( _key );
+			
+			if ( _action == undefined ) {
+				log_nonfatal( undefined, "FileBinary", "File ", name, " could not be read, file may have been corrupted. Aborted." );
+				
+				break;
+				
+			}
+			write( _action.read( method( self, type_by_key ), _buffer ) );
+			
+		}
 		
 	}
 	

@@ -1,19 +1,20 @@
 /// @func File
-/// @param {string}	filename	the name of the file to load
 /// @param *read_only
 /// @desc	generic File handling object
-function File( _filename, _readonly ) : GenericOutput() constructor {
+//* 
+//* discard() - Discards this file without writing any changes to the disk.
+function File( _readonly ) : GenericOutput() constructor {
 // # Method Declaration
 	static reset	= function() {
-		last	= 0;
+		next	= 0;
 		
 	}
 	static size		= function() {
-		return lines;
+		return ds_list_size( contents );
 		
 	}
-	static exists	= function( _filename ) {
-		if ( _filename == undefined || file_exists( _filename ) == false ) {
+	static exists	= function() {
+		if ( name == undefined || file_exists( name ) == false ) {
 			return false;
 			
 		} else {
@@ -23,15 +24,15 @@ function File( _filename, _readonly ) : GenericOutput() constructor {
 		
 	}
 	static read		= function() {
-		if ( last < lines ) {
-			return contents[| last++ ];
+		if ( next < size() ) {
+			return contents[| next++ ];
 			
 		}
 		return undefined;
 		
 	}
 	static peek		= function( _index ) {
-		if ( _index >= 0 && _index < lines ) {
+		if ( _index >= 0 && _index < size() ) {
 			return contents[|  _index  ];
 			
 		}
@@ -39,38 +40,41 @@ function File( _filename, _readonly ) : GenericOutput() constructor {
 		
 	}
 	static poke		= function( _index, _value ) {
-		if ( _index >= 0 && _index < lines ) {
+		if ( writable == false ) { return; }
+		
+		if ( _index >= 0 && _index < size() ) {
 			contents[| _index ]	= _value;
 			
 		}
 		
 	}
 	static write	= function( _value ) {
+		if ( writable == false ) { return; }
+		
 		ds_list_add( contents, _value );
-		++lines;
 		
 	}
 	static remaining= function() {
-		return lines - last;
+		return size() - next;
 		
 	}
 	static eof		= function() {
-		return last	== lines;
+		return next	== size();
 		
 	}
-	// writes the file to disk
-	static save			= function( _append ) {
+	// returns true if file is writable, inheritable by structs that inherit File
+	static save			= function() {
 		if ( writable ) {
 			return true;
 			
 		} else {
-			log_notify( undefined, instanceof( self ) + ".close", "Called on ", name, ", which is a read only file. Ignored." );
+			log_notify( undefined, instanceof( self ) + ".save", "Called on ", name, ", which is a read only file. Ignored." );
 			
 		}
 		return false;
 		
 	}
-	// saves and closes the file
+	// saves and destroys the file
 	static close	= function() {
 		save();
 		destroy();
@@ -90,9 +94,9 @@ function File( _filename, _readonly ) : GenericOutput() constructor {
 		
 	}
 	static toArray	= function() {
-		var _array	= array_create( lines );
+		var _array	= array_create( size() );
 		
-		var _i = 0; repeat( lines ) {
+		var _i = 0; repeat( size() ) {
 			_array[ _i ] = contents[| _i ];
 			
 			++_i;
@@ -107,10 +111,8 @@ function File( _filename, _readonly ) : GenericOutput() constructor {
 	}
 // # Variable Declaration	
 	writable	= ( _readonly == undefined ? true : _readonly == false );
-	name		= _filename;
 	contents	= ds_list_create();
-	last		= 0;
-	lines		= 0;
+	next		= 0;
 	saveIndex	= 0;
 	
 }
