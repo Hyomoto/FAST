@@ -5,8 +5,7 @@ Check the Wiki for the most up-to-date documentation on each module.
 
 
 
-# Database
-The FAST database is a DsTree-based data loading system. It uses a lua-like language to write database files, and supports features such as overwriting, custom data types, inheritance, templating, and macros. It was designed for projects like RPGs that have large amounts of external data, but is also useful for implementing localization.
+
 # Other Stuff
 * [Database](#database)
 * [Input Handling](#input-handling)
