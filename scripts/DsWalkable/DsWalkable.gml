@@ -13,11 +13,11 @@ function DsWalkable() : DsLinkedList() constructor {
 		step	= undefined;
 		steps	= 0;
 		
-		jump( is_undefined(_at) ? -1 : _at );
+		jump(_at);
 		
 	}
 	static jump	= function( _index ) {
-		if ( _index > links || _index < 0) { return undefined; }
+		if ( is_undefined( _index ) || _index > links || _index < 0) { return undefined; }
 		step	= undefined;
 		steps	= 0;
 		
