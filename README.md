@@ -31,24 +31,7 @@ Defines a rectangle at x, y with the given width and height. Implements the Shap
 
 
 ## Input Handling
-## Logging
-FAST provides a general purpose logging system to handle outputs based on the current ERROR_LEVEL. Implements the Logger constructor which can write to anything that implements the GenericOutput interface.
-### Logger( name, length, output... )
-```GML
-logger = new Logger( "Debug", 144, System, new FileText( "logs/debug.txt" ) );
-```
-The Logger constructor creates a new logging interface that pushes inputs into the given outputs. Additionally, it will attempt to close any those outputs when the program ends, ie: writing loose entries to files. Name is prepended to when the Logger is written to, for disinguishing between different outputs. Length will wrap the string at-or-near the given length. You may include as many outputs as desired, and anything that implements the GenericOutput interface will work. This includes System, which will write to the output, or FileText, which will write to an external file.
-* write( string ) - Writes the string to the log.
-* close() - Closes the log and removes it from the system.
-* clear() - Clears the connected outputs.  Has no effect on System.
-#### log_debug( id, event, value... )
-When the ERROR_LEVEL is >= ERROR_DEBUG, will write the id (use undefined if called from a source that does not have an id), along with the event, and finally any additional text to System.
-#### log_notify( id, event, value... )
-When the ERROR_LEVEL is >= ERROR_NOTIFY, will write the id (use undefined if called from a source that does not have an id), along with the event, and finally any additional text to System.
-#### log_nonfatal( id, event, value... )
-When the ERROR_LEVEL is >= ERROR_NONFATAL, will write the id (use undefined if called from a source that does not have an id), along with the event, and finally any additional text to System and "log/nonfatal.txt"
-#### log_critical( id, event, value... )
-When the ERROR_LEVEL is >= ERROR_CRITICAL, will write the id (use undefined if called from a source that does not have an id), along with the event, and finally any additional text to System and "log/critical.txt"
+
 ## Publisher
 The FAST publisher system allows subscribing to specific "events" and, when called, will pass messages to the subscribing objects for processing.
 ## Render
