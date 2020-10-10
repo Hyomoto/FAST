@@ -16,6 +16,14 @@ function DsWalkable() : DsLinkedList() constructor {
 		repeat( _at == undefined ? 0 : _at ) { next(); }
 		
 	}
+	static jump	= function( _index ) {
+		if ( _index > links || _index < 0) { return undefined; }
+		step	= undefined;
+		steps	= 0;
+		
+		repeat( _index ) { next(); }
+	}
+	
 	static has_next	= function() {
 		return ( links == 0 ? false : step == undefined || step.chain != undefined );
 		
@@ -47,6 +55,7 @@ function DsWalkable() : DsLinkedList() constructor {
 	static poke	= function( _value ) {
 		// insert a value at the current read position
 	}
+	
 	static is		= function( _data_type ) {
 		return _data_type == DsWalkable;
 		

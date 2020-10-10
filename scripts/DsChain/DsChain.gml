@@ -24,6 +24,7 @@ function DsChain() constructor {
 		return links;
 		
 	}
+	
 	static is		= function( _data_type ) {
 		return _data_type == DsChain;
 		

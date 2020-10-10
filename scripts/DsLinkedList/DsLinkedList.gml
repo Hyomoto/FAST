@@ -94,6 +94,7 @@ function DsLinkedList() : DsChain() constructor {
 		return _link;
 		
 	}
+
 	static is		= function( _data_type ) {
 		return _data_type == DsLinkedList;
 		
