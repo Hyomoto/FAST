@@ -6,7 +6,5 @@ function GenericInput( _constant ) constructor {
 		
 	}
 	constant	= _constant;
-	event		= undefined;
-	last		= false;
 	
 }
