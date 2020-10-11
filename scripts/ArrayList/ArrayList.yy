@@ -6,7 +6,7 @@
     "path": "folders/FAST/Core/Data Types/Array.yy",
   },
   "resourceVersion": "1.0",
-  "name": "ArrayDynamic",
+  "name": "ArrayList",
   "tags": [],
   "resourceType": "GMScript",
 }
