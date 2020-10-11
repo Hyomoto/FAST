@@ -2,7 +2,8 @@
 Flexible Assistant Toolkit for GMS2.3+
 </h2>
 <p align="center">
-by Devon Mullane
+by Devon Mullane<br>
+  <img src="https://user-images.githubusercontent.com/6281477/95689209-359b9a00-0bdd-11eb-8f94-850252d47c68.png" align="center">
 </p>
 Check the <a href="https://github.com/Hyomoto/FASTv33/wiki">Wiki</a> for the most up-to-date documentation on each module.
 <br><br>
