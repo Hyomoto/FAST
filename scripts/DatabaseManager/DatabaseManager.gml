@@ -2,8 +2,9 @@
 function DatabaseManager() {
 	static database	= function() constructor {
 		static	__undefined	= new DsTree_Value( undefined );
-		static logger	= new Logger( "database", FAST_LOGGER_DEFAULT_LENGTH, System, new FileText( "log/database.txt", false, true ) );
 		static log	= function() {
+			static logger	= new Logger( "database", FAST_LOGGER_DEFAULT_LENGTH, System, new FileText( "log/database.txt", false, true ) );
+			
 			var _string	= "";
 			
 			var _i = 0; repeat( argument_count ) {

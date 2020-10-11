@@ -3,12 +3,25 @@
 
 /// @func GamepadManager
 function GamepadManager() {
-	static gamepad	= function() constructor {
+	static manager	= function() constructor {
+		static log	= function() {
+			static logger	= new Logger( "gamepad", FAST_LOGGER_DEFAULT_LENGTH, System );
+			
+			var _string	= "";
+			
+			var _i = 0; repeat( argument_count ) {
+				_string	+= string( argument[ _i++ ] );
+				
+			}
+			logger.write( _string );
+			
+		}
+		
 		static port	= function( _port ) constructor {
 			static gain_pad	= function( _pad ) {
 				if ( gamepad == undefined ) { return; }
 				
-				log_notify( undefined, "gain_pad", "Port ", portId, " got gamepad ", _pad );
+				GamepadManager().log( undefined, "gain_pad", "Port ", portId, " got gamepad ", _pad );
 				
 				gamepad.padIndex	= _pad;
 				padIndex	= _pad;
@@ -18,7 +31,7 @@ function GamepadManager() {
 			static lose_pad	= function() {
 				if ( padIndex == -1 ) { return; }
 				
-				log_notify( undefined, "lose_pad", "Port ", portId, " lost gamepad ", padIndex );
+				GamepadManager().log( undefined, "lose_pad", "Port ", portId, " lost gamepad ", padIndex );
 				
 				gamepad.padIndex	= -1;
 				padIndex			= -1;
@@ -142,7 +155,7 @@ function GamepadManager() {
 		}, true );
 		
 	}
-	static instance	= new Feature( "FAST Gamepad", "1.0a", "10/10/2020", new gamepad() );
+	static instance	= new Feature( "FAST Gamepad", "1.0a", "10/10/2020", new manager() );
 	return instance.struct;
 	
 }

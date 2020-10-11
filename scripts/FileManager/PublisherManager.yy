@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Scripts",
-    "path": "folders/FAST/Scripting/Scripts.yy",
+    "name": "Publisher",
+    "path": "folders/FAST/Publisher.yy",
   },
   "resourceVersion": "1.0",
-  "name": "FileScript",
+  "name": "PublisherManager",
   "tags": [],
   "resourceType": "GMScript",
 }

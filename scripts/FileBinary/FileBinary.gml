@@ -42,7 +42,7 @@ function FileBinary( _filename, _readonly, _new ) : File( _readonly ) constructo
 					_action = _types( _key );
 					
 					if ( _action == undefined ) {
-						log_nonfatal( undefined, "FileBinary", "File ", name, " could not be read, file may have been corrupted. Ignored." );
+						FileManager().log( undefined, "FileBinary", "File ", name, " could not be read, file may have been corrupted. Ignored." );
 						
 						_array[ _i++ ]	= undefined;
 			
@@ -66,7 +66,7 @@ function FileBinary( _filename, _readonly, _new ) : File( _readonly ) constructo
 					_action	= _types( _read );
 					
 					if ( _action == undefined ) {
-						log_nonfatal( undefined, "FileBinary.save()", "Attempted to write an unknown data type \"", _read, "\". Ignored." );
+						FileManager().log( undefined, "FileBinary.save()", "Attempted to write an unknown data type \"", _read, "\". Ignored." );
 						
 						continue;
 						
@@ -108,7 +108,7 @@ function FileBinary( _filename, _readonly, _new ) : File( _readonly ) constructo
 				_action	= type_by_value( _read );
 				
 				if ( _action == undefined ) {
-					log_nonfatal( undefined, "FileBinary.save()", "Attempted to write an unknown data type \"", _read, "\". Ignored." );
+					FileManager().log( undefined, "FileBinary.save()", "Attempted to write an unknown data type \"", _read, "\". Ignored." );
 					
 					continue;
 					
@@ -132,7 +132,7 @@ function FileBinary( _filename, _readonly, _new ) : File( _readonly ) constructo
 			file_bin_close( _file );
 			
 		} else {
-			log_notify( undefined, instanceof( self ) + ".close", "Called on ", name, ", which is a read only file. Ignored." );
+			FileManager().log( undefined, instanceof( self ) + ".close", "Called on ", name, ", which is a read only file. Ignored." );
 			
 		}
 		
@@ -162,7 +162,7 @@ function FileBinary( _filename, _readonly, _new ) : File( _readonly ) constructo
 			_action = type_by_key( _key );
 			
 			if ( _action == undefined ) {
-				log_nonfatal( undefined, "FileBinary", "File ", name, " could not be read, file may have been corrupted. Aborted." );
+				FileManager().log( undefined, "FileBinary", "File ", name, " could not be read, file may have been corrupted. Aborted." );
 				
 				break;
 				

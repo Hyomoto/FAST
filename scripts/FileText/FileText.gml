@@ -9,7 +9,7 @@ function FileText( _filename, _readonly, _new ) : File( _readonly ) constructor 
 			var _file	= ( _append == true && saveIndex > 0 ? file_text_open_append( name ) : file_text_open_write( name ) );
 			
 			if ( _file == -1 ) {
-				log_notify( undefined, instanceof( self ) + ".close", "Could not write to ", name, ". Ignored." );
+				FileManager().log( undefined, instanceof( self ) + ".close", "Could not write to ", name, ". Ignored." );
 				
 			} else {
 				var _i = ( _append == true ? saveIndex : 0 ); repeat( size() - _i ) {

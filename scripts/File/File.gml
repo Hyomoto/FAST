@@ -68,7 +68,7 @@ function File( _readonly ) : GenericOutput() constructor {
 			return true;
 			
 		} else {
-			log_notify( undefined, instanceof( self ) + ".save", "Called on ", name, ", which is a read only file. Ignored." );
+			FileManager().log( undefined, instanceof( self ) + ".save", "Called on ", name, ", which is a read only file. Ignored." );
 			
 		}
 		return false;
