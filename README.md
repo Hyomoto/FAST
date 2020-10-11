@@ -4,7 +4,7 @@ Flexible Assistant Toolkit for GMS2.3+
 <p align="center">
 by Devon Mullane
 </p>
-Check the [Wiki](https://github.com/Hyomoto/FASTv33/wiki) for the most up-to-date documentation on each module.
+Check the <a href="https://github.com/Hyomoto/FASTv33/wiki">Wiki</a> for the most up-to-date documentation on each module.
 
 GML is a simple language with many built-in features that make it accessible to new and advanced users. However, some tasks are unexpectedly tricky or complex. FAST is a lightweight library that provides easy-to-use tools that empower developers to focus on building their game. There is no genre-specific code or implementation found here. Instead, FAST focuses powerful, common-use tools that provide general utility to the language rather than box it in. In short, FAST can work with any game, and should compliment every game made with GMS2.3 or later.
 
