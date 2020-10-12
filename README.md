@@ -12,4 +12,4 @@ FAST is a lightweight library that provides easy-to-use tools to make it easy fo
 <h3>
 How do I import FAST into my project?
 </h3>
-GameMaker Studio 2.3+ allows importing assets, including scripts and shaders, directly into a project via the "Local Package" system. From the Releases tab for this repo, download the .yymps file for the latest version. In the GMS2 IDE, load up your project and click on "Tools" on the main window toolbar. Select "Import Local Package" from the drop-down menu then import all scripts from the package.  FAST is self-configuring, and only requires input for the features you wish to use.
+From the Releases tab for this repo, download the .yymps file for the latest version. There are two release packages: the full package and core. Core contains only FAST Core for users who want only the basic features. Once downloaded, load up your project in the GMS2.3 IDE. Click on "Tools" on the main window toolbar. Select "Import Local Package" from the drop-down menu, then import FAST and add all. FAST is self-configuring, and only requires input for the features you wish to use.
