@@ -1,41 +1,15 @@
-# FAST v3.3
-Flexible Assistant Toolkit for Gamemaker Studio 2 - GML is a simple language with many built-in features that make it accessible to new and advanced users. However, many tasks are unexpectedly tricky, such as file or resolution handling, and don't quite match up with how straightforward GMS can be. FAST is a lightweight library that provides easy-to-use tools that allow developers to focus on building their game. It begins with a lightweight "Core" module and uses only a single object to power universal mouse, keyboard and gamepad support, custom event handling, saving/loading files, and more! For advanced developers or those seeking to get just the right fit from FAST, standard interfaces exist for everything: implementing and extending Core features ensures anyone can quickly write extensions with confidence their systems will work seamlessly. The library does not contain genre-specific code or implementation.  Instead, FAST focuses on general utility and adaptability. It has powerful tools such as databases for loading and saving complex data and even a Lua-like scripting language. These tools provide general utility to the language rather than box it in. In short, FAST can complement any and every game made with GMS2.3 or later.
-
-Check the Wiki for the most up-to-date documentation on each module.
-
-
-
-
-# Other Stuff
-* [Database](#database)
-* [Input Handling](#input-handling)
-* [Logging](#logging)
-* [Publisher](#publisher)
-* [Render](#render)
-* [Scripting](#scripting)
-* [Misc Functions](#misc-functions)
-### Shapes
-Shape is an interface that is used to define shapes. This data type is used heavily by the Pointer feature for creating GUI interactions, but is provided as a generic data type to allow future extensions.
-* inside( x, y ) - Returns if the point lies within this shape's dimensions.
-* draw( x, y, outline ) - Draws the shape either solid, or outlined at x, y.
-* set( x, y ) - Sets the position of the shape to x, y.
-#### ShapeCircle( x, y, radius )
-Defines a circle at x, y with the given radius. Implements the Shape interface.
-#### ShapeEllipses( x, y, width, height )
-Defines an elipses at x, y with the given width and height. Implements the Shape interface.
-#### ShapePolygon( x1, y1... )
-Defines a polygon with the given list of points, will provide the final closing pair. Implements the Shape interface.
-#### ShapeRectangle( x, y, width, height )
-Defines a rectangle at x, y with the given width and height. Implements the Shape interface.
-
-
-## Input Handling
-
-## Publisher
-The FAST publisher system allows subscribing to specific "events" and, when called, will pass messages to the subscribing objects for processing.
-## Render
-The FAST render offers a simple system for supporting a large number of resolutions by either using the built-in views, or custom requirements if needed.
-
-### Draw Functions
-* draw_bar( sprite, index, x, y, width, percent ) - Draws a bar using a 3-slice method using the sprite provided, and with width(in pixels) filled to percent(0 to 1).
-* draw_text_bubble( sprite, index, x, y, width ) - Draws a "text bubble" using a 5-frame sprite with the given width(in pixels).
+<h2 align="center">
+Flexible Assistant Toolkit for GMS2.3+
+</h2>
+<p align="center">
+by Devon Mullane<br>
+  <img src="https://user-images.githubusercontent.com/6281477/95689209-359b9a00-0bdd-11eb-8f94-850252d47c68.png" align="center">
+</p>
+Check the <a href="https://github.com/Hyomoto/FASTv33/wiki">Wiki</a> for the most up-to-date documentation on each module.
+<br><br>
+FAST is a lightweight library that provides easy-to-use tools to make it easy for GMS developers to focus on building their game. There is no genre-specific code or implementation found here. Instead, FAST focuses powerful, common-use tools that provide general utility to fill the gaps in GML functions and handle boilerplate taks. There are modules for common tasks like input and file handling, as well as power-user features such as scripting and databases. FAST is non-intrusive, can work with any game, and should compliment every game made with GMS2.3 or later.
+<br><br>
+<h3>
+How do I import FAST into my project?
+</h3>
+From the Releases tab for this repo, download the .yymps file for the latest version. There are two release packages: the full package and core. Core contains only FAST Core for users who want only the basic features. Once downloaded, load up your project in the GMS2.3 IDE. Click on "Tools" on the main window toolbar. Select "Import Local Package" from the drop-down menu, then import FAST and add all. FAST is self-configuring, and only requires input for the features you wish to use.
