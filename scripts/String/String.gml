@@ -14,9 +14,12 @@ function String() constructor {
 		var _ofont	= draw_get_font();
 		var _ocolor	= draw_get_color();
 		
-		draw_set_font( _font );
-		draw_set_color( _color );
-		
+		if ( _font != undefined ) {
+			draw_set_font( _font );
+		}
+		if ( _color != undefined ) {
+			draw_set_color( _color );
+		}
 		draw_text( _x, _y, content );
 		
 		draw_set_font( _ofont );
@@ -37,6 +40,10 @@ function String() constructor {
 		
 	}
 	static width	= function( _font ) {
+		if ( _font == undefined ) {
+			return string_width( content );
+			
+		}
 		var _ofont	= draw_get_font();
 		var _width;
 		
@@ -50,6 +57,10 @@ function String() constructor {
 		
 	}
 	static height	= function( _font ) {
+		if ( _font == undefined ) {
+			return string_width( content );
+			
+		}
 		var _ofont	= draw_get_font();
 		var _height;
 		

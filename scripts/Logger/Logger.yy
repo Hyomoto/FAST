@@ -2,8 +2,8 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Scripts",
-    "path": "folders/FAST/Logging/Scripts.yy",
+    "name": "Structs",
+    "path": "folders/FAST/Logging/Structs.yy",
   },
   "resourceVersion": "1.0",
   "name": "Logger",

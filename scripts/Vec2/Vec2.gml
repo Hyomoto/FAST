@@ -8,23 +8,19 @@ function Vec2( _x, _y ) constructor {
 		
 	}
 	static add	= function( _vec ) {
-		x	+= _vec.x;
-		y	+= _vec.y;
+		return new Vec2( x + _vec.x, y + _vec.y );
 		
 	}
 	static subtract	= function( _vec ) {
-		x	-= _vec.x;
-		y	-= _vec.y;
+		return new Vec2(  x	- _vec.x, y - _vec.y );
 		
 	}
 	static multiply	= function( _vec ) {
-		x	*= _vec.x;
-		y	*= _vec.y;
+		return new Vec2( x * _vec.x, y * _vec.y );
 		
 	}
 	static divide	= function( _vec ) {
-		x	/= _vec.x;
-		y	/= _vec.y;
+		return new Vec2( x / _vec.x, y / _vec.y );
 		
 	}
 	static dot	= function( _vec ) {

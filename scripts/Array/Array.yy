@@ -3,7 +3,7 @@
   "isCompatibility": false,
   "parent": {
     "name": "Array",
-    "path": "folders/FAST/Core/Data Types/Array.yy",
+    "path": "folders/FAST/Core/Data Structures/Array.yy",
   },
   "resourceVersion": "1.0",
   "name": "Array",

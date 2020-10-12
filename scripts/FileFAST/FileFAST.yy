@@ -2,8 +2,8 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Scripts",
-    "path": "folders/FAST/Database/Scripts.yy",
+    "name": "Structs",
+    "path": "folders/FAST/Database/Structs.yy",
   },
   "resourceVersion": "1.0",
   "name": "FileFAST",

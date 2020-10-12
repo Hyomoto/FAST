@@ -2,8 +2,8 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Scripts",
-    "path": "folders/FAST/Scripting/Scripts.yy",
+    "name": "Structs",
+    "path": "folders/FAST/Scripting/Structs.yy",
   },
   "resourceVersion": "1.0",
   "name": "Script",
