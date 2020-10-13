@@ -2,6 +2,7 @@
 /// @param width
 /// @param height
 /// @param per_frame?
+/// @wiki Core-Index
 function Surface( _width, _height, _per_frame ) constructor {
 	static create	= function() {
 		surface_free( surface );
@@ -38,6 +39,10 @@ function Surface( _width, _height, _per_frame ) constructor {
 	}
 	static draw	= function( _x, _y ) {
 		draw_surface( surface, _x, _y );
+		
+	}
+	static draw_part = function( _l, _t, _w, _h, _x, _y ) {
+		draw_surface_part( surface, _l, _t, _w, _h, _x, _y );
 		
 	}
 	static set	= function() {

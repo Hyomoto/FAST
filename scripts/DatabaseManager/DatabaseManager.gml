@@ -1,4 +1,5 @@
 /// @func DatabaseManager
+/// @wiki Database-Index Manager
 function DatabaseManager() {
 	static database	= function() constructor {
 		static	__undefined	= new DsTree_Value( undefined );

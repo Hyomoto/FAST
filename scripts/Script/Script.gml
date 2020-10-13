@@ -1,4 +1,5 @@
 /// @func Script
+/// @wiki Scripting-Index
 function Script() : DsChain() constructor {
 	static execute	= function( _engine ) {
 		if ( errors > 0 ) {

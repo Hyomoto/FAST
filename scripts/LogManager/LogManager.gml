@@ -1,5 +1,6 @@
 #macro FAST_LOGGER_DEFAULT_LENGTH	144
 /// @func LogManager
+/// @wiki Logging-Index
 function LogManager() {
 	static manager	= function() constructor {
 		static add	= function( _debugger ) {

@@ -1,5 +1,6 @@
 /// @func RenderManager
 /// @param *render_object
+/// @wiki Render-Index
 function RenderManager() {
 	static render	= function( _render ) constructor {
 		static update_window	= function() {

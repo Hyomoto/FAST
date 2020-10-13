@@ -4,7 +4,7 @@
 /// @param value
 /// @param format
 /// @desc	A wrapper for Numbers-as-strings.  Provides custom formatting options such as
-///		comma insertion and suffixes.
+//		comma insertion and suffixes.
 function StringNumber( _string ) : String() constructor {
 	static formatter	= function( _string ) {
 		var _decimal	= string_pos( ".", _string );

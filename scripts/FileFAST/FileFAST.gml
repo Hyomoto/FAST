@@ -1,6 +1,7 @@
 /// @func FileFAST
 /// @param filename
 /// @param *read_only
+/// @wiki Database-Index File
 function FileFAST( _filename, _readonly, _new ) : File( _readonly ) constructor {
 	static FASTformatter	= new StringFormatter( " :strip,	:strip,\":save,{:push,}:pull+push,;:strip+push,+:pull", {
 		setup : function( _input ) {

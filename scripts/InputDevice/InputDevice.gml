@@ -1,5 +1,6 @@
 /// @func InputDevice
-/// @param inputs
+/// @param inputs...
+/// @wiki Input-Handling-Index
 function InputDevice() constructor { 
 	static input	= function( _name ) constructor {
 		static raw		= function() {

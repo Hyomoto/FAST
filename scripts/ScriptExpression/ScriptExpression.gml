@@ -1,5 +1,6 @@
 /// @func ScriptExpression
 /// @param expression
+/// @wiki Scripting-Index
 function ScriptExpression( _string ) : DsWalkable() constructor {
 	static validate	= function( _script, _statement ) {
 		var _header	= _script.source + "(line " + string( _statement.line + _script.isFunction ) + ") ";

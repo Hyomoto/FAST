@@ -1,5 +1,6 @@
 /// @func ScriptStatement
 /// @param expression
+/// @wiki Scripting-Index
 function ScriptStatement( _expression ) constructor {
 	static validate	= function( _script ) {
 		if ( ScriptManager().is_reserved( target ) ) { _script.errors += 1;

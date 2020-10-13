@@ -2,6 +2,7 @@
 /// @param name
 /// @param length
 /// @param Outputs...
+/// @wiki Logging-Index
 function Logger( _name, _length, _output ) constructor {
 	static toString	= function() {
 		return name;

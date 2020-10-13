@@ -2,7 +2,9 @@
 /// @param filename
 /// @param *read_only
 /// @param *new?
+/// @wiki File-Handling-Index
 function FileText( _filename, _readonly, _new ) : File( _readonly ) constructor {
+	// @override
 	static save_File	= save;
 	static save	= function( _append ) {
 		if ( save_File() ) {

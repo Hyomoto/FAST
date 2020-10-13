@@ -6,6 +6,7 @@
 #macro SCRIPT_EXPRESSION_TYPE_FUNCTION	5
 
 /// @func ScriptManager
+/// @wiki Scripting-Index
 function ScriptManager(){
 	static manager	= function() constructor {
 		static WaitCondition	= function( _engine, _script ) {

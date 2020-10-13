@@ -1,5 +1,6 @@
 /// @func script_file_load
 /// @param filename
+/// @wiki Scripting-Index
 function script_file_load( _filename ) {
 	var _formatter	= ScriptManager().formatter;
 	var _file		= file_text_open_read( _filename );

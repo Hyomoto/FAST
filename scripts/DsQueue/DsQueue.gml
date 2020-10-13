@@ -1,5 +1,6 @@
 /// @func DsQueue
 /// @param values...
+/// @wiki Core-Index Data Structures
 function DsQueue() : DsChain() constructor {
 	static enqueue_at_head	= function() {
 		var _i = 0; repeat( argument_count ) {

@@ -1,4 +1,5 @@
 /// @func DsList
+/// @wiki Core-Index Data Structures
 function DsList() constructor {
 	static add	= function() {
 		var _i = 0; repeat( argument_count ) {

@@ -2,6 +2,7 @@
 /// @param filename
 /// @param *target
 /// @desc	
+/// @wiki Database-Index Functions
 function database_load( _filename ) {
 	static database	= DatabaseManager();
 	static LEFT		= 0;

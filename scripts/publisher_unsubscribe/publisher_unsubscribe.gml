@@ -1,5 +1,6 @@
 /// @func publisher_unsubscribe
 /// @func channels...
+/// @wiki Publisher-Index
 function publisher_unsubscribe() {
 	static instance	= PublisherManager();
 	

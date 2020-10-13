@@ -1,6 +1,7 @@
 #macro syslog	( SystemOutput() ).write
 #macro System	( SystemOutput() )
-
+/// @func SystemOutput
+/// @wiki Core-Index
 function SystemOutput() {
 	static instance	= new GenericOutput( function() {
 		var _string	= "";

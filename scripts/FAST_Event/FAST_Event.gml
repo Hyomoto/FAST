@@ -4,6 +4,7 @@
 /// @param parameters
 /// @param function
 /// @desc	Returns an event that will run continuously until discard() is called on it.
+/// @wiki Core-Index Events
 function FAST_Event( _event, _delay, _parameters, _function ) constructor {
 		static discard	= function() {
 		FAST.delete_event( self );

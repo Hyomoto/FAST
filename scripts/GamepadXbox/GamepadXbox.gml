@@ -1,5 +1,6 @@
 /// @func GamepadXbox
 /// @desc provides a Gamepad interface that reflects the xbox controller layout
+/// @wiki Input-Handling-Index
 function GamepadXbox() : Gamepad() constructor {
 	left	= new input( gp_padl, self );
 	right	= new input( gp_padr, self );

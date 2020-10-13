@@ -1,5 +1,6 @@
 /// @func MouseWheel
 /// @param constant
+/// @wiki Input-Handling-Index
 function MouseWheel( _constant ) : GenericInput( _constant ) constructor {
 	static down	= function() {
 		return ( constant == mb_wheel_up ? mouse_wheel_up() : mouse_wheel_down() );

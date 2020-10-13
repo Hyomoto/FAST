@@ -1,4 +1,5 @@
 /// @func DsMap
+/// @wiki Core-Index Data Structures
 function DsMap() constructor {
 	static add	= function( _key, _value ) {
 		ds_map_add( pointer, _key, _value );

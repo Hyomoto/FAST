@@ -1,9 +1,18 @@
 /// @func StringTime
-/// @param value
-/// @param decimals
-/// @param format
+/// @param {int}	seconds		The number of seconds
+/// @param {int}	decimals	How many decimals each time should contain
+/// @param {string}	format		The display format, $H, $M and $S will be replaced with hours, minutes, and seconds
+/// @desc Given a time, in seconds, will output it as formatted time string.
+/// @example
+//var _time = new StringTime( get_timer(), 0, "$H hours, $M minutes, and $seconds" );
+//
+//show_debug_message( _time );
+/// @wiki Core-Index Strings
 function StringTime( _value, _decimals, _format ) : String() constructor {
+	/// @override
 	static set_String	= set;
+	/// @param {int}	seconds			The number of seconds to set the time to
+	/// @desc	Will format the provided seconds into a formatted time string.
 	static set	= function( _value ) {
 		var _string		= format;
 		var _hours		= string_pos( "$H", format ) > 0;
@@ -30,7 +39,9 @@ function StringTime( _value, _decimals, _format ) : String() constructor {
 		set_String( _string );
 		
 	}
+	/// @desc the format as provided by the format argument
 	format		= _format;
+	/// @desc the decimals as provided by the decimals argument
 	decimals	= _decimals;
 	
 	set( _value );

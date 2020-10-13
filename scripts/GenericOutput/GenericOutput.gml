@@ -2,6 +2,7 @@
 /// @param {method} *function	if provided, overrides the "write" function
 /// @desc	inheritable template, provides a standardized way for dealing with
 ///		structures that can be written to
+/// @wiki Core-Index
 function GenericOutput() constructor {
 	static write	= function() {};
 	static close	= function() {};

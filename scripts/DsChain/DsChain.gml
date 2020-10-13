@@ -1,6 +1,7 @@
-/// @func DsChain()
+/// @func DsChain
 /// @desc	inheritable template, provides a standardized way for dealing with
 ///		structures that can be written to
+/// @wiki Core-Index Data Structures
 function DsChain() constructor {
 	static ChainLink	= function( _value ) constructor {
 		static toString	= function() {

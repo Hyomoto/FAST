@@ -3,6 +3,7 @@
 /// @param package
 /// @param path
 /// @param *set
+/// @wiki Scripting-Index
 function script_evaluate_traverse_set( _engine, _package, _string, _set ) {
 	var _path	= string_explode( _string, ".", false );
 	var _header	= ( _package.script == undefined ? "Expression could not be evaluated because " : _package.script.source + " failed at line " + string( _package.statement.line + _package.script.isFunction ) + " because " );

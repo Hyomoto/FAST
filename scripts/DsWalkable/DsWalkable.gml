@@ -1,4 +1,5 @@
 /// @func DsWalkable
+/// @wiki Core-Index Data Structures
 function DsWalkable() : DsLinkedList() constructor {
 // # Method Declaration
 	static clear_DsLinkedList	= clear;

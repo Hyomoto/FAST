@@ -1,11 +1,16 @@
 /// @func String
-/// @param string
-/// @desc	Provides a wrapper for basic strings.
+/// @param {string} string Sets the initial contents of this String
+/// @desc	Provides a wrapper for the basic string data type, as well as an interface for implementing extended String types.
+/// @example
+//var _string = new String( "Hello World!" );
+/// @wiki Core-Index Strings
 function String() constructor {
+	/// @desc returns the number of characters in the String
 	static size	= function() {
 		return string_length( _content );
 		
 	}
+	/// @param {string} string Sets the contents of this String
 	static set	= function( _content ) {
 		content	= _content;
 		

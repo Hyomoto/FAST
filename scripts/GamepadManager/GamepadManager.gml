@@ -2,6 +2,7 @@
 #macro Gamepads	GamepadManager()
 
 /// @func GamepadManager
+/// @wiki Input-Handling-Index
 function GamepadManager() {
 	static manager	= function() constructor {
 		static log	= function() {

@@ -2,6 +2,7 @@
 /// @param engine
 /// @param local
 /// @param ScriptExpression
+/// @wiki Scripting-Index
 function script_evaluate_expression( _engine, _package, _expression ) {
 	function __script_evaluate_next( _engine, _package, _ex ) {
 		var _next	= _ex.next();

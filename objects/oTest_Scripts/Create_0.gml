@@ -13,7 +13,7 @@ global.eng.load_async( "test/", false, 1000 );
 //event_user( 0 );
 
 //wait	= SPEED;
-//load	= file_get_directory( "test/" );
+//load	= file_get_directory( "test/", "*.*", true );
 
 //#macro SPEED	100
 

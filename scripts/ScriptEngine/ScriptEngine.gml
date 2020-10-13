@@ -2,6 +2,7 @@
 /// @param name
 /// @param filepath
 /// @param *debug?
+/// @wiki Scripting-Index
 function ScriptEngine( _name, _filepath, _debug ) constructor {
 	static inherit	= function() {
 		var _next = ds_map_find_first( ScriptManager().funcs ); repeat( ds_map_size( ScriptManager().funcs ) ) {
@@ -50,14 +51,14 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 		execution();
 		
 	}
-	static load_async	= function( _filename, _reload, _period ) {
+	static load_async	= function( _filename, _reload, _period, _format, _sub ) {
 		var _load, _found;
 		
 		if ( filename_name( _filename ) != "" ) {
 			_load	= new DsQueue( _filename );
 			
 		} else {
-			_load	= file_get_directory( _filename );
+			_load	= file_get_directory( _filename, ( _format == undefined ? "*.*" : _format ), _sub == true );
 			
 		}
 		_found	= _load.size();
@@ -93,7 +94,7 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 		});
 		
 	}
-	static load		= function( _filename, _reload ) {
+	static load		= function( _filename, _reload, _format, _sub ) {
 		var _scripts	= 0;
 		var _load, _found;
 		
@@ -101,7 +102,7 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 			_load	= new DsQueue( _filename );
 			
 		} else {
-			_load	= file_get_directory( _filename );
+			_load	= file_get_directory( _filename, ( _format == undefined ? "*.*" : _format ), _sub == true );
 			
 		}
 		_found	= _load.size();

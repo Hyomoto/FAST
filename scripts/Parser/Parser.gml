@@ -1,5 +1,6 @@
 /// @func Parser
 /// @param *string
+/// @wiki Core-Index Parsing
 function Parser() constructor {
 	static parse	= function( _string ) {
 		value	= string_trim( _string );

@@ -3,6 +3,7 @@
 /// @param package
 /// @param path
 /// @param *stop
+/// @wiki Scripting-Index
 function script_evaluate_traverse( _engine, _package, _string ) {
 	var _path	= string_explode( _string, ".", false );
 	var _stop	= ( argument_count == 3 ? array_length( _path ) : argument[ 3 ] );

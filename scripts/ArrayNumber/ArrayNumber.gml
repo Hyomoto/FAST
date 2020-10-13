@@ -1,6 +1,7 @@
 /// @func ArrayNumber
 /// @param size
 /// @param *default
+/// @wiki Core-Index Arrays
 function ArrayNumber( _size ) : Array( _size ) constructor {
 	static set_Array	= set;
 	static set	= function( _index, _value ) {

@@ -1,5 +1,6 @@
 /// @func DsLinkedList
 /// @param values...
+/// @wiki Core-Index Data Structures
 function DsLinkedList() : DsChain() constructor {
 // # Method Declaration
 	static remove		= function( _link ) {

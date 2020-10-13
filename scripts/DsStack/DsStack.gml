@@ -1,5 +1,6 @@
 /// @func DsStack
 /// @param values...
+/// @wiki Core-Index Data Structures
 function DsStack() : DsChain() constructor {
 	/// @func push
 	/// @param values...

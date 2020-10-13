@@ -1,4 +1,5 @@
 /// @func Publisher
+/// @wiki Publisher-Index
 function Publisher() constructor {
 	static channel_notify	= function( _channel, _message ) {
 		_channel	= ds_map_find_value( channels, _channel );

@@ -2,6 +2,7 @@
 /// @param size
 /// @param *default
 /// @desc returns an array-as-a-struct
+/// @wiki Core-Index Arrays
 /* methods
 sort()				- used as a template interface for constructors that inherit Array
 size()				- returns the size of the array

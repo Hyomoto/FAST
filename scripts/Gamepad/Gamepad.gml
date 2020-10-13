@@ -1,4 +1,5 @@
 /// @func Gamepad
+/// @wiki Input-Handling-Index
 function Gamepad() constructor {
 	static input	= function( _constant, _gamepad ) constructor {
 		static pressed		= function() {

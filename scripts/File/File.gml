@@ -1,8 +1,11 @@
 /// @func File
 /// @param *read_only
 /// @desc	generic File handling object
-//* 
-//* discard() - Discards this file without writing any changes to the disk.
+/// @example
+// var _file = new File();
+// 
+// _file.write( "Hello World!" );
+/// @wiki File-Handling-Index
 function File( _readonly ) : GenericOutput() constructor {
 // # Method Declaration
 	static reset	= function() {
@@ -77,11 +80,11 @@ function File( _readonly ) : GenericOutput() constructor {
 	// saves and destroys the file
 	static close	= function() {
 		save();
-		destroy();
+		discard();
 		
 	}
 	// closes the file without saving it
-	static destroy		= function() {
+	static discard		= function() {
 		ds_list_destroy( contents );
 		
 	};

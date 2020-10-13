@@ -1,5 +1,6 @@
 /// @func GamepadPlaystation
 /// @desc provides a Gamepad interface that reflects the playstation controller layout
+/// @wiki Input-Handling-Index
 function GamepadPlaystation() : Gamepad() constructor {
 	left	= new input( gp_padl, self );
 	right	= new input( gp_padr, self );

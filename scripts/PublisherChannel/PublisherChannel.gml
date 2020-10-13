@@ -1,4 +1,5 @@
 /// @func PublisherChannel
+/// @wiki Publisher-Index
 function PublisherChannel() : DsLinkedList() constructor {
 	static notify	= function( _message ) {
 		var _seek	= next();

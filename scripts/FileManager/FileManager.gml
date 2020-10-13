@@ -1,4 +1,5 @@
 /// @func FileManager
+/// @wiki File-Handling-Index
 function FileManager() {
 	static manager	= function() constructor {
 		static log	= function() {

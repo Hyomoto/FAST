@@ -1,6 +1,6 @@
 /// @func StringFormatter
 /// @param format
-/// @param *functions
+/// @wiki Core-Index Parsing
 function StringFormatter( _format, _functions ) constructor {
 	// processes the format into a set of rules the formatter can then use
 	static rules	= function( _string ) {

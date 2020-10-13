@@ -1,5 +1,6 @@
 /// @func DsTree
 /// @desc DsTree is a traversable tree-like data structure
+/// @wiki Core-Index Data Structures
 function DsTree() constructor {
 	// finds the node at the given path and returns it
 	static seek	= function( _path ) {

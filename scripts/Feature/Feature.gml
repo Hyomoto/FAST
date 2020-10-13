@@ -3,6 +3,7 @@
 /// @param version
 /// @param date
 /// @param struct
+/// @wiki Core-Index
 function Feature( _name, _version, _date, _struct ) constructor {
 	static toString	= function() {
 		return name + " " + version + ", " + date;

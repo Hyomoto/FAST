@@ -1,5 +1,6 @@
 /// @func ComboInput
 /// @param GenericInput...
+/// @wiki Input-Handling-Index
 function ComboInput() constructor {
 	static raw		= function() {
 		if ( down() ) {
