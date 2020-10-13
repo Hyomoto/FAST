@@ -1,7 +1,9 @@
 /// @func Surface
-/// @param width
-/// @param height
-/// @desc Creates an internally managed surface with some optional optimizations.
+/// @param {int} width
+/// @param {int} height
+/// @desc Creates an internally managed surface with some optional optimizations. In the example, the
+//		surface is cached and will only update when it's called to, or if the surface goes missing
+//		in memory.
 /// @example
 // if ( surface.update() ) {
 //  surface.set();
@@ -34,7 +36,7 @@ function Surface( _width, _height ) constructor {
 			redraw	= true;
 			
 		}
-		if ( redraw ) {
+		if ( redraw == true ) {
 			redraw	= false;
 			
 			return true;
@@ -72,10 +74,10 @@ function Surface( _width, _height ) constructor {
 	//	perFrame	= _per_frame;
 		
 	//}
-	static refresh	= function() {
-		redraw	= true;
+	//static refresh	= function() {
+	//	redraw	= true;
 		
-	}
+	//}
 	/// @desc The same as calling `surface_set_target( surface )`
 	static reset	= function() {
 		if ( surface_get_target() == surface ) {
@@ -96,13 +98,13 @@ function Surface( _width, _height ) constructor {
 		return _data_type == Surface;
 		
 	}
-	// the internal surface
+	// @desc the internal surface
 	surface		= -1;
-	// the width of the surface, note: changing this will _not_ resize the surface! use resize() instead
+	// @desc the width of the surface, note: changing this will _not_ resize the surface! use resize() instead
 	width		= _width;
-	// the width of the surface, note: changing this will _not_ resize the surface! use resize() instead
+	// @desc the width of the surface, note: changing this will _not_ resize the surface! use resize() instead
 	height		= _height;
-	// when set to `true`, will trigger a surface redraw on the next frame
+	// @desc when set to `true`, will trigger a surface redraw on the next frame
 	redraw		= false;
 	// when set to `false`, surface.update() will only return `true` if redraw is set or the surface disappears from memory. Default: true
 	// perFrame	= ( _per_frame == undefined ? true : _per_frame );

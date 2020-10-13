@@ -3,7 +3,7 @@ verbose		= true;
 // whether or not to overwrite files that already exist
 overwrite	= true;
 // if true, the file(s) will be copied to the clipboard instead
-clipboard	= false;
+clipboard	= true;
 
 /// @func strd
 /// @param string

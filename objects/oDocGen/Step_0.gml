@@ -25,7 +25,7 @@ if ( files.size() > 0 ) {
 	display		= string( complete ) + "/" + string( total );
 	perc		= complete / total;
 	
-	bg.refresh();
-	fg.refresh();
+	bg.redraw	= true;
+	fg.redraw	= true;
 	
 }
