@@ -106,7 +106,7 @@ repeat( target.remaining() ) {
 			_read	= target.read();
 			
 			if ( find_tag( _read ) == undefined && string_copy( _read, 1, 2 ) == "//" ) {
-				header.example	+= ( header.example != "" ? "\n" : "" ) + strd( _read, 1, 2 );
+				header.example	+= ( header.example != "" ? "\n" : "" ) + string_delete( _read, 1, 2 );
 				
 				continue;
 				
