@@ -156,6 +156,7 @@ while ( target.eof() == false ) {
 				_ignore	= false;
 				_desc	= undefined;
 				_over	= false;
+				_ret	= undefined;
 				
 			}
 			

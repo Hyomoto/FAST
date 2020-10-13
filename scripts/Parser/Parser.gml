@@ -44,7 +44,7 @@ function Parser() constructor {
 		
 	}
 	/// @desc Returns the next word in the string, or `undefined` if there is nothing left to parse.
-	/// @returns string
+	/// @returns string||null
 	static next		= function() {
 		if ( has_next() == false ) {
 			return undefined;
