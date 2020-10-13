@@ -1,13 +1,23 @@
 /// @func ArrayString
 /// @param size
 /// @param *default
+/// @example
+/// @desc An Array wrapper specifically for holding and sorting strings.
+/// @example
+//array = new ArrayString( "Hello", "Amanda", "Cars", "Banana" );
+//
+//array.sort( true );
 /// @wiki Core-Index Arrays
 function ArrayString( _size ) : Array( _size ) constructor {
+	/// @override
 	static set_Array = set;
+	/// @override
 	static set	= function( _index, _value ) {
 		return set_Array( _index, string( _value ) );
 		
 	}
+	/// @param {bool} ascending If true, will sort from A-Z, otherwise Z-A
+	/// @desc Sorts the array in alphabetical order.
 	static sort	= function( _ascending ) {
 		array_quicksort( content, 0, size() - 1, _ascending,
 			function( _value ) { return string_lower( _value ) },

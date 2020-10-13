@@ -1,37 +1,33 @@
 /// @func ArrayList
 /// @param size
 /// @param *default
-/// @desc returns an array-as-a-struct that behaves like a list
+/// @desc An array that has the same functionality as a list. The array size is managed internally, and
+//		when entries are added or removed, the array will grow to accomidate future values.  It does not
+//		deallocate when shrunk.  Thus you should alway use methods to interact with the array to ensure
+//		it is not destabilized.  You can change the `aggressiveness` to affect how much space is allocated
+//		when the array grows.
+/// @example
+//array = new ArrayList( 10, 0 );
+//
+//array.insert( 5, 10 );
+//array.remove( 0 );
 /// @wiki Core-Index Arrays
-/* methods
-sort()				- used as a template interface for constructors that inherit Array
-size()				- returns the size of the array
-swap( a, b )		- swaps index a and b in the array
-unique()			- returns an array containing all unique values
-concat( array )		- returns the array combined with the provided array
-union( array )		- returns an array containing all unique values from the array combined with the provided array
-difference( array )	- returns the array minus the values contained in the provided array
-contains( value )	- searches the array and returns the index the value was found, or -1
-set( index, value )	- sets the array index to the given value
-get( *index )		- returns the value at the given index, or the array if no index is provided
-insert( value, index ) - inserts the value at the given index
-remove( index )		- removes the given index
-add( value )		- adds the value to the end of the array, resizing it if necessary
-toArray()			- returns the array
-toString()			- returns the array as a string
-*/
 function ArrayList( _size ) : Array( _size ) constructor {
-	// functions
+	/// @override
 	static size	= function() { return length; }
-	
+	/// @override
 	static resize_Array	= resize;
+	/// @override
 	static resize	= function( _size, _default ) {
 		resize_Array( ceil( _size == 0 ? 10 : _size * aggression ), _default );
 		
 		length	= _size;
 		
 	}
-	static insert	= function( _value, _index ) {
+	/// @param {int} index The index to insert the value at, must be <= the size of the array
+	/// @param {mixed} value The value to insert into the array
+	/// @returns `value`
+	static insert	= function( _index, _value ) {
 		if ( _index < 0 || _index > size() ) { return; }
 		
 		if ( length == array_length( content ) ) {
@@ -52,7 +48,11 @@ function ArrayList( _size ) : Array( _size ) constructor {
 		
 		++length;
 		
+		return _value;
+		
 	}
+	/// @param {int} index The index to remove
+	/// @desc Removes an index from the array, shrinking it.
 	static remove	= function( _index ) {
 		if ( _index < 0 || _index >= size() ) { return; }
 		
@@ -71,6 +71,9 @@ function ArrayList( _size ) : Array( _size ) constructor {
 		--length;
 		
 	}
+	/// @param {mixed} value The value to add to the array
+	/// @returns `value`
+	/// @desc Adds a value to the end of the array, growing it if necessarry.
 	static add	= function( _value ) {
 		if ( length == array_length( content ) ) {
 			resize_Array( max( length + 1, ceil( length * aggression ) ), undefined );
@@ -80,7 +83,10 @@ function ArrayList( _size ) : Array( _size ) constructor {
 		
 		++length;
 		
+		return _value;
+		
 	}
+	/// @override
 	static toArray	= function() {
 		if ( array_length( content ) == length ) {
 			return content;
@@ -93,6 +99,7 @@ function ArrayList( _size ) : Array( _size ) constructor {
 		return _array;
 		
 	}
+	/// @override
 	static toString	= function( _divider ) {
 		if ( is_string( _divider ) == false ) { _divider = ", " }
 		
@@ -103,6 +110,7 @@ function ArrayList( _size ) : Array( _size ) constructor {
 		return array_to_string( _array, _divider );
 		
 	}
+	/// @desc A multiplier for many extra elements will be allocated when the array resizes. Default: 1.33
 	aggression	= 1.33;
 	
 	if ( is_array( _size ) ) {

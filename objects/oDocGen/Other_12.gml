@@ -3,21 +3,28 @@ methods		= {
 	toString : function() {
 		var _header		= "";
 		var _methods	= "";
+		var _footer		= true;
 		_header	+= "## Methods" + "\n";
 		_header	+= "|Jump To|[`top`](#)|";
 		
-		var _i = 0, _last = undefined; repeat( list.size() ) {
+		var _i = 2, _last = undefined; repeat( list.size() ) {
+			if ( _i == 11 ) {
+				_header	+= "\n" + string_repeat( "|---", 11 ) + "|" + "\n||";
+				_footer	= false;
+				_i = 1;
+			}
 			_last	= list.next( _last );
 			
 			_methods	+= string( _last.value );
 			
 			if ( _last.value.ignore ) { continue; }
 			
-			_header += "[" + _last.value.name + "](#" + _last.value.pattern + ")|";
+			_header += ( _footer ? "[" + _last.value.name + "]" : "[**" + _last.value.name + "**]" ) + "(#" + _last.value.pattern + ")|";
 			++_i;
 			
 		}
-		_header	+= "\n" + string_repeat( "|---", _i + 2 ) + "|" + "\n";
+		_header	+= ( _footer ? "\n" + string_repeat( "|---", _i ) + "|" : "" ) + "\n";
+		
 		if ( list.size() == 0 ) {
 			_methods	+= "\nNo methods for this structure." + "\n";
 			
@@ -59,13 +66,17 @@ while ( target.eof() == false ) {
 	var _tag		= find_tag( _read );
 	
 	if ( _tag != undefined ) {
+		if ( array_length( _tag ) == 1 ) { _tag[ 1 ] = ""; }
+		
 		if ( _tag[ 0 ] == "@param" ) {
 			args.enqueue( new make_argument( _tag[ 1 ] ) );
 			
 		} else if ( _tag[ 0 ] == "@override" ) {
 			_over	= true;
 			
-			target.read();
+			_read	= target.read();
+			
+			_open	+= string_count( "{", _read ) - string_count( "}", _read );
 			
 		} else if ( _tag[ 0 ] == "@duplicate" || _tag[ 0 ] == "@dupe" ) {
 			_ignore	= true;

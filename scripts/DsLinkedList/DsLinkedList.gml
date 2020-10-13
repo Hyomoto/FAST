@@ -1,8 +1,30 @@
 /// @func DsLinkedList
 /// @param values...
+/// @desc A garbage-collected, linear-traversable linked-list.
 /// @wiki Core-Index Data Structures
 function DsLinkedList() : DsChain() constructor {
-// # Method Declaration
+	/// @param {mixed} value The value to add to the list
+	/// @desc Adds the given value to the list, and returns the link that contains it.
+	/// @returns ChainLink
+	static add	= function( _value ) {
+		var _link	= new ChainLink( _value );
+		
+		if ( final == undefined ) { 
+			chain		= _link;
+			
+		} else {
+			final.chain	= _link;
+			
+		}
+		final		= _link;
+		
+		++links;
+		
+		return _link;
+		
+	}
+	/// @param {ChainLink} link The link to remove.
+	/// @desc Removes the given link from the list
 	static remove		= function( _link ) {
 		if ( links == 0 ) { return; }
 		
@@ -39,16 +61,24 @@ function DsLinkedList() : DsChain() constructor {
 		return false;
 		
 	}
+	/// @desc Returns the first link in the list.  Returns `undefined` if the list is empty.
+	/// @returns ChainLink or `undefined`
 	static first	= function() {
 		if ( links == 0 ) { return undefined; }
 		
 		return chain;
 		
 	}
+	/// @param {ChainLink} link The link to check.
+	/// @desc Returns if there are more links after the specified one.
+	/// @returns bool
 	static has_next	= function( _last ) {
 		return ( links == 0 ? false : _last == undefined || _last.chain != undefined );
 		
 	}
+	/// @param {ChainLink} link The link to check.
+	/// @desc Returns the next link after the specified one, or `undefined` if this is the last one.
+	/// @returns ChainLink or `undefined`
 	static next		= function( _last ) {
 		if ( links == 0 ) { return undefined; }
 		if ( _last == undefined || _last.chain == undefined ) {
@@ -61,6 +91,9 @@ function DsLinkedList() : DsChain() constructor {
 		return _last;
 		
 	}
+	/// @param {mixed} value The value to check for
+	/// @desc Searches the list for the given value and returns the link holding it, or `undefined` if it isn't found.
+	/// @return ChainLink or `undefined`
 	static find	= function( _value ) {
 		if ( links == 0 ) { return undefined; }
 		
@@ -78,36 +111,20 @@ function DsLinkedList() : DsChain() constructor {
 		return undefined;
 		
 	}
-	static add	= function( _value ) {
-		var _link	= new ChainLink( _value );
-		
-		if ( final == undefined ) { 
-			chain		= _link;
-			
-		} else {
-			final.chain	= _link;
-			
-		}
-		final		= _link;
-		
-		++links;
-		
-		return _link;
-		
-	}
-
-	static is		= function( _data_type ) {
-		return _data_type == DsLinkedList;
-		
-	}
+	/// @override
 	static clear_DsChain	= clear;
+	/// @override
 	static clear	= function() {
 		final	= undefined;
 		
 		clear_DsChain();
 		
 	}
-// # Variable Declaration
+	static is		= function( _data_type ) {
+		return _data_type == DsLinkedList;
+		
+	}
+	/// @desc the final link in the list
 	final	= undefined;
 	
 	var _i = 0; repeat( argument_count ) {

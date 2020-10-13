@@ -2,11 +2,11 @@
 header	= {
 	toString : function() {
 		var _string = "";
-		_string += "|Jump To|[`Go Back`](" + ( wiki != undefined ? wiki.path + wiki.index : "" ) + ")|[Arguments](#arguments)|[Methods](#methods)|[Variables](#variables)|" + "\n"
+		_string += "|Jump To|[`Go Back`](" + ( wiki != undefined ? repo + wiki.index : "" ) + ")|[Arguments](#arguments)|[Methods](#methods)|[Variables](#variables)|" + "\n"
 		_string += "|---|---|---|---|---|" + "\n"
 		_string += ">## " + name + "(" + argstr + ")" + "\n"
 		if ( implements != undefined ) {
-			_string	+= "*Implements:* [" + implements + "()](https://github.com/Hyomoto/FASTv33/wiki/" + implements + ")" + "\n\n";
+			_string	+= "*Implements:* [" + implements + "()](" + repo + implements + ")" + "\n\n";
 			
 		}
 		_string += desc + "\n"
@@ -37,8 +37,8 @@ header	= {
 	argstr : "",
 	example : "// no example provided",
 	wiki : undefined,
-	implements : undefined
-	
+	implements : undefined,
+	repo : other.repo
 };
 repeat( target.remaining() ) {
 	var _read	= string_trim( target.read() );
@@ -74,7 +74,7 @@ repeat( target.remaining() ) {
 			_read	= [ strc( _read[ 1 ], 1, _next - 1 ), strd( _read[ 1 ], 1, _next ) ];
 			
 		}
-		header.wiki	= { path : "https://github.com/Hyomoto/FASTv33/wiki/", index : _read[ 0 ], table : _read[ 1 ] };
+		header.wiki	= { path : repo, index : _read[ 0 ], table : _read[ 1 ] };
 		
 	} else if ( _read[ 0 ] == "@param" ) {
 		header.arguments.add( new make_argument( _read[ 1 ] ) );
@@ -91,6 +91,8 @@ repeat( target.remaining() ) {
 				continue;
 				
 			}
+			header.desc = get_description( header.desc );
+			
 			--target.next;
 			
 			break;

@@ -1,7 +1,27 @@
 /// @func DsQueue
-/// @param values...
+/// @param {mixed} values...	The initial values to be pushed to the queue
+/// @desc A garbage-collected queue.
+/// @example
+//queue = new DsQueue()
+//
+//queue.enqeue( "Hello!" )
+//show_debug_message( queue.dequeue() );
 /// @wiki Core-Index Data Structures
 function DsQueue() : DsChain() constructor {
+	/// @param {mixed} values... Enqueues the values at the tail of the queue
+	static enqueue	= function() {
+		var _i = 0; repeat( argument_count ) {
+			var _link	= new ChainLink( argument[ _i++ ] );
+			
+			tail_link.chain	= _link;
+			tail_link		= _link;
+			
+			++links;
+			
+		}
+		
+	}
+	/// @param {mixed} values... Enqueues the values at the head of the queue
 	static enqueue_at_head	= function() {
 		var _i = 0; repeat( argument_count ) {
 			var _link	= new ChainLink( argument[ _i++ ] );
@@ -17,18 +37,8 @@ function DsQueue() : DsChain() constructor {
 		}
 		
 	}
-	static enqueue	= function() {
-		var _i = 0; repeat( argument_count ) {
-			var _link	= new ChainLink( argument[ _i++ ] );
-			
-			last.chain	= _link;
-			last		= _link;
-			
-			++links;
-			
-		}
-		
-	}
+	/// @param {mixed} values... Removes the value at the front of the queue and returns it
+	/// @returns Mixed
 	static dequeue	= function() {
 		if ( chain == undefined ) { return undefined; }
 		
@@ -37,7 +47,7 @@ function DsQueue() : DsChain() constructor {
 		chain	= _link.chain;
 		
 		if ( chain == undefined ) {
-			last	= self;
+			tail_link	= self;
 			
 		}
 		--links;
@@ -45,21 +55,27 @@ function DsQueue() : DsChain() constructor {
 		return _link.value;
 		
 	}
+	/// @param {mixed} values... Returns the value at the head of the queue
+	/// @returns Mixed
 	static head	= function() {
 		if ( chain == undefined ) { return undefined; }
 		
 		return chain.value;
 		
 	}
+	/// @param {mixed} values... Removes the value at the tail of the queue and returns it
+	/// @returns Mixed
 	static tail	= function() {
-		if ( last == self ) { return undefined; }
+		if ( tail_link == self ) { return undefined; }
 		
-		return last.value;
+		return tail_link.value;
 		
 	}
+	/// @override
 	static clearSuper	= clear;
+	/// @override
 	static clear	= function() {
-		last	= self;
+		tail_link	= self;
 		
 		clearSuper();
 		
@@ -68,7 +84,8 @@ function DsQueue() : DsChain() constructor {
 		return _data_type == DsQueue;
 		
 	}
-	last	= self;
+	/// @desc the value at the tail_link of the queue
+	tail_link	= self;
 	
 	var _i = 0; repeat( argument_count ) {
 		enqueue( argument[ _i++ ] );

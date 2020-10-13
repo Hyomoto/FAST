@@ -43,7 +43,7 @@ function FASTManager() {
 						_event.func( _event.params );
 						
 					}
-					if ( _event.once ) {
+					if ( _event.repeats == false ) {
 						ds_list_delete( _list, --_i );
 						
 						continue;

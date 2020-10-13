@@ -22,7 +22,7 @@ event_user( 2 );
 
 // write to index
 if ( header.wiki != undefined ) {
-	table.add( header.wiki.index, header.wiki.table, { name : header.name + "(" + header.argstr + ")", path : header.wiki.path + header.name } );
+	table.add( header.wiki.index, header.wiki.table, { name : header.name + "(" + header.argstr + ")", path : repo + header.name } );
 	
 }
 if ( clipboard ) {

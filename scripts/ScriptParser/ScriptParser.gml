@@ -9,10 +9,10 @@ function ScriptParser( _string ) : Parser( _string ) constructor {
 		var _safe	= false;
 		var _start	= last + 1;
 		var _ws		= true;
-		var _char, _last = length + 1;
+		var _char, _last = size() + 1;
 		
-		var _i = last; repeat( length - last ) {
-			_char	= string_char_at( value, ++_i );
+		var _i = last; repeat( size() - last ) {
+			_char	= string_char_at( content, ++_i );
 			
 			if ( _safe && _char != "\"" ) { continue; }
 			
@@ -27,10 +27,10 @@ function ScriptParser( _string ) : Parser( _string ) constructor {
 				case "+" : case "-" : case "*" : case "/" : case "=" : case "<" : case ">" : case "!" :
 					if ( _op != undefined ) { continue; }
 					
-					if ( _ws && string_char_at( value, _i + 1 ) == "=" ) {
+					if ( _ws && string_char_at( content, _i + 1 ) == "=" ) {
 						++_i;
 						
-					} else if ( !_ws && _char == "-" && string_char_at( value, _i + 1 ) == ">" ) {
+					} else if ( !_ws && _char == "-" && string_char_at( content, _i + 1 ) == ">" ) {
 						_i	+= 2;
 						
 					}
@@ -81,7 +81,7 @@ function ScriptParser( _string ) : Parser( _string ) constructor {
 		}
 		last	= _i;
 		
-		return string_copy( value, _start, _last - _start )
+		return string_copy( content, _start, _last - _start )
 		
 	}
 	

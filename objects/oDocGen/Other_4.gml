@@ -6,9 +6,11 @@ if ( clipboard == false ) {
 	
 	if ( _path != "" ) {
 		var _list	= file_get_directory( _path + "scripts\\", "*.gml", true );
-		
+		syslog( _path );
+		syslog( _list.toArray() );
 		repeat( _list.size() ) {
 			var _file	= _list.dequeue();
+			
 			var _name	= filename_name( _file );
 			var _struct	= string_upper( string_char_at( _name, 1, ) ) == string_char_at( _name, 1 );
 			

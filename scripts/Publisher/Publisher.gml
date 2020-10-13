@@ -1,4 +1,5 @@
 /// @func Publisher
+/// @desc Creates a publisher-subscriber.
 /// @wiki Publisher-Index
 function Publisher() constructor {
 	static channel_notify	= function( _channel, _message ) {

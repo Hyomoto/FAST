@@ -1,8 +1,18 @@
 /// @func StringFormatter
-/// @param format
+/// @param {string}	format_rules	The rules to use when formatting strings
+/// @desc Used to define a set of rules that can be used to format strings, such as stripping off uneccessary
+// characters, and adding line breaks. By default the formatter accepts a few rules, but it is also
+// possible to write your own rule libraries which can then be used instead. The built-in rules are:\n
+// ##### strip, push, pull, ignore, pre_indent, post_indent\n
+// >*NOTE: StringFormatter makes use of dynamic resources, and so should always be destroyed when no longer needed to prevent memory leaks which will slow down and eventually crash your game.*
+/// @example
+//var _formatter = new StringFormatter( " :strip,\t:strip" );
+//
+//show_debug_message( _formatter.format( "  Hello	World!" ) );
 /// @wiki Core-Index Parsing
 function StringFormatter( _format, _functions ) constructor {
-	// processes the format into a set of rules the formatter can then use
+	/// @desc Processes the format into a set of rules the formatter can then use.
+	/// @param {string} rules	A comma-separated list of rules to use when formatting the string. The rules are defined as part of the rules library.
 	static rules	= function( _string ) {
 		if ( _string == "" ) { return; }
 		
@@ -26,7 +36,9 @@ function StringFormatter( _format, _functions ) constructor {
 		}
 		
 	}
-	// takes the input, applies the ruleset
+	/// @desc Takes the input, applies the ruleset, and returns the modified string.
+	/// @param {string} input The string to format
+	/// @returns string
 	static format	= function( _input ) {//, _output, _params ) {
 		var _ruleset, _raw, _func;
 		
@@ -55,17 +67,24 @@ function StringFormatter( _format, _functions ) constructor {
 		return input.value;
 		
 	}
+	/// @desc Cleans up the internal data structures, allowing the StringFormatter to be garbage-collected safely.
 	static destroy	= function() {
 		ds_map_destroy( ruleset );
 		
 	}
+	/// @desc the internal function library used for building rulesets
 	functions	= _functions;
+	/// @desc the map containing the current rules in use
 	ruleset		= ds_map_create();
+	/// @desc a string containing all of the keys in the map
 	keys		= "";
+	/// @desc the last index of the string that was operated on
 	last		= 0;
+	/// @desc an internal flag used for setting formatting state
 	flag		= 0;
+	/// @desc a package that is passed through the rulesets to operate on the string
 	input		= { value : "", index : 0 }
-	
+	///@override
 	functions	= ( functions != undefined ? functions : {
 		setup : function() {
 			flag = 0;

@@ -57,6 +57,29 @@ next_quote	= function( _string, _ext ) {
 	return 0;
 	
 }
+get_description	= function( _string ) {
+	_string	= string_replace_all( _string, "\\t", "\t" );
+	_string	= string_replace_all( _string, "\\n", "\n" );
+	
+	var _links	= string_pos( "(#", _string );
+	var _cap, _link;
+	
+	while ( _links > 0 ) {
+		_cap	= string_pos_ext( ")", _string, _links );
+		
+		if ( _cap == 0 ) { break; }
+		
+		_link	= string_copy( _string, _links + 2, ( _cap - _links - 2 ) );
+		_link	= "[" + _link + "](" + repo + _link + ")";
+		
+		_string	= string_copy( _string, 1, _links - 1 ) + _link + string_delete( _string, 1, _cap );
+		
+		_links	= string_pos( "(#", _string );
+		
+	}
+	return _string;
+	
+}
 find_tag	= function( _string ) {
 	_string		= string_trim( _string );
 	
@@ -74,33 +97,51 @@ find_tag	= function( _string ) {
 		return undefined;
 		
 	}
-	var _snip	= string_pos( " ", _string );
+	var _snip	= string_find_first( " \t", _string, 0 );
 	
 	return ( _snip == 0 ? [ _string ] : [ string_copy( _string, 1, _snip - 1 ), strd( _string, 1, _snip ) ] );
 	
 }
 return_lookup	= function( _string ) {
-	if ( string_pos( " ", _string ) > 0 ) {
-		var _pos	= string_pos( " ", _string );
-		
-		return string_copy( _string, 1, _pos - 1 ) + " (" + string_delete( _string, 1, _pos ) + ")";
+	static __table	= function( _string ) {
+		switch ( _string ) {
+			case "null" : return "`undefined`";
+			case "intp" : return "int (`0..`)";
+			case "intn" : return "int (`..0`)";
+			case "int"  : return "int (`..0..`)";
+			case "real" : return "real (`0.00`)";
+			case "float": return "float (`0.00`)";
+			case "string" : return "string (`\"string\"`)";
+			case "array": return "array (`[values...]`)";
+			case "list" : return "list (`[|values...]`)";
+			case "map"  : return "map (`[?values...]`)";
+			case "self" : return "`self`";
+			case "boolean" :
+			case "bool" : return "boolean (`true` or `false`)";
+			
+		}
+		return _string;
 		
 	}
-	switch ( _string ) {
-		case "intp" : return "int (`0..`)";
-		case "intn" : return "int (`..0`)";
-		case "int"  : return "int (`..0..`)";
-		case "real" : return "real (`0.00`)";
-		case "float": return "float (`0.00`)";
-		case "string" : return "string (`\"string\"`)";
-		case "array": return "array (`[values...]`)";
-		case "list" : return "list (`[|values...]`)";
-		case "map"  : return "map (`[?values...]`)";
-		case "boolean" :
-		case "bool" : return "boolean (`true` or `false`)";
-		default : return _string;
+	var _strings	= string_explode( _string, "||", true );
+	var _result		= "";
+	
+	for ( var _i = 0; _i < array_length( _strings ); ++_i ) {
+		if ( string_pos( " ", _strings[ _i ] ) > 0 ) {
+			var _pos	= string_pos( " ", _strings[ _i ] );
+			
+			_result += string_copy( _strings[ _i ], 1, _pos - 1 ) + " (" + string_delete( _strings[ _i ], 1, _pos ) + ")";
+			
+		} else {
+			if ( _i > 0 && _i < array_length( _strings ) - 1 ) { _result += ", " }
+			else if ( _i > 0 && _i == array_length( _strings ) - 1 ) { _result += ", or " }
+			
+			_result += __table( _strings[ _i ] );
+			
+		}
 		
 	}
+	return _result;
 	
 }
 make_variable	= function( _string, _desc ) constructor {
@@ -149,11 +190,8 @@ make_function	= function( _string, _args, _desc, _ret ) constructor {
 		argstr	= " type ";
 		returns	= other.return_lookup( "bool" );
 		desc	= ( _desc == undefined ? "Returns `true` if the provided type is " + string( other.header.name ) + "." : _desc );
+		args	= [ "{struct id} type The structure type to compare this against." ];
 		
-		with ( other ) {
-			other.args	= [ new make_argument( "{struct id} type The structure type to compare this against." ) ];
-		}
-	
 	} else if ( _string == "toArray" ) {
 		name	= "toArray";
 		argstr	= "";
@@ -166,14 +204,12 @@ make_function	= function( _string, _args, _desc, _ret ) constructor {
 		returns	= other.return_lookup( "string" );
 		desc	= ( _desc == undefined ? "Returns the structure as a string." : _desc );
 		
-	} else {
-		var _i = 0; repeat( array_length( args ) ) {
-			with ( other ) {
-				other.args[ _i ]	= new make_argument( other.args[ _i ] );
-			}
-			++_i;
-			
+	}
+	var _i = 0; repeat( array_length( args ) ) {
+		with ( other ) {
+			other.args[ _i ]	= new make_argument( other.args[ _i ] );
 		}
+		++_i;
 		
 	}
 	if ( other.args.empty() == false ) {
@@ -269,6 +305,7 @@ fg	= new Surface( w, h, false );
 target	= undefined;
 path	= undefined;
 output	= undefined;
+repo	= "https://github.com/Hyomoto/FASTv33/wiki/"
 
 header		= undefined;
 methods		= undefined;

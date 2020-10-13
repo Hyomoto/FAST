@@ -14,7 +14,7 @@ if ( files.size() > 0 ) {
 		
 	}
 	if ( files.size() == 0 ) {
-		event_user( 3 );
+		if ( clipboard == false ) { event_user( 3 ); }
 		
 		syslog( "Found ", total, ", saved ", final, " with ", errors, " errors.  Check ouput for details." );
 		
