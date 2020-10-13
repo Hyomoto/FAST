@@ -7,7 +7,7 @@ syslog( "Compile took ", timer, " seconds." );
 
 global.eng.set_value( "quest", true );
 
-global.eng.load_async( "test/", false, 1000 );
+global.eng.load( "test/", false, "*.*", true );
 //global.eng.scripts[? "trace" ]	= function() {}
 
 //event_user( 0 );

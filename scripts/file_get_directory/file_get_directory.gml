@@ -30,7 +30,7 @@ function file_get_directory( _directory, _mask, _sub ) {
 		}
 		file_find_close();
 		// file_attributes is broken, this doesn't actually work and pisses me off
-		_file	= file_find_first(_path + _mask, 0);
+		_file	= file_find_first( _path + _mask, 0);
 		
 		while ( _file != "" ) {
 			if ( file_exists( _path + _file ) == false ) {

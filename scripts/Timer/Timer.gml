@@ -26,9 +26,9 @@ function Timer() constructor {
 	static toString	= function() {
 		var _passed	= elapsed() / 1000000;
 		
-		text.set( _passed );
+		content.set( _passed );
 		
-		return text.toString();
+		return content.toString();
 		
 	}
 	static is		= function( _data_type ) {
