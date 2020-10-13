@@ -88,8 +88,9 @@ function DsTable() constructor {
 		ds_list_delete( list, _index );
 		
 	}
-	static is		= function( _data_type ) {
-		return _data_type == DsTable;
+	static destroy	= function() {
+		ds_map_destroy( map );
+		ds_list_destroy( list );
 		
 	}
 	static toArray	= function() {
@@ -108,9 +109,8 @@ function DsTable() constructor {
 		return string( toArray() );
 		
 	}
-	static destroy	= function() {
-		ds_map_destroy( map );
-		ds_list_destroy( list );
+	static is		= function( _data_type ) {
+		return _data_type == DsTable;
 		
 	}
 	map		= ds_map_create();

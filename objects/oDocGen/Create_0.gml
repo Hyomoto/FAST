@@ -3,7 +3,7 @@ verbose		= true;
 // whether or not to overwrite files that already exist
 overwrite	= true;
 // if true, the file(s) will be copied to the clipboard instead
-clipboard	= false;
+clipboard	= true;
 
 /// @func strd
 /// @param string
@@ -299,8 +299,8 @@ y		= floor( room_height * 0.75 );
 w		= floor( room_width * 0.80 );
 h		= 64;
 
-bg	= new Surface( w, h, false );
-fg	= new Surface( w, h, false );
+bg	= new Surface( w, h );
+fg	= new Surface( w, h );
 
 target	= undefined;
 path	= undefined;

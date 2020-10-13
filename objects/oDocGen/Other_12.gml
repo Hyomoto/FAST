@@ -5,25 +5,32 @@ methods		= {
 		var _methods	= "";
 		var _footer		= true;
 		_header	+= "## Methods" + "\n";
-		_header	+= "|Jump To|[`top`](#)|";
+		
+		var _functions	= "|Jump To|[`top`](#)|";
+		var _width		= string_length( _functions );
+		var _max		= 11;
 		
 		var _i = 2, _last = undefined; repeat( list.size() ) {
+			// find next method
+			_last	= list.next( _last );
+			
 			if ( _i == 11 ) {
-				_header	+= "\n" + string_repeat( "|---", 11 ) + "|" + "\n||";
+				_functions	+= "\n" + string_repeat( "|---", 11 ) + "|" + "\n||";
 				_footer	= false;
 				_i = 1;
 			}
-			_last	= list.next( _last );
 			
 			_methods	+= string( _last.value );
 			
 			if ( _last.value.ignore ) { continue; }
 			
-			_header += ( _footer ? "[" + _last.value.name + "]" : "[**" + _last.value.name + "**]" ) + "(#" + _last.value.pattern + ")|";
+			_functions += ( _footer ? "[" + _last.value.name + "]" : "[**" + _last.value.name + "**]" ) + "(#" + _last.value.pattern + ")|";
 			++_i;
 			
 		}
-		_header	+= ( _footer ? "\n" + string_repeat( "|---", _i ) + "|" : "" ) + "\n";
+		_functions	+= ( _footer ? "\n" + string_repeat( "|---", _max - _i ) + "|" : "" ) + "\n";
+		
+		_header	+= _functions;
 		
 		if ( list.size() == 0 ) {
 			_methods	+= "\nNo methods for this structure." + "\n";
