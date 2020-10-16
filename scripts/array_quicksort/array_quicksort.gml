@@ -1,10 +1,21 @@
 /// @func array_quicksort
-/// @param array	- the array to be sorted
-/// @param start	- the indice to start sorting at
-/// @param end		- the last indice to sort
-/// @param ascending?	- whether the sort should be ascending or descending
-/// @param *pivot	- used to override the comparison used in the pivot, has format function( _value )
-/// @param *compare	- used to override the comparison used when sorting, has format function( _pivot, _value, _ascending )
+/// @param {array}	array		the array to be sorted
+/// @param {int}	start		the indice to start sorting at
+/// @param {int}	end			the last indice to sort
+/// @param {bool}	ascending?	whether the sort should be ascending or descending
+/// @param {func}	*pivot		optional: used to override the comparison used in the pivot
+/// @param {func}	*compare	optional: used to override the comparison used when sorting, has format function( _pivot, _value, _ascending )
+/// @desc	An array, sort-in-place algorithm. The default pivot is simply the value of the array index,
+//		otherwise you can provide a method that will be passed that value and you can choose what it
+//		returns. Similarly, the default compare is simply to compare the two values and return which
+//		one is larger (if `ascending` is true). However, it can be overridden as well, and is passed
+//		the value, pivot value, and `ascending`.  See ArrayString for an example of how to override
+//		the pivot and function to change the sort behavior.
+/// @example
+//var _array	= [ 10, 4, 15, 23, 12, 4 ];
+//
+//array_quicksort( _array, 0, array_length( _array ) - 1 );
+/// @wiki Core-Index Functions
 function array_quicksort( _array, _start, _end, _ascending, _pivot, _compare ) {
 	// if the start is equal to or less than the end, abort
 	if ( _start >= _end ) { return; }

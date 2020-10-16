@@ -210,7 +210,7 @@ function ScriptEngine( _name, _filepath, _debug ) constructor {
 		
 	});
 	
-	event	= new FAST_Event( FAST.STEP, 0, undefined, function() {
+	event	= new FrameEvent( FAST.STEP, 0, undefined, function() {
 		executionStop	= false;
 		
 		if ( wait != undefined ) {

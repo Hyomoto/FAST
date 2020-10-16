@@ -1,6 +1,6 @@
 //test_Scripts();
 if ( event == undefined ) {
-	event	= new FAST_Event( FAST.STEP, 0, undefined, function() {
+	event	= new FrameEvent( FAST.STEP, 0, undefined, function() {
 		if ( event.mode == 0 ) {
 			global.eng.execute( "testA", 0 );
 			

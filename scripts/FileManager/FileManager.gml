@@ -1,5 +1,5 @@
 /// @func FileManager
-/// @wiki File-Handling-Index
+/// @wiki Core-Index Files
 function FileManager() {
 	static manager	= function() constructor {
 		static log	= function() {
@@ -21,3 +21,5 @@ function FileManager() {
 	return instance.struct;
 	
 }
+FileManager();
+

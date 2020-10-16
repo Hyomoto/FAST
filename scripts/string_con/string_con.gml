@@ -1,5 +1,7 @@
 /// @func string_con( values... );
 /// @params values...
+/// @returns string
+/// @wiki Core-Index Functions
 function string_con() {
 	var _string = "";
 	

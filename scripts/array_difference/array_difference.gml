@@ -1,7 +1,13 @@
 /// @func array_difference
-/// @param array
-/// @param arrays...
-/// @desc	returns the unique values in array that do not appear in arrays...
+/// @param {array}	array
+/// @param {array}	arrays...
+/// @desc Returns the first array with the entries of subsequent arrays removed.
+/// @example
+//var _diff = array_difference( [ 10, 20, 30 ], [ 10, 20 ] );
+//
+//show_debug_message( _diff );
+/// @returns array
+/// @wiki Core-Index Functions
 function array_difference( _a ) {
 	var _list	= new DsLinkedList();
 	var _result	= new DsLinkedList();

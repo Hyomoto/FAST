@@ -17,7 +17,7 @@ function FASTManager() {
 		NEXT_STEP	= STEP_BEGIN;
 		
 		/// @func delete_event
-		/// @param FAST_Event
+		/// @param FrameEvent
 		static delete_event	= function( _event ) {
 			var _list	= _event.list;
 			

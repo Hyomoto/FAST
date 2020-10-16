@@ -8,10 +8,6 @@
 // manager will be instantiated on-demand if a new Gamepad is created.
 //	related functions: Gamepad
 	GamepadManager();
-// Handles the creation and management of Logger objects. You can safely comment this code out, the
-// manager will be instantiated on-demand if a new Logger is created or a log_ function is called.
-//	related functions: Logger, log_debug, log_notify, log_nonfatal, log_critical
-	LogManager();
 	
 // Assists with storing and processing FAST database files. You can safely comment this code out, the
 // manager will be instantiated on-demand if database_load is called.

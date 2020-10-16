@@ -1,8 +1,17 @@
 /// @func Logger
-/// @param name
-/// @param length
-/// @param Outputs...
-/// @wiki Logging-Index
+/// @param {string}			name		The name of the logger, will be used to differentiate its output
+/// @param {intp}			length		The maximum length of a line before it should wrap
+/// @param {GenericOutput}	Outputs...	The outputs that this Logger will write to
+/// @desc	Logger is used to write custom debug and logging routines.  You simply give it a name,
+//		a truncation length, and a list of outputs.  The outputs should inherit from (#GenericOutput) to
+//		ensure compatibility.  A common use is to write something that should appear in the GMS Output
+//		window, as well as be written to an external file.  Additionally, the use of multiple loggers
+//		allows separating where messages are coming from easily.
+/// @example
+//global.debug	= new Logger( "debug", FAST_LOGGER_DEFAULT_LENGTH, System, new FileText( "log/debug.text" ) )
+//
+//debug.write( "Hello World!" );
+/// @wiki Core-Index Logging
 function Logger( _name, _length, _output ) constructor {
 	static toString	= function() {
 		return name;

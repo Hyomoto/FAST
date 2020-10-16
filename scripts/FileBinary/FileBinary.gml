@@ -2,7 +2,7 @@
 /// @param filename
 /// @param *read_only
 /// @param *new?
-/// @wiki File-Handling-Index
+/// @wiki Core-Index Files
 function FileBinary( _filename, _readonly, _new ) : File( _readonly ) constructor {
 	static __types = {
 		FLOAT : {

@@ -1,6 +1,8 @@
 /// @func string_to_real
 /// @param {string}	value		the string to be converted
 /// @desc	converts the provided string into a int or real if possible, also accepts hex format
+/// @returns real
+/// @wiki Core-Index Functions
 function string_to_real( _value ) {
 	var _string	= string_lower( _value );
 	var _digits = string_length( _string );

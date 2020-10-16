@@ -3,6 +3,8 @@
 /// @param {string}	divider	the character(s) to use to break up the string
 /// @param {bool}	trim	whether to trim whitespace from each item
 /// @desc	takes a string, and converts it into an array based on the specified divider
+/// @returns array
+/// @wiki Core-Index Functions
 function string_explode_reverse( _string, _divider, _trim ) {
 	var _array	= array_create( string_count( _divider, _string ) + 1 );
 	var _sep	= string_length( _divider );

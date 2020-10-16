@@ -5,7 +5,7 @@ function ComboInput() constructor {
 	static raw		= function() {
 		if ( down() ) {
 			if ( event == undefined ) {
-				event	= new FAST_Event( FAST.STEP, 0, undefined, function() {
+				event	= new FrameEvent( FAST.STEP, 0, undefined, function() {
 					if ( down() == false ) {
 						last		= false;
 						event.once	= true;

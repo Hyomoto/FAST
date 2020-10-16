@@ -29,7 +29,7 @@ function PointerManager() {
 		static add			= function( _id, _depth, _interface ) { interface.add( _id, _depth, _interface ); }
 		static toString		= function()			  { return interface.toString(); }
 		interface	= new PointerInterface();
-		event		= new FAST_Event( FAST.STEP_BEGIN, 0, undefined, function() {
+		event		= new FrameEvent( FAST.STEP_BEGIN, 0, undefined, function() {
 			if ( device == undefined ) { return; }
 			
 			if ( interface.inside( device.get_x(), device.get_y() ) ) {

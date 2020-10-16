@@ -1,6 +1,8 @@
 /// @func string_trim
 /// @param {string} string	the string to trim
 /// @desc	trims the whitespace, tabs and spaces, before and after a string
+/// @returns string
+/// @wiki Core-Index Functions
 function string_trim( _string ) {
 	var _value	= string( _string );
 	var _start	= 0;

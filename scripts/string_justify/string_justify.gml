@@ -3,6 +3,8 @@
 /// @param {int}	spaces		the number of spaces to justify to
 /// @param {int}	alignment	the alignment to use
 /// @param {string}	*character	optional: the character to use for spacing
+/// @returns string
+/// @wiki Core-Index Functions
 function string_justify( _string, _spaces, _alignment ) {
 	var _char	= ( argument_count > 3 ? argument[ 3 ] : " " );
 	var _length	= string_length( _string );

@@ -1,5 +1,12 @@
 /// @func array_unique
-/// @param array
+/// @param {array}	arrays
+/// @desc Returns the unique entries in the given array.
+/// @example
+//var _unique = array_unique( [ 10, 10, 20 ] );
+//
+//show_debug_message( _unqiue );
+/// @returns array
+/// @wiki Core-Index Functions
 function array_unique( _array ){
 	var _list	= new DsLinkedList();
 	

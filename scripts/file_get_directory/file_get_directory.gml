@@ -1,7 +1,13 @@
 /// @func file_get_directory
-/// @param directory
-/// @param mask
-/// @param sub_directories
+/// @param {string}	directory	The directory to start searching from.
+/// @param {string}	mask		Ignores files that do not match this mask.
+/// @param {bool}	sub			If `true`, will also search sub-directories.
+/// @returns DsQueue
+/// @desc	Searches the given directory for all matching files, and if sub is `true`, all sub-directories. The
+//		list of files is returned in a DsQueue.
+/// @example
+//var _files = file_get_directory( working_directory, "*.txt", false );
+/// @wiki Core-Index Files
 function file_get_directory( _directory, _mask, _sub ) {
 	var _return	= new DsQueue();
 	var _paths	= new DsStack();

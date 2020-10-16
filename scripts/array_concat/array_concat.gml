@@ -1,5 +1,12 @@
 /// @func array_concat
-/// @param arrays...
+/// @param {array}	arrays...
+/// @desc Returns the given arrays combined into one.
+/// @example
+//var _concat = array_concat( [ 10, 20 ], [ "a, "b" ] );
+//
+//show_debug_message( _concat );
+/// @returns array
+/// @wiki Core-Index Functions
 function array_concat(){
 	var _size	= 0;
 	

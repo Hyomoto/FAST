@@ -151,9 +151,9 @@ function PointerInterface( _shape ) constructor {
 	static set_dirty	= function() {
 		if ( dirty =! undefined || size <= 1 ) { return; }
 		
-		dirty	= event_create( FAST.NEXT_STEP, 0, undefined, function() {
+		dirty	= new FrameEvent( FAST.NEXT_STEP, 0, undefined, function() {
 			sort();
-		}, true );
+		}).once();
 		
 	}
 	static update	= function( _x, _y ) {

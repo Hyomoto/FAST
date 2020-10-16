@@ -106,7 +106,7 @@ function ScriptManager(){
 			}
 			
 		});
-		var _file	= new FileText( "log/scripts.txt", true );
+		var _file	= new FileText( "log/scripts.txt", false, true );
 		
 		_file.clear();
 		

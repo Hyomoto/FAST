@@ -3,6 +3,8 @@
 /// @param {string}	divider	the character(s) to use to break up the string
 /// @param {bool}	trim	whether to trim whitespace from each item
 /// @desc	takes a string, and converts it into an array based on the specified divider
+/// @returns array
+/// @wiki Core-Index Functions
 function string_explode( _string, _divider, _trim ) {
 	if ( _string == "" ) { return []; }
 	

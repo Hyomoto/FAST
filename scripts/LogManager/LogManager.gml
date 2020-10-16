@@ -1,6 +1,7 @@
 #macro FAST_LOGGER_DEFAULT_LENGTH	144
+
 /// @func LogManager
-/// @wiki Logging-Index
+/// @wiki Core-Index Logging
 function LogManager() {
 	static manager	= function() constructor {
 		static add	= function( _debugger ) {
@@ -19,19 +20,20 @@ function LogManager() {
 			
 		}
 		// close out all open loggers when program ends
-		close	= event_create( FAST.GAME_END, 0, undefined, function() {
+		close	= new FrameEvent( FAST.GAME_END, 0, undefined, function() {
 			System.write( "FAST Logging is shutting down..." );
-			
+			syslog( list );
 			var _i	= 0; repeat( ds_list_size( list ) ) {
-				list[| _i++ ].close();
+				ds_list_find_value( list, _i++ ).close();
 				
 			}
 			
-		}, true );
+		}).once();
 		list	= ds_list_create();
-		
+		syslog( "LOG ", list );
 	}
 	static instance = new Feature( "FAST Logging", "1.1a", "10/10/2020", new manager() );
 	return instance.struct;
 	
 }
+LogManager();

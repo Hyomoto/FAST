@@ -1,21 +1,26 @@
 /// @func File
-/// @param *read_only
-/// @desc	generic File handling object
+/// @param {bool}	read_only	optional: whether or not this file should be written to, default: false
+/// @desc	A generic file handling interface, should be inherited by new file types to ensure compatibility
+//		with FAST file handling functions.
 /// @example
 // var _file = new File();
 // 
 // _file.write( "Hello World!" );
-/// @wiki File-Handling-Index
+/// @wiki Core-Index Files
 function File( _readonly ) : GenericOutput() constructor {
-// # Method Declaration
+	/// @desc Resets the read position of the file back to the start.
 	static reset	= function() {
 		next	= 0;
 		
 	}
+	/// @returns inp
+	/// @desc Returns the "size" of the file. Context relies on the type of file.
 	static size		= function() {
 		return ds_list_size( contents );
 		
 	}
+	/// @returns bool
+	/// @desc Returns `true` if the source file exists.
 	static exists	= function() {
 		if ( name == undefined || file_exists( name ) == false ) {
 			return false;
@@ -26,6 +31,9 @@ function File( _readonly ) : GenericOutput() constructor {
 		}
 		
 	}
+	/// @returns mixed || null
+	/// @desc Advances the position in the file and returns the next piece of it, or `undefined` if
+	//		the end of file has been reached.
 	static read		= function() {
 		if ( next < size() ) {
 			return contents[| next++ ];
@@ -34,6 +42,8 @@ function File( _readonly ) : GenericOutput() constructor {
 		return undefined;
 		
 	}
+	/// @returns mixed || null
+	/// @desc Returns the data located in the file a the given index, or `undefined` if it doesn't exist.
 	static peek		= function( _index ) {
 		if ( _index >= 0 && _index < size() ) {
 			return contents[|  _index  ];
@@ -42,6 +52,7 @@ function File( _readonly ) : GenericOutput() constructor {
 		return undefined;
 		
 	}
+	/// @desc Inserts the given value into the file at the given index.
 	static poke		= function( _index, _value ) {
 		if ( writable == false ) { return; }
 		
@@ -51,43 +62,52 @@ function File( _readonly ) : GenericOutput() constructor {
 		}
 		
 	}
+	/// @returns mixed
+	/// @desc Writes the given value to the end of the file.
 	static write	= function( _value ) {
 		if ( writable == false ) { return; }
 		
 		ds_list_add( contents, _value );
 		
 	}
+	/// @returns inp
+	/// @desc Returns how many more reads() until the end of file.
 	static remaining= function() {
 		return size() - next;
 		
 	}
+	/// @desc Returns whether or not the end of the file has been reached.
+	/// @returns bool
 	static eof		= function() {
 		return next	== size();
 		
 	}
-	// returns true if file is writable, inheritable by structs that inherit File
+	/// @returns bool
+	/// @desc Returns `true` if file is writable, otherwise logs a file handling error. Inheritable
+	//		by child structs to check if the file is wirtable.
 	static save			= function() {
 		if ( writable ) {
 			return true;
 			
 		} else {
-			FileManager().log( undefined, instanceof( self ) + ".save", "Called on ", name, ", which is a read only file. Ignored." );
+			FileManager().log( instanceof( self ) + ".save() called on ", name, ", which is a read only file. Ignored." );
 			
 		}
 		return false;
 		
 	}
-	// saves and destroys the file
+	/// @desc Saves and cleans up the internal structures so the File can be garbage-collected safely.
 	static close	= function() {
 		save();
 		discard();
 		
 	}
-	// closes the file without saving it
+	/// @desc Cleans up the internal structures so the File can be garbage-collected safely.
 	static discard		= function() {
 		ds_list_destroy( contents );
 		
 	};
+	/// @desc Clears the file, thus making it "empty".
 	static clear	= function() {
 		ds_list_clear( contents );
 		
@@ -113,7 +133,7 @@ function File( _readonly ) : GenericOutput() constructor {
 		
 	}
 // # Variable Declaration	
-	writable	= ( _readonly == undefined ? true : _readonly == false );
+	writable	= ( _readonly != true ? true : false );
 	contents	= ds_list_create();
 	next		= 0;
 	saveIndex	= 0;

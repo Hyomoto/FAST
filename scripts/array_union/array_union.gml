@@ -1,5 +1,12 @@
 /// @func array_union
-/// @param arrays
+/// @param {array}	arrays...
+/// @desc Returns the unique entries of the given arrays combined into one.
+/// @example
+//var _union = array_union( [ 10, 20 ], [ 10, 20, 30 ] );
+//
+//show_debug_message( _union );
+/// @returns array
+/// @wiki Core-Index Functions
 function array_union(){
 	var _list	= new DsLinkedList();
 	var _array;
