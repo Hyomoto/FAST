@@ -32,6 +32,28 @@ function DsChain() constructor {
 		return links;
 		
 	}
+	/// @desc An interface for copying building copy functions for DsChain-derived data structures.
+	/// @param {Struct}			the structure that will be copied to, or `undefined` if a new one should be created
+	/// @param {constructor}	the type of structure that should be created if one isn't provided
+	/// @param {string}			the function that should be called to populate the new structure
+	/// @desc	Returns a copy of this DsChain, or copies to `target` if provided.
+	/// #returns struct
+	static copy		= function( _const, _func ) {
+		var _data	= toArray();
+		var _target	= new _const();
+		
+		with ( _target ) {
+			_func	= variable_struct_get( self, _func );
+			
+			var _i = 0; repeat ( array_length( _data ) ) {
+				_func( _data[ _i++ ] );
+				
+			}
+			
+		}
+		return _target;
+		
+	}
 	static toArray	= function() {
 		var _array	= array_create( links );
 		var _next	= chain;
@@ -54,9 +76,13 @@ function DsChain() constructor {
 		var _string	= "";
 		
 		var _i = 0; repeat( links ) {
+			if ( _i != 0 ) { _string += _divider; }
+			
 			_string	+= string( _next.value );
 			
 			_next	= _next.chain;
+			
+			++_i;
 			
 		}
 		return _string;

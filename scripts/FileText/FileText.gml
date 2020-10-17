@@ -1,7 +1,9 @@
 /// @func FileText
-/// @param filename
-/// @param *read_only
-/// @param *new?
+/// @param {string}	filename	the name of the file to open
+/// @param {bool}	read_only?	optional: whether this file should allow writing to. Default: true
+/// @param {bool}	new?		optional: whether this file should be blank. Default: false
+/// @desc	Used for creating, reading and saving text files. Files are written on a per-line basis, and
+//		calling read() will return the next line in the file.
 /// @wiki Core-Index Files
 function FileText( _filename, _readonly, _new ) : File( _readonly ) constructor {
 	/// @ignore

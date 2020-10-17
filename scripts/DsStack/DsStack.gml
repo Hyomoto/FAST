@@ -42,6 +42,14 @@ function DsStack() : DsChain() constructor {
 		return _link.value;
 		
 	}
+	/// @override
+	static copy_DsChain		= copy;
+	/// @desc	Returns a copy of this DsStack.
+	/// @returns (#DsStack)
+	static copy		= function() {
+		return copy_DsChain( DsStack, "push" );
+		
+	}
 	static is		= function( _data_type ) {
 		return _data_type == DsStack;
 		

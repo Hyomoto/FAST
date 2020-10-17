@@ -79,13 +79,13 @@ function Parser() constructor {
 	}
 	/// @desc Returns the next word in the string without advancing the parser.
 	static peek	= function() {
-		var _next	= string_find_first( " \t", content, last );
+		var _next	= string_find_first( divider, content, last );
 		
 		if ( _next == 0 ) {
-			return [ string_trim( string_copy( content, last, size() - last + 1 ) ), size() ];
+			return [ string_trim( string_delete( content, 1, last ) ), size() ];
 			
 		}
-		return [ string_trim( string_copy( content, last, _next - last ) ), _next + 1 ];
+		return [ string_trim( string_copy( content, last, _next - max( 1, last ) ) ), _next + 1 ];
 		
 	}
 	/// @desc Returns the internal string broken up into words as an array.
@@ -121,6 +121,8 @@ function Parser() constructor {
 	}
 	/// @desc the internal string
 	content	= "";
+	/// @desc The character string used to find the next breakpoint. Default: " \t" (whitespace)
+	divider	= " \t";
 	/// @desc the last position read from
 	last	= 0;
 	

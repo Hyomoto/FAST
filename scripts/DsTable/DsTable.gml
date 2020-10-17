@@ -1,5 +1,4 @@
 /// @func DsTable
-/// @wiki Core-Index Data Structures
 function DsTable() constructor {
 	static add	= function( _key, _value ) {
 		ds_map_add( map, _key, _value );

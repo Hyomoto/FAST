@@ -1,0 +1,26 @@
+# Revision h
+
+Renamed [ArrayDynamic -> ArrayList](https://github.com/Hyomoto/FASTv33/wiki/Array)
+* This also renames append() to add() to make it more internally consistent with other data structures.
+
+Split [Gamepad](https://github.com/Hyomoto/FASTv33/wiki/Input-Handling-(3.3)#gamepad)
+* Gamepad is now generic and contains no bound inputs, GamepadXbox and GamepadPlaystation are the pre-configured versions. There is no functionality changes here, this just simply provides a generic template that matches the controller in question.
+
+Renamed Scripts -> Structs
+* Previously all structs were in folders labeled Scripts. This was confusing, so now they are named Structs.
+
+Merged File Handling and Logger into Core
+* Originally the were separated out in the name of making FAST more modular, but they are core features.  Logging relies on File Handling, and all modules use Logging.
+
+# RC3
+Parser
+* Added 'divider' to make it easie to direct the basic parser to break at different places.
+
+FileCSV
+* Added FileCSV as a file type.
+
+DsChain
+* Added copy implementation to make cloning data structures easier.
+
+DsLinkedList, DsQueue, DsStack, DsWalkable
+* Added copy method.

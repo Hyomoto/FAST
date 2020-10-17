@@ -69,6 +69,12 @@ function DsWalkable() : DsLinkedList() constructor {
 		return ( step == undefined ? chain.value : step.value );
 		
 	}
+	/// @desc	Returns a copy of this DsWalkable.
+	/// @returns (#DsWalkable)
+	static copy		= function() {
+		return copy_DsChain( DsWalkable, "add" );
+		
+	}
 	static is		= function( _data_type ) {
 		return _data_type == DsWalkable;
 		

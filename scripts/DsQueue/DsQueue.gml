@@ -80,6 +80,14 @@ function DsQueue() : DsChain() constructor {
 		clearSuper();
 		
 	}
+	/// @override
+	static copy_DsChain		= copy;
+	/// @desc	Returns a copy of this DsQueue.
+	/// @returns (#DsQueue)
+	static copy		= function() {
+		return copy_DsChain( DsQueue, "enqueue" );
+		
+	}
 	static is		= function( _data_type ) {
 		return _data_type == DsQueue;
 		

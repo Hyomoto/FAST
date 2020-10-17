@@ -1,4 +1,4 @@
-/// @func array_contains( array, value )
+/// @func array_contains
 /// @param {array}	array
 /// @param {mixed}	value
 /// @desc Returns the index of the first found instance of `value` in `array`.  If it does not exist,

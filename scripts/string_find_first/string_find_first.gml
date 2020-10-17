@@ -1,4 +1,4 @@
-/// @func string_find_first( chars, string, start )
+/// @func string_find_first
 /// @param chars
 /// @param string
 /// @param start

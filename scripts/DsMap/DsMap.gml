@@ -7,6 +7,12 @@ function DsMap() constructor {
 		return _value;
 		
 	}
+	static replace	= function( _key, _value ) {
+		ds_map_replace( pointer, _key, _value );
+		
+		return _value;
+		
+	}
 	static empty	= function() {
 		return ds_map_empty( pointer );
 		
@@ -20,12 +26,6 @@ function DsMap() constructor {
 		var _undefined	= ( argument_count > 1 ? argument[ 1 ] : undefined );
 		
 		return ( is_undefined( _value ) ? _undefined : _value );
-		
-	}
-	static replace	= function( _key, _value ) {
-		ds_map_replace( pointer, _key, _value );
-		
-		return _value;
 		
 	}
 	static first	= function() {
@@ -48,12 +48,33 @@ function DsMap() constructor {
 		ds_map_read( pointer, _string );
 		
 	}
-	static is		= function( _data_type ) {
-		return _data_type == DsMap;
+	static copy		= function() {
+		var _map	= ds_map_create();
+		
+		ds_map_copy( _list, pointer );
+		
+		return _map;
+		
+	}
+	static toArray	= function() {
+		var _array	= array_create( ds_map_size( pointer ) );
+		var _next = ds_map_find_first( pointer );
+		
+		var _i = 0; repeat( array_length( pointer ) ) {
+			_array[ _i++ ]	= [ _next, ds_map_find_value( pointer, _next ) ];
+			
+			_next	= ds_map_find_next( pointer, _next );
+			
+		}
+		return _array;
 		
 	}
 	static toString	= function() {
 		return ds_map_write( pointer );
+		
+	}
+	static is		= function( _data_type ) {
+		return _data_type == DsMap;
 		
 	}
 	pointer	= ds_map_create();

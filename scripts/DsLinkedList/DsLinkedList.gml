@@ -120,6 +120,14 @@ function DsLinkedList() : DsChain() constructor {
 		clear_DsChain();
 		
 	}
+	/// @override
+	static copy_DsChain		= copy;
+	/// @desc	Returns a copy of this DsLinkedList.
+	/// @returns (#DsLinkedList)
+	static copy		= function() {
+		return copy_DsChain( DsLinkedList, "add" );
+		
+	}
 	static is		= function( _data_type ) {
 		return _data_type == DsLinkedList;
 		
