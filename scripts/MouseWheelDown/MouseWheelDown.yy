@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Special",
-    "path": "folders/FAST/Input Handling/Special.yy",
+    "name": "Mouse",
+    "path": "folders/FAST/Input Handling/Mouse.yy",
   },
   "resourceVersion": "1.0",
-  "name": "ComboInput",
+  "name": "MouseWheelDown",
   "tags": [],
   "resourceType": "GMScript",
 }

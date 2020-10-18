@@ -13,7 +13,32 @@
 //});
 /// @wiki Core-Index Events
 function FrameEvent( _event, _delay, _parameters, _function ) constructor {
-	/// @desc Tells the event it should only be run once. Can be called when the event is created, as it will still return the event.
+	/// @desc Called to update the event during the event it was assigned to.
+	static update	= function() {
+		if ( ++tick >= tock ) {
+			now();
+			
+			tick	= 0;
+			
+		}
+		
+	}
+	/// @desc Executes the event, can be used to force the event to happen now. Can be called when the
+	//		event is created, as it will return the event.
+	static now		= function() {
+		if ( ignore == false && func != undefined ) {
+			func( params );
+			
+		}
+		if ( repeats == false ) {
+			discard();
+			
+		}
+		return self;
+		
+	}
+	/// @desc Tells the event it should only be run once. Can be called when the event is created,
+	//		as it will return the event.
 	/// @returns `self`
 	static once		= function() {
 		repeats	= false;
@@ -23,7 +48,9 @@ function FrameEvent( _event, _delay, _parameters, _function ) constructor {
 	}
 	/// @desc Destroys the event.
 	static discard	= function() {
-		FAST.delete_event( self );
+		func	= undefined;
+		
+		FAST.discard.enqueue( self );
 		
 	}
 	/// @desc Returns the event as a string, for debugging.
@@ -35,12 +62,12 @@ function FrameEvent( _event, _delay, _parameters, _function ) constructor {
 		return _data_type == FrameEvent;
 		
 	}
-	/// @desc how many frames this event has been alive
+	/// @desc how many frames have passed since event creation/restart.
 	tick	= 0;
-	/// @desc what tick this event should fire on
+	/// @desc What tick this event should fire on
 	tock	= _delay;
 	/// @desc if `true`, will loop after the event fires. otherwise it is discarded.
-	repeats	= false;
+	repeats	= true;
 	/// @desc the function this event calls
 	func	= _function;
 	/// @desc the parameters that are passed to the function

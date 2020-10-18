@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Generic",
-    "path": "folders/FAST/Input Handling/Generic.yy",
+    "name": "is",
+    "path": "folders/FAST/Core/Functions/is.yy",
   },
   "resourceVersion": "1.0",
-  "name": "GenericInput",
+  "name": "is_struct_of",
   "tags": [],
   "resourceType": "GMScript",
 }

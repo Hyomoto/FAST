@@ -1,7 +1,7 @@
 {
   "parent": {
-    "name": "Wiki Pages",
-    "path": "folders/Wiki Pages.yy",
+    "name": "FASTv33",
+    "path": "FASTv33.yyp",
   },
   "resourceVersion": "1.1",
   "name": "Changelog",

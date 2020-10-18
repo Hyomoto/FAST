@@ -1,24 +1,11 @@
 # Revision h
-
-Renamed [ArrayDynamic -> ArrayList](https://github.com/Hyomoto/FASTv33/wiki/Array)
-* This also renames append() to add() to make it more internally consistent with other data structures.
-
-Split [Gamepad](https://github.com/Hyomoto/FASTv33/wiki/Input-Handling-(3.3)#gamepad)
-* Gamepad is now generic and contains no bound inputs, GamepadXbox and GamepadPlaystation are the pre-configured versions. There is no functionality changes here, this just simply provides a generic template that matches the controller in question.
-
-Renamed Scripts -> Structs
-* Previously all structs were in folders labeled Scripts. This was confusing, so now they are named Structs.
-
-Merged File Handling and Logger into Core
-* Originally the were separated out in the name of making FAST more modular, but they are core features.  Logging relies on File Handling, and all modules use Logging.
-
 ## RC4
-### Wiki
-* Updated a lot of function descriptions
-
-### New Features
-
 ### Changes
+#### Core
+Events
+* Added DeltaEvent which takes in a time as seconds, rather than frames.
+* Added now() to call a function immediately after it is created.
+
 Publisher
 * Publisher, PublisherChannel and PublisherManager merged back into core. They are basic tools, and aren't
 complex enough to justfiy being a separate module.
@@ -40,12 +27,33 @@ been called on this Logger. Written can be set to 0 to disable automatic saving.
 LogManager
 * Added log()
 
+is_struct_of()
+* Checks if the given structure is of the given type. Will call the is() method on a structure, if it
+exists, or try to work it out from the parent constructor if able. Allows checking against the script
+function rather than a string.
+
+#### Input Handling
+GenericInput
+* Removed constant. This is only relevant to inputs that have a constant.
+* Added missing is() method.
+
+KeyboardKey
+* Added string conversion for missing keycodes -=[];',./`
+
+MouseWheel
+* Split into MouseWheelUp and MouseWheelDown. Removes mb_wheel_up and mb_wheel_down constants which no
+longer have any purpose.
+
 ### Bug Fixes
+#### Core
 Publisher
 * Properly calls notify() on the channel rather than iterating itself.
 
+FrameEvent
+* Defaulted to not repeat, when `once()` should be called to create a single-run event.
 
 ## RC3
+### New Features
 Parser
 * Added 'divider' to make it easie to direct the basic parser to break at different places.
 
@@ -57,3 +65,20 @@ DsChain
 
 DsLinkedList, DsQueue, DsStack, DsWalkable
 * Added copy method.
+
+### Fixes
+* Updated a lot of function descriptions
+
+## RC2
+### Changes
+Renamed [ArrayDynamic -> ArrayList](https://github.com/Hyomoto/FASTv33/wiki/Array)
+* This also renames append() to add() to make it more internally consistent with other data structures.
+
+Split [Gamepad](https://github.com/Hyomoto/FASTv33/wiki/Input-Handling-(3.3)#gamepad)
+* Gamepad is now generic and contains no bound inputs, GamepadXbox and GamepadPlaystation are the pre-configured versions. There is no functionality changes here, this just simply provides a generic template that matches the controller in question.
+
+Renamed Scripts -> Structs
+* Previously all structs were in folders labeled Scripts. This was confusing, so now they are named Structs.
+
+Merged File Handling and Logger into Core
+* Originally the were separated out in the name of making FAST more modular, but they are core features.  Logging relies on File Handling, and all modules use Logging.

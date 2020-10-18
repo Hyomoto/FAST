@@ -6,7 +6,7 @@
     "path": "folders/FAST/Input Handling/Generic.yy",
   },
   "resourceVersion": "1.0",
-  "name": "GenericInput",
+  "name": "InputCombo",
   "tags": [],
   "resourceType": "GMScript",
 }

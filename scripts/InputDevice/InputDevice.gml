@@ -3,28 +3,50 @@
 /// @wiki Input-Handling-Index
 function InputDevice() constructor { 
 	static input	= function( _name ) constructor {
-		static raw		= function() {
-			var _i = 0; repeat( size ) {
-				if ( inputs[ _i++ ].down() ){
-					if ( event == undefined ) {
-						event	= new FrameEvent( FAST.STEP, 0, undefined, function() {
-							if ( raw() == false ) {
-								last		= false;
-								event.once	= true;
-								event		= undefined;
+		//static raw		= function() {
+		//	var _i = 0; repeat( size ) {
+		//		if ( inputs[ _i++ ].down() ){
+		//			if ( event == undefined ) {
+		//				event	= new FrameEvent( FAST.STEP, 0, undefined, function() {
+		//					if ( down() == false ) {
+		//						last		= false;
+		//						event.once	= true;
+		//						event		= undefined;
 								
-							}
+		//					}
 							
-						});
-						last	= true;
+		//				});
+		//				last	= true;
 						
-					}
-					return true;
+		//			}
+		//			return true;
 					
-				}
+		//		}
+				
+		//	}
+		//	return false;
+			
+		//}
+		static state	= function() {
+			var _i = 0; repeat( array_length( inputs ) ) {
+				if ( inputs[ _i++ ].down() == false ) { return false; }
 				
 			}
-			return false;
+			if ( event == undefined ) {
+				last	= true;
+				event	= new FrameEvent( FAST.STEP_END, 0, undefined, function() {
+					if ( state() == false ) {
+						event.discard();
+						
+						last	= false;
+						event	= undefined;
+						
+					}
+					
+				});
+				
+			}
+			return true;
 			
 		}
 		static bind		= function( _input ) {
@@ -32,19 +54,19 @@ function InputDevice() constructor {
 			
 		}
 		static pressed	= function() {
-			return ( last == false && raw() );
+			return last == false && state();
 			
 		}
 		static held		= function() {
-			return ( last == true && raw() );
+			return ( last == true && state() );
 			
 		}
 		static released	= function() {
-			return ( last == true && raw() == false );
+			return ( state() == false && last == true );
 			
 		}
 		static toString	= function() {
-			return name + "(" + string( raw() ) + ")";
+			return name + "(" + string( state() ) + ")";
 			
 		}
 		name	= _name;

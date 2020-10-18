@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Generic",
-    "path": "folders/FAST/Input Handling/Generic.yy",
+    "name": "Events",
+    "path": "folders/FAST/Core/Events.yy",
   },
   "resourceVersion": "1.0",
-  "name": "GenericInput",
+  "name": "DeltaEvent",
   "tags": [],
   "resourceType": "GMScript",
 }

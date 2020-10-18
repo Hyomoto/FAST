@@ -1,7 +1,9 @@
 #macro GAMEPAD_MAXIMUM_VIRTUAL_PORTS	4
-#macro Gamepads	GamepadManager()
 
 /// @func GamepadManager
+/// @desc	GamepadManager is a wrapper for internal gamepad system functions. It hooks the system up
+//		to the FAST event framework so it can listen for controller connects and disconnects, as well
+//		as manages the virtual port mapping.
 /// @wiki Input-Handling-Index
 function GamepadManager() {
 	static manager	= function() constructor {
@@ -17,7 +19,6 @@ function GamepadManager() {
 			logger.write( _string );
 			
 		}
-		
 		static port	= function( _port ) constructor {
 			static gain_pad	= function( _pad ) {
 				if ( gamepad == undefined ) { return; }
