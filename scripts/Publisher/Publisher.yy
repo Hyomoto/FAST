@@ -3,7 +3,7 @@
   "isCompatibility": false,
   "parent": {
     "name": "Structs",
-    "path": "folders/FAST/Publisher/Structs.yy",
+    "path": "folders/FAST/Core/Publisher/Structs.yy",
   },
   "resourceVersion": "1.0",
   "name": "Publisher",

@@ -2,9 +2,9 @@
 /// @param {string}	directory	The directory to start searching from.
 /// @param {string}	mask		Ignores files that do not match this mask.
 /// @param {bool}	sub			If `true`, will also search sub-directories.
-/// @returns DsQueue
-/// @desc	Searches the given directory for all matching files, and if sub is `true`, all sub-directories. The
-//		list of files is returned in a DsQueue.
+/// @returns (#DsQueue)
+/// @desc	Searches the given directory for all matching files, and if sub is `true`, all sub-directories
+//				and returns them in a (#DsQueue)
 /// @example
 //var _files = file_get_directory( working_directory, "*.txt", false );
 /// @wiki Core-Index Files

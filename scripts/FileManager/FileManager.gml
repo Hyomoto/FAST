@@ -1,4 +1,5 @@
 /// @func FileManager
+/// @desc	FileManager is a wrapper for internal file system functions.
 /// @wiki Core-Index Files
 function FileManager() {
 	static manager	= function() constructor {

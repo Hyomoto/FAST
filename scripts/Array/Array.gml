@@ -1,6 +1,6 @@
 /// @func Array
-/// @param array/size
-/// @param default
+/// @param array/size	{mixed}	Either the starting array to use, or the size of the array to create.
+/// @param default		{mixed}	optional: if provided, will fill the newly created array. Default: `undefined`
 /// @desc A wrapper for primitive arrays and an interface for building more complex ones.
 /// @example
 // array = new Array( 10, 0 );
@@ -115,7 +115,7 @@ function Array( _size ) constructor {
 		return _data_type == Array;
 		
 	}
-	/// @desc the internal array
+	/// @param {array} content The internal array.
 	content	= 0;
 	
 	if ( is_array( _size ) ) {

@@ -4,6 +4,8 @@ if ( FAST_DISABLE_EVENTS != true ) {
 	room_instance_add( room_first, 0, 0, __FASTtool );
 	
 }
+/// @desc	FASTManager is a wrapper for internal FAST system functions.  It provides hooks for the
+//		event system.
 function FASTManager() {
 	static manager	= function() constructor {
 		static CREATE		= ds_list_create();

@@ -1,5 +1,13 @@
 /// @func DsTree
-/// @desc DsTree is a traversable tree-like data structure
+/// @desc	DsTree is a traversable tree-like data structure. It starts from a root node which can be
+//		traversed through branches to find leaves. Additionally, every branch is itself a DsTree, which
+//		means you can return a branch, and then use that as a root for further searching.
+/// @example
+//var _tree	= new DsTree();
+//
+//_tree.set( "branch.value", 10 );
+//
+//show_debug_message( tree.get( "branch.value" ) );
 /// @wiki Core-Index Data Structures
 function DsTree() constructor {
 	// finds the node at the given path and returns it
@@ -190,7 +198,9 @@ function DsTree() constructor {
 		return "node :: map " + string( table ) + ", entries " + string( ds_map_size( table ) );
 		
 	}
+	/// @desc A map of the branches and leaves connected to this tree.
 	table	= ds_map_create();
+	/// @desc Set to `true` to indicate this branch contains paths to other branches.
 	branch	= false;
 	
 }

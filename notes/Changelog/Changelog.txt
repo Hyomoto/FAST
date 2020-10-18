@@ -12,7 +12,11 @@ Renamed Scripts -> Structs
 Merged File Handling and Logger into Core
 * Originally the were separated out in the name of making FAST more modular, but they are core features.  Logging relies on File Handling, and all modules use Logging.
 
-# RC3
+## RC4
+### Wiki
+* Updated a lot of function descriptions
+
+### New Features
 Parser
 * Added 'divider' to make it easie to direct the basic parser to break at different places.
 
@@ -24,3 +28,30 @@ DsChain
 
 DsLinkedList, DsQueue, DsStack, DsWalkable
 * Added copy method.
+
+### Changes
+Publisher
+* Publisher, PublisherChannel and PublisherManager merged back into core. They are basic tools, and aren't
+complex enough to justfiy being a separate module.
+* All publisher functions were removed. There is no longer any "default" Publisher framework, as creating
+your own and using the one I built was roughly the same amount of work.
+* PublisherManager is no longer a default Publisher, but rather a proper manager like the others.
+
+GenericOutput
+* Removed clear() and size(). They didn't make any sense outside of the context of the outputs. Structs such
+as File still have size() and clear(), but SystemOutput does not, for example.
+
+Logger
+* Removed clear() call. This was a weird hackaround because there was no way to start a "new" file when
+Logger was written.  Now that you can explicitly call for a new file, it's redundant.  Plus, if the user
+wants to append rather that overwrite, this ensures that decisions is theirs to make.
+* Added written variable. No longer checks outputs for size, but rather how many writes() have
+been called on this Logger. Written can be set to 0 to disable automatic saving.
+
+LogManager
+* Added log()
+
+### Bug Fixes
+Publisher
+* Properly calls notify() on the channel rather than iterating itself.
+

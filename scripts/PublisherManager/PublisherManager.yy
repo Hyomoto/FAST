@@ -3,7 +3,7 @@
   "isCompatibility": false,
   "parent": {
     "name": "Publisher",
-    "path": "folders/FAST/Publisher.yy",
+    "path": "folders/FAST/Core/Publisher.yy",
   },
   "resourceVersion": "1.0",
   "name": "PublisherManager",

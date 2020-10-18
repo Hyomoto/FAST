@@ -13,17 +13,16 @@
 //debug.write( "Hello World!" );
 /// @wiki Core-Index Logging
 function Logger( _name, _length, _output ) constructor {
-	static toString	= function() {
-		return name;
-		
-	}
+	/// @param {mixed}	value	The value to write to the output. Will be converted to a string.
+	/// @desc	Writes `value` to the outputs. If the string to be written is longer than the max
+	//		length of the Logger, the string will be split at the nearest space, tab or hyphen.
 	static write	= function( _value ) {
 		var _start	= 0;
 		
 		_value	= name + " :: " + string( _value );
 		
 		while ( string_length( _value ) - _start > length ) {
-			_start	= string_find_first( "	 -", _value, _start + length );
+			_start	= string_find_first( " \t-", _value, _start + length );
 			
 			if ( string_char_at( _value, _start ) == "-" ) {
 				_value	= string_insert( "\n", _value, _start + 1 );
@@ -34,37 +33,43 @@ function Logger( _name, _length, _output ) constructor {
 			}
 			
 		}
-		var _i = 0; repeat( array_length( outputs ) ) {
-			outputs[ _i ].write( _value );
+		if ( ++written >= writeAt && writeAt > 0 ) {
+			var _i = 0; repeat( array_length( outputs ) ) {
+				outputs[ _i ].write( _value );
+				outputs[ _i ].save( true );
+				++_i;
+			}
+			written	= 0;
 			
-			if ( outputs[ _i ].size() >= writeAt ) {
-				outputs[ _i ].save();
+		} else {
+			var _i = 0; repeat( array_length( outputs ) ) {
+				outputs[ _i ].write( _value );
+				++_i;
 				
 			}
-			++_i;
 			
 		}
 		
 	}
-	static close	= function( _value ) {
+	/// @desc Calls close() on all of the provided outputs. 
+	static close	= function() {
 		var _i = 0; repeat( array_length( outputs ) ) {
-			outputs[ _i++ ].close( _value );
+			outputs[ _i++ ].close();
 			
 		}
-		System.write( "Logger ", name, " has been closed." );
+		LogManager().log( "Logger ", name, " has been closed." );
 		
 	}
-	static clear	= function( _value ) {
-		var _i = 0; repeat( array_length( outputs ) ) {
-			outputs[ _i++ ].clear( _value );
-			
-		}
+	/// @desc Returns the name of this Logger, for debugging purposes.
+	static toString	= function() {
+		return name;
 		
 	}
 	static is		= function( _data_type ) {
 		return _data_type == Logger;
 		
 	}
+	/// @desc An array of the outputs this Logger writes to.
 	outputs	= array_create( argument_count - 2 );
 	
 	var _i = 2; repeat( argument_count - 2 ) {
@@ -73,11 +78,15 @@ function Logger( _name, _length, _output ) constructor {
 		++_i;
 		
 	}
+	/// @desc The name of this Logger.
 	name	= _name;
+	/// @desc The max characters before a string should be split to a new line.
 	length	= _length;
+	/// @desc How many entries before save() is called on the outputs. Settings this to 0 will disable this behavior.
 	writeAt	= 40;
+	/// @desc How many entries have been written to this Logger since the last save
+	written	= 0;
 	
-	clear();
 	write( "log opened: " + date_datetime_string(date_current_datetime()) );
 	
 	LogManager().add( self );

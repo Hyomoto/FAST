@@ -1,16 +1,18 @@
 /// @func ArrayList
-/// @param size
-/// @param *default
+/// @param array/size	{mixed}	Either the starting array to use, or the size of the array to create.
+/// @param default		{mixed}	optional: if provided, will fill the newly created array. Default: `undefined`
 /// @desc An array that has the same functionality as a list. The array size is managed internally, and
 //		when entries are added or removed, the array will grow to accomidate future values.  It does not
 //		deallocate when shrunk.  Thus you should alway use methods to interact with the array to ensure
 //		it is not destabilized.  You can change the `aggressiveness` to affect how much space is allocated
 //		when the array grows.
 /// @example
-//array = new ArrayList( 10, 0 );
+//var _array = new ArrayList( 10, 0 );
 //
-//array.insert( 5, 10 );
-//array.remove( 0 );
+//_array.insert( 5, 10 );
+//_array.remove( 0 );
+//
+//show_debug_message( _array );
 /// @wiki Core-Index Arrays
 function ArrayList( _size ) : Array( _size ) constructor {
 	/// @override

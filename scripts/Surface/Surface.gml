@@ -70,15 +70,7 @@ function Surface( _width, _height ) constructor {
 		surface_set_target( surface );
 		
 	}
-	//static per_frame	= function( _per_frame ) {
-	//	perFrame	= _per_frame;
-		
-	//}
-	//static refresh	= function() {
-	//	redraw	= true;
-		
-	//}
-	/// @desc The same as calling `surface_set_target( surface )`
+	/// @desc The same as calling `surface_reset_target()`
 	static reset	= function() {
 		if ( surface_get_target() == surface ) {
 			surface_reset_target();
@@ -106,7 +98,5 @@ function Surface( _width, _height ) constructor {
 	height		= _height;
 	// @desc when set to `true`, will trigger a surface redraw on the next frame
 	redraw		= false;
-	// when set to `false`, surface.update() will only return `true` if redraw is set or the surface disappears from memory. Default: true
-	// perFrame	= ( _per_frame == undefined ? true : _per_frame );
 	
 }

@@ -1,9 +1,23 @@
 #macro FAST_LOGGER_DEFAULT_LENGTH	144
 
 /// @func LogManager
+/// @desc	LogManager is a wrapper for internal logging system functions. It hooks the system up
+//		to the FAST event framework, and saves open files when the program closes.
 /// @wiki Core-Index Logging
 function LogManager() {
 	static manager	= function() constructor {
+		static log	= function() {
+			static logger	= new Logger( "file", FAST_LOGGER_DEFAULT_LENGTH, System );
+			
+			var _string	= "";
+			
+			var _i = 0; repeat( argument_count ) {
+				_string	+= string( argument[ _i++ ] );
+				
+			}
+			logger.write( _string );
+			
+		}
 		static add	= function( _debugger ) {
 			ds_list_add( list, _debugger );
 			

@@ -1,7 +1,8 @@
 /// @func FileBinary
-/// @param filename
-/// @param *read_only
-/// @param *new?
+/// @param {string}	filename	the name of the file to open
+/// @param {bool}	read_only?	optional: whether this file should allow writing to. Default: true
+/// @param {bool}	new?		optional: whether this file should be blank. Default: false
+/// @desc	An implementation for binary files. They support writing reals, strings, and arrays.
 /// @wiki Core-Index Files
 function FileBinary( _filename, _readonly, _new ) : File( _readonly ) constructor {
 	static __types = {

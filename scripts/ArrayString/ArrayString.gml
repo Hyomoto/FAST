@@ -1,12 +1,13 @@
 /// @func ArrayString
-/// @param size
-/// @param *default
-/// @example
+/// @param array/size	{mixed}	Either the starting array to use, or the size of the array to create.
+/// @param default		{mixed}	optional: if provided, will fill the newly created array. Default: `undefined`
 /// @desc An Array wrapper specifically for holding and sorting strings.
 /// @example
-//array = new ArrayString( "Hello", "Amanda", "Cars", "Banana" );
+//var _array = new ArrayString( "Hello", "Amanda", "Cars", "Banana" );
 //
-//array.sort( true );
+//_array.sort( true );
+//
+//show_debug_message( _array );
 /// @wiki Core-Index Arrays
 function ArrayString( _size ) : Array( _size ) constructor {
 	/// @override
