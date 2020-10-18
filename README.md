@@ -7,7 +7,7 @@ by Devon Mullane<br>
 Check the <a href="https://github.com/Hyomoto/FASTv33/wiki">Wiki</a> for the most up-to-date documentation on each module.
 </p>
 <br>
-FAST is a modular library that provides easy-to-use tools to get GMS developers away from boilerplate tasks and onto building their games. There is no genre-specific code or implementation found here. Instead, FAST focuses powerful, common-use tools that provide general utility to fill the gaps in GML functions and tedious framework tasks. There are modules for common tasks like input and file handling, as well as power-user features such as scripting and databases. In short, FAST can work with every game, and compliment any game made with GMS2.3 or later.
+FAST is a modular library that provides easy-to-use tools to get GMS developers away from boilerplate tasks and onto building their games. There is no genre-specific code or implementation found here. Instead, FAST focuses powerful, common-use tools that provide general utility to fill the gaps in GML functions and tedious framework tasks. The Core library offers up publisher, event and file frameworks, while modules extend it into more specific tasks such as input handling and resolution scaling, or power-user features such as scripting and databases. In short, FAST can work with every game, and compliment any game made with GMS2.3 or later.
 <br><br>
 <h3>
 How do I import FAST into my project?
