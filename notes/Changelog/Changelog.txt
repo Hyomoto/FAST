@@ -17,17 +17,6 @@ Merged File Handling and Logger into Core
 * Updated a lot of function descriptions
 
 ### New Features
-Parser
-* Added 'divider' to make it easie to direct the basic parser to break at different places.
-
-FileCSV
-* Added FileCSV as a file type.
-
-DsChain
-* Added copy implementation to make cloning data structures easier.
-
-DsLinkedList, DsQueue, DsStack, DsWalkable
-* Added copy method.
 
 ### Changes
 Publisher
@@ -55,3 +44,16 @@ LogManager
 Publisher
 * Properly calls notify() on the channel rather than iterating itself.
 
+
+## RC3
+Parser
+* Added 'divider' to make it easie to direct the basic parser to break at different places.
+
+FileCSV
+* Added FileCSV as a file type.
+
+DsChain
+* Added copy implementation to make cloning data structures easier.
+
+DsLinkedList, DsQueue, DsStack, DsWalkable
+* Added copy method.

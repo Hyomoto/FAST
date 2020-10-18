@@ -1,5 +1,16 @@
 /// @func PublisherChannel
-/// @desc	A simple publisher-subscriber framework.
+/// @desc	A simple publisher-subscriber framework. Methods are bound to the PublisherChannel, and called
+//		with the supplied parameters when a channel is notified they belong to.  These methods are
+//		called at the scope they are bound, which means they are run as if they were a part of the
+//		subscribing instance.  Thus any number of instances can subscribe to a single PublisherChannel,
+//		or even the same one multiple times if desired.
+/// @example
+//var _channel	= new PublisherChannel()
+//
+//_channel.add( function( _message ) {
+//  show_debug_message( _message );
+//}
+//_channel.notify( "Hello World!" );
 /// @wiki Core-Index Publisher
 function PublisherChannel() : DsLinkedList() constructor {
 	/// @override

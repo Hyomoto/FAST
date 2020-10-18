@@ -5,6 +5,7 @@
 //		called at the scope they are bound, which means they are run as if they were a part of the
 //		subscribing instance.  Thus a single instance can subscribe to multiple channels, or even
 //		the same channel multiple times if desired.
+// >*NOTE: Publisher makes use of dynamic resources, and so should always be destroyed when no longer needed to prevent memory leaks which will slow down and eventually crash your game.*
 /// @example
 //var _achievement	= new Publisher()
 //
