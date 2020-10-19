@@ -35,7 +35,7 @@ function PublisherChannel() : DsLinkedList() constructor {
 		repeat ( links ) {
 			_seek.value( _message );
 			
-			_seek	= _seek.next();
+			_seek	= next( _seek );
 			
 		}
 		

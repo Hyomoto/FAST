@@ -15,6 +15,7 @@ function FASTManager() {
 		static STEP_BEGIN	= ds_list_create();
 		static STEP			= ds_list_create();
 		static STEP_END		= ds_list_create();
+		static ASYNC_SYSTEM	= ds_list_create();
 		
 		NEXT_STEP	= STEP_BEGIN;
 		

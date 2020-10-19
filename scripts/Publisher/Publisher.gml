@@ -108,7 +108,7 @@ function Publisher() constructor {
 	channels	= ds_map_create();
 	
 	var _i = 0; repeat( argument_count ) {
-		channel_add( argument[ _i ] );
+		channel_add( argument[ _i++ ] );
 		
 	}
 	

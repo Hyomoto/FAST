@@ -88,7 +88,7 @@ function Gamepad() constructor {
 	padIndex	= -1;
 	
 	if ( port == undefined ) {
-		log_notify( undefined, "Gamepad", "No virtual ports available." );
+		GamepadManager().log( "Gamepad could not be connected, no virtual ports available." );
 		
 	}
 	
