@@ -58,7 +58,7 @@ function InputDevice() constructor {
 			
 		}
 		static held		= function() {
-			return ( last == true && state() );
+			return ( state() &&  last == true );
 			
 		}
 		static released	= function() {

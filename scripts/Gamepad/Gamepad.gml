@@ -31,10 +31,6 @@ function Gamepad() constructor {
 		
 	}
 	static inputAxis	= function( _axish, _axisv, _gamepad ) constructor {
-		static raw		= function() {
-			return false;
-			
-		}
 		static degree	= function() {
 			return point_direction( 0, 0, gamepad_axis_value( gamepad.padIndex, axish ), gamepad_axis_value( gamepad.padIndex, axisv ) );
 			
