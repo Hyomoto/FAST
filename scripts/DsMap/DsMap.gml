@@ -1,12 +1,20 @@
 /// @func DsMap
 /// @wiki Core-Index Data Structures
 function DsMap() constructor {
+	/// @param {string}	key	The key that will be used to retrieve this value.
+	/// @param {mixed}	value	The value to be assigned to the key.
+	/// @desc Adds the specified key-value pair to the map.
+	/// @returns mixed
 	static add	= function( _key, _value ) {
 		ds_map_add( pointer, _key, _value );
 		
 		return _value;
 		
 	}
+	/// @param {string}	key	The key that will be used to retrieve this value.
+	/// @param {mixed}	value	The value to be assigned to the key.
+	/// @desc Adds the specified key-value pair if it doesn't exist, and replaces it if it does.
+	/// @returns mixed
 	static replace	= function( _key, _value ) {
 		ds_map_replace( pointer, _key, _value );
 		
@@ -14,17 +22,25 @@ function DsMap() constructor {
 		
 	}
 	/// @param key
-    /// @param value to set if key does not have a value already
-    /// @desc If the value read at {key} is undefined, the value at {key} assumes the value of {value}
-    static assume = function( _key, _value ) {
-        var _r = read(_key);
-        return (is_undefined( _r ) ? replace( _key, _value ) : _r );
-    }
-	
+	/// @param value to set if key does not have a value already
+	/// @desc If the value read at {key} is undefined, the value at {key} assumes the value of {value}
+	/// @returns mixed
+	static assume = function( _key, _value ) {
+		var _read = get( _key );
+
+		if ( _read == undefined ) {
+		  _read = replace( _key, _value );
+
+		}
+		return _read;
+		
+	}
+	/// @desc Returns true if the DsMap is empty
 	static empty	= function() {
 		return ds_map_empty( pointer );
 		
 	}
+	/// @desc Returns the number of elements in the DsMap
 	static size	= function() {
 		return ds_map_size( pointer );
 		
