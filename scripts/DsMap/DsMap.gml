@@ -13,6 +13,14 @@ function DsMap() constructor {
 		return _value;
 		
 	}
+	/// @param key
+    /// @param value to set if key does not have a value already
+    /// @desc If the value read at {key} is undefined, the value at {key} assumes the value of {value}
+    static assume = function( _key, _value ) {
+        var _r = read(_key);
+        return (is_undefined( _r ) ? replace( _key, _value ) : _r );
+    }
+	
 	static empty	= function() {
 		return ds_map_empty( pointer );
 		
