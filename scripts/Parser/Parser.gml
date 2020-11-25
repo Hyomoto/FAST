@@ -85,7 +85,7 @@ function Parser() constructor {
 			return [ string_trim( string_delete( content, 1, last ) ), size() ];
 			
 		}
-		return [ string_trim( string_copy( content, last, _next - max( 1, last ) ) ), _next + 1 ];
+		return [ string_trim( string_copy( content, last, _next - max( 1, last ) ) ), _next ];
 		
 	}
 	/// @desc Returns the internal string broken up into words as an array.
