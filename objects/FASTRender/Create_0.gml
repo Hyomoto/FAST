@@ -4,6 +4,7 @@ if ( RenderManager().instance != noone ) {
 	exit;
 	
 }
+/// @ignore
 RenderManager().instance	= id;
 
 application_surface_draw_enable( false );

@@ -93,6 +93,8 @@ function DsList() constructor {
 		
 	}
 	pointer	= ds_list_create();
+	//ref		= gc_list()
+	//pointer	= ref.pointer;
 	
 	var _i = 0; repeat( argument_count ) {
 		add( argument[ _i++ ] );

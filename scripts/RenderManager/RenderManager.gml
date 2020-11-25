@@ -1,5 +1,12 @@
 /// @func RenderManager
 /// @param *render_object
+/// @desc	Provides an interface for setting up and calling functions as part of the FAST render.  You are
+//		able to override the default FASTRender object by providing it as an argument to this function, as
+//		well as set up internal resolution and scaling parameters.  These functions can be called after the
+//		program starts, but it is generally best to call them as part of an initialization script.
+/// @example
+//RenderManager().set_resolution( 1280, 720 )
+//RenderManager().set_precision( 0.5 )
 /// @wiki Render-Index
 function RenderManager() {
 	static render	= function( _render ) constructor {
@@ -51,7 +58,7 @@ function RenderManager() {
 			window_set_rectangle( _x, _y, window_width, window_height );
 			
 		}
-		static use_view	= function( _true ) {
+		static use_views	= function( _true ) {
 			bUseViews	= _true;
 			
 		}

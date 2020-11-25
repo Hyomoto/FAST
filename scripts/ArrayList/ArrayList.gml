@@ -124,8 +124,8 @@ function ArrayList( _size ) : Array( _size ) constructor {
 	} else {
 		var _default	= ( argument_count > 1 ? argument[ 1 ] : undefined );
 		
-		length	= ceil( _size == 0 ? 10 : _size * aggression );
-		content	= array_create( length, _default );
+		length	= ceil( _size );
+		content	= array_create( _size == 0 ? 10 : _size * aggression, _default );
 		
 	}
 	

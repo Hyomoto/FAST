@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Generic",
-    "path": "folders/FAST/Input Handling/Generic.yy",
+    "name": "Structs",
+    "path": "folders/FAST/Render/Structs.yy",
   },
   "resourceVersion": "1.0",
-  "name": "GenericInput",
+  "name": "RenderList",
   "tags": [],
   "resourceType": "GMScript",
 }

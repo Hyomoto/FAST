@@ -1,14 +1,16 @@
 // # oRenderStack v2.1b by Hyomoto
 //	provides basic draw-order handling
-// return the width of the provided surface
+/// @desc returns the width of the render surface
 width	= function() {
 	return surface.width;
 	
 }
+/// @desc returns the height of the render surface
 height	= function() {
 	return surface.height;
 	
 }
+/// @params {int}	ids...	Adds the instance ids to this render.
 attach	= function( _id ) {
 	ds_list_add( objects, _id );
 	

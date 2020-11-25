@@ -3,7 +3,7 @@
 /// @desc	Converts keyboard inputs into a format used by (#InputDevice). KeyboardKey will also
 //		interpret the -=[]\;',./ characters if provided.
 /// @wiki Input-Handling-Index Keyboard
-function KeyboardKey( _constant ) : GenericInput( _constant ) constructor {
+function KeyboardKey( _constant ) : InputGeneric( _constant ) constructor {
 	static down	= function() {
 		return keyboard_check( constant );
 		

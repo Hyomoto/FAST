@@ -7,6 +7,10 @@ function Shape() constructor {
 		y	= _y;
 		
 	}
+	static is	= function( _data_type ) {
+		return _data_type == Shape;
+		
+	}
 	x	= 0;
 	y	= 0;
 	

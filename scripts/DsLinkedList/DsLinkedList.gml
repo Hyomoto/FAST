@@ -33,10 +33,6 @@ function DsLinkedList() : DsChain() constructor {
 		
 		while ( _seek != undefined ) {
 			if ( _seek == _link ) {
-				if ( _link == step ) {
-					next();
-					
-				}
 				if ( _last != undefined ) {
 					_last.chain	= _link.chain;
 					

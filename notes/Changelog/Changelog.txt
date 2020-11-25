@@ -33,7 +33,7 @@ exists, or try to work it out from the parent constructor if able. Allows checki
 function rather than a string.
 
 #### Input Handling
-GenericInput
+InputGeneric
 * Removed constant. This is only relevant to inputs that have a constant.
 * Added missing is() method.
 

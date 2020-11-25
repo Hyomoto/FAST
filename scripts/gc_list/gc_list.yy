@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Pointer",
-    "path": "folders/FAST/Pointer.yy",
+    "name": "Functions",
+    "path": "folders/FAST/Core/Garbage/Functions.yy",
   },
   "resourceVersion": "1.0",
-  "name": "PointerDevice",
+  "name": "gc_list",
   "tags": [],
   "resourceType": "GMScript",
 }

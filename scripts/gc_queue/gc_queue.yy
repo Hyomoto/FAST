@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "FASTv33",
-    "path": "FASTv33.yyp",
+    "name": "Functions",
+    "path": "folders/FAST/Core/Garbage/Functions.yy",
   },
   "resourceVersion": "1.0",
-  "name": "testScript",
+  "name": "gc_queue",
   "tags": [],
   "resourceType": "GMScript",
 }

@@ -1,6 +1,13 @@
-
 fast	= FASTManager();
 
+if ( fast.start ) {
+	syslog( "dupe found, death for me." );
+	
+	instance_destroy();
+	
+	exit;
+	
+}
 System.write( string_repeat( "~", 40 ) );
 System.write( fast );
 System.write( string_repeat( "~", 40 ) );

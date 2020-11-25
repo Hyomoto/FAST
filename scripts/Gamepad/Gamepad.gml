@@ -1,6 +1,9 @@
 /// @func Gamepad
 /// @wiki Input-Handling-Index
 function Gamepad() constructor {
+	/// @param {int}		contant	The gamepad button constant to bind.
+	/// @param {Gamepad}	gamepad	This should generally be `self`, as the inputs much reach back to Gamepad to find the pad index.
+	/// @desc A wrapper GML's gamepad button inputs.
 	static input	= function( _constant, _gamepad ) constructor {
 		static pressed		= function() {
 			return gamepad_button_check_pressed( gamepad.padIndex, constant );
@@ -10,8 +13,6 @@ function Gamepad() constructor {
 			return gamepad_button_check( gamepad.padIndex, constant );
 			
 		}
-		// this is for compatibility with InputDevice
-		static down			= held;
 		static released		= function() {
 			return gamepad_button_check_released( gamepad.padIndex, constant );
 			
@@ -20,6 +21,8 @@ function Gamepad() constructor {
 			return gamepad_button_value( gamepad.padIndex, constant );
 			
 		}
+		// this is for compatibility with InputDevice
+		static down			= held;
 		static toString	= function() {
 			return string( constant ) + "(" + string( pressed() ) + ", " + string( magnitude() ) + ")";
 			
@@ -30,6 +33,9 @@ function Gamepad() constructor {
 		last		= false;
 		
 	}
+	/// @param {int}		contant	The gamepad axis constant to bind.
+	/// @param {Gamepad}	gamepad	This should generally be `self`, as the inputs much reach back to Gamepad to find the pad index.
+	/// @desc A wrapper GML's gamepad axis inputs.
 	static inputAxis	= function( _axish, _axisv, _gamepad ) constructor {
 		static degree	= function() {
 			return point_direction( 0, 0, gamepad_axis_value( gamepad.padIndex, axish ), gamepad_axis_value( gamepad.padIndex, axisv ) );
@@ -84,7 +90,9 @@ function Gamepad() constructor {
 		gamepad_set_axis_deadzone( padIndex, _amount );
 		
 	}
+	/// @desc The port this gamepad is plugged into. You can get the port number via port.portId if this gamepad is plugged into a port.
 	port		= GamepadManager().get_port( self );
+	/// @desc The pad index this Gamepad is used.
 	padIndex	= -1;
 	
 	if ( port == undefined ) {
