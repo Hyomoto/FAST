@@ -1,5 +1,5 @@
-/// @func gc_stack
-function gc_stack() {
+/// @func gc_stack_create
+function gc_stack_create() {
 	var _list	= { pointer : ds_stack_create() };
 	
 	GarbageManager().add( {

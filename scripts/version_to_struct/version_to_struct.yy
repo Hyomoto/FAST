@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "compatbility",
-    "path": "folders/FAST/Core/Functions/compatbility.yy",
+    "name": "version",
+    "path": "folders/FAST/Core/Functions/version.yy",
   },
   "resourceVersion": "1.0",
-  "name": "runtime_version_as_struct",
+  "name": "version_to_struct",
   "tags": [],
   "resourceType": "GMScript",
 }

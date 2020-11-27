@@ -6,7 +6,7 @@
     "path": "folders/FAST/Core/Garbage/Functions.yy",
   },
   "resourceVersion": "1.0",
-  "name": "gc_priority_queue",
+  "name": "gc_stack_create",
   "tags": [],
   "resourceType": "GMScript",
 }

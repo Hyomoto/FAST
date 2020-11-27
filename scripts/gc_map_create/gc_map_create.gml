@@ -1,5 +1,5 @@
-/// @func gc_map
-function gc_map() {
+/// @func gc_map_create
+function gc_map_create() {
 	var _list	= { pointer : ds_map_create() };
 	
 	GarbageManager().add( {

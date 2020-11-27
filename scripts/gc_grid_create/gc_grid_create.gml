@@ -1,7 +1,9 @@
-/// @func gc_grid
+/// @func gc_grid_create
 /// @param {int}	width	The width of the grid.
 /// @param {int}	height	The height of the grid.
-function gc_grid( _width, _height ) {
+/// @desc	Creates a new grid with the given dimensions and returns a struct containing it.  If this
+//		struct is lost, the data structure will be cleaned up also.
+function gc_grid_create( _width, _height ) {
 	var _list	= { pointer : ds_grid_create( _width, _height ) };
 	
 	GarbageManager().add( {

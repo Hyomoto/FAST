@@ -40,10 +40,11 @@ function FASTManager() {
 			
 		}
 		static toString	= function() {
-			return "FAST " + version + ", " + date + " by Devon Mullane";
+			return "FAST " + __FAST_version + ", " + __FAST_date + " by Devon Mullane";
 			
 		}
-		version		= __FAST_version;
+		version		= version_to_struct( __FAST_version );
+		runtime		= version_to_struct( GM_runtime_version );
 		date		= __FAST_date;
 		features	= ds_list_create();
 		discard		= new DsQueue();

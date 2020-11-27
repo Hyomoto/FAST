@@ -6,7 +6,7 @@
     "path": "folders/FAST/Core/Garbage/Functions.yy",
   },
   "resourceVersion": "1.0",
-  "name": "gc_list",
+  "name": "gc_queue_create",
   "tags": [],
   "resourceType": "GMScript",
 }

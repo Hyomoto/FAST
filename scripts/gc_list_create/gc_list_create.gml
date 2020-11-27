@@ -1,5 +1,5 @@
-/// @func gc_list
-function gc_list() {
+/// @func gc_list_create
+function gc_list_create() {
 	var _list	= { pointer : ds_list_create() };
 	
 	GarbageManager().add( {

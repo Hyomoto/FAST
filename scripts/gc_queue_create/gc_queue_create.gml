@@ -1,5 +1,5 @@
-/// @func gc_queue
-function gc_queue() {
+/// @func gc_queue_create
+function gc_queue_create() {
 	var _list	= { pointer : ds_queue_create() };
 	
 	GarbageManager().add( {

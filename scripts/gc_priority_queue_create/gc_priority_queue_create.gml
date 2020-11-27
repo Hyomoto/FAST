@@ -1,5 +1,5 @@
-/// @func gc_priority_queue
-function gc_priority_queue() {
+/// @func gc_priority_queue_create
+function gc_priority_queue_create() {
 	var _list	= { pointer : ds_priority_create() };
 	
 	GarbageManager().add( {

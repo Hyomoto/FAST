@@ -6,7 +6,7 @@
     "path": "folders/FAST/Core/Garbage/Functions.yy",
   },
   "resourceVersion": "1.0",
-  "name": "gc_queue",
+  "name": "gc_grid_create",
   "tags": [],
   "resourceType": "GMScript",
 }
