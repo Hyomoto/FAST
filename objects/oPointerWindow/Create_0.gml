@@ -18,7 +18,7 @@ resize		= function( _w, _h ) {
 	interfaceMinimize.shape.y	= 4;
 	
 }
-render		= new RenderStack();
+render		= new RenderList();
 surface		= new Surface( 1, 1 );
 interface	= new PointerStack( 0, 0, 1, 1 );
 interior	= new Surface( 1, 1 );

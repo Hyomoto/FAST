@@ -82,10 +82,10 @@ function Parser() constructor {
 		var _next	= string_find_first( divider, content, last );
 		
 		if ( _next == 0 ) {
-			return [ string_trim( string_delete( content, 1, last ) ), size() ];
+			return [ string_trim( string_delete( content, 1, last - 1 ) ), size() ];
 			
 		}
-		return [ string_trim( string_copy( content, last, _next - max( 1, last ) ) ), _next ];
+		return [ string_trim( string_copy( content, last, _next - max( 1, last ) ) ), _next + 1 ];
 		
 	}
 	/// @desc Returns the internal string broken up into words as an array.
@@ -120,7 +120,7 @@ function Parser() constructor {
 		
 	}
 	/// @desc the internal string
-	content	= "";
+	content	= ( argument_count > 0 ? argument[ 0 ] : "" );
 	/// @desc The character string used to find the next breakpoint. Default: " \t" (whitespace)
 	divider	= " \t";
 	/// @desc the last position read from

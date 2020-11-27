@@ -115,6 +115,7 @@
     {"id":{"name":"StringTime","path":"scripts/StringTime/StringTime.yy",},"order":2,},
     {"id":{"name":"string_con","path":"scripts/string_con/string_con.yy",},"order":0,},
     {"id":{"name":"MouseWheelDown","path":"scripts/MouseWheelDown/MouseWheelDown.yy",},"order":2,},
+    {"id":{"name":"runtime_version_as_struct","path":"scripts/runtime_version_as_struct/runtime_version_as_struct.yy",},"order":0,},
     {"id":{"name":"gc_queue","path":"scripts/gc_queue/gc_queue.yy",},"order":4,},
     {"id":{"name":"string_explode","path":"scripts/string_explode/string_explode.yy",},"order":1,},
     {"id":{"name":"string_explode_reverse","path":"scripts/string_explode_reverse/string_explode_reverse.yy",},"order":2,},
@@ -221,6 +222,7 @@
     {"folderPath":"folders/FAST/Pointer/Structs.yy","order":4,"resourceVersion":"1.0","name":"Structs","tags":[],"resourceType":"GMFolder",},
     {"folderPath":"folders/TEST_CASES/Pointer.yy","order":3,"resourceVersion":"1.0","name":"Pointer","tags":[],"resourceType":"GMFolder",},
     {"folderPath":"folders/FAST/Render/Structs.yy","order":2,"resourceVersion":"1.0","name":"Structs","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/FAST/Core/Functions/compatbility.yy","order":8,"resourceVersion":"1.0","name":"compatbility","tags":[],"resourceType":"GMFolder",},
   ],
   "AudioGroups": [
     {"targets":461609314234257646,"resourceVersion":"1.0","name":"audiogroup_default","resourceType":"GMAudioGroup",},

@@ -11,7 +11,7 @@ function DsMap() constructor {
 		return _value;
 		
 	}
-	/// @param {string}	key	The key that will be used to retrieve this value.
+	/// @param {string}	key		The key to retrieve from the map.
 	/// @param {mixed}	value	The value to be assigned to the key.
 	/// @desc Adds the specified key-value pair if it doesn't exist, and replaces it if it does.
 	/// @returns mixed
@@ -21,8 +21,8 @@ function DsMap() constructor {
 		return _value;
 		
 	}
-	/// @param key
-	/// @param value to set if key does not have a value already
+	/// @param {string} key		The key to retrieve from the map.
+	/// @param {mixed}	value	The value that will be set if key does not exist.
 	/// @desc If the value read at {key} is undefined, the value at {key} assumes the value of {value}
 	/// @returns mixed
 	static assume = function( _key, _value ) {
@@ -45,6 +45,9 @@ function DsMap() constructor {
 		return ds_map_size( pointer );
 		
 	}
+	/// @param {string}	key			The key to find in the map.
+	/// @param {mixed}	undefined	optional: The value to return if the key is undefined.
+	/// @desc	Searches for the given key, and returns the value if found, other wise undefined.
 	static find	= function( _key ) {
 		var _value		= ds_map_find_value( pointer, _key );
 		var _undefined	= ( argument_count > 1 ? argument[ 1 ] : undefined );
@@ -52,26 +55,33 @@ function DsMap() constructor {
 		return ( is_undefined( _value ) ? _undefined : _value );
 		
 	}
+	/// @desc	Returns the first key in the map.
 	static first	= function() {
 		return ds_map_find_first( pointer );
 		
 	}
+	/// @desc	Returns the next key in the map after the given key.
 	static next	= function( _key ) {
 		return ds_map_find_next( pointer, _key );
 		
 	}
+	/// @param {string}	key		The key to find in the map.
+	/// @desc	If the given key exists, it will be removed from the map.
 	static remove	= function( _key ) {
 		ds_map_delete( pointer, _key );
 		
 	}
+	/// @desc	Destroys the internal map, required to properly clean up DsMap
 	static destroy	= function() {
 		ds_map_destroy( pointer );
 		
 	}
+	/// @desc	Decodes the given string into the contents of the map.
 	static read		= function( _string ) {
 		ds_map_read( pointer, _string );
 		
 	}
+	/// @desc	Returns a copy of the internal map.
 	static copy		= function() {
 		var _map	= ds_map_create();
 		
@@ -80,6 +90,7 @@ function DsMap() constructor {
 		return _map;
 		
 	}
+	/// @desc	Returns the map as an array of values.
 	static toArray	= function() {
 		var _array	= array_create( ds_map_size( pointer ) );
 		var _next = ds_map_find_first( pointer );
@@ -93,6 +104,7 @@ function DsMap() constructor {
 		return _array;
 		
 	}
+	/// @desc	Encodes the map as a string.
 	static toString	= function() {
 		return ds_map_write( pointer );
 		
@@ -101,6 +113,7 @@ function DsMap() constructor {
 		return _data_type == DsMap;
 		
 	}
+	/// @desc	The internal pointer to the map data structure.
 	pointer	= ds_map_create();
 	
 }
