@@ -1,1 +1,1 @@
-syslog( runtime_version_as_struct() );
+//syslog( runtime_version_as_struct() );
