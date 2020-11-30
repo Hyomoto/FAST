@@ -70,7 +70,7 @@
     {"id":{"name":"gc_grid_create","path":"scripts/gc_grid_create/gc_grid_create.yy",},"order":0,},
     {"id":{"name":"gc_list_create","path":"scripts/gc_list_create/gc_list_create.yy",},"order":1,},
     {"id":{"name":"gc_map_create","path":"scripts/gc_map_create/gc_map_create.yy",},"order":2,},
-    {"id":{"name":"gc_priority_queue_create","path":"scripts/gc_priority_queue_create/gc_priority_queue_create.yy",},"order":3,},
+    {"id":{"name":"gc_priority_create","path":"scripts/gc_priority_create/gc_priority_create.yy",},"order":3,},
     {"id":{"name":"gc_queue_create","path":"scripts/gc_queue_create/gc_queue_create.yy",},"order":4,},
     {"id":{"name":"gc_stack_create","path":"scripts/gc_stack_create/gc_stack_create.yy",},"order":5,},
     {"id":{"name":"GenericOutput","path":"scripts/GenericOutput/GenericOutput.yy",},"order":1,},

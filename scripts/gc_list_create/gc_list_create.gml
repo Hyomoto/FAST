@@ -1,12 +1,14 @@
 /// @func gc_list_create
+/// @desc	Creates a new list and returns a struct containing it.  If this struct is
+//		lost, the data structure will be cleaned up also.
 function gc_list_create() {
-	var _list	= { pointer : ds_list_create() };
+	var _pointer	= { pointer : ds_list_create() };
 	
-	GarbageManager().add( {
-		ref : weak_ref_create( _list ),
-		pointer : _list.pointer,
-		destroy : function() { ds_list_destroy( pointer ); }
-	});
-	return _list;
+	GarbageManager().add(
+		_pointer,
+		_pointer.pointer,
+		function( _x ) { if ( ds_exists( _x, ds_type_list ) ) ds_list_destroy( _x ); }
+	);
+	return _pointer;
 	
 }

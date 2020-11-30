@@ -1,4 +1,6 @@
 /// @func DsMap
+/// @desc	Creates a wrapper for GML's map data structure.  If using GMS2.3.1 or above, the structure
+//		will be cleaned up automatically, otherwise destroy() must be called to properly clean it up.
 /// @wiki Core-Index Data Structures
 function DsMap() constructor {
 	/// @param {string}	key	The key that will be used to retrieve this value.
@@ -115,5 +117,10 @@ function DsMap() constructor {
 	}
 	/// @desc	The internal pointer to the map data structure.
 	pointer	= ds_map_create();
+	// if the runtime is 2.3.1 or greater, use Garbage
+	if ( FAST.runtime.equal_to_or_greater( 2, 3, 1 ) ) {
+		GarbageManager().add( self, pointer, function( _x ) { ds_map_destroy( _x ); } );
+		
+	}
 	
 }

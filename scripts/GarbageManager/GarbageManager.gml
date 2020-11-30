@@ -19,7 +19,7 @@ function GarbageManager() {
 			
 		}
 		static destroy	= function( _gen, _index ) {
-			_gen[ _index ].destroy();
+			_gen[ _index ].destroy( _gen[ _index ].pointer );
 			
 			array_delete( gen1, _index, 1 );
 			
@@ -29,7 +29,13 @@ function GarbageManager() {
 			array_delete( gen0, _index, 1 );
 			
 		}
-		static add	= function( _ref ) {
+		static add	= function( _target, _pointer, _method ) {
+			var _ref	= {
+				destroy : method( self, _method ),
+				pointer	: _pointer,
+				ref		: weak_ref_create( _target )
+				
+			};
 			array_push( gen0, _ref );
 			
 		}
