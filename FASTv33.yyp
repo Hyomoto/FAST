@@ -46,6 +46,7 @@
     {"id":{"name":"DsTree_Struct","path":"scripts/DsTree_Struct/DsTree_Struct.yy",},"order":5,},
     {"id":{"name":"DsTree_Value","path":"scripts/DsTree_Value/DsTree_Value.yy",},"order":6,},
     {"id":{"name":"DsWalkable","path":"scripts/DsWalkable/DsWalkable.yy",},"order":9,},
+    {"id":{"name":"LRand","path":"scripts/LRand/LRand.yy",},"order":3,},
     {"id":{"name":"ds_tree_dump","path":"scripts/ds_tree_dump/ds_tree_dump.yy",},"order":0,},
     {"id":{"name":"Elastic","path":"scripts/Elastic/Elastic.yy",},"order":4,},
     {"id":{"name":"Expo","path":"scripts/Expo/Expo.yy",},"order":5,},
@@ -239,10 +240,10 @@
     {"folderPath":"folders/FAST/Core/System/Sprites.yy","order":3,"resourceVersion":"1.0","name":"Sprites","tags":[],"resourceType":"GMFolder",},
   ],
   "AudioGroups": [
-    {"targets":461609314234257646,"resourceVersion":"1.0","name":"audiogroup_default","resourceType":"GMAudioGroup",},
+    {"targets":-1,"resourceVersion":"1.3","name":"audiogroup_default","resourceType":"GMAudioGroup",},
   ],
   "TextureGroups": [
-    {"isScaled":true,"autocrop":true,"border":2,"mipsToGenerate":0,"groupParent":null,"targets":461609314234257646,"resourceVersion":"1.0","name":"Default","resourceType":"GMTextureGroup",},
+    {"isScaled":true,"autocrop":true,"border":2,"mipsToGenerate":0,"groupParent":null,"targets":-1,"resourceVersion":"1.3","name":"Default","resourceType":"GMTextureGroup",},
   ],
   "IncludedFiles": [
     {"CopyToMask":-1,"filePath":"datafiles","resourceVersion":"1.0","name":"test2.txt","resourceType":"GMIncludedFile",},
@@ -275,7 +276,7 @@
     {"CopyToMask":-1,"filePath":"datafiles/test/cases","resourceVersion":"1.0","name":"test_args.txt","resourceType":"GMIncludedFile",},
   ],
   "MetaData": {
-    "IDEVersion": "2.3.1.536",
+    "IDEVersion": "2.3.1.542",
   },
   "resourceVersion": "1.4",
   "name": "FASTv33",
