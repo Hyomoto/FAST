@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Easing",
-    "path": "folders/FAST/Core/Math/Easing.yy",
+    "name": "Random",
+    "path": "folders/FAST/Math/Random.yy",
   },
   "resourceVersion": "1.0",
-  "name": "Quad",
+  "name": "Randomizer",
   "tags": [],
   "resourceType": "GMScript",
 }
