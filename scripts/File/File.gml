@@ -16,13 +16,13 @@ function File( _readonly ) : GenericOutput() constructor {
 	/// @returns inp
 	/// @desc Returns the "size" of the file. Context relies on the type of file.
 	static size		= function() {
-		return ds_list_size( contents );
+		if ( contents != undefined ) { return ds_list_size( contents ); }
 		
 	}
 	/// @returns bool
 	/// @desc Returns `true` if the source file exists.
 	static exists	= function() {
-		if ( name == undefined || file_exists( name ) == false ) {
+		if ( contents == undefined || name == undefined || file_exists( name ) == false ) {
 			return false;
 			
 		} else {
@@ -35,7 +35,7 @@ function File( _readonly ) : GenericOutput() constructor {
 	/// @desc Advances the position in the file and returns the next piece of it, or `undefined` if
 	//		the end of file has been reached.
 	static read		= function() {
-		if ( next < size() ) {
+		if ( contents != undefined && next < size() ) {
 			return contents[| next++ ];
 			
 		}
@@ -45,7 +45,7 @@ function File( _readonly ) : GenericOutput() constructor {
 	/// @returns mixed || null
 	/// @desc Returns the data located in the file a the given index, or `undefined` if it doesn't exist.
 	static peek		= function( _index ) {
-		if ( _index >= 0 && _index < size() ) {
+		if ( contents != undefined && _index >= 0 && _index < size() ) {
 			return contents[|  _index  ];
 			
 		}
@@ -54,7 +54,7 @@ function File( _readonly ) : GenericOutput() constructor {
 	}
 	/// @desc Inserts the given value into the file at the given index.
 	static poke		= function( _index, _value ) {
-		if ( writable == false ) { return; }
+		if ( writable == false || contents == undefined ) { return; }
 		
 		if ( _index >= 0 && _index < size() ) {
 			contents[| _index ]	= _value;
@@ -65,7 +65,7 @@ function File( _readonly ) : GenericOutput() constructor {
 	/// @returns mixed
 	/// @desc Writes the given value to the end of the file.
 	static write	= function( _value ) {
-		if ( writable == false ) { return; }
+		if ( writable == false || contents == undefined ) { return; }
 		
 		ds_list_add( contents, _value );
 		
@@ -86,13 +86,12 @@ function File( _readonly ) : GenericOutput() constructor {
 	/// @desc Returns `true` if file is writable, otherwise logs a file handling error. Inheritable
 	//		by child structs to check if the file is wirtable.
 	static save			= function() {
-		if ( writable ) {
+		if ( writable && contents != undefined ) {
 			return true;
 			
-		} else {
-			FileManager().log( instanceof( self ) + ".save() called on ", name, ", which is a read only file. Ignored." );
-			
 		}
+		FileManager().log( instanceof( self ) + ".save() called on ", name, ", which ", ( contents == undefined ? "has been closed" : "is a read only file" ), ". Ignored." );
+		
 		return false;
 		
 	}
@@ -104,12 +103,14 @@ function File( _readonly ) : GenericOutput() constructor {
 	}
 	/// @desc Cleans up the internal structures so the File can be garbage-collected safely.
 	static discard		= function() {
-		ds_list_destroy( contents );
+		if ( contents != undefined ) { ds_list_destroy( contents ); }
+		
+		contents	= undefined;
 		
 	};
 	/// @desc Clears the file, thus making it "empty".
 	static clear	= function() {
-		ds_list_clear( contents );
+		if ( contents != undefined ) { ds_list_clear( contents ); }
 		
 	}
 	static is		= function( _data_type ) {

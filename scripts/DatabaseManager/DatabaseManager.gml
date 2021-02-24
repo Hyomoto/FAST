@@ -123,6 +123,15 @@ function DatabaseManager() {
 			throw( "DatabaseManager().parse unexpectedly failed! This shouldn't be possible." );
 			
 		}
+		formatter	= new StringFormatter();
+		
+		formatter.rule( " \t", "strip" );
+		formatter.rule( "\"", function() { safexor(); advance(); });
+		formatter.rule( "{", function( _i ) { advance(); insert( _i, "\n" ) });
+		formatter.rule( "}", function( _i ) { insert( _i + 1, "\n" ); insert( _i, "\n" ) });
+		formatter.rule( ";", function( _i ) { strip(); insert( _i, "\n" ) });
+		formatter.rule( "+", function( _i ) { insert( _i, "\n" ); });
+		
 		table	= ds_map_create();
 		values	= ds_map_create();
 		links	= ds_queue_create();

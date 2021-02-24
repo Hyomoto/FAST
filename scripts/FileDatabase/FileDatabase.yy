@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Random",
-    "path": "folders/FAST/Math/Random.yy",
+    "name": "Structs",
+    "path": "folders/FAST/Database/Structs.yy",
   },
   "resourceVersion": "1.0",
-  "name": "LRand",
+  "name": "FileDatabase",
   "tags": [],
   "resourceType": "GMScript",
 }

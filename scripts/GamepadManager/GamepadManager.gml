@@ -98,7 +98,7 @@ function GamepadManager() {
 				}
 				
 			}
-			ds_queue_enqueue( _pad );
+			ds_queue_enqueue( padQueue, _pad );
 			
 		});
 		publisher.subscriber_add( "gamepad lost", function( _pad ) {

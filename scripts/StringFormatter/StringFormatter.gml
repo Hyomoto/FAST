@@ -1,155 +1,77 @@
-/// @func StringFormatter
-/// @param {string}	format_rules	The rules to use when formatting strings
-/// @desc Used to define a set of rules that can be used to format strings, such as stripping off uneccessary
-// characters, and adding line breaks. By default the formatter accepts a few rules, but it is also
-// possible to write your own rule libraries which can then be used instead. The built-in rules are:\n
-// ##### strip, push, pull, ignore, pre_indent, post_indent\n
-// >*NOTE: StringFormatter makes use of dynamic resources, and so should always be destroyed when no longer needed to prevent memory leaks which will slow down and eventually crash your game.*
-/// @example
-//var _formatter = new StringFormatter( " :strip,\t:strip" );
-//
-//show_debug_message( _formatter.format( "  Hello	World!" ) );
-/// @wiki Core-Index Parsing
-function StringFormatter( _format, _functions ) constructor {
-	/// @desc Processes the format into a set of rules the formatter can then use.
-	/// @param {string} rules	A comma-separated list of rules to use when formatting the string. The rules are defined as part of the rules library.
-	static rules	= function( _string ) {
-		if ( _string == "" ) { return; }
+/// @ func StringFormatter
+function StringFormatter() constructor {
+	static format	= function( _string ) {
+		if ( not is_string( _string ) ) { return; }
 		
-		var _rules	= string_explode( _string, ",", false );
-		var _rule, _flags, _func;
+		content	= _string;
+		ignore	= false;
+		read	= 1;
 		
-		var _i = 0; repeat( array_length( _rules ) ) {
-			_rule	= string_explode( _rules[ _i++ ], ":", false );
-			_flags	= string_explode( _rule[ 1 ], "+", false );
+		var _rule; repeat( string_length( _string ) ) {
+			_rule	= ds_map_find_value( rules, string_char_at( content, read ) );
 			
-			var _u = 0; repeat( array_length( _flags ) ) {
-				var _func	= variable_struct_get( functions, _flags[ _u ] )
-				
-				_flags[ _u++ ]	= ( _func == undefined ? function() {} : method( self, _func ) );
-				
-			}
-			ruleset[? _rule[ 0 ] ]	= [ _rule[ 1 ], _flags ];
+			if ( _rule == undefined ) { advance(); continue }
 			
-			keys	= keys + _rule[ 0 ];
+			_rule( read );
 			
 		}
+		return content;
 		
 	}
-	/// @desc Takes the input, applies the ruleset, and returns the modified string.
-	/// @param {string} input The string to format
-	/// @returns string
-	static format	= function( _input ) {//, _output, _params ) {
-		var _ruleset, _raw, _func;
+	static strip	= function( _i ) {
+		if ( ignore ) { advance(); return; }
 		
-		input.value	= _input;
+		content	= string_delete( content, _i, 1 );
 		
-		setup( input );
-		last	= 0;
+	}
+	static insert	= function( _i, _v ) {
+		if ( ignore ) { advance(); return; }
 		
-		while( true ) {
-			last	= string_find_first( keys, input.value, last );
-			
-			if ( last == 0 ) { break; }
-			
-			_ruleset	= ruleset[? string_char_at( input.value, last ) ];
-			_raw		= _ruleset[ 0 ];
-			_func		= _ruleset[ 1 ];
-			
-			pre( _raw );
-			
-			input.index = 0; repeat( array_length( _func ) ) {
-				_func[ input.index++ ]( input );
+		content	= string_insert( _v, content, _i );
+		
+		advance();
+		
+	}
+	static advance	= function() {
+		++read;
+		
+	}
+	static safexor	= function() {
+		if ( ignore ) { unsafe(); } else { safe(); }
+		
+	}
+	static safe	= function() {
+		ignore	= true;
+		
+	}
+	static unsafe	= function() {
+		ignore	= false;
+		
+	}
+	static rule		= function( _char, _lambda ) {
+		static __allowedRules	= new Array( [ "advance", "insert", "strip" ] );
+		
+		var _i = 1; repeat( string_length( _char ) ) {
+			if ( is_string( _lambda ) ) {
+				if ( not __allowedRules.contains( _lambda ) ) { continue; }
 				
-			}
-			
-		}
-		return input.value;
-		
-	}
-	/// @desc Cleans up the internal data structures, allowing the StringFormatter to be garbage-collected safely.
-	static destroy	= function() {
-		ds_map_destroy( ruleset );
-		
-	}
-	/// @desc the internal function library used for building rulesets
-	functions	= _functions;
-	/// @desc the map containing the current rules in use
-	ruleset		= ds_map_create();
-	/// @desc a string containing all of the keys in the map
-	keys		= "";
-	/// @desc the last index of the string that was operated on
-	last		= 0;
-	/// @desc an internal flag used for setting formatting state
-	flag		= 0;
-	/// @desc a package that is passed through the rulesets to operate on the string
-	input		= { value : "", index : 0 }
-	///@override
-	functions	= ( functions != undefined ? functions : {
-		setup : function() {
-			flag = 0;
-			
-		},
-		pre : function( _rules ) {
-			if ( string_pos( "ignore", _rules ) > 0 ) {
-				flag |= 2;
+				rules[? string_char_at( _char, _i++ ) ]	= variable_struct_get( self, _lambda );
 				
 			} else {
-				flag ^= flag & 2;
+				rules[? string_char_at( _char, _i++ ) ]	= method( self, _lambda );
 				
 			}
 			
-		},
-		strip : function( _input ) {
-			if ( flag & 1 && flag & 2 == 0 ) { return; }
-			
-			_input.value	= string_delete( _input.value, last--, 1 );
-			
-		},
-		push : function( _input ) {
-			if ( flag > 0 && flag & 2 == 0 ) { return; }
-			
-			_input.value	= string_insert( "\n", _input.value, ++last );
-			
-		},
-		pull : function( _input ) {
-			if ( flag > 0 && flag & 2 == 0 ) { return _input; }
-			
-			_input.value	= string_insert( "\n", _input.value, last++ );
-			
-		},
-		post_indent : function( _input ) {
-			if ( flag > 0 && flag & 2 == 0 ) { return; }
-			
-			_input.value	= string_insert( "\t", _input.value, ++last );
-			
-		},
-		pre_indent : function( _input ) {
-			if ( flag > 0 && flag & 2 == 0 ) { return _input; }
-			
-			_input.value	= string_insert( "\t", _input.value, last++ );
-			
-		},
-		ignore : function() {
-			flag	^= 1;
-			
 		}
 		
-	});
-	if ( variable_struct_exists( functions, "pre" ) == false ) {
-		pre	= function(){};
-		
-	} else {
-		pre	= method( self, functions.pre );
+	}
+	static destroy	= function() {
+		ds_map_destroy( rules );
 		
 	}
-	if ( variable_struct_exists( functions, "setup" ) == false ) {
-		setup	= function(){};
-		
-	} else {
-		setup	= method( self, functions.setup );
-		
-	}
-	rules( _format );
+	rules	= ds_map_create();
+	content	= undefined;
+	ignore	= false;
+	read	= 0;
 	
 }

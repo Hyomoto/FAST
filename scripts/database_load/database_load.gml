@@ -10,7 +10,7 @@ function database_load( _filename ) {
 	
 	// if no target was provided, database is loaded into a new node
 	var _target		= ( argument_count > 1 ? argument[ 1 ] : new DsTree() );
-	var _file		= new FileFAST( _filename, true );
+	var _file		= new FileDatabase( _filename, true );
 	var _timer		= new Timer( "$S seconds", 2 );
 	var _last_file	= _filename;
 	var _templates	= ds_stack_create();

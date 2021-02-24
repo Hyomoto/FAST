@@ -16,15 +16,11 @@ function Pair( _a, _b ) constructor {
 	/// @desc This method is used to compare two values against this pair to see if they match. This is a strict comparison, thus it will only return true if both a and b match the provided arguments.
 	/// @dupe
 	static equals	= function( _a ) {
-		if ( is_struct( _a ) && _a.is( Pair ) ) {
+		if ( is_struct_of( _a, Pair ) ) {
 			return ( _a.a == a && _a.b == b );
 			
 		}
 		return ( argument_count > 1 && a == _a && b == argument[ 1 ] );
-		
-	}
-	static is		= function( _data_type ) {
-		return _data_type == Pair;
 		
 	}
 	/// @desc the a value

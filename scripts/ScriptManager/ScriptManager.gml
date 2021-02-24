@@ -51,61 +51,66 @@ function ScriptManager(){
 			system.write( _string );
 			
 		}
-		formatter	= new StringFormatter( "\":save,\t:replace", {
-			setup : function( _input ) {
-				flag = 0;
+		formatter	= new StringFormatter();
+		
+		formatter.rule( "\"", function() { safexor(); advance(); });
+		formatter.rule("\t", function( _i ) { strip(); insert( _i, " " ); });
+		
+		//formatter	= new StringFormatter( "\":save,\t:replace", {
+		//	setup : function( _input ) {
+		//		flag = 0;
 				
-				if ( string_pos( "//", _input.value ) > 0 ) {
-					_input.value	= string_copy( _input.value, 1, string_pos( "//", _input.value ) - 1 );
+		//		if ( string_pos( "//", _input.value ) > 0 ) {
+		//			_input.value	= string_copy( _input.value, 1, string_pos( "//", _input.value ) - 1 );
 					
-				}
-				var _open	= string_pos( "/*", _input.value );
-				var _close	= string_pos( "*/", _input.value );
+		//		}
+		//		var _open	= string_pos( "/*", _input.value );
+		//		var _close	= string_pos( "*/", _input.value );
 				
-				if ( _open > 0 ) {
-					if ( _close > 0 ) {
-						_input.value	= string_delete( _input.value, _open, _close + 2 - _open );
+		//		if ( _open > 0 ) {
+		//			if ( _close > 0 ) {
+		//				_input.value	= string_delete( _input.value, _open, _close + 2 - _open );
 						
-					} else {
-						comment	= true;
-						_input.value	= string_copy( _input.value, 1, _open - 1 );
+		//			} else {
+		//				comment	= true;
+		//				_input.value	= string_copy( _input.value, 1, _open - 1 );
 						
-					}
+		//			}
 					
-				}
-				if ( _open == 0 && _close > 0 ) {
-					comment	= false;
-					_input.value	= string_delete( _input.value, 1, _close + 1 );
+		//		}
+		//		if ( _open == 0 && _close > 0 ) {
+		//			comment	= false;
+		//			_input.value	= string_delete( _input.value, 1, _close + 1 );
 					
-				}
-				if ( comment ) {
-					_input.value	= "";
+		//		}
+		//		if ( comment ) {
+		//			_input.value	= "";
 					
-				}
+		//		}
 				
-			},
-			pre : function( _rules ) {
-				if ( string_pos( "save", _rules ) > 0 ) {
-					flag |= 2;
+		//	},
+		//	pre : function( _rules ) {
+		//		if ( string_pos( "save", _rules ) > 0 ) {
+		//			flag |= 2;
 					
-				} else {
-					flag ^= flag & 2;
+		//		} else {
+		//			flag ^= flag & 2;
 					
-				}
+		//		}
 				
-			},
-			replace : function( _input ) {
-				if ( flag & 1 && flag & 2 == 0 ) { return; }
+		//	},
+		//	replace : function( _input ) {
+		//		if ( flag & 1 && flag & 2 == 0 ) { return; }
 				
-				_input.value	= string_copy( _input.value, 1, last - 1 ) + " " + string_delete( _input.value, 1, last );
+		//		_input.value	= string_copy( _input.value, 1, last - 1 ) + " " + string_delete( _input.value, 1, last );
 				
-			},
-			save : function() {
-				flag	^= 1;
+		//	},
+		//	save : function() {
+		//		flag	^= 1;
 				
-			}
+		//	}
 			
-		});
+		//});
 		var _file	= new FileText( "log/scripts.txt", false, true );
 		
 		_file.clear();

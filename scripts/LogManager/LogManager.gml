@@ -38,7 +38,15 @@ function LogManager() {
 			System.write( "FAST Logging is shutting down..." );
 			
 			var _i	= 0; repeat( ds_list_size( list ) ) {
-				ds_list_find_value( list, _i++ ).close();
+				var _target	= ds_list_find_value( list, _i++ );
+				
+				//try {
+					_target.close();
+				//}
+				//catch ( _ ) {
+				//	System.write( "  error :: Logger " + _target.name + " failed to close properly." );
+					
+				//}
 				
 			}
 			

@@ -1,7 +1,7 @@
 fast	= FASTManager();
 
 if ( fast.start ) {
-	syslog( "dupe found, death for me." );
+	syslog( "Duplicate FAST Manager created, destroying." );
 	
 	instance_destroy();
 	

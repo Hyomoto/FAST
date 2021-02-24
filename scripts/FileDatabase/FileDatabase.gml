@@ -1,76 +1,8 @@
-/// @func FileFAST
+/// @func FileDatabase
 /// @param filename
 /// @param *read_only
 /// @wiki Database-Index File
-function FileFAST( _filename, _readonly, _new ) : File( _readonly ) constructor {
-	static FASTformatter	= new StringFormatter( " :strip,	:strip,\":save,{:push,}:pull+push,;:strip+push,+:pull", {
-		setup : function( _input ) {
-			flag = 0;
-			
-			if ( string_pos( "//", _input.value ) > 0 ) {
-				_input.value	= string_copy( _input.value, 1, string_pos( "//", _input.value ) - 1 );
-				
-			}
-			if ( string_pos( "/*", _input.value ) > 0 ) {
-				comment	= true;
-				
-				_input.value	= string_copy( _input.value, 1, string_pos( "/*", _input.value ) - 1 );
-				
-			}
-			if ( string_pos( "*/", _input.value ) > 0 ) {
-				comment	= false;
-				
-				_input.value	= string_delete( _input.value, 1, string_pos( "*/", _input.value ) + 1 );
-				
-			} 
-			if ( comment ) {
-				return "";
-				
-			}	
-			
-		},
-		pre : function( _rules ) {
-			if ( string_pos( "save", _rules ) > 0 ) {
-				flag |= 2;
-				
-			} else {
-				flag ^= flag & 2;
-				
-			}
-			
-		},
-		strip : function( _input ) {
-			if ( flag & 1 && flag & 2 == 0 ) { return; }
-			
-			_input.value	= string_delete( _input.value, last--, 1 );
-			
-		},
-		skip : function( _input ) {
-			if ( flag & 1 && flag & 2 == 0 ) { return; }
-			
-			last++;
-			
-		},
-		push : function( _input ) {
-			if ( flag > 0 && flag & 2 == 0 ) { return; }
-			
-			_input.value	= string_insert( "\n", _input.value, ++last );
-			
-		},
-		pull : function( _input ) {
-			if ( flag > 0 && flag & 2 == 0 ) { return _input; }
-			
-			_input.value	= string_insert( "\n", _input.value, last++ );
-			
-		},
-		save : function() {
-			flag	^= 1;
-			
-		}
-		
-	});
-	FASTformatter.comment	= false;
-	
+function FileDatabase( _filename, _readonly, _new ) : File( _readonly ) constructor {
 	static fragment	= function( _string, _file, _line ) constructor {
 		static toString	= function() {
 			return value;
@@ -126,6 +58,7 @@ function FileFAST( _filename, _readonly, _new ) : File( _readonly ) constructor 
 	if ( _new != true ) {
 		if ( exists() == false ) { return; }
 		
+		var _formatter	= DatabaseManager().formatter;
 		var _name	= filename_name( _filename );
 		var _file	= file_text_open_read( _filename );
 		var _line	= 0;
@@ -153,7 +86,7 @@ function FileFAST( _filename, _readonly, _new ) : File( _readonly ) constructor 
 				continue;
 				
 			}
-			_read	= FASTformatter.format( _read );
+			_read	= _formatter.format( _read );
 			
 			while ( _read != "" ) {
 				_pos	= string_pos( "\n", _read );

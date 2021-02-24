@@ -1,17 +1,26 @@
-#macro RANDOM rand.between( 10, 20 )
+//function Throw(msg) {
+//    var errStr = "\n \nCUSTOM EXCEPTION\n==============================================================="
+//    while string_length(msg) > 100 {
+//        errStr += "\n"+string_copy(msg,1,100)
+//        msg = string_copy(msg,101,string_length(msg)-100)
+//        if string_length(msg) > 1 {
+//            if string_char_at(msg,1) != " " {
+//                if string_char_at(errStr,string_length(errStr)) != " "
+//                    errStr += "-"
+//            }
+//            else msg = string_copy(msg,2,string_length(msg)-1)
+//        }
+//    }
+//    errStr += "\n" + msg + "\n===============================================================\n\n"
+//    throw errStr
+//}
+//Throw( "Hello world!" );
+var _formatter	= new StringFormatter();
 
-var _event	= new FrameEvent( FAST.CREATE, 0, 0, function() {
-	rand	= new LRand();
-	
-	table = array_create( 10, 0 );
-	
-	repeat ( 10 ) {
-		var _i  = 0; repeat( 10 ) {
-			table[ _i++ ]	= RANDOM;
-			
-		}
-		show_debug_message( table );
-		
-	}
-		
+_formatter.rule( "\"", function() { safexor(); advance(); });
+_formatter.rule( " \t", function( _i, _v ) {
+	strip( _i );
+	insert( _i, "K" );
 });
+
+syslog( _formatter.format( "			 \"Hello World!\"					" ) );
