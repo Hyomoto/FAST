@@ -4,6 +4,7 @@
 /// @desc A simple, garbage-collected two-dimensional vector.
 /// @example
 //var _vec2 = new Vec2( 32, 20 );
+/// @output A new Vec2 is created with an x of 32 and a y of 20
 /// @wiki Core-Index
 function Vec2( _x, _y ) constructor {
 	/// @param {real} x The x position to set this vector
@@ -71,10 +72,9 @@ function Vec2( _x, _y ) constructor {
 	/// @desc Used to normalise the vector to unit length.
 	static normalize	= function() {
 		var _len_sqr	= lensqr();
-		var _len		= 0;
 		
 		if ( _len_sqr != 0 ) {
-			_len	= sqrt( _len );
+			var _len	= sqrt( _len_sqr );
 			
 			set( x / _len, y / _len);
 		}

@@ -31,7 +31,7 @@ function GarbageManager() {
 		}
 		static add	= function( _target, _pointer, _method ) {
 			var _ref	= {
-				destroy : method( self, _method ),
+				destroy : _method,
 				pointer	: _pointer,
 				ref		: weak_ref_create( _target )
 				

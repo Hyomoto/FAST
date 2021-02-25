@@ -10,7 +10,8 @@
 /// @example
 //event = new FrameEvent( FAST.STEP, 30, undefined, function() {
 //    show_debug_message( "Hello World!" );
-//});
+//}).once();
+/// @output Hello World! is written to the console after 30 frames.
 /// @wiki Core-Index Events
 function FrameEvent( _event, _delay, _parameters, _function ) constructor {
 	/// @desc Called to update the event during the event it was assigned to.

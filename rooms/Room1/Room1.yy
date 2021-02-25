@@ -42,8 +42,8 @@
     "PhysicsWorldPixToMetres": 0.1,
   },
   "parent": {
-    "name": "FASTv33",
-    "path": "FASTv33.yyp",
+    "name": "FAST",
+    "path": "FAST.yyp",
   },
   "resourceVersion": "1.0",
   "name": "Room1",

@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "FAST",
-    "path": "FAST.yyp",
+    "name": "Random",
+    "path": "folders/FAST/Math/Random.yy",
   },
   "resourceVersion": "1.0",
-  "name": "blank",
+  "name": "TableRandomizer",
   "tags": [],
   "resourceType": "GMScript",
 }

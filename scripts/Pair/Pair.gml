@@ -6,6 +6,7 @@
 //var _pair = new Pair( "Hello", "World!" )
 //
 //show_debug_message( _pair.a + _pair.b );
+/// @output HelloWorld! is written to the output console.
 /// @wiki Core-Index
 function Pair( _a, _b ) constructor {
 	/// @param {Pair} pair The Pair to compare to this one

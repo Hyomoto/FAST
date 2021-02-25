@@ -15,12 +15,13 @@
 //    throw errStr
 //}
 //Throw( "Hello world!" );
-var _formatter	= new StringFormatter();
 
-_formatter.rule( "\"", function() { safexor(); advance(); });
-_formatter.rule( " \t", function( _i, _v ) {
-	strip( _i );
-	insert( _i, "K" );
-});
+var _table	= new LehmerRandomizer();
 
-syslog( _formatter.format( "			 \"Hello World!\"					" ) );
+var _test	= array_create( 10, 0 );
+
+repeat( 256 ) {
+	_test[ _table.next_range( 0, 9 ) ]++;
+	
+}
+syslog( _test );

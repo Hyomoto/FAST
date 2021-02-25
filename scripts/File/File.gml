@@ -86,7 +86,7 @@ function File( _readonly ) : GenericOutput() constructor {
 	/// @desc Returns `true` if file is writable, otherwise logs a file handling error. Inheritable
 	//		by child structs to check if the file is wirtable.
 	static save			= function() {
-		if ( writable && contents != undefined ) {
+		if ( exists() && writable && contents != undefined ) {
 			return true;
 			
 		}

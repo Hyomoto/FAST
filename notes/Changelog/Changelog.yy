@@ -1,7 +1,7 @@
 {
   "parent": {
-    "name": "FASTv33",
-    "path": "FASTv33.yyp",
+    "name": "FAST",
+    "path": "FAST.yyp",
   },
   "resourceVersion": "1.1",
   "name": "Changelog",

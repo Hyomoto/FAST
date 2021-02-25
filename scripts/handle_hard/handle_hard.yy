@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "FAST",
-    "path": "FAST.yyp",
+    "name": "Exceptions",
+    "path": "folders/FAST/Core/Exceptions.yy",
   },
   "resourceVersion": "1.0",
-  "name": "blank",
+  "name": "handle_hard",
   "tags": [],
   "resourceType": "GMScript",
 }

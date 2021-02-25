@@ -11,6 +11,7 @@
 //event = new DeltaEvent( FAST.STEP, 1, undefined, function() {
 //    show_debug_message( "Hello World!" );
 //});
+/// @output Hello World! is written to the console every one seconds.
 /// @wiki Core-Index Events
 function DeltaEvent( _event, _delay, _parameters, _function ) : FrameEvent( _event, _delay, _parameters, _function ) constructor {
 	/// @override

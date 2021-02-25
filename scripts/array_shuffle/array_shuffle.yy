@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "FAST",
-    "path": "FAST.yyp",
+    "name": "array",
+    "path": "folders/FAST/Core/Functions/array.yy",
   },
   "resourceVersion": "1.0",
-  "name": "blank",
+  "name": "array_shuffle",
   "tags": [],
   "resourceType": "GMScript",
 }

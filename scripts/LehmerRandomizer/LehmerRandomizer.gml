@@ -1,5 +1,5 @@
 /// @func LehmerRandomizer
-function LehmerRandomizer() : Randomizer() constructor {
+function LehmerRandomizer( _seed ) : Randomizer() constructor {
     static seed    = function( _seed ) {
         state    = ( ( is_undefined( _seed ) ? 0x0 : round( _seed ) ) << 1 ) | 1;
         

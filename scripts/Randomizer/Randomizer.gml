@@ -11,17 +11,10 @@ function Randomizer() constructor {
 		return self;
 		
 	}
-	static between	= function( _start, _end ) {
-		var _range	= _end - _start;
+	static next_range	= function( _start, _end ) {
+		var _range	= _end - _start + 1;
 		
-		return range( _range ) + _start;
-		
-	}
-	/// @param {mixed}    range    The range value.
-    /// @desc Returns a clamped integer in the range between 0 and the range value.  ie: 10 would return 0 - 9.
-    /// @returns integer
-	static range	= function( _range ) {
-		return next() % _range;
+		return next() % _range + _start;
 		
 	}
 	/// @desc Returns the next random integer from the generator.

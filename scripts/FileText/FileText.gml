@@ -7,6 +7,24 @@
 /// @wiki Core-Index Files
 function FileText( _filename, _readonly, _new ) : File( _readonly ) constructor {
 	/// @ignore
+	static write_File	= write;
+	/// @desc Writes the given value to the end of the file.
+	static write	= function( _value ) {
+		_value	= string( _value );
+		
+		var _h, _i = 0; repeat( string_count( "\n", _value ) + 1 ) {
+			_h	= string_pos_ext( "\n", _value, _i );
+			
+			if ( _h == 0 ) { _h = string_length( _value ) + 1; }
+			
+			write_File( string_copy( _value, _i + 1, _h - _i - 1 ) );
+			
+			_i	= _h;
+			
+		}
+		
+	}
+	/// @ignore
 	static save_File	= save;
 	/// @param {bool}	append	Whether to append or rewrite the file.
 	/// @desc Saves the file to disk.  If append is `true`, entries will be appended after the last position

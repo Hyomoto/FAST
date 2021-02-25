@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "FAST",
-    "path": "FAST.yyp",
+    "name": "Garbage",
+    "path": "folders/FAST/Core/Garbage.yy",
   },
   "resourceVersion": "1.0",
-  "name": "blank",
+  "name": "GarbageCollector",
   "tags": [],
   "resourceType": "GMScript",
 }
