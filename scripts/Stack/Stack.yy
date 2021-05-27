@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Array",
-    "path": "folders/FAST/Core/Data Structures/Array.yy",
+    "name": "Data Structures",
+    "path": "folders/FAST/Core/Data Structures.yy",
   },
   "resourceVersion": "1.0",
-  "name": "ArrayString",
+  "name": "Stack",
   "tags": [],
   "resourceType": "GMScript",
 }

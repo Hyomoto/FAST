@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Deprecated",
-    "path": "folders/FAST/Core/Data Structures/Deprecated.yy",
+    "name": "Primitive",
+    "path": "folders/FAST/Core/Data Structures/Primitive.yy",
   },
   "resourceVersion": "1.0",
-  "name": "DsMap",
+  "name": "Dict",
   "tags": [],
   "resourceType": "GMScript",
 }

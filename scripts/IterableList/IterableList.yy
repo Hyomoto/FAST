@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Array",
-    "path": "folders/FAST/Core/Data Structures/Array.yy",
+    "name": "Primitive",
+    "path": "folders/FAST/Core/Data Structures/Primitive.yy",
   },
   "resourceVersion": "1.0",
-  "name": "ArrayNumber",
+  "name": "IterableList",
   "tags": [],
   "resourceType": "GMScript",
 }

@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Deprecated",
-    "path": "folders/FAST/Core/Data Structures/Deprecated.yy",
+    "name": "Data Structures",
+    "path": "folders/FAST/Core/Data Structures.yy",
   },
   "resourceVersion": "1.0",
-  "name": "DsMap",
+  "name": "Queue",
   "tags": [],
   "resourceType": "GMScript",
 }
