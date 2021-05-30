@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Exceptions",
-    "path": "folders/FAST/Core/Exceptions.yy",
+    "name": "Data Structures",
+    "path": "folders/FAST/Core/Data Structures.yy",
   },
   "resourceVersion": "1.0",
-  "name": "handle_soft",
+  "name": "__IterableList__",
   "tags": [],
   "resourceType": "GMScript",
 }

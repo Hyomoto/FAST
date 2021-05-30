@@ -2,11 +2,13 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Data Structures",
-    "path": "folders/FAST/Core/Data Structures.yy",
+    "name": "ATS",
+    "path": "folders/ATS.yy",
   },
   "resourceVersion": "1.0",
-  "name": "Array",
-  "tags": [],
+  "name": "ats_Array",
+  "tags": [
+    "ATS",
+  ],
   "resourceType": "GMScript",
 }

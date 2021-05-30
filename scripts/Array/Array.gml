@@ -1,13 +1,13 @@
 /// @func Array
 /// @param {mixed}	*values...	the default values to place in the list.
-function Array() : IterableList() constructor {
+function Array() : __IterableList__() constructor {
 	/// @param {int}	index	The position to read from
 	/// @desc	Reads the value at the given index in the list.  If the index is out of range
-	///		an ErrorIndex will be thrown.
+	///		an IndexOutOfBounds will be thrown.
 	/// @returns Mixed
-	/// @throws ErrorIndex
+	/// @throws IndexOutOfBounds
 	static index	= function( _index ) {
-		if ( _index < 0 || _index >= size() ) { throw ErrorIndex; }
+		if ( _index < 0 || _index >= size() ) { throw new IndexOutOfBounds( "index", _index, size() ); }
 		
 		__Index	= _index;
 		
@@ -25,6 +25,7 @@ function Array() : IterableList() constructor {
 	}
 	/// @param {mixed} *values...	One or more values
 	/// @desc	Adds the given values to the end of the list
+	/// @returns self
 	static push	= function() {
 		var _i = 0; repeat( argument_count ) {
 			if ( __Dupes == false && contains( argument[ _i ] ) ) { continue; }
@@ -38,10 +39,11 @@ function Array() : IterableList() constructor {
 	/// @param {int}	index	The position to insert at
 	/// @param {mixed}	value	The value to be inserted
 	/// @desc	Inserts the value at the given index in the list.  If the index is out of range
-	///		an ErrorIndex will be thrown.
-	/// @throws ErrorIndex
+	///		an IndexOutOfBounds will be thrown.
+	/// @throws IndexOutOfBounds
 	static insert	= function( _index, _value ) {
 		if ( __Dupes == false && contains( _value ) ) { return; }
+		if ( _index < 0 || _index > size() ) { throw new IndexOutOfBounds( "insert", _index, size() ); }
 		
 		array_insert( __Content, _index, _value );
 		
@@ -49,13 +51,13 @@ function Array() : IterableList() constructor {
 	/// @param {int}	*index	If provided, the value will be 'popped' from this position
 	/// @desc	Removes an entry from the list an returns its value.  If an index is provided it
 	///		will remove and return that item, otherwise it will look for the last entry in the list. If
-	///		the index is out of range, or the list is empty, an ErrorIndex will be thrown.
+	///		the index is out of range, or the list is empty, an IndexOutOfBounds will be thrown.
 	/// @returns Mixed
-	/// @throws ErrorIndex
+	/// @throws IndexOutOfBounds
 	static pop	= function( _index ) {
 		var _value;
 		
-		if ( _index < 0 || _index >= size() ) { throw ErrorIndex; }
+		if ( _index < 0 || _index >= size() ) { throw new IndexOutOfBounds( "pop", _index, size() ); }
 		
 		if ( _index == undefined || _index == size() - 1 )
 			return array_pop( __Content );

@@ -1,9 +1,8 @@
-/// @func IterableList
-/// @desc	Because of GML's constructor inheritance, each constructor must run in
-///		order.  This provides a list template to that cause without any data that can be
-///		inherited without causing issues.
-// filter, from_array, toArray
-function IterableList() constructor {
+/// @func __IterableList__
+/// @desc	IterableList is a template for building iterable lists.  This allows them to be used in a
+///		consistent way throughout the library and your program.  If you wish to create your own
+///		implementation, simply inherit it and overload the first seven methods.
+function __IterableList__() constructor {
 	static index	= function(i) {}	// overload
 	static next		= function(i) {}	// overload
 	static push		= function(v) {}	// overload
@@ -13,32 +12,31 @@ function IterableList() constructor {
 	static size		= function() {}		// overload
 	/// @param {mixed}	value	The value to be removed
 	/// @desc	Removes the first item in the list that matches value.  If no such value exists,
-	///		a ErrorValue will be thrown.
-	/// @throws ErrorValue
+	///		a ValueNotFound will be thrown.
+	/// @throws ValueNotFound
 	static remove	= function( _value ) {
-		if ( size() == 0 ) { throw ErrorValue; }
-		
-		index( 0 );
-		
-		var _i = -1; repeat( size() ) { ++_i;
-			if ( next() == _value ) { return pop( _i ); }
+		if ( size() > 0 ) {
+			index( 0 );
+			
+			var _i = -1; repeat( size() ) { ++_i;
+				if ( next() == _value ) { return pop( _i ); }
+				
+			}
 			
 		}
-		throw ErrorValue;
+		throw new ValueNotFound( "remove", _value );
 		
 	}
 	/// @param {mixed}	value	The value to count
 	/// @param	Counts the number of occurences of value in the list.
 	/// @returns int
-	static count	= function( _value, _func ) {
+	static count	= function( _value ) {
 		if ( size() == 0 ) { return 0; }
-		
-		if ( _func == undefined ) { _func = function( _key, _value ) { return _key == _value; }}
 		
 		index( 0 );
 		
 		var _c = 0; repeat( size() ) {
-			if ( _func( _value, next() )) { ++_c; }
+			if ( next() == _value ) { ++_c; }
 			
 		}
 		return _c;
@@ -49,7 +47,7 @@ function IterableList() constructor {
 	/// @desc	Returns a new (#LinkedList) containing all entires that match the key.  If func is
 	///		defined, this value will be passed along with the index key.  Returning true will add
 	///		that value to the final list.
-	/// @throws ErrorType
+	/// @throws InvalidArgumentType
 	static filter	= function( _key, _func ) {
 		var _iter	= new __Self();
 		
@@ -57,7 +55,7 @@ function IterableList() constructor {
 		
 		if ( _func == undefined ) { _func = function( _key, _value ) { return _key == _value; }}
 		
-		if ( is_method( _func ) == false ) { throw ErrorType; }
+		if ( is_method( _func ) == false ) { throw new InvalidArgumentType( "filter", 1, _func, "method" ); }
 		
 		index( 0 );
 		
@@ -132,7 +130,6 @@ function IterableList() constructor {
 	}
 	/// @param {mixed}	value...	The value to find
 	/// @param {method}	func		The function to use to check for matches
-	/// @desc	Returns the index which matches the value
 	static find	= function( _v, _f ) {
 		if ( size() = 0 ) { return -1; }
 		
@@ -145,25 +142,6 @@ function IterableList() constructor {
 			
 		}
 		return -1;
-		
-	}
-	/// @param {mixed}	value...	The value to find
-	/// @param {method}	func		The function to use to check for matches
-	/// @desc	Returns the value which matches the value
-	static pull	= function( _v, _f ) {
-		if ( size() = 0 ) { return -1; }
-		
-		if ( _f == undefined ) { _f = function( _a, _b ) { return _a == _b; } }
-		
-		index( 0 );
-		
-		repeat ( size() ) {
-			var _next	= next();
-			
-			if ( _f( _v, _next )) { return _next; }
-			
-		}
-		return undefined;
 		
 	}
 	/// @param {mixed}	value...	The value(s) to check for
@@ -210,11 +188,10 @@ function IterableList() constructor {
 	/// @returns bool
 	static empty	= function() { return size() == 0; }
 	/// @desc	If false, duplicates will not be added.
-	/// @throws ErrorType
 	static allow_duplicates	= function( _true ) { __Dupes = _true != false; return self; }
 	/// @desc	Populates this structure with values from the given array
 	static from_array	= function( _a ) {
-		if ( is_array( _a ) == false ) { throw ErrorType; }
+		if ( is_array( _a ) == false ) { throw new InvalidArgumentType( "from_array", 0, _a, "array" ); }
 		clear();
 		var _i = 0; repeat( array_length( _a ) ) {
 			push( _a[ _i++ ] );
@@ -238,7 +215,7 @@ function IterableList() constructor {
 	/// @desc	Converts this structure into a string.
 	static toString	= function() {
 		var _string	= "[";
-		// small hack, index throws an error if iterable is empty
+		// small hack, index throws an error if iterable is empty so this avoids the call
 		if ( size() > 0 ) { index(0); }
 		
 		var _i = 0; repeat( size() ) {

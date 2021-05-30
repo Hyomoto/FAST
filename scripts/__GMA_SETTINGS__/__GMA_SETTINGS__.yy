@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Primitive",
-    "path": "folders/FAST/Core/Data Structures/Primitive.yy",
+    "name": "GMAssert",
+    "path": "folders/ATS/GMAssert.yy",
   },
   "resourceVersion": "1.0",
-  "name": "IterableList",
+  "name": "__GMA_SETTINGS__",
   "tags": [],
   "resourceType": "GMScript",
 }

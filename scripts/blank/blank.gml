@@ -1,3 +1,9 @@
+var _event	= new FrameEvent( FAST.STEP, 0, undefined, function() {
+	ats_run();
+	
+}).once();
+
+
 //function Throw(msg) {
 //    var errStr = "\n \nCUSTOM EXCEPTION\n==============================================================="
 //    while string_length(msg) > 100 {
@@ -16,12 +22,12 @@
 //}
 //Throw( "Hello world!" );
 
-var _table	= new LehmerRandomizer();
+//var _table	= new LehmerRandomizer();
 
-var _test	= array_create( 10, 0 );
+//var _test	= array_create( 10, 0 );
 
-repeat( 256 ) {
-	_test[ _table.next_range( 0, 9 ) ]++;
+//repeat( 256 ) {
+//	_test[ _table.next_range( 0, 9 ) ]++;
 	
-}
-syslog( _test );
+//}
+//syslog( _test );

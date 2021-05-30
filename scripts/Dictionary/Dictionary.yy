@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Compatibility DS",
-    "path": "folders/FAST/Core/Data Structures/Compatibility DS.yy",
+    "name": "Data Structures",
+    "path": "folders/FAST/Core/Data Structures.yy",
   },
   "resourceVersion": "1.0",
-  "name": "DsList",
+  "name": "Dictionary",
   "tags": [],
   "resourceType": "GMScript",
 }

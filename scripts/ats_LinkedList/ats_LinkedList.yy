@@ -2,11 +2,13 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Data Structures",
-    "path": "folders/FAST/Core/Data Structures.yy",
+    "name": "ATS",
+    "path": "folders/ATS.yy",
   },
   "resourceVersion": "1.0",
-  "name": "Queue",
-  "tags": [],
+  "name": "ats_LinkedList",
+  "tags": [
+    "ATS",
+  ],
   "resourceType": "GMScript",
 }

@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Compatibility DS",
-    "path": "folders/FAST/Core/Data Structures/Compatibility DS.yy",
+    "name": "ATS",
+    "path": "folders/ATS.yy",
   },
   "resourceVersion": "1.0",
-  "name": "DsList",
+  "name": "ats_run",
   "tags": [],
   "resourceType": "GMScript",
 }
