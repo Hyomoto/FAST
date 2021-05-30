@@ -186,7 +186,7 @@ function __IterableList__() constructor {
 	}
 	/// @desc	Returns if the list is empty
 	/// @returns bool
-	static empty	= function() { return size() == 0; }
+	static is_empty	= function() { return size() == 0; }
 	/// @desc	If false, duplicates will not be added.
 	static allow_duplicates	= function( _true ) { __Dupes = _true != false; return self; }
 	/// @desc	Populates this structure with values from the given array

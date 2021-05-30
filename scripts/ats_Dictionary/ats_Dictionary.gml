@@ -19,6 +19,8 @@ function ats_Dictionary(){
 	test_throwable( ["from_JSON", "[]"], UnexpectedTypeMismatch );
 	
 // # TEST METHODS
+	test_method( ["is_empty" ], bool( true ), __returns );
+	
 	test_method( ["set", "foo", "bar"], "bar", function ( _r ) { return _r.__Content[$ "foo" ] } );
 	
 	test_method( ["lookup", "foo" ], "bar", __returns );

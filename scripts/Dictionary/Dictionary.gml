@@ -66,12 +66,6 @@ function Dictionary() constructor {
 		return variable_struct_exists( __Content, _key );
 		
 	}
-    /// @desc    Returns the number of entries in the dictionary.
-    /// @returns Mixed
-    static size    = function() {
-        return variable_struct_names_count( __Content );
-        
-    }
     /// @desc    Returns the keys in the dictionary formatted as an array.
     /// @returns Array
     static keys_to_array    = function() {
@@ -100,11 +94,24 @@ function Dictionary() constructor {
 		return self;
 		
 	}
-	/// @desc	Returns this dictionary as a JSON string
+	/// @desc	Returns this dictionary as a JSON string.
+	/// @returns string
 	static to_JSON	= function() {
 		return json_stringify( __Content );
 		
 	}
+	/// @desc	Returns true if this dictionary contains no keys.
+	/// @returns int
+	static is_empty	= function() {
+		return size() == 0;
+		
+	}
+	/// @desc    Returns the number of entries in the dictionary.
+    /// @returns Mixed
+    static size    = function() {
+        return variable_struct_names_count( __Content );
+        
+    }
     /// @desc    The internal struct which holds the key/value pairs.
     __Content    = {}
     

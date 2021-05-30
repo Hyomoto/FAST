@@ -2,7 +2,7 @@
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 function ats_IterableList( _type ){
 // # TOTAL METHODS LOOKING TO TEST
-	var _methods	= [ "index", "next", "push", "insert", "pop", "clear", "size", "remove", "count", "filter", "sort", "unique", "reverse", "find", "contains", "copy", "empty", "allow_duplicates", "from_array", "to_array", "from_JSON", "to_JSON" ];
+	var _methods	= [ "index", "next", "push", "insert", "pop", "clear", "size", "remove", "count", "filter", "sort", "unique", "reverse", "find", "contains", "copy", "is_empty", "allow_duplicates", "from_array", "to_array", "from_JSON", "to_JSON" ];
 	
 // # Set test source
 	test( new _type() );
@@ -20,7 +20,7 @@ function ats_IterableList( _type ){
 	
 	test_method( "size", 3, __returns);
 	
-	test_method( "empty", bool( false ), __returns );
+	test_method( "is_empty", bool( false ), __returns );
 	
 	test_method( "to_JSON", "[ \"a\", \"b\", \"c\" ]", __returns );
 	
