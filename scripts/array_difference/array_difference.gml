@@ -9,39 +9,27 @@
 /// @returns array
 /// @wiki Core-Index Functions
 function array_difference( _a ) {
-	var _list	= new DsLinkedList();
-	var _result	= new DsLinkedList();
+	var _list	= new LinkedList();
+	var _result	= new LinkedList();
 	var _array;
 	
 	var _i = 1; repeat( argument_count - 1 ) {
-		_array	= argument[ _i ];
+		_array	= argument[ _i++ ];
 		
-		if ( is_struct( _array ) ) {
-			try {
-				_array	= _array.toArray();
-				
-			} catch ( _ ) {
-				return undefined;
-				
-			}
+		var _j = -1; repeat( array_length( _array ) ) { ++_j;
+			if ( _list.contains( _array[ _j ] )) { continue; }
 			
-		}
-		var _j = 0; repeat( array_length( _array ) ) {
-			if ( _list.find( _array[ _j++ ] ) == undefined ) {
-				_list.add( _array[ _j - 1 ] );
-				
-			}
+			_list.push( _array[ _j ] );
 			
 		}
 		
 	}
-	var _i = 0; repeat( array_length( _a ) ) {
-		if ( _list.find( _a[ _i++ ] ) == undefined ) {
-			_result.add( _a[ _i - 1 ] );
-			
-		}
+	var _i = -1; repeat( array_length( _a ) ) { ++_i;
+		if ( _list.contains( _a[ _i ] )) { continue; }
+		
+		_result.push( _a[ _i ] );
 		
 	}
-	return _result.toArray();
+	return _result.to_array();
 	
 }

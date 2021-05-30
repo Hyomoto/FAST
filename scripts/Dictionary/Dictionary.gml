@@ -6,6 +6,7 @@ function Dictionary() constructor {
     /// @param {mixed}    value    The value to assign to the key
     /// @desc    Sets the given key in the dictionary to the provided value.  If the key is not a
     ///        string, InvalidArgumentType will be thrown.
+	/// @returns self
     /// @throws InvalidArgumentType
     static set    = function( _key, _value, _overwrite ) {
         if ( is_string( _key ) == false ) { throw new InvalidArgumentType( "set", 0, _key, "string" ); }
@@ -19,6 +20,7 @@ function Dictionary() constructor {
     /// @param {string}    key        The key to remove
     /// @desc    Removes the given key from the dictionary.  If the key didn't exist,
     ///        ValueNotFound will be thrown.  If the key was not a string, InvalidArgumentType is thrown.
+	/// @returns self
     /// @throws InvalidArgumentType, ValueNotFound
     static unset    = function( _key ) {
         if ( is_string( _key ) == false ) { throw new InvalidArgumentType( "unset", 0, _key, "string" ); }
@@ -33,6 +35,7 @@ function Dictionary() constructor {
     /// @desc    Looks up the given key in the dictionary and returns its value.  If the key is
     ///        not a string, InvalidArgumentType is thrown.  If the value does not exist, ValueNotFound will
     ///        be thrown.
+	/// @returns Mixed
     /// @throws InvalidArgumentType, ValueNotFound
     static lookup    = function( _key ) {
         if ( is_string( _key ) == false ) { throw new InvalidArgumentType( "lookup", 0, _key, "string" ); }
@@ -62,6 +65,7 @@ function Dictionary() constructor {
     /// @desc    Returns values in the dictionary, formatted as an array.  If order is
     ///        specified, the values will be retrieved in that order.  Otherwise, all values
     ///        will be returned in an arbitrary order.
+	/// @returns Array
     static values_to_array    = function( _order ) {
         if ( _order == undefined ) { _order = keys_to_array(); }
         
@@ -72,6 +76,12 @@ function Dictionary() constructor {
         return _order;
         
     }
+	/// @param {string}	JSON_string	The string to convert into a dictionary
+	/// @desc	Takes the provided string and uses it to populate the dictionary.  If a string is not
+	///		provided, InvalidArgumentType is thrown.  If the string does not convert into a dictionary
+	///		UnexpectedTypeMismatch will be thrown.
+	/// @returns self
+	/// @throws InvalidArgumentType, UnexpectedTypeMismatch
 	static from_JSON	= function( _string ) {
 		if ( is_string( _string ) == false ) { throw new InvalidArgumentType( "from_JSON", 0, _string, "string" ); }
 		
@@ -81,9 +91,11 @@ function Dictionary() constructor {
 		
 		__Content	= _decode;
 		
+		return self;
+		
 	}
 	/// @desc	Returns this dictionary as a JSON string
-	static toString	= function() {
+	static to_JSON	= function() {
 		return json_stringify( __Content );
 		
 	}

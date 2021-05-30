@@ -10,16 +10,6 @@
 function array_concat(){
 	var _size	= 0;
 	
-	if ( is_struct( _array ) ) {
-		try {
-			_array	= _array.toArray();
-			
-		} catch ( _ ) {
-			return undefined;
-			
-		}
-		
-	}
 	var _i = 0; repeat( argument_count ) {
 		_size	+= array_length( argument[ _i++ ] );
 		

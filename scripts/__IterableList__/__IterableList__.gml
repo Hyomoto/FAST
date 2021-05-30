@@ -76,7 +76,7 @@ function __IterableList__() constructor {
 	static sort	= function( _sort_or_func ) {
 		var _iter	= new __Self();
 		
-		var _array	= toArray();
+		var _array	= to_array();
 		
 		switch ( _sort_or_func ) {
 			case undefined:
@@ -95,11 +95,11 @@ function __IterableList__() constructor {
 	/// @desc	Returns a new (#LinkedList) containing all of the unique entires in this list. The
 	///		new list does not preserve the order of the original entries.
 	static unique	= function() {
-		var _iter	= new ( asset_get_index( instanceof( self ) ))();
+		var _iter	= new __Self();
 		
 		if ( size == 0 ) { return _iter; }
 		
-		var _array	= toArray();
+		var _array	= to_array();
 		
 		array_sort( _array, true );
 		
@@ -171,7 +171,7 @@ function __IterableList__() constructor {
 	/// @desc	Returns a copy of this linked list
 	/// @returns (#LinkedList)
 	static copy	= function() {
-		var _iter	= new (asset_get_index( instanceof( self ) ))();
+		var _iter	= new __Self();
 		
 		if ( size() == 0 ) { return _iter; }
 		
@@ -200,7 +200,9 @@ function __IterableList__() constructor {
 		return self;
 		
 	}
-	static toArray	= function() {
+	/// @desc	Converts this data structure into an array and returns it.
+	/// @returns Array
+	static to_array	= function() {
 		if ( size() == 0 ) { return []; }
 		
 		index( 0 );
@@ -212,7 +214,33 @@ function __IterableList__() constructor {
 		return _a;
 		
 	}
-	/// @desc	Converts this structure into a string.
+	/// @param {string}	JSON_string	The string to convert into a list
+	/// @desc	Takes the provided string and uses it to populate the list.  If a string is not
+	///		provided, InvalidArgumentType is thrown.  If the string does not convert into an array
+	///		UnexpectedTypeMismatch will be thrown.
+	/// @returns self
+	/// @throws InvalidArgumentType, UnexpectedTypeMismatch
+	static from_JSON	= function( _string ) {
+		if ( is_string( _string ) == false ) { throw new InvalidArgumentType( "from_JSON", 0, _string, "string" ); }
+		
+		try {
+			var _decode	= json_parse( _string );
+		} catch ( _ex ) {
+			throw new BadJSONFormat( "from_JSON" );
+			
+		}
+		if ( is_array( _decode ) == false ) { throw new UnexpectedTypeMismatch( "from_JSON", _decode, "array" ); }
+		
+		return from_array( _decode );
+		
+	}
+	/// @desc	Returns this list as a JSON string
+	static to_JSON	= function() {
+		return json_stringify( to_array() );
+		
+	}
+	/// @desc	Converts this structure into a string and returns it.
+	/// @returns String
 	static toString	= function() {
 		var _string	= "[";
 		// small hack, index throws an error if iterable is empty so this avoids the call

@@ -27,6 +27,7 @@ function __Error__() constructor {
 	}
 	static __Width__	= 92;
 	__Type__	= asset_get_index( instanceof( self ) );
+	
 }
 function error_type( _ex ) {
 	if ( is_struct( _ex ) == false ) { return undefined; }
@@ -43,6 +44,9 @@ function ValueNotFound( _call, _value ) : __Error__() constructor {
 function InvalidArgumentType( _call, _arg, _value, _expected ) : __Error__() constructor {
 	message	= conc( "The value(", _value, ") provided as argument ", _arg, " to function \"", _call, "\" was of the wrong type(got ", typeof( _value ), ", expected ", _expected, ")" );
 }
-function UnexpectedTypeMismatch( _call, _value, _expected ) {
+function UnexpectedTypeMismatch( _call, _value, _expected ) : __Error__() constructor {
 	message	= conc( "The function ", _call, " expected type of ", _expected, " but recieved ", typeof( _value ), "." );
+}
+function BadJSONFormat( _call ) : __Error__() constructor {
+	message	= conc( "The function ", _call, " expected a JSON string, but it could not be converted." );
 }

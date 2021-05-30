@@ -198,7 +198,7 @@
   "tvosCocoaPodDependencies": "",
   "parent": {
     "name": "GMAssert",
-    "path": "folders/ATS/GMAssert.yy",
+    "path": "folders/Automated Testing Suite/GMAssert.yy",
   },
   "resourceVersion": "1.2",
   "name": "GMAssert",

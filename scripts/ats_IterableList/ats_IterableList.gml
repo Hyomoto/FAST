@@ -2,104 +2,85 @@
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 function ats_IterableList( _type ){
 // # TOTAL METHODS LOOKING TO TEST
-	var _methods	= 18;
+	var _methods	= [ "index", "next", "push", "insert", "pop", "clear", "size", "remove", "count", "filter", "sort", "unique", "reverse", "find", "contains", "copy", "empty", "allow_duplicates", "from_array", "to_array", "from_JSON", "to_JSON" ];
 	
-	__iter		= new _type().push( "a", "b", "c" );
+// # Set test source
+	test( new _type() );
 	
-	static _test_method	= function( _a, _b, _c ) {
-		if ( is_array( _a ) == false ) { _a = [ _a ]; }
-		if ( _c == undefined ) { _c = function( _r ) { return __iter.toString(); } }
-		
-		try {
-			assert_equal( _c( do_method( _a ) ), _b, "Method " + to_func( _a ) + " failed." )
-		} catch ( _ex ) {
-			assert_equal( instanceof( _ex ), _b, "Method " + to_func( _a ) + " generated an exception!" );
-			
-		}
-		log_method( _a[ 0 ] );
-		
-	}
-	static _test_exception	= function( _a, _b ) {
-		try {
-			do_method( _a );
-			
-		} catch( _ex ) {
-			assert_equal( error_type( _ex ), _b, "Method " + to_func( _a ) + " threw wrong exception." );
-			return;
-		}
-		assert_equal( "no exception", script_get_name( _b ), "Method " + to_func( _a ) + " did not throw exception." );
-		
-	}
-	static _test_func	= function( _a, _b, _c ) {
-		assert( _c( _a, _b ), "Method " + _a + "() failed." )
-		
-	}
-	static _returns	= function( _r ) { return _r; }
+// # Test errors
+	test_throwable( ["insert",4,"a"], IndexOutOfBounds );
+	test_throwable( ["filter", "bob", "a"], InvalidArgumentType );
+	test_throwable( ["remove", "d"], ValueNotFound );
+	test_throwable( ["from_JSON", 0], InvalidArgumentType );
+	test_throwable( ["from_JSON", "d"], BadJSONFormat );
+	test_throwable( ["from_JSON", "{}"], UnexpectedTypeMismatch );
 	
-// # TEST BODY
-	_test_exception( ["insert",4,"a"], IndexOutOfBounds );
+// # TEST METHODS
+	test_method( [ "from_JSON", "[ \"a\", \"b\", \"c\" ]" ], "[a,b,c]" );
 	
-	_test_exception( ["filter", "bob", "a"], InvalidArgumentType );
+	test_method( "size", 3, __returns);
 	
-	_test_exception( ["remove", "d"], ValueNotFound );
+	test_method( "empty", bool( false ), __returns );
 	
-	_test_method( "size", 3, _returns);
+	test_method( "to_JSON", "[ \"a\", \"b\", \"c\" ]", __returns );
 	
-	_test_method( "empty", bool( false ), _returns );
+	test_method( "to_array", ["a","b","c"], __returns );
 	
-	_test_method( ["index",0], "a", _returns );
+	test_method( ["from_array", ["a", "b", "c" ]], "[a,b,c]" );
 	
-	_test_method( ["next"], "a", _returns );
-	_test_method( ["next"], "b", _returns );
-	_test_method( ["next"], "c", _returns );
-	_test_method( ["next"], __iter.EOL, _returns );
+	test_method( ["index",0], "a", __returns );
 	
-	_test_method( ["remove","b"],"[a,c]" );
+	test_method( ["next"], "a", __returns );
+	test_method( ["next"], "b", __returns );
+	test_method( ["next"], "c", __returns );
+	test_method( ["next"], __source.EOL, __returns );
 	
-	_test_method( ["index",1], "c", _returns );
+	test_method( ["remove","b"],"[a,c]" );
 	
-	_test_method( ["insert",2,"a"],"[a,c,a]" );
+	test_method( ["index",1], "c", __returns );
 	
-	_test_method( ["pop",0],"[c,a]" );
+	test_method( ["insert",2,"a"],"[a,c,a]" );
 	
-	_test_method( "pop","[c]" );
+	test_method( ["pop",0],"[c,a]" );
 	
-	__iter.allow_duplicates( false );
+	test_method( "pop","[c]" );
+	
+	__source.allow_duplicates( false );
 	array_push( __tests, "allow_duplicates" );
 	
-	_test_method( ["push", "c", "c"], "[c]" );
+	test_method( ["push", "c", "c"], "[c]" );
 	
-	__iter.allow_duplicates( true );
+	__source.allow_duplicates( true );
 	
-	_test_method( ["push","1","2","3","c"],"[c,1,2,3,c]" );
+	test_method( ["push","1","2","3","c"],"[c,1,2,3,c]" );
 	
-	_test_method( "reverse","[c,3,2,1,c]", function( _r ) { return _r.toString(); } );
+	test_method( "reverse","[c,3,2,1,c]", function( _r ) { return _r.toString(); } );
 	
-	_test_method( ["contains", "c", "3", "1", "3" ], true, _returns );
+	test_method( ["contains", "c", "3", "1", "3" ], true, __returns );
 	
-	_test_method( ["find", "c" ], 0, _returns );
-	_test_method( ["find", "1" ], 1, _returns );
-	_test_method( ["find", "2" ], 2, _returns );
-	_test_method( ["find", "3" ], 3, _returns );
+	test_method( ["find", "c" ], 0, __returns );
+	test_method( ["find", "1" ], 1, __returns );
+	test_method( ["find", "2" ], 2, __returns );
+	test_method( ["find", "3" ], 3, __returns );
 	
-	_test_method( ["count", "c" ], 2, _returns );
+	test_method( ["count", "c" ], 2, __returns );
 	
-	_test_method( ["contains", "b" ], false, _returns );
+	test_method( ["contains", "b" ], false, __returns );
 	
-	_test_method( "unique", "[1,2,3,c]", function( _r ) { return _r.toString(); } );
+	test_method( "unique", "[1,2,3,c]", function( _r ) { return _r.toString(); } );
 	
-	_test_method( ["copy"],"[c,1,2,3,c]", function( _r ) { return _r.toString(); } );
+	test_method( ["copy"],"[c,1,2,3,c]", function( _r ) { return _r.toString(); } );
 	
-	_test_method( ["filter", "c" ],"[c,c]", function( _r ) { return _r.toString(); } );
-	_test_method( ["filter", "c", function( _a, _b ) { return _a != _b; } ],"[1,2,3]", function( _r ) { return _r.toString(); } );
+	test_method( ["filter", "c" ],"[c,c]", function( _r ) { return _r.toString(); } );
+	test_method( ["filter", "c", function( _a, _b ) { return _a != _b; } ],"[1,2,3]", function( _r ) { return _r.toString(); } );
 	
-	_test_method( "clear","[]" );
+	test_method( "clear","[]" );
 	
 	var _ta	= [];
 	repeat( 10 ) {
 		var _char	= chr(ord( "A" ) + irandom( 0xF ));
 		array_push( _ta, _char );
-		__iter.push( _char );
+		__source.push( _char );
 		
 	}
 	array_sort( _ta, true );
@@ -111,12 +92,9 @@ function ats_IterableList( _type ){
 	}
 	_str	+= "]";
 	
-	_test_method( "sort", _str, function( _r ) { return _r.toString(); } );
+	test_method( "sort", _str, function( _r ) { return _r.toString(); } );
 	
 // # END TEST BODY
-	if ( _methods != array_length( __tests ) ) {
-		syslog( "Warning! Only ", array_length( __tests ), " of ", _methods, " tested." );
-		
-	}
+	return _methods;
 	
 }

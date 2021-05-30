@@ -1,8 +1,3 @@
-var _event	= new FrameEvent( FAST.STEP, 0, undefined, function() {
-	ats_run();
-	
-}).once();
-
 
 //function Throw(msg) {
 //    var errStr = "\n \nCUSTOM EXCEPTION\n==============================================================="

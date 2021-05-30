@@ -57,13 +57,15 @@ function RenderManager() {
 			
 			window_set_rectangle( _x, _y, window_width, window_height );
 			
+			syslog( "RenderManager :: Window resized to ", window_width, " x ", window_height );
+				
 		}
 		static use_views	= function( _true ) {
 			bUseViews	= _true;
 			
 		}
-		render_width	= 0;
-		render_height	= 0;
+		render_width	= undefined;
+		render_height	= undefined;
 		window_width	= 0;
 		window_height	= 0;
 		
@@ -86,7 +88,7 @@ function RenderManager() {
 		}
 		
 	}
-	static instance	= new Feature( "FAST Render", "1.2", "07/12/2020", new render( argument_count > 0 ? argument[ 0 ] : FASTRender ) );
+	static instance	= new Feature( "FAST Render", "1.2.1", "05/30/2021", new render( argument_count > 0 ? argument[ 0 ] : FASTRender ) );
 	return instance.struct;
 	
 }

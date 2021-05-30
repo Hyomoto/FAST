@@ -18,5 +18,5 @@
 // it during gameplay but it is best to do it before the game begins.  Additionally, while the FASTRender
 // object is expected, it can be inherited and extended, or even outright replaced here.
 //	related functions: none
-	RenderManager( FASTRender );
+	RenderManager()
 	
