@@ -12,37 +12,46 @@
 //}
 //_channel.notify( "Hello World!" );
 /// @wiki Core-Index Publisher
-function PublisherChannel() : DsLinkedList() constructor {
-	/// @override
-	static add_DsLinkedList	= add;
+function PublisherChannel() constructor {
 	/// @param {func} method The method to add to the list.
-	/// @desc Adds the given method to the list, and returns the link that contains it. If the provided
-	//		argument is not a method, an error will be logged and the method will not be added.
-	/// @returns ChainLink
+	/// @desc Adds the specified method to the list of listeners.  If the provided argument was not
+	///		a method, InvalidArgumentType will be thrown.
+	/// @returns method
+	/// @throws InvalidArgumentType
 	static add	= function( _func ) {
-		if ( is_method( _func ) == false ) {
-			PublisherManager().log( "PublisherChannel.add could not add, \"", string( _func ), "\" because it is not a method. Ignored." );
-			return;
+		if ( is_method( _func ) == false ) { throw new InvalidArgumentType( "push", 0, _func, "method" ); }
+		
+		array_push( __Subscribers, _func );
+		
+		return _func;
+		
+	}
+	/// @param {method}	method	The method to remove fromt he list.
+	/// @desc	Removes the specified listener from the channel.
+	static remove	= function( _func ) {
+		var _i = 0; repeat( array_length( __Subscribers ) ) {
+			if ( __Subscribers[ _i ] == _func ) {
+				array_delete( __Subscribers, _i, 1 );
+				break;
+			}
+			++_i;
 		}
-		add_DsLinkedList( _func );
 		
 	}
 	/// @param {mixed}	message	The message to pass to the subscribers.
 	/// @desc	Calls each of the subscriber methods with `message` as an argument.
 	static notify	= function( _message ) {
-		var _seek	= next();
-		
-		repeat ( links ) {
-			_seek.value( _message );
-			
-			_seek	= next( _seek );
+		var _i = 0; repeat( size() ) {
+			__Subscribers[ _i++ ]( _message );
 			
 		}
 		
 	}
-	static is		= function( _data_type ) {
-		return _data_type == Publisher;
+	/// @desc	Returns the number of subscribers in the channel
+	static size	= function() {
+		return array_length( __Subscribers );
 		
 	}
+	__Subscribers	= [];
 	
 }

@@ -3,7 +3,7 @@
   "isCompatibility": false,
   "parent": {
     "name": "Garbage",
-    "path": "folders/FAST/Core/Garbage.yy",
+    "path": "folders/FAST/Garbage.yy",
   },
   "resourceVersion": "1.0",
   "name": "GarbageCollector",

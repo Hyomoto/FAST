@@ -44,6 +44,22 @@ function Dictionary() constructor {
         return __Content[$ _key ];
         
     }
+	/// @param {array} order	The array of keys to return
+	/// @desc	Looks up each key in the provided order and returns the resulting array. If the key
+	///		is not a string InvalidArgumentType will be returned, and if the value does not exist,
+	///		ValueNotFound will be thrown.
+	/// @returns Array
+	/// @throws InvalidArgumentType, ValueNotFound
+    static lookup_by_array    = function( _order ) {
+        if ( is_array( _order ) == false ) { throw new InvalidArgumentType( "lookup_by_array", 0, _order, "array" ); }
+        
+        var _i = -1; repeat( array_length( _order ) ) { ++_i;
+            _order[ _i ]    = lookup( _order[ _i ] );
+            
+        }
+        return _order;
+        
+    }
 	static key_exists	= function( _key ) {
 		if ( is_string( _key ) == false ) { throw new InvalidArgumentType( "key_exists", 0, _key, "string" ); }
 		
@@ -62,20 +78,6 @@ function Dictionary() constructor {
         return variable_struct_get_names( __Content );
         
     }
-    /// @desc    Returns values in the dictionary, formatted as an array.  If order is
-    ///        specified, the values will be retrieved in that order.  Otherwise, all values
-    ///        will be returned in an arbitrary order.
-	/// @returns Array
-    static values_to_array    = function( _order ) {
-        if ( _order == undefined ) { _order = keys_to_array(); }
-        
-        var _i = -1; repeat( array_length( _order ) ) { ++_i;
-            _order[ _i ]    = lookup( _order[ _i ] );
-            
-        }
-        return _order;
-        
-    }
 	/// @param {string}	JSON_string	The string to convert into a dictionary
 	/// @desc	Takes the provided string and uses it to populate the dictionary.  If a string is not
 	///		provided, InvalidArgumentType is thrown.  If the string does not convert into a dictionary
@@ -85,9 +87,13 @@ function Dictionary() constructor {
 	static from_JSON	= function( _string ) {
 		if ( is_string( _string ) == false ) { throw new InvalidArgumentType( "from_JSON", 0, _string, "string" ); }
 		
-		var _decode	= json_parse( _string );
-		
-		if ( is_struct( _decode ) == false ) { throw new UnexpectedTypeMismatch( "from_JSON", _decode, "struct" ); }
+		try {
+			var _decode	= json_parse( _string );
+		} catch ( _ex ) {
+			throw new BadJSONFormat( "from_JSON" );
+			
+		}
+		if ( is_struct( _decode ) == false ) { throw new UnexpectedTypeMismatch( "from_JSON", _decode, "array" ); }
 		
 		__Content	= _decode;
 		

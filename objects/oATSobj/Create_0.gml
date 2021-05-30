@@ -138,7 +138,19 @@ print	= function() {
 		_m	+= string( argument[ _i++ ] );
 		
 	}
-	array_push( list, _m );
+	repeat( string_count( "\n", _m ) + 1 ) {
+		var _g	= string_pos( "\n", _m );
+		
+		if ( _g == 0 ) {
+			array_push( list, _m );
+			
+		} else {
+			array_push( list, string_copy( _m, 1, _g - 1 ) );
+			_m	= string_delete( _m, 1, _g );
+			
+		}
+		
+	}
 	
 }
 surface	= new Surface();

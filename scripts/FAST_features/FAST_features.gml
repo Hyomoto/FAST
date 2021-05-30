@@ -1,9 +1,3 @@
-// Provides a global channel pub/sub framework for message distribution. You can safely comment this code
-// out, the manager will be instantiated on-demand if a publisher_ function is called.  You can still use
-// the Publisher object without intantiating the manager.  Some FAST systems will also instantiate it if
-// it has not been done during startup.
-//	related functions: publisher_publish, publisher_subscribe, publisher_unsubscribe
-	PublisherManager();
 // Handles the creation and assignement of Gamepad objects. You can safely comment this code out, the
 // manager will be instantiated on-demand if a new Gamepad is created.
 //	related functions: Gamepad

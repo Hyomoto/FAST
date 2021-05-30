@@ -9,9 +9,9 @@ function __GMA_BREAKPOINT__(message, got, expected) {
 	
 	__test_failures	+= 1;
 	
-	syslog( message );
-	syslog( "Got:\n" + string( got ) );
-	syslog( "Expected:\n" + string( expected ) );
+	print( message );
+	print( "Got:\n" + string( got ) );
+	print( "Expected:\n" + string( expected ) );
 	
 	/* Additional assertion failure handling behaviours here */
   
