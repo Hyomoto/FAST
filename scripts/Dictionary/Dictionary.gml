@@ -46,7 +46,7 @@ function Dictionary() constructor {
     }
 	/// @param {array} order	The array of keys to return
 	/// @desc	Looks up each key in the provided order and returns the resulting array. If the key
-	///		is not a string InvalidArgumentType will be returned, and if the value does not exist,
+	///		is not a string InvalidArgumentType will be thrown, and if the value does not exist,
 	///		ValueNotFound will be thrown.
 	/// @returns Array
 	/// @throws InvalidArgumentType, ValueNotFound
@@ -60,6 +60,11 @@ function Dictionary() constructor {
         return _order;
         
     }
+	/// @param	{string}	key
+	/// @desc	Returns true if the specified key exists in the dictionary. If the key is not a string
+	///		InvalidArgumentType will be thrown.
+	/// @returns bool
+	/// @throws InvalidArgumentType
 	static key_exists	= function( _key ) {
 		if ( is_string( _key ) == false ) { throw new InvalidArgumentType( "key_exists", 0, _key, "string" ); }
 		

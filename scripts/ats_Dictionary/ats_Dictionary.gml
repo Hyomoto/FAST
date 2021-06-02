@@ -19,24 +19,35 @@ function ats_Dictionary(){
 	test_throwable( ["from_JSON", "[]"], UnexpectedTypeMismatch );
 	
 // # TEST METHODS
-	test_method( ["is_empty" ], bool( true ), __returns );
+	test_method( ["is_empty" ], True, __returns );
 	
 	test_method( ["set", "foo", "bar"], "bar", function ( _r ) { return _r.__Content[$ "foo" ] } );
 	
 	test_method( ["lookup", "foo" ], "bar", __returns );
 	
-	test_method( ["unset", "foo" ], undefined, function( _r ) { return _r.__Content[$ "foo" ] } );
-	
 	test_method( ["from_JSON", "{ \"foo\": 10, \"bar\": 20 }" ], 20, function ( _r ) { return _r.__Content[$ "bar" ] } );
 	
-	test_method( ["to_JSON" ], "{ \"foo\": 10.0, \"bar\": 20.0 }", __returns );
+	test_method( ["unset", "foo" ], undefined, function( _r ) { return _r.__Content[$ "foo" ] } );
 	
-	test_method( ["key_exists", "foo"], bool( true ), __returns );
+	test_method( ["to_JSON" ], "{ \"bar\": 20.0 }", __returns );
+	
+	__source.set( "foo", 10 );
+	
+	test_method( ["key_exists", "foo"], True, __returns );
 	
 	test_method( ["size"], 2, __returns );
 	
-	test_method( ["keys_to_array"], ["foo","bar"], __returns );
-	
+	test_method( ["keys_to_array"], True, function( _r ) {
+		try {
+			array_simple_search( _r, "foo" )
+			array_simple_search( _r, "bar" )
+		} catch ( _ex ) {
+			return False;
+			
+		}
+		return True;
+		
+	});
 	test_method( ["lookup_by_array", ["bar","foo"] ], [20,10], __returns );
 	
 // # END TEST BODY

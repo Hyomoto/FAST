@@ -17,12 +17,17 @@
 //}
 //Throw( "Hello world!" );
 
-//var _table	= new LehmerRandomizer();
+var _timer	= new Timer();
 
-//var _test	= array_create( 10, 0 );
+var _a	= new Array().order();
+var _l	= new LehmerRandomizer().seed( 1 );
 
-//repeat( 256 ) {
-//	_test[ _table.next_range( 0, 9 ) ]++;
-	
-//}
-//syslog( _test );
+repeat( 100 ) { _a.push( irandom( 100 ) ); }
+
+syslog( _a );
+
+_a	= _a.shuffle( _l );
+
+syslog( _a );
+
+syslog( _timer.elapsed() / 1000000 );

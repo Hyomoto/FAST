@@ -14,7 +14,7 @@ function Randomizer() constructor {
 	static next_range	= function( _start, _end ) {
 		var _range	= _end - _start + 1;
 		
-		return next() % _range + _start;
+		return ( next() % _range ) + _start;
 		
 	}
 	/// @desc Returns the next random integer from the generator.

@@ -34,18 +34,27 @@ function LinkedList() : __IterableList__() constructor {
 	/// @desc	Adds the given values to the end of the list
 	/// @returns self
 	static push	= function() {
+		var _f = __OrderedBy == undefined || size() == 0 ? function( _v ) {
+				if ( __Last == undefined ) {
+					__First	= { value: _v, next: undefined }
+					__Last		= __First;
+					
+				} else {
+					__Last.next	= { value: _v, next: undefined }
+					__Last		= __Last.next;
+					
+				}
+				++__Size;
+			}
+				:
+			function( _v ) {
+				insert( __OrderedBy( _v ), _v );
+			}
+		
 		var _i = 0; repeat( argument_count ) {
 			if ( __Dupes == false && contains( argument[ _i ] ) ) { continue; }
-			if ( __Last == undefined ) {
-				__First	= { value: argument[ _i++ ], next: undefined }
-				__Last		= __First;
-				
-			} else {
-				__Last.next	= { value: argument[ _i++ ], next: undefined }
-				__Last		= __Last.next;
-				
-			}
-			++__Size;
+			
+			_f( argument[ _i++ ] );
 			
 		}
 		return self;
@@ -72,6 +81,19 @@ function LinkedList() : __IterableList__() constructor {
 		++__Size;
 		
 		return self;
+		
+	}
+	/// @param {int}	index	The position to write to
+	/// @param {Mixed}	value	The value to write
+	/// @desc	Writes the value to the given index in the list.  If the index is out of range
+	///		an IndexOutOfBounds will be thrown.
+	/// @throws IndexOutOfBounds
+	static replace	= function( _index, _value ) {
+		if ( _index < 0 || _index >= size() ) { throw new IndexOutOfBounds( "index", _index, size() ); }
+		
+		index( _index );
+		
+		__Index.p.value	= _value;
 		
 	}
 	/// @param {int}	*index	If provided, the value will be 'popped' from this position

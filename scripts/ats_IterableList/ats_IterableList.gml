@@ -2,7 +2,7 @@
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 function ats_IterableList( _type ){
 // # TOTAL METHODS LOOKING TO TEST
-	var _methods	= [ "index", "next", "push", "insert", "pop", "clear", "size", "remove", "count", "filter", "sort", "unique", "reverse", "find", "contains", "copy", "is_empty", "allow_duplicates", "from_array", "to_array", "from_JSON", "to_JSON" ];
+	var _methods	= [ "index", "next", "push", "insert", "replace", "swap", "pop", "clear", "size", "remove", "count", "filter", "sort", "unique", "reverse", "find", "contains", "copy", "is_empty", "allow_duplicates", "from_array", "to_array", "from_JSON", "to_JSON" ];
 	
 // # Set test source
 	test( new _type() );
@@ -45,12 +45,12 @@ function ats_IterableList( _type ){
 	
 	test_method( "pop","[c]" );
 	
-	__source.allow_duplicates( false );
+	__source.remove_duplicates();
 	array_push( __tests, "allow_duplicates" );
 	
 	test_method( ["push", "c", "c"], "[c]" );
 	
-	__source.allow_duplicates( true );
+	__source.remove_duplicates( false );
 	
 	test_method( ["push","1","2","3","c"],"[c,1,2,3,c]" );
 	
@@ -73,6 +73,10 @@ function ats_IterableList( _type ){
 	
 	test_method( ["filter", "c" ],"[c,c]", function( _r ) { return _r.toString(); } );
 	test_method( ["filter", "c", function( _a, _b ) { return _a != _b; } ],"[1,2,3]", function( _r ) { return _r.toString(); } );
+	
+	test_method( ["replace", 2, "dog" ], "[c,1,dog,3,c]" );
+	
+	test_method( ["swap", 1, 3 ], "[c,3,dog,1,c]" );
 	
 	test_method( "clear","[]" );
 	

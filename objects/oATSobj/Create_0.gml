@@ -164,4 +164,7 @@ depth	= -1;
 #macro ATS_TESTING_ENABLED			false
 #macro Testing:ATS_TESTING_ENABLED	true
 
+#macro True		bool(true)
+#macro False	bool(false)
+
 gml_pragma( "global", "if ( ATS_TESTING_ENABLED ) { room_instance_add( room_first, 0, 0, oATSobj ); }" );

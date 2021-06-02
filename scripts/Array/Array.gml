@@ -27,10 +27,12 @@ function Array() : __IterableList__() constructor {
 	/// @desc	Adds the given values to the end of the list
 	/// @returns self
 	static push	= function() {
+		var _f = __OrderedBy == undefined || size() == 0 ? function( _v ) { array_push( __Content, _v ) } : function( _v ) { array_insert( __Content, __OrderedBy( _v ), _v ); }
+		
 		var _i = 0; repeat( argument_count ) {
 			if ( __Dupes == false && contains( argument[ _i ] ) ) { continue; }
 			
-			array_push( __Content, argument[ _i++ ] );
+			_f( argument[ _i++ ] );
 			
 		}
 		return self;
@@ -46,6 +48,17 @@ function Array() : __IterableList__() constructor {
 		if ( _index < 0 || _index > size() ) { throw new IndexOutOfBounds( "insert", _index, size() ); }
 		
 		array_insert( __Content, _index, _value );
+		
+	}
+	/// @param {int}	index	The position to write to
+	/// @param {Mixed}	value	The value to write
+	/// @desc	Writes the value to the given index in the list.  If the index is out of range
+	///		an IndexOutOfBounds will be thrown.
+	/// @throws IndexOutOfBounds
+	static replace	= function( _index, _value ) {
+		if ( _index < 0 || _index >= size() ) { throw new IndexOutOfBounds( "index", _index, size() ); }
+		
+		__Content[ _index ]	= _value;
 		
 	}
 	/// @param {int}	*index	If provided, the value will be 'popped' from this position

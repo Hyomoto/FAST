@@ -6,7 +6,7 @@
     "path": "folders/FAST/Core/Functions/array.yy",
   },
   "resourceVersion": "1.0",
-  "name": "array_contains",
+  "name": "array_insertion_sort",
   "tags": [],
   "resourceType": "GMScript",
 }

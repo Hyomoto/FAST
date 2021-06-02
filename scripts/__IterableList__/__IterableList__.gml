@@ -10,6 +10,20 @@ function __IterableList__() constructor {
 	static pop		= function(i) {}	// overload
 	static clear	= function() {}		// overload
 	static size		= function() {}		// overload
+	/// @param {int}	first	The first position
+	/// @param {int}	second	The second position
+	/// @desc	Swaps the position of the two elements.
+	/// @throws InvalidArgumentType
+	static swap		= function( _a, _b ) {
+		if ( is_numeric( _a ) == false ) { throw new InvalidArgumentType( "swap", 0, _a, "number" ); }
+		if ( is_numeric( _b ) == false ) { throw new InvalidArgumentType( "swap", 1, _b, "number" ); }
+		
+		var _hold	= index( _a );
+		
+		replace( _a, index( _b ) );
+		replace( _b, _hold );
+		
+	}
 	/// @param {mixed}	value	The value to be removed
 	/// @desc	Removes the first item in the list that matches value.  If no such value exists,
 	///		a ValueNotFound will be thrown.
@@ -94,20 +108,19 @@ function __IterableList__() constructor {
 	}
 	/// @desc	Returns a new (#LinkedList) containing all of the unique entires in this list. The
 	///		new list does not preserve the order of the original entries.
-	static unique	= function() {
+	static unique	= function( _sort_or_func ) {
 		var _iter	= new __Self();
 		
 		if ( size == 0 ) { return _iter; }
 		
 		var _array	= to_array();
 		
-		array_sort( _array, true );
+		array_sort( _array, _sort_or_func == undefined ? true : _sort_or_func );
 		
 		_iter.push( _array[ 0 ] );
 		
-		var _i = 1, _last = _array[ 0 ]; repeat( array_length( _array ) - 1 ) {
-			if ( _array[ _i ] != _last ) { _iter.push( _array[ _i ] ); }
-			_last	= _array[ _i++ ];
+		var _i = 0; repeat( array_length( _array ) - 1 ) { ++_i;
+			if ( _array[ _i ] != _array[ _i - 1 ] ) { _iter.push( _array[ _i ] ); }
 			
 		}
 		return _iter;
@@ -119,12 +132,24 @@ function __IterableList__() constructor {
 		
 		if ( size() == 0 ) { return _iter; }
 		
-		index( 0 );
-		
-		repeat( size() ) {
+		index( 0 ); repeat( size() ) {
 			_iter.insert( 0, next() );
 			
 		}
+		return _iter;
+		
+	}
+	/// @desc	Shuffles the elements of the array in a random order.
+	static shuffle	= function( _rand ) {
+		var _f		= _rand == undefined ? irandom_range : method( _rand, _rand.next_range );
+		var _iter	= copy();
+		
+		var _i = size(); repeat( size() - 1 ) { --_i;
+            var _j = _f( 0, _i + 1 );
+            
+			_iter.swap( _i, _j );
+            
+        }
 		return _iter;
 		
 	}
@@ -133,6 +158,10 @@ function __IterableList__() constructor {
 	static find	= function( _v, _f ) {
 		if ( size() = 0 ) { return -1; }
 		
+		if ( __OrderedBy != undefined ) {
+			return __Search( true, _v );
+			
+		}
 		if ( _f == undefined ) { _f = function( _a, _b ) { return _a == _b; } }
 		
 		index( 0 );
@@ -149,23 +178,11 @@ function __IterableList__() constructor {
 	static contains	= function( _v ) {
 		if ( size() == 0 ) { return false; }
 		
-		index( 0 );
-		
-		var _i = 0; repeat( argument_count * size() ) {
-			var _next	= next();
-			
-			if ( _next == argument[ _i ] ) {
-				if ( ++_i == argument_count ) { return true; }
-				
-				index( 0 );
-				
-				continue;
-				
-			}
-			if ( _next == EOL ) { break; }
+		var _i = 0; repeat( argument_count ) {
+			if ( find( argument[ _i++ ] ) == -1 ) { return false; }
 			
 		}
-		return false;
+		return true;
 		
 	}
 	/// @desc	Returns a copy of this linked list
@@ -188,7 +205,34 @@ function __IterableList__() constructor {
 	/// @returns bool
 	static is_empty	= function() { return size() == 0; }
 	/// @desc	If false, duplicates will not be added.
-	static allow_duplicates	= function( _true ) { __Dupes = _true != false; return self; }
+	static remove_duplicates	= function( _false ) { __Dupes = _false == false; return self; }
+	/// @desc	If true, list will be sorted on push.
+	static order	= function( _sort_or_func ) {
+		switch( _sort_or_func ) {
+			case undefined : case true :
+				__OrderedBy = function( _v ) {
+					var _m = __Search( false, _v );
+					
+					return _v > index( _m ) ? _m + 1 : _m;
+					
+				}
+				break;
+				
+			case false	:
+				__OrderedBy = function( _v ) {
+					var _m = __Search( false, _v, function( _a, _b ) {
+						return _a == _b ? 2 : _a < _b;
+						
+					});
+					return _v < index( _m ) ? _m + 1 : _m;
+					
+				}
+				break;
+				
+		}
+		return self;
+		
+	}
 	/// @desc	Populates this structure with values from the given array
 	static from_array	= function( _a ) {
 		if ( is_array( _a ) == false ) { throw new InvalidArgumentType( "from_array", 0, _a, "array" ); }
@@ -256,7 +300,26 @@ function __IterableList__() constructor {
 		
 	}
 	static EOL	= {}
-	__Dupes	= true;
-	__Self	= asset_get_index( instanceof( self ) );
+	static __Search	= function ( _fail, _value, _func ) {
+		if ( _func == undefined ) { _func = function( _a, _b ) { return _a == _b ? 2 : _a > _b; }}
+		
+		var _l	= 0;
+		var _h	= size() - 1;
+		
+		while ( _l <= _h ) {
+			var _m	= ( _l + _h ) div 2;
+			var _g	= index( _m );
+			
+			switch ( _func( _g, _value ) ) {
+				case 0 : _l = _m + 1; break;
+				case 1 : _h = _m - 1; break;
+				default: return _m;
+			}
+		}
+		return _fail == true ? -1 : _m;
+	}
+	__Dupes		= true;
+	__Self		= asset_get_index( instanceof( self ) );
+	__OrderedBy	= undefined;
 	
 }

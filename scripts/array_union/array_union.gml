@@ -8,14 +8,13 @@
 /// @returns array
 /// @wiki Core-Index Functions
 function array_union(){
-	var _list	= new LinkedList();
+	var _list	= new LinkedList().remove_duplicates();
 	var _array;
 	
 	var _i = 0; repeat( argument_count ) {
 		_array	= argument[ _i++ ];
 		
 		var _j = -1; repeat( array_length( _array ) ) { ++_j;
-			if ( _list.contains( _array[ _j ] )) { continue; }
 			_list.push( _array[ _j ] );
 			
 		}
