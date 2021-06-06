@@ -8,7 +8,31 @@ by Devon Mullane<br>
   You can also visit the <a href="https://discord.gg/YaKukPUpmS">FAST Discord</a> for more interactive help!
 </p>
 <br>
-FAST is a modular library that provides easy-to-use tools to get GMS developers away from boilerplate tasks and onto building their games. There is no genre-specific code or implementation found here. Instead, FAST focuses powerful, common-use tools that provide general utility to fill the gaps in GML functions and tedious framework tasks. The Core library offers up publisher, event and file frameworks, while modules extend it into more specific tasks such as input handling and resolution scaling, or power-user features such as scripting and databases. In short, FAST can work with every game, and compliment any game made with GMS2.3 or later.
+<table role="table">
+<thead>
+<tr>
+<th align="center"><a href="wiki/About-&amp;-Support"><img src="https://user-images.githubusercontent.com/6281477/95686659-37f5f800-0bcd-11eb-991b-d44d72cfc2c6.png" alt="about"></a></th>
+<th align="center"><a href="wiki/Features"><img src="https://user-images.githubusercontent.com/6281477/95686661-37f5f800-0bcd-11eb-9c9c-9f19b9382df4.png" alt="features"></a></th>
+<th align="center"><a href="wiki/Manual"><img src="https://user-images.githubusercontent.com/6281477/95686658-37f5f800-0bcd-11eb-8e7d-c13d56c3e081.png" alt="resource"></a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><a href="wiki/About-&amp;-Support">About &amp; Support</a></td>
+<td align="center"><a href="wiki/Features">Features</a></td>
+<td align="center"><a href="wiki/Manual">Manual</a></td>
+</tr>
+<tr>
+<td align="center">A basic look at FAST and how to get help</td>
+<td align="center">Check out a brief overview of each FAST module</td>
+<td align="center">Got a question? Check the manual!</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Why use FAST?
+</h3>
+FAST is a modular library that provides easy-to-use tools to get GMS developers away from boilerplate tasks and onto building their games. There is no genre-specific code or implementation found here. FAST focuses powerful, common-use tools that fill in the built-in GML library and reduce tedious framework tasks. Core focuses on making GML easier to work with, while modules provide specific solutions for input handling, resolution scaling, or power-user features such as scripting and databases. FAST is lightweight and can compliment any game made with GMS2.3 or later.
 <br><br>
 <h3>
 How do I import FAST into my project?
