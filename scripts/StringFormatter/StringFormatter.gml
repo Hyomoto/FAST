@@ -1,6 +1,4 @@
 /// @ func StringFormatter
-// @todo Update StringFormatter to 2.5 conventions
-// @body Still requires updating
 function StringFormatter() constructor {
 	static format	= function( _string ) {
 		if ( not is_string( _string ) ) { return; }
