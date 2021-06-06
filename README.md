@@ -30,3 +30,8 @@ by Devon Mullane<br>
 </tr>
 </tbody>
 </table>
+<div class="snippet-clipboard-content position-relative" data-snippet-clipboard-copy-content="IDE     2.3.1.536 / 23.1.1.230
+Runtime 2.3.1.406 / 23.1.1.228
+"><pre><code>IDE     2.3.1.536 / 23.1.1.230
+Runtime 2.3.1.406 / 23.1.1.228
+</code></pre></div>
