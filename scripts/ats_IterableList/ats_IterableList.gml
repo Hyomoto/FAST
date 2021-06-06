@@ -2,7 +2,37 @@
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 function ats_IterableList( _type ){
 // # TOTAL METHODS LOOKING TO TEST
-	var _methods	= [ "index", "next", "push", "insert", "replace", "swap", "pop", "clear", "size", "remove", "count", "filter", "sort", "unique", "reverse", "find", "contains", "copy", "is_empty", "allow_duplicates", "from_array", "to_array", "from_JSON", "to_JSON" ];
+	var _methods	= [
+		"index",
+		"next", 
+		"push", 
+		"insert",
+		"replace",
+		"pop", 
+		"clear", 
+		"size",
+		"swap",
+		"remove", 
+		"count", 
+		"filter", 
+		"sort", 
+		"unique", 
+		"union",
+		"intersection",
+		"difference",
+		"reverse",
+		"shuffle",
+		"find", 
+		"contains", 
+		"copy", 
+		"is_empty", 
+		"remove_duplicates", 
+		"order",
+		"from_array", 
+		"to_array", 
+		"from_JSON", 
+		"to_JSON"
+	];
 	
 // # Set test source
 	test( new _type() );
@@ -10,10 +40,12 @@ function ats_IterableList( _type ){
 // # Test errors
 	test_throwable( ["insert",4,"a"], IndexOutOfBounds );
 	test_throwable( ["filter", "bob", "a"], InvalidArgumentType );
-	test_throwable( ["remove", "d"], ValueNotFound );
 	test_throwable( ["from_JSON", 0], InvalidArgumentType );
 	test_throwable( ["from_JSON", "d"], BadJSONFormat );
 	test_throwable( ["from_JSON", "{}"], UnexpectedTypeMismatch );
+	
+	test_method( ["remove", "d"], ValueNotFound, function( _r ) { return error_type( _r ) });
+	test_method( ["find", "d"], ValueNotFound, function( _r ) { return error_type( _r ) });
 	
 // # TEST METHODS
 	test_method( [ "from_JSON", "[ \"a\", \"b\", \"c\" ]" ], "[a,b,c]" );
@@ -46,7 +78,7 @@ function ats_IterableList( _type ){
 	test_method( "pop","[c]" );
 	
 	__source.remove_duplicates();
-	array_push( __tests, "allow_duplicates" );
+	array_push( __tests, "remove_duplicates" );
 	
 	test_method( ["push", "c", "c"], "[c]" );
 	
@@ -54,9 +86,11 @@ function ats_IterableList( _type ){
 	
 	test_method( ["push","1","2","3","c"],"[c,1,2,3,c]" );
 	
+	test_method( "shuffle","[c,1,2,3,c]", __toString, "assert_not_equal" );
+	
 	test_method( "reverse","[c,3,2,1,c]", function( _r ) { return _r.toString(); } );
 	
-	test_method( ["contains", "c", "3", "1", "3" ], true, __returns );
+	test_method( ["contains", ["c", "3", "1", "3"] ], true, __returns );
 	
 	test_method( ["find", "c" ], 0, __returns );
 	test_method( ["find", "1" ], 1, __returns );
@@ -67,7 +101,18 @@ function ats_IterableList( _type ){
 	
 	test_method( ["contains", "b" ], false, __returns );
 	
-	test_method( "unique", "[1,2,3,c]", function( _r ) { return _r.toString(); } );
+	test_method( "unique", "[c,1,2,3]", function( _r ) { return _r.toString(); } );
+	
+	test_method( [ "union", ["a","b","c"] ], "[c,1,2,3,a,b]", function( _r ) { return _r.toString() } );
+	test_method( [ "union", ["2","1"] ], "[c,1,2,3]", function( _r ) { return _r.toString() } );
+	
+	test_method( [ "intersection", ["a","b","c"] ], "[c]", function( _r ) { return _r.toString() } );
+	test_method( [ "intersection", ["2","1"] ], "[2,1]", function( _r ) { return _r.toString() } );
+	test_method( [ "intersection", [] ], "[]", function( _r ) { return _r.toString() } );
+	
+	test_method( [ "difference", ["a","b","c"] ], "[1,2,3]", function( _r ) { return _r.toString() } );
+	test_method( [ "difference", ["2","1"] ], "[c,3]", function( _r ) { return _r.toString() } );
+	test_method( [ "difference", [] ], "[c,1,2,3]", function( _r ) { return _r.toString() } );
 	
 	test_method( ["copy"],"[c,1,2,3,c]", function( _r ) { return _r.toString(); } );
 	
@@ -77,6 +122,11 @@ function ats_IterableList( _type ){
 	test_method( ["replace", 2, "dog" ], "[c,1,dog,3,c]" );
 	
 	test_method( ["swap", 1, 3 ], "[c,3,dog,1,c]" );
+	
+	test( new _type().order() );
+	array_push( __tests, "order" );
+	
+	test_method( ["push", "c", "a", "b", "f", "f", "e" ], "[a,b,c,e,f,f]" );
 	
 	test_method( "clear","[]" );
 	

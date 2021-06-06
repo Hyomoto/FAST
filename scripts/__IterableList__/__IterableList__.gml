@@ -2,11 +2,12 @@
 /// @desc	IterableList is a template for building iterable lists.  This allows them to be used in a
 ///		consistent way throughout the library and your program.  If you wish to create your own
 ///		implementation, simply inherit it and overload the first seven methods.
-function __IterableList__() constructor {
+function __IterableList__() : __Struct__() constructor {
 	static index	= function(i) {}	// overload
 	static next		= function(i) {}	// overload
 	static push		= function(v) {}	// overload
 	static insert	= function(i,v) {}	// overload
+	static replace	= function(i,v) {}	// overload
 	static pop		= function(i) {}	// overload
 	static clear	= function() {}		// overload
 	static size		= function() {}		// overload
@@ -26,8 +27,8 @@ function __IterableList__() constructor {
 	}
 	/// @param {mixed}	value	The value to be removed
 	/// @desc	Removes the first item in the list that matches value.  If no such value exists,
-	///		a ValueNotFound will be thrown.
-	/// @throws ValueNotFound
+	///		a ValueNotFound will be returned.
+	/// @returns Mixed or ValueNotFound
 	static remove	= function( _value ) {
 		if ( size() > 0 ) {
 			index( 0 );
@@ -38,7 +39,7 @@ function __IterableList__() constructor {
 			}
 			
 		}
-		throw new ValueNotFound( "remove", _value );
+		return new ValueNotFound( "remove", _value );
 		
 	}
 	/// @param {mixed}	value	The value to count
@@ -62,21 +63,18 @@ function __IterableList__() constructor {
 	///		defined, this value will be passed along with the index key.  Returning true will add
 	///		that value to the final list.
 	/// @throws InvalidArgumentType
-	static filter	= function( _key, _func ) {
+	static filter	= function( _key, _f ) {
 		var _iter	= new __Self();
 		
 		if ( size == 0 ) { return _iter; }
 		
-		if ( _func == undefined ) { _func = function( _key, _value ) { return _key == _value; }}
+		if ( _f == undefined ) { _f = function( _a, _b ) { return _a == _b; }}
+		if ( is_method( _f ) == false ) { throw new InvalidArgumentType( "filter", 1, _f, "method" ); }
 		
-		if ( is_method( _func ) == false ) { throw new InvalidArgumentType( "filter", 1, _func, "method" ); }
-		
-		index( 0 );
-		
-		repeat( size() ) {
+		index( 0 ); repeat( size() ) {
 			var _next	= next();
 			
-			if ( _func( _key, _next ) ) {
+			if ( _f( _key, _next ) ) {
 				_iter.push( _next );
 				
 			}
@@ -106,21 +104,96 @@ function __IterableList__() constructor {
 		return _iter;
 		
 	}
-	/// @desc	Returns a new (#LinkedList) containing all of the unique entires in this list. The
-	///		new list does not preserve the order of the original entries.
-	static unique	= function( _sort_or_func ) {
+	/// @param {method}	*func	optional: A function to determine comparison
+	/// @desc	Returns a new (#$SELF$) containing all of the unique entires in this list.  If func is
+	///		provided, the comparison will be done against the results of the function.  If this value
+	///		is not a method, InvalidArgumentType will be thrown.
+	/// @throws InvalidArgumentType
+	/// @returns (#$SELF$)
+	static unique	= function( _f ) {
+		return union( [], _f );
+		
+	}
+	/// @param {Mixed}	list	The list to combine with
+	/// @param {method}	*func	optional: A function to determine comparison
+	/// @desc	Returns a new (#$SELF$) combining all unique entries in this list and list.  If func is
+	///		provided, the comparison will be done against the results of the function.  If this value
+	///		is not a method, InvalidArgumentType will be thrown.
+	/// @throws InvalidArgumentType
+	/// @returns (#$SELF$)
+	static union	= function( _list, _f ) {
+		if ( _f == undefined ) { _f = function( _v ) { return _v; }}
+		if ( is_method( _f ) == false ) { throw new InvalidArgumentType( "unique", 1, _f, "method" ); }
+		
 		var _iter	= new __Self();
 		
-		if ( size == 0 ) { return _iter; }
+		_list = [ self, _list ];
 		
-		var _array	= to_array();
+		var _i = 0; repeat( array_length( _list ) ) {
+			var _t	= _list[ _i++ ];
+			
+			if ( is_array( _t ) ) { var _a = new Array(); _a.__Content = _t; _t = _a; }
+			if ( struct_type( _t, __IterableList__ ) == false ) { throw new UnexpectedTypeMismatch("union", _t, "__IterableList__" ); }
+			
+			if ( _t.size() == 0 ) { continue; }
+			
+			_t.index( 0 ); repeat( _t.size() ) {
+				var _next	= _t.next();
+				
+				if ( error_type( _iter.find( _next, _f ) ) == ValueNotFound )
+					_iter.push( _next );
+					
+			}
+			
+		}
+		return _iter;
 		
-		array_sort( _array, _sort_or_func == undefined ? true : _sort_or_func );
+	}
+	/// @param {method}	*func	optional: A function to determine comparison
+	/// @desc	Returns a new (#$SELF$) containing all of the entries shared with list.  If func is
+	///		provided, the comparison will be done against the results of the function.  If this value
+	///		is not a method, InvalidArgumentType will be thrown.
+	/// @throws InvalidArgumentType
+	/// @returns (#$SELF$)
+	static intersection	= function( _list, _f ) {
+		if ( _f == undefined ) { _f = function( _v ) { return _v; }}
+		if ( is_method( _f ) == false ) { throw new InvalidArgumentType( "unique", 1, _f, "method" ); }
 		
-		_iter.push( _array[ 0 ] );
+		var _iter	= new __Self();
 		
-		var _i = 0; repeat( array_length( _array ) - 1 ) { ++_i;
-			if ( _array[ _i ] != _array[ _i - 1 ] ) { _iter.push( _array[ _i ] ); }
+		if ( is_array( _list ) ) { var _a = new Array(); _a.__Content = _list; _list = _a; }
+		if ( struct_type( _list, __IterableList__ ) == false ) { throw new UnexpectedTypeMismatch("union", _list, "__IterableList__" ); }
+		if ( _list.size() == 0 || size() == 0 ) { return _iter; }
+		
+		_list.index(0); repeat( _list.size() ) {
+			var _next	= _list.next();
+			
+			if ( contains( _next, _f ) ) { _iter.push( _next ); }
+			
+		}
+		return _iter;
+		
+	}
+	/// @param {method}	*func	optional: A function to determine comparison
+	/// @desc	Returns a new (#$SELF$) containing all of the entires not in the list.  If func is
+	///		provided, the comparison will be done against the results of the function.  If this value
+	///		is not a method, InvalidArgumentType will be thrown.
+	/// @throws InvalidArgumentType
+	/// @returns (#$SELF$)
+	static difference	= function( _list, _f ) {
+		if ( _f == undefined ) { _f = function( _v ) { return _v; }}
+		if ( is_method( _f ) == false ) { throw new InvalidArgumentType( "unique", 1, _f, "method" ); }
+		
+		var _iter	= new __Self();
+		
+		if ( is_array( _list ) ) { var _a = new Array(); _a.__Content = _list; _list = _a; }
+		if ( struct_type( _list, __IterableList__ ) == false ) { throw new UnexpectedTypeMismatch("union", _list, "__IterableList__" ); }
+		if ( size() == 0 ) { return _iter; }
+		
+		index(0); repeat( size() ) {
+			var _next	= next();
+			
+			if ( _list.contains( _next, _f ) == false ) { _iter.push( _next ); _list.push( _next ); }
 			
 		}
 		return _iter;
@@ -139,9 +212,9 @@ function __IterableList__() constructor {
 		return _iter;
 		
 	}
-	/// @desc	Shuffles the elements of the array in a random order.
+	/// @desc	Shuffles the elements of the array in a random order using a Fischer-Yates shuffle.
 	static shuffle	= function( _rand ) {
-		var _f		= _rand == undefined ? irandom_range : method( _rand, _rand.next_range );
+		var _f	= struct_type( _rand, Randomizer ) ? method( _rand, _rand.next_range ) : irandom_range;
 		var _iter	= copy();
 		
 		var _i = size(); repeat( size() - 1 ) { --_i;
@@ -154,32 +227,46 @@ function __IterableList__() constructor {
 		
 	}
 	/// @param {mixed}	value...	The value to find
-	/// @param {method}	func		The function to use to check for matches
+	/// @param {method}	*func		optional: The function to use to check for matches
+	/// @desc	Checks if the value exists in this list.  If it does not, a ValueNotFound error will
+	///		be returned.  This can be check with the error_type() function.  If func is provided,
+	///		the return of that function will be used for comparison.  If func is not a method,
+	///		InvalidArgumentType will be thrown.
+	/// @throws InvalidArgumentType
+	/// @returns Mixed or ValueNotFound error
 	static find	= function( _v, _f ) {
-		if ( size() = 0 ) { return -1; }
+		if ( _f == undefined ) { _f = function( _v ) { return _v; }}
+		if ( is_method( _f ) == false ) { throw new InvalidArgumentType( "find", 1, _f, "method" ); }
+		
+		if ( size() = 0 ) { return new ValueNotFound( "find", _v ); }
 		
 		if ( __OrderedBy != undefined ) {
-			return __Search( true, _v );
+			return __Search( _v );
 			
 		}
-		if ( _f == undefined ) { _f = function( _a, _b ) { return _a == _b; } }
+		if ( _f == undefined ) { _f = function( _v ) { return _v; } }
 		
 		index( 0 );
 		
 		var _i = -1; repeat( size() ) { ++_i;
-			if ( _f( _v, next() )) { return _i; }
+			if ( _v == _f( next() )) { return _i; }
 			
 		}
-		return -1;
+		return new ValueNotFound( "find", _v );
 		
 	}
 	/// @param {mixed}	value...	The value(s) to check for
 	/// @desc	Returns true if the list contains all of the given values
-	static contains	= function( _v ) {
+	static contains	= function( _v, _f ) {
+		if ( _f == undefined ) { _f = function( _v ) { return _v; }}
+		if ( is_method( _f ) == false ) { throw new InvalidArgumentType( "contains", 1, _f, "method" ); }
+		
+		if ( is_array( _v ) == false ) { _v = [ _v ]; }
+		
 		if ( size() == 0 ) { return false; }
 		
-		var _i = 0; repeat( argument_count ) {
-			if ( find( argument[ _i++ ] ) == -1 ) { return false; }
+		var _i = 0; repeat( array_length( _v ) ) {
+			if ( error_type( find( _v[ _i++ ] ) ) == ValueNotFound ) { return false; }
 			
 		}
 		return true;
@@ -192,9 +279,7 @@ function __IterableList__() constructor {
 		
 		if ( size() == 0 ) { return _iter; }
 		
-		index( 0 );
-		
-		repeat( size() ) {
+		index( 0 ); repeat( size() ) {
 			_iter.push( next() );
 			
 		}
@@ -211,19 +296,23 @@ function __IterableList__() constructor {
 		switch( _sort_or_func ) {
 			case undefined : case true :
 				__OrderedBy = function( _v ) {
-					var _m = __Search( false, _v );
+					var _m = __Search( _v );
+					
+					if ( error_type( _m ) == ValueNotFound ) { _m = _m.index; }
 					
 					return _v > index( _m ) ? _m + 1 : _m;
 					
-				}
+				} 
 				break;
 				
 			case false	:
 				__OrderedBy = function( _v ) {
-					var _m = __Search( false, _v, function( _a, _b ) {
+					var _m = __Search( _v, function( _a, _b ) {
 						return _a == _b ? 2 : _a < _b;
 						
 					});
+					if ( error_type( _m ) == ValueNotFound ) { _m = _m.index; }
+					
 					return _v < index( _m ) ? _m + 1 : _m;
 					
 				}
@@ -245,14 +334,23 @@ function __IterableList__() constructor {
 		
 	}
 	/// @desc	Converts this data structure into an array and returns it.
+	/// @param	{method}	*func	If provided, is used to populate the array.
+	/// @desc	Returns this list as an array.  If func is defined, the value is passed into
+	///		the function and the return is written instead.  If func is provided, but not
+	///		a method, InvalidArgumentType is thrown.
+	/// @throws InvalidArgumentType
 	/// @returns Array
-	static to_array	= function() {
+	static to_array	= function( _f ) {
+		if ( _f == undefined ) { _f = function( _v ) { return _v; }}
+		
+		if ( is_method( _f ) == false ) { throw new InvalidArgumentType( "to_array", 0, _f, "method" ); }
+		
 		if ( size() == 0 ) { return []; }
 		
 		index( 0 );
 		
 		var _a = array_create( size() ), _i = 0; repeat( size() ) {
-			_a[ _i++ ]	= next();
+			_a[ _i++ ]	= _f( next() );
 			
 		}
 		return _a;
@@ -300,11 +398,12 @@ function __IterableList__() constructor {
 		
 	}
 	static EOL	= {}
-	static __Search	= function ( _fail, _value, _func ) {
+	static __Search	= function ( _value, _func ) {
 		if ( _func == undefined ) { _func = function( _a, _b ) { return _a == _b ? 2 : _a > _b; }}
 		
 		var _l	= 0;
 		var _h	= size() - 1;
+		var _m	= 0;
 		
 		while ( _l <= _h ) {
 			var _m	= ( _l + _h ) div 2;
@@ -316,10 +415,12 @@ function __IterableList__() constructor {
 				default: return _m;
 			}
 		}
-		return _fail == true ? -1 : _m;
+		return new ValueNotFound( "binary_search", _value, _m );
+		
 	}
 	__Dupes		= true;
 	__Self		= asset_get_index( instanceof( self ) );
 	__OrderedBy	= undefined;
+	__Type__.add( __IterableList__ );
 	
 }

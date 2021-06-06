@@ -5,14 +5,42 @@
 //var _string = new String( "Hello World!" );
 /// @wiki Core-Index Strings
 function String() constructor {
-	/// @desc returns the number of characters in the String
-	static size	= function() {
-		return string_length( _content );
+	/// @param {String}	string The string to set
+	/// @desc	Sets the contents to the provided string.  If a string is not provided, InvalidArgumentType
+	///		will be thrown.
+	/// @throws InvalidArgumentType
+	/// @returns self
+	static set	= function( _string ) {
+		if ( is_string( _string ) == false ) { throw new InvalidArgumentType( "set", 0, _string, "string" ) }
+		
+		__String	= _string;
+		
+		return self;
 		
 	}
-	/// @param {string} string Sets the contents of this String
-	static set	= function( _content ) {
-		content	= _content;
+	/// @param {String}	substr	The string to look for
+	/// @param {String} newstr	The string to replace with
+	/// @param {bool}	*all	optional: If true, all occurances will be replaced
+	///	@desc	Replaces the first occurance of substr with newstr.  If all is true, all
+	///		occurances will be replaced instead.  If substr or newstr are not strings
+	///		then InvalidArgumentType will be thrown.
+	/// @throws InvalidArgumentType
+	static replace	= function( _substr, _newstr, _all ) {
+		if ( is_string( _substr ) == false ) { throw new InvalidArgumentType( "replace", 0, _substr, "string" ) }
+		if ( is_string( _newstr ) == false ) { throw new InvalidArgumentType( "replace", 1, _newstr, "string" ) }
+		
+		if ( _all == true ) {
+			__Content	= string_replace_all( __Content, _substr, _newstr );
+			
+		} else {
+			__Content	= string_replace( __Content, _substr, _newstr );
+			
+		}
+		
+	}
+	/// @desc returns the number of characters in the String
+	static length	= function() {
+		return string_length( __String );
 		
 	}
 	static draw	= function( _x, _y, _font, _color ) {
@@ -25,7 +53,7 @@ function String() constructor {
 		if ( _color != undefined ) {
 			draw_set_color( _color );
 		}
-		draw_text( _x, _y, content );
+		draw_text( _x, _y, __String );
 		
 		draw_set_font( _ofont );
 		draw_set_color( _ocolor );
@@ -46,7 +74,7 @@ function String() constructor {
 	}
 	static width	= function( _font ) {
 		if ( _font == undefined ) {
-			return string_width( content );
+			return string_width( __String );
 			
 		}
 		var _ofont	= draw_get_font();
@@ -54,7 +82,7 @@ function String() constructor {
 		
 		draw_set_font( _font );
 		
-		_width	= string_width( content );
+		_width	= string_width( __String );
 		
 		draw_set_font( _ofont );
 		
@@ -63,7 +91,7 @@ function String() constructor {
 	}
 	static height	= function( _font ) {
 		if ( _font == undefined ) {
-			return string_width( content );
+			return string_width( __String );
 			
 		}
 		var _ofont	= draw_get_font();
@@ -71,22 +99,18 @@ function String() constructor {
 		
 		draw_set_font( _font );
 		
-		_height	= string_height( content );
+		_height	= string_height( __String );
 		
 		draw_set_font( _ofont );
 		
 		return _height;
 		
 	}
-	static is		= function( _data_type ) {
-		return _data_type == String;
-		
-	}
-	static toArray	= function() {
-		var _array	= array_create( size() );
+	static to_array	= function() {
+		var _array	= array_create( length() );
 		
 		var _i = 0; repeat( array_length( _array ) ) {
-			_array[ _i ]	= string_char_at( content, _i );
+			_array[ _i ]	= string_char_at( __String, _i );
 			
 			++_i;
 			
@@ -95,14 +119,9 @@ function String() constructor {
 		
 	}
 	static toString	= function() {
-		return content;
+		return __String;
 		
 	}
-	content	= "";
-	
-	if ( argument_count > 0 ) {
-		set( argument[ 0 ] );
-		
-	}
+	__String	= "";
 	
 }

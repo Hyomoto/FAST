@@ -8,8 +8,8 @@
 //var _contains	= array_simple_search( [ "eggs", "bread", "milk" ], "bread" );
 //
 //show_debug_message( _contains );
-/// @throws InvalidArgumentType, ValueNotFound
-/// @returns Array
+/// @throws InvalidArgumentType
+/// @returns Array or ValueNotFound
 /// @wiki Core-Index Functions
 function array_simple_search( _array, _value ) {
 	if ( is_array( _array ) == false ) { throw new InvalidArgumentType( "array_simple_search", 0, _array, "array" ); }
@@ -18,6 +18,6 @@ function array_simple_search( _array, _value ) {
 		if ( _array[ _i++ ] == _value ) { return _i - 1; }
 		
 	}
-	throw new ValueNotFound( "array_simple_search", _value );
+	return new ValueNotFound( "array_simple_search", _value, _i );
 	
 }

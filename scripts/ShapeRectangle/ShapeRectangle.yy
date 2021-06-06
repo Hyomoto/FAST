@@ -3,7 +3,7 @@
   "isCompatibility": false,
   "parent": {
     "name": "Shapes",
-    "path": "folders/FAST/Core/Shapes.yy",
+    "path": "folders/FAST/Shapes.yy",
   },
   "resourceVersion": "1.0",
   "name": "ShapeRectangle",

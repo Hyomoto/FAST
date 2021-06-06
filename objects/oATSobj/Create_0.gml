@@ -1,30 +1,30 @@
 __run	= function() {
-	var _list;
+	if ( running == undefined ) {
+		var _list;
+		
+		if ( argument_count == 0 || is_string( argument[ 0 ] ) ) {
+			var _tags = argument_count == 0 ? ["ATS"] : argument_count;
+			var _i = 0; repeat( argument_count ) { _tags[ _i ]	= argument[ _i ]; ++_i; }
+			
+			_list	= tag_get_asset_ids(_tags, asset_script);
+			
+		} else {
+			_list	= array_create( argument_count );
+			var _i = 0; repeat( argument_count ) { _list[ _i ] = argument[ _i ]; ++_i; }
+			
+		}
+		print( "#### STARTING TEST #####" );
 	
-	if ( argument_count == 0 || is_string( argument[ 0 ] ) ) {
-		var _tags = argument_count == 0 ? ["ATS"] : argument_count;
-		var _i = 0; repeat( argument_count ) { _tags[ _i ]	= argument[ _i ]; ++_i; }
-		
-		_list	= tag_get_asset_ids(_tags, asset_script);
-		
-	} else {
-		_list	= array_create( argument_count );
-		var _i = 0; repeat( argument_count ) { _list[ _i ] = argument[ _i ]; ++_i; }
+		running = {
+			list	: _list,
+			errors	: 0,
+			timer	: new Timer(),
+			time	: 0,
+			index	: 0,
+			tested	: 0
+		}
 		
 	}
-	var _error	= 0;
-	
-	print( "#### STARTING TEST #####" );
-	
-	var _i = 0; repeat( array_length( _list ) ) {
-		__test_start( _list[ _i++ ] );
-		_error	+= __test_failures;
-		
-	}
-	print( "##### TEST COMPLETED #####" );
-	print( "Total Tests:    " + string( _i ) );
-	print( "Total Errors:   " + string( _error ) );
-	print( "Total Warnings: " + string( __warnings ) );
 	
 }
 __test_start	= function( _script ) {
@@ -55,35 +55,39 @@ test	= function( _thing ) {
 	__source	= _thing;
 			
 }
-test_method	= function( _a, _b, _c ) {
+test_method	= function( _a, _b, _c, _d ) {
 	if ( is_array( _a ) == false ) { _a = [ _a ]; }
 	if ( _c == undefined ) { _c = function( _r ) { return __source.toString(); } }
-			
+	
+	_d	= asset_get_index( _d == undefined ? "assert_equal" : _d );
+	
 	try {
-		assert_equal( _c( do_method( _a ) ), _b, "FAIL: Method " + to_func( _a ) + " failed." )
+		_d( _c( do_method( _a ) ), _b, "FAIL: Method " + to_func( _a ) + " failed." )
 	} catch ( _ex ) {
-		assert_equal( instanceof( _ex ), _b, "FAIL: Method " + to_func( _a ) + " generated an error!" );
-				
+		_d( instanceof( _ex ), _b, "FAIL: Method " + to_func( _a ) + " generated an error!" );
+		syslog( _ex.message );
 	}
 	log_method( _a[ 0 ] );
-			
+	
 }
 test_throwable	= function( _a, _b ) {
 	try {
 		do_method( _a );
-				
+		
 	} catch( _ex ) {
 		assert_equal( instanceof( _ex ), script_get_name( _b ), "FAIL: Method " + to_func( _a ) + " threw wrong error.\n" + _ex.message );
 		return;
 	}
 	assert_equal( "no throwable", script_get_name( _b ), "FAIL: Method " + to_func( _a ) + " did not throw an error." );
-			
+	
 }
 test_func	= function( _a, _b, _c ) {
 	assert( _c( _a, _b ), "Method " + _a + "() failed." )
-			
+	
 }
 __returns	= function( _r ) { return _r; }
+__toString	= function( _r ) { return _r.toString() }
+
 to_func	= function( _a ) {
 	var _i = 1, _m = _a[ 0 ] + "("; repeat( array_length( _a ) - _i ) {
 		if ( _i > 1 ) { _m += ", "; }
@@ -124,7 +128,7 @@ do_method	= function( _a ) {
 log_method	= function( _test ) {
 	var _i = 0; repeat( array_length( __tests ) ) {
 		if ( __tests[ _i++ ] == _test ) { return; }
-				
+		
 	}
 	array_push( __tests, _test );
 			
@@ -132,7 +136,11 @@ log_method	= function( _test ) {
 __tests			= undefined;
 __warnings		= 0;
 __verbose		= false;
-		
+
+sleep	= function( _v ) {
+	waitFor	= _v;
+	
+}
 print	= function() {
 	var _i = 0, _m = ""; repeat( argument_count ) {
 		_m	+= string( argument[ _i++ ] );
@@ -151,6 +159,7 @@ print	= function() {
 		}
 		
 	}
+	surface.redraw	= true;
 	
 }
 surface	= new Surface();
@@ -160,6 +169,9 @@ bufferH	= 3;
 lines	= 0;
 start	= 0;
 depth	= -1;
+running	= undefined;
+stepSpeed	= 250000;
+waitFor		= 0;
 
 #macro ATS_TESTING_ENABLED			false
 #macro Testing:ATS_TESTING_ENABLED	true

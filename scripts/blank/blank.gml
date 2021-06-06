@@ -17,17 +17,23 @@
 //}
 //Throw( "Hello world!" );
 
-var _timer	= new Timer();
+//var _timer	= new Timer();
 
-var _a	= new Array().order();
-var _l	= new LehmerRandomizer().seed( 1 );
+//var _a	= new Array().order();
+//var _l	= new LehmerRandomizer().seed( 1 );
 
-repeat( 100 ) { _a.push( irandom( 100 ) ); }
+//repeat( 100 ) { _a.push( irandom( 100 ) ); }
 
-syslog( _a );
+//syslog( _a );
 
-_a	= _a.shuffle( _l );
+//_a	= _a.shuffle( _l );
 
-syslog( _a );
+//syslog( _a );
 
-syslog( _timer.elapsed() / 1000000 );
+//syslog( _timer.elapsed() / 1000000 );
+
+var _format	= new StringFormatter();
+
+_format.set_rule( " \t", "strip" );
+
+syslog( _format.format( "Hello  There! I	 am a ROBOT man!	" ));

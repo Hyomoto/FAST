@@ -15,9 +15,9 @@
 function Surface( _width, _height ) constructor {
 	/// @desc Recreates the internal surface
 	static create	= function() {
-		surface_free( surface );
+		surface_free( __Surface );
 		
-		surface	= surface_create( width, height );
+		__Surface	= surface_create( width, height );
 		
 	}
 	/// @desc Resizes the internal surface, will trigger a recreation of the surface.
@@ -25,14 +25,14 @@ function Surface( _width, _height ) constructor {
 		width	= _width;
 		height	= _height;
 		
-		surface_free( surface );
+		surface_free( __Surface );
 		
 	}
 	/// @desc Returns whether or not this surface needs to be updated.  This will return true if the internal surface has not been created, or has been freed, redraw is flagged, or `forced` is set to true.
 	/// @param {bool} forced Forces the surface to update, Default: false
 	/// @returns bool
 	static update	= function( _forced ) {
-		if ( _forced || surface_exists( surface ) == false ) {
+		if ( _forced || surface_exists( __Surface ) == false ) {
 			redraw	= true;
 			
 		}
@@ -47,9 +47,9 @@ function Surface( _width, _height ) constructor {
 	}
 	/// @desc Draws the surface at the given coordinates
 	static draw	= function( _x, _y ) {
-		if ( surface_exists( surface ) == false ) { return; }
+		if ( surface_exists( __Surface ) == false ) { return; }
 		
-		draw_surface( surface, _x, _y );
+		draw_surface( __Surface, _x, _y );
 		
 	}
 	/// @desc Draws the defined part of the surface at the given coordinates
@@ -58,21 +58,21 @@ function Surface( _width, _height ) constructor {
 	/// @param {int} right The right side of the part to draw
 	/// @param {int} bottom The bottom side of the part to draw
 	static draw_part = function( _l, _t, _w, _h, _x, _y ) {
-		if ( surface_exists( surface ) == false ) { return; }
+		if ( surface_exists( __Surface ) == false ) { return; }
 		
-		draw_surface_part( surface, _l, _t, _w, _h, _x, _y );
+		draw_surface_part( __Surface, _l, _t, _w, _h, _x, _y );
 		
 	}
 	/// @desc The same as calling `surface_set_target( surface )`
 	static set	= function() {
-		if ( surface_exists( surface ) == false ) { create(); }
+		if ( surface_exists( __Surface ) == false ) { create(); }
 		
-		surface_set_target( surface );
+		surface_set_target( __Surface );
 		
 	}
 	/// @desc The same as calling `surface_reset_target()`
 	static reset	= function() {
-		if ( surface_get_target() == surface ) {
+		if ( surface_get_target() == __Surface ) {
 			surface_reset_target();
 			
 		}
@@ -80,8 +80,8 @@ function Surface( _width, _height ) constructor {
 	}
 	/// @desc Frees the internal surface.  Note, if you attempt to use the surface again it will be recreated.
 	static free		= function() {
-		if ( surface_exists( surface ) ) {
-			surface_free( surface );
+		if ( surface_exists( __Surface ) ) {
+			surface_free( __Surface );
 			
 		}
 		
@@ -91,7 +91,7 @@ function Surface( _width, _height ) constructor {
 		
 	}
 	// @desc the internal surface
-	surface		= -1;
+	__Surface		= -1;
 	// @desc the width of the surface, note: changing this will _not_ resize the surface! use resize() instead
 	width		= _width;
 	// @desc the width of the surface, note: changing this will _not_ resize the surface! use resize() instead

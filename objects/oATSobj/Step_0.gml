@@ -8,3 +8,30 @@ if ( _scroll != 0 ) {
 	surface.redraw	= true;
 	
 }
+if ( waitFor > 0 ) { --waitFor; return; }
+
+if ( running != undefined ) {
+	running.timer.reset()
+	
+	while ( running.timer.elapsed() < stepSpeed && running.index < array_length( running.list ) ) {
+		__test_start( running.list[ running.index++ ] );
+		running.errors	+= __test_failures;
+		running.tested++;
+		
+	}
+	running.time	+= running.timer.elapsed();
+	
+	if ( running.index == array_length( running.list ) ) {
+		print( "##### TEST COMPLETED #####" );
+		print( "Total Time:     " + string( running.timer.elapsed() / 1000000 ) + "s" );
+		print( "Total Tests:    " + string( running.tested ));
+		print( "Total Errors:   " + string( running.errors ));
+		print( "Total Warnings: " + string( __warnings ));
+		
+		running	= undefined;
+		
+		return;
+		
+	}
+	
+}

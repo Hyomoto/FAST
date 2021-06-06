@@ -27,9 +27,12 @@ function Array() : __IterableList__() constructor {
 	/// @desc	Adds the given values to the end of the list
 	/// @returns self
 	static push	= function() {
-		var _f = __OrderedBy == undefined || size() == 0 ? function( _v ) { array_push( __Content, _v ) } : function( _v ) { array_insert( __Content, __OrderedBy( _v ), _v ); }
+		var _f = __OrderedBy == undefined ? function( _v ) { array_push( __Content, _v ) } : function( _v ) { array_insert( __Content, __OrderedBy( _v ), _v ); }
+		var _i = 0;
 		
-		var _i = 0; repeat( argument_count ) {
+		if ( size() == 0 ) { array_push( __Content, argument[ _i++ ] ); }
+		
+		repeat( argument_count - _i ) {
 			if ( __Dupes == false && contains( argument[ _i ] ) ) { continue; }
 			
 			_f( argument[ _i++ ] );
@@ -90,5 +93,6 @@ function Array() : __IterableList__() constructor {
 	
 	__Content	= [];
 	__Index		= 0;
+	__Type__.add( Array );
 	
 }

@@ -38,8 +38,9 @@ function error_type( _ex ) {
 function IndexOutOfBounds( _call, _index, _bounds ) : __Error__() constructor {
 	message	= conc( "The provided index(", _index, ") to function \"", _call, "\" was out of range(size was ", _bounds, ")." )
 }
-function ValueNotFound( _call, _value ) : __Error__() constructor {
+function ValueNotFound( _call, _value, _index ) : __Error__() constructor {
 	message	= conc( "The value(", _value, ") provided to function \"", _call, "\" didn't exist in the structure." );
+	index	= _index;
 }
 function InvalidArgumentType( _call, _arg, _value, _expected ) : __Error__() constructor {
 	message	= conc( "The value(", _value, ") provided as argument ", _arg, " to function \"", _call, "\" was of the wrong type(got ", typeof( _value ), ", expected ", _expected, ")" );

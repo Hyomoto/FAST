@@ -125,12 +125,12 @@ function DatabaseManager() {
 		}
 		formatter	= new StringFormatter();
 		
-		formatter.rule( " \t", "strip" );
-		formatter.rule( "\"", function() { safexor(); advance(); });
-		formatter.rule( "{", function( _i ) { advance(); insert( _i, "\n" ) });
-		formatter.rule( "}", function( _i ) { insert( _i + 1, "\n" ); insert( _i, "\n" ) });
-		formatter.rule( ";", function( _i ) { strip(); insert( _i, "\n" ) });
-		formatter.rule( "+", function( _i ) { insert( _i, "\n" ); });
+		formatter.set_rule( " \t", "strip" );
+		formatter.set_rule( "\"", function() { safexor(); advance(); });
+		formatter.set_rule( "{", function() { advance(); insert( "\n" ) });
+		formatter.set_rule( "}", function() { insert( "\n" ); advance(); insert( "\n" ) });
+		formatter.set_rule( ";", function() { strip(); insert( "\n" ) });
+		formatter.set_rule( "+", function() { insert( "\n" ); });
 		
 		table	= ds_map_create();
 		values	= ds_map_create();

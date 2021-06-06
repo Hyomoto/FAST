@@ -34,24 +34,29 @@ function LinkedList() : __IterableList__() constructor {
 	/// @desc	Adds the given values to the end of the list
 	/// @returns self
 	static push	= function() {
-		var _f = __OrderedBy == undefined || size() == 0 ? function( _v ) {
-				if ( __Last == undefined ) {
-					__First	= { value: _v, next: undefined }
-					__Last		= __First;
-					
-				} else {
-					__Last.next	= { value: _v, next: undefined }
-					__Last		= __Last.next;
-					
-				}
-				++__Size;
+		static __add__	= function( _v ) {
+			if ( __Last == undefined ) {
+				__First	= { value: _v, next: undefined }
+				__Last		= __First;
+				
+			} else {
+				__Last.next	= { value: _v, next: undefined }
+				__Last		= __Last.next;
+				
 			}
+			++__Size;
+		}
+		var _f = __OrderedBy == undefined ? 
+				__add__
 				:
 			function( _v ) {
 				insert( __OrderedBy( _v ), _v );
 			}
+		var _i = 0;
 		
-		var _i = 0; repeat( argument_count ) {
+		if ( size() == 0 ) { __add__( argument[ _i++ ] ); }
+		
+		repeat( argument_count - _i ) {
 			if ( __Dupes == false && contains( argument[ _i ] ) ) { continue; }
 			
 			_f( argument[ _i++ ] );
@@ -162,5 +167,6 @@ function LinkedList() : __IterableList__() constructor {
 	__Last		= undefined;
 	__Index		= undefined;
 	__Size		= 0;
+	__Type__.add( LinkedList );
 	
 }

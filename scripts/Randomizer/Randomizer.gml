@@ -1,7 +1,7 @@
 /// @func Randomizer
 /// @desc	A template for creating psuedorandom number generators.  By itself it produces no output,
 ///		as it must be extended to produce a result.
-function Randomizer() constructor {
+function Randomizer() : __Struct__() constructor {
 	/// @param seed	The seed to set the number generator to.
 	/// @desc	Sets the starting seed for the randomizer.
 	/// @param returns self
@@ -24,5 +24,7 @@ function Randomizer() constructor {
 		
 	}
 	state	= 0;
+	
+	__Type__.add( Randomizer );
 	
 }

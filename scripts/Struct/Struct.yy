@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Shapes",
-    "path": "folders/FAST/Shapes.yy",
+    "name": "Structs",
+    "path": "folders/FAST/Core/System/Structs.yy",
   },
   "resourceVersion": "1.0",
-  "name": "ShapePolygon",
+  "name": "Struct",
   "tags": [],
   "resourceType": "GMScript",
 }
