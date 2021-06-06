@@ -32,7 +32,7 @@ by Devon Mullane<br>
 <h3>
 Why use FAST?
 </h3>
-FAST is a modular library that provides easy-to-use tools to get GMS developers away from boilerplate tasks and onto building their games. There is no genre-specific code or implementation found here. FAST focuses powerful, common-use tools that fill in the built-in GML library and reduce tedious framework tasks. Core focuses on making GML easier to work with, while modules provide specific solutions for input handling, resolution scaling, or power-user features such as scripting and databases. FAST is lightweight and can compliment any game made with GMS2.3 or later.
+FAST is a modular library that helps get GMS developers away from boring boilerplate tasks and onto building their games. There are no genre-specific code or implementations here. FAST focuses on powerful, common-use tools to compliment the built-in GML library and reduce tedious framework tasks. The basic library, Core, focuses on making GML easier to work with, while its modules provide more specific solutions for input handling, resolution scaling, or power-user features such as scripting and databases. FAST is lightweight and can compliment any game made with GMS2.3 or later.  It's also organized to make trimming it a snap.  While I've tried to keep the bloat out, you may already have a script you like, or just don't want something it provides.  FAST keeps its own internal dependencies down so you can trim the fat easily should you need to.
 <br><br>
 <h3>
 How do I import FAST into my project?
