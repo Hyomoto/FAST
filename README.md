@@ -11,16 +11,16 @@ by Devon Mullane<br>
 <table role="table">
 <thead>
 <tr>
-<th align="center"><a href="wiki/About-&amp;-Support"><img src="https://user-images.githubusercontent.com/6281477/95686659-37f5f800-0bcd-11eb-991b-d44d72cfc2c6.png" alt="about"></a></th>
-<th align="center"><a href="wiki/Features"><img src="https://user-images.githubusercontent.com/6281477/95686661-37f5f800-0bcd-11eb-9c9c-9f19b9382df4.png" alt="features"></a></th>
-<th align="center"><a href="wiki/Manual"><img src="https://user-images.githubusercontent.com/6281477/95686658-37f5f800-0bcd-11eb-8e7d-c13d56c3e081.png" alt="resource"></a></th>
+<th align="center"><a href="https://github.com/Hyomoto/FAST/wiki/About-&-Support"><img src="https://user-images.githubusercontent.com/6281477/95686659-37f5f800-0bcd-11eb-991b-d44d72cfc2c6.png" alt="about"></a></th>
+<th align="center"><a href="https://github.com/Hyomoto/FAST/wiki/Features"><img src="https://user-images.githubusercontent.com/6281477/95686661-37f5f800-0bcd-11eb-9c9c-9f19b9382df4.png" alt="features"></a></th>
+<th align="center"><a href="https://github.com/Hyomoto/FAST/wiki/Manual"><img src="https://user-images.githubusercontent.com/6281477/95686658-37f5f800-0bcd-11eb-8e7d-c13d56c3e081.png" alt="resource"></a></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center"><a href="wiki/About-&amp;-Support">About &amp; Support</a></td>
-<td align="center"><a href="wiki/Features">Features</a></td>
-<td align="center"><a href="wiki/Manual">Manual</a></td>
+<td align="center"><a href="https://github.com/Hyomoto/FAST/wiki/About-&amp;-Support">About &amp; Support</a></td>
+<td align="center"><a href="https://github.com/Hyomoto/FAST/wiki/Features">Features</a></td>
+<td align="center"><a href="https://github.com/Hyomoto/FAST/wiki/Manual">Manual</a></td>
 </tr>
 <tr>
 <td align="center">A basic look at FAST and how to get help</td>
