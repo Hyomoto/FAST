@@ -14,8 +14,8 @@
 //
 //show_debug_message( _string );
 /// @output HelloWorld! is written to the output console.
-/// @todo Write ATS test cast for StringFormatter
-/// @body As the title implies
+// @todo Write ATS test cast for StringFormatter
+// @body As the title implies
 function StringFormatter() constructor {
 	/// @param {String}	string	A string to format
 	/// @desc	Formats the given string and returns it.
