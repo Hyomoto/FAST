@@ -4,6 +4,6 @@ function Set() constructor {
 		
 		
 	}
-	__Content	= new LinkedList().order().remove_duplicates();
+	__Content	= new LinkedList().order().no_duplicates();
 	
 }

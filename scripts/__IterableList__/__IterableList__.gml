@@ -1,19 +1,29 @@
 /// @func __IterableList__
-/// @desc	IterableList is a template for building iterable lists.  This allows them to be used in a
-///		consistent way throughout the library and your program.  If you wish to create your own
-///		implementation, simply inherit it and overload the first seven methods.
+/// @desc	This is an interface for building python-style lists. To make a new data structure, inherit
+///		this constructor and implement the first eight methods. IterableLists are compatible with one
+///		another, despite any underlying differences in structure choice.  They can be used as stacks,
+///		queues, unordered or ordered lists, and sets.  When used as an ordered list, binary search is
+///		used for insertion and traversal, but this behavior can be changed by overwriting __Search.
 function __IterableList__() : __Struct__() constructor {
-	static index	= function(i) {}	// overload
-	static next		= function(i) {}	// overload
-	static push		= function(v) {}	// overload
-	static insert	= function(i,v) {}	// overload
-	static replace	= function(i,v) {}	// overload
-	static pop		= function(i) {}	// overload
-	static clear	= function() {}		// overload
-	static size		= function() {}		// overload
+	/// @desc Retrieves the value at the given index and sets the traversal pointer
+	static index	= function(i) {}	// @overload
+	/// @desc Returns the next value in the list, or EOL if the end has been reached
+	static next		= function(i) {}	// @overload
+	/// @desc Adds the given values to the list
+	static push		= function(v) {}	// @overload
+	/// @desc Inserts the value at the given index
+	static insert	= function(i,v) {}	// @overload
+	/// @desc Replaces the element at the given index with the new value
+	static replace	= function(i,v) {}	// @overload
+	/// @desc Pops the last value off the list, or the index if provided
+	static pop		= function(i) {}	// @overload
+	/// @desc Clears the list
+	static clear	= function() {}		// @overload
+	/// @desc Returns the size of the list
+	static size		= function() {}		// @overload
 	/// @param {int}	first	The first position
 	/// @param {int}	second	The second position
-	/// @desc	Swaps the position of the two elements.
+	/// @desc	Swaps the position of the first and second elements.
 	/// @throws InvalidArgumentType
 	static swap		= function( _a, _b ) {
 		if ( is_numeric( _a ) == false ) { throw new InvalidArgumentType( "swap", 0, _a, "number" ); }
@@ -43,7 +53,7 @@ function __IterableList__() : __Struct__() constructor {
 		
 	}
 	/// @param {mixed}	value	The value to count
-	/// @param	Counts the number of occurences of value in the list.
+	/// @desc	Counts the number of occurences of value in the list.
 	/// @returns int
 	static count	= function( _value ) {
 		if ( size() == 0 ) { return 0; }
@@ -57,12 +67,13 @@ function __IterableList__() : __Struct__() constructor {
 		return _c;
 		
 	}
-	/// @param {mixed}	key		
-	/// @param {method}	func	If true, 
-	/// @desc	Returns a new (#LinkedList) containing all entires that match the key.  If func is
+	/// @param {mixed}	key		The value you want to filter by
+	/// @param {method}	*func	optional: If provided, will be used for sake of comparison
+	/// @desc	Returns a new {$self} containing all entires that match the key.  If func is
 	///		defined, this value will be passed along with the index key.  Returning true will add
 	///		that value to the final list.
 	/// @throws InvalidArgumentType
+	/// @returns {$self}
 	static filter	= function( _key, _f ) {
 		var _iter	= new __Self();
 		
@@ -83,8 +94,13 @@ function __IterableList__() : __Struct__() constructor {
 		return _iter;
 		
 	}
-	/// @param sorttype_or_function	The sort type (true for ascending, false for descending) or a function to use for sorting.
-	/// @desc	Sorts the list according to the given rules
+	/// @param {mixed}	sort_or_func	The sort type logic to use
+	/// @desc	If sort_or_func is true, or no argument is provided, the list will be sorted in ascending
+	///		order.  If false, it will use a descending order.  Otherwise, if a function is provided, that
+	///		will determine the ordering in the list.  If an invalid argument is provided, InvalidArgumentType
+	///		will be thrown.
+	/// @throws InvalidArgumentType
+	/// @returns {$self}
 	static sort	= function( _sort_or_func ) {
 		var _iter	= new __Self();
 		
@@ -95,6 +111,8 @@ function __IterableList__() : __Struct__() constructor {
 			case true:  _sort_or_func = function( _a, _b ) { return _a > _b ? 1 : -1; }; break;
 			case false: _sort_or_func = function( _a, _b ) { return _a < _b ? 1 : -1; }; break;
 		}
+		if ( is_method( _sort_or_func ) == false ) { throw new InvalidArgumentType( "sort", 0, _sort_or_func, "method" ); }
+		
 		array_sort( _array, _sort_or_func );
 		
 		var _i = 0; repeat( array_length( _array ) ) {
@@ -105,22 +123,22 @@ function __IterableList__() : __Struct__() constructor {
 		
 	}
 	/// @param {method}	*func	optional: A function to determine comparison
-	/// @desc	Returns a new (#$SELF$) containing all of the unique entires in this list.  If func is
+	/// @desc	Returns a new {$self} containing all of the unique entires in this list.  If func is
 	///		provided, the comparison will be done against the results of the function.  If this value
 	///		is not a method, InvalidArgumentType will be thrown.
 	/// @throws InvalidArgumentType
-	/// @returns (#$SELF$)
+	/// @returns {$self}
 	static unique	= function( _f ) {
 		return union( [], _f );
 		
 	}
-	/// @param {Mixed}	list	The list to combine with
+	/// @param {mixed}	list	The list to combine with
 	/// @param {method}	*func	optional: A function to determine comparison
-	/// @desc	Returns a new (#$SELF$) combining all unique entries in this list and list.  If func is
+	/// @desc	Returns a new {$self} combining all unique entries in this list and list.  If func is
 	///		provided, the comparison will be done against the results of the function.  If this value
 	///		is not a method, InvalidArgumentType will be thrown.
 	/// @throws InvalidArgumentType
-	/// @returns (#$SELF$)
+	/// @returns {$self}
 	static union	= function( _list, _f ) {
 		if ( _f == undefined ) { _f = function( _v ) { return _v; }}
 		if ( is_method( _f ) == false ) { throw new InvalidArgumentType( "unique", 1, _f, "method" ); }
@@ -149,12 +167,13 @@ function __IterableList__() : __Struct__() constructor {
 		return _iter;
 		
 	}
+	/// @param {mixed}	list	The list to intersect with
 	/// @param {method}	*func	optional: A function to determine comparison
-	/// @desc	Returns a new (#$SELF$) containing all of the entries shared with list.  If func is
+	/// @desc	Returns a new {$self} containing all of the entries shared with list.  If func is
 	///		provided, the comparison will be done against the results of the function.  If this value
 	///		is not a method, InvalidArgumentType will be thrown.
 	/// @throws InvalidArgumentType
-	/// @returns (#$SELF$)
+	/// @returns {$self}
 	static intersection	= function( _list, _f ) {
 		if ( _f == undefined ) { _f = function( _v ) { return _v; }}
 		if ( is_method( _f ) == false ) { throw new InvalidArgumentType( "unique", 1, _f, "method" ); }
@@ -174,12 +193,13 @@ function __IterableList__() : __Struct__() constructor {
 		return _iter;
 		
 	}
+	/// @param {mixed}	list	The list to difference with
 	/// @param {method}	*func	optional: A function to determine comparison
-	/// @desc	Returns a new (#$SELF$) containing all of the entires not in the list.  If func is
+	/// @desc	Returns a new {$self} containing all of the entires not in the list.  If func is
 	///		provided, the comparison will be done against the results of the function.  If this value
 	///		is not a method, InvalidArgumentType will be thrown.
 	/// @throws InvalidArgumentType
-	/// @returns (#$SELF$)
+	/// @returns {$self}
 	static difference	= function( _list, _f ) {
 		if ( _f == undefined ) { _f = function( _v ) { return _v; }}
 		if ( is_method( _f ) == false ) { throw new InvalidArgumentType( "unique", 1, _f, "method" ); }
@@ -199,7 +219,8 @@ function __IterableList__() : __Struct__() constructor {
 		return _iter;
 		
 	}
-	/// @desc	Reverses the order of the internal elements
+	/// @desc	Returns a new {$self} containing all the elements of this list reversed.
+	/// @returns {$self}
 	static reverse	= function() {
 		var _iter	= new ( asset_get_index( instanceof( self ) ))();
 		
@@ -212,7 +233,10 @@ function __IterableList__() : __Struct__() constructor {
 		return _iter;
 		
 	}
-	/// @desc	Shuffles the elements of the array in a random order using a Fischer-Yates shuffle.
+	/// @param {Randomizer}	random	optional: A randomizer to use for shuffling
+	/// @desc	Returns a new {$self} with the elements of the list randomized using a Fischer-Yates shuffle.
+	///		If a randomizer is provided, that will be used instead of the GMS random functions.
+	/// @returns {$self}
 	static shuffle	= function( _rand ) {
 		var _f	= struct_type( _rand, Randomizer ) ? method( _rand, _rand.next_range ) : irandom_range;
 		var _iter	= copy();
@@ -233,7 +257,7 @@ function __IterableList__() : __Struct__() constructor {
 	///		the return of that function will be used for comparison.  If func is not a method,
 	///		InvalidArgumentType will be thrown.
 	/// @throws InvalidArgumentType
-	/// @returns Mixed or ValueNotFound error
+	/// @returns Mixed or ValueNotFound
 	static find	= function( _v, _f ) {
 		if ( _f == undefined ) { _f = function( _v ) { return _v; }}
 		if ( is_method( _f ) == false ) { throw new InvalidArgumentType( "find", 1, _f, "method" ); }
@@ -256,6 +280,7 @@ function __IterableList__() : __Struct__() constructor {
 		
 	}
 	/// @param {mixed}	value...	The value(s) to check for
+	/// @param {method}	*func	optional: A function to determine comparison
 	/// @desc	Returns true if the list contains all of the given values
 	static contains	= function( _v, _f ) {
 		if ( _f == undefined ) { _f = function( _v ) { return _v; }}
@@ -272,8 +297,8 @@ function __IterableList__() : __Struct__() constructor {
 		return true;
 		
 	}
-	/// @desc	Returns a copy of this linked list
-	/// @returns (#LinkedList)
+	/// @desc	Returns a copy of this {$self}
+	/// @returns {$self}
 	static copy	= function() {
 		var _iter	= new __Self();
 		
@@ -289,9 +314,13 @@ function __IterableList__() : __Struct__() constructor {
 	/// @desc	Returns if the list is empty
 	/// @returns bool
 	static is_empty	= function() { return size() == 0; }
-	/// @desc	If false, duplicates will not be added.
-	static remove_duplicates	= function( _false ) { __Dupes = _false == false; return self; }
-	/// @desc	If true, list will be sorted on push.
+	/// @param {bool}	false	Whether or not to allow duplicates
+	/// @desc	If true, or a argument is not provided, duplicates will not be added to the list.
+	static no_duplicates	= function( _false ) { __Dupes = _false == false; return self; }
+	/// @param {mixed}	sort_or_func	The sorting method to use
+	/// @desc	If sort_or_func is true, or no argument is provided, the list will be ordered in ascending
+	///		fashion.  If false, it will use a descending order.  Otherwise, if a function is provided, that
+	///		will determine the ordering in the list.
 	static order	= function( _sort_or_func ) {
 		switch( _sort_or_func ) {
 			case undefined : case true :
@@ -322,7 +351,8 @@ function __IterableList__() : __Struct__() constructor {
 		return self;
 		
 	}
-	/// @desc	Populates this structure with values from the given array
+	/// @param {array}	array	An array of values
+	/// @desc	Populates this structure with values from the provided array.
 	static from_array	= function( _a ) {
 		if ( is_array( _a ) == false ) { throw new InvalidArgumentType( "from_array", 0, _a, "array" ); }
 		clear();
@@ -397,7 +427,7 @@ function __IterableList__() : __Struct__() constructor {
 		return _string + "]";
 		
 	}
-	static EOL	= {}
+	/// @ignore
 	static __Search	= function ( _value, _func ) {
 		if ( _func == undefined ) { _func = function( _a, _b ) { return _a == _b ? 2 : _a > _b; }}
 		
@@ -418,8 +448,15 @@ function __IterableList__() : __Struct__() constructor {
 		return new ValueNotFound( "binary_search", _value, _m );
 		
 	}
+	/// @var {struct}	The pointer that is returned when the end of list is reached
+	/// @output constant
+	static EOL	= {}
+	/// @var {bool}	Whether or not this {$self} will accept duplicates
 	__Dupes		= true;
+	/// @var {int}	A pointer to the asset this struct was created from
+	/// @output	script_index
 	__Self		= asset_get_index( instanceof( self ) );
+	/// @var {method}	The function used to perform ordered insertions
 	__OrderedBy	= undefined;
 	__Type__.add( __IterableList__ );
 	

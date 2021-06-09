@@ -18,7 +18,7 @@ function array_binary_search( _array, _value, _f ) {
 	var _l	= 0;
 	var _h	= array_length( _array );
 	
-	while ( _l <= _h ) {
+	while ( _l <= _h ) { 
 		var _m	= ( _l + _h ) div 2;
 		var _g	= _array[ _m ];
 		

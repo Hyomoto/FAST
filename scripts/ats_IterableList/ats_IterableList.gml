@@ -26,7 +26,7 @@ function ats_IterableList( _type ){
 		"contains", 
 		"copy", 
 		"is_empty", 
-		"remove_duplicates", 
+		"no_duplicates", 
 		"order",
 		"from_array", 
 		"to_array", 
@@ -77,12 +77,12 @@ function ats_IterableList( _type ){
 	
 	test_method( "pop","[c]" );
 	
-	__source.remove_duplicates();
-	array_push( __tests, "remove_duplicates" );
+	__source.no_duplicates();
+	array_push( __tests, "no_duplicates" );
 	
 	test_method( ["push", "c", "c"], "[c]" );
 	
-	__source.remove_duplicates( false );
+	__source.no_duplicates( false );
 	
 	test_method( ["push","1","2","3","c"],"[c,1,2,3,c]" );
 	

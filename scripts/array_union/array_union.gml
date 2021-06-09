@@ -7,19 +7,25 @@
 //show_debug_message( _union );
 /// @returns array
 /// @wiki Core-Index Functions
-function array_union(){
-	var _list	= new LinkedList().remove_duplicates();
-	var _array;
+function array_union() {
+	var _hash	= {}
 	
 	var _i = 0; repeat( argument_count ) {
-		_array	= argument[ _i++ ];
+		var _array	= argument[ _i++ ];
 		
 		var _j = -1; repeat( array_length( _array ) ) { ++_j;
-			_list.push( _array[ _j ] );
+			_hash[$ string( _array[ _j ] ) ]	= _array[ _j ];
 			
 		}
 		
 	}
-	return _list.to_array();
+	var _list	= variable_struct_get_names( _hash );
+	var _array	= array_create( array_length( _list ) );
+	
+	var _i = -1; repeat( array_length ( _list ) ) { ++_i;
+		_array[ _i ]	= _hash[$ _list[ _i ] ];
+		
+	}
+	return _array;
 	
 }

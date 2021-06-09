@@ -7,15 +7,13 @@
 /// @throws InvalidArgumentType
 function array_shuffle( _array ) {
 	if ( is_array( _array ) == false ) { throw new InvalidArgumentType( "array_shuffle", 0, _array, "array" ); }
-
-	var _f		= argument_count > 1 ? irandom_range : method( argument[ 1 ], argument[ 1 ].next_range );
 	
-	if ( is_method( _rand ) == false ) { throw new InvalidArgumentType( "array_shuffle", 0, argument[ 1 ], "Randomizer" ); }
+	var _rand	= argument_count > 1 && struct_type( _rand, Randomizer ) ? method( argument[ 1 ], argument[ 1 ].next_range ) : irandom_range;
 	
 	var _size	= array_length( _array );
 	
 	var _i = _size; repeat( _size - 1 ) { -- _i;
-		var _j = _f( 0, _i + 1 );
+		var _j = _rand( 0, _i + 1 );
 		
 		var _h	= _array[ _i ];
 		

@@ -10,14 +10,15 @@ function __Error__() constructor {
 			var _l = 0, _n = 0; while ( true ) {
 				_n	= string_pos_ext( " ", _msg, _l );
 				
-				if ( _n > 92 ) {
+				if ( _n == 0 ) { break; }
+				if ( _n > __Width__ ) {
 					_msg	= string_insert( "\n", _msg, _l );
 					
-					if ( string_length( _msg ) - _n <= 92 )
+					if ( string_length( _msg ) - _n <= __Width__ )
 						break;
 						
 				}
-				_l	= _n + 1;
+				_l	= _n;
 				
 			}
 			

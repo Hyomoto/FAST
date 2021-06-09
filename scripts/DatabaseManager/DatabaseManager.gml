@@ -125,7 +125,7 @@ function DatabaseManager() {
 		}
 		formatter	= new StringFormatter();
 		
-		formatter.set_rule( " \t", "strip" );
+		formatter.set_rule( " \t", "remove" );
 		formatter.set_rule( "\"", function() { safexor(); advance(); });
 		formatter.set_rule( "{", function() { advance(); insert( "\n" ) });
 		formatter.set_rule( "}", function() { insert( "\n" ); advance(); insert( "\n" ) });

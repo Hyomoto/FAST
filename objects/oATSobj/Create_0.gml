@@ -57,7 +57,7 @@ test	= function( _thing ) {
 }
 test_method	= function( _a, _b, _c, _d ) {
 	if ( is_array( _a ) == false ) { _a = [ _a ]; }
-	if ( _c == undefined ) { _c = function( _r ) { return __source.toString(); } }
+	if ( _c == undefined ) { _c = function( _r ) { return __source[$ "toString" ] != undefined ? __source.toString() : string( __source ); } }
 	
 	_d	= asset_get_index( _d == undefined ? "assert_equal" : _d );
 	
@@ -65,28 +65,44 @@ test_method	= function( _a, _b, _c, _d ) {
 		_d( _c( do_method( _a ) ), _b, "FAIL: Method " + to_func( _a ) + " failed." )
 	} catch ( _ex ) {
 		_d( instanceof( _ex ), _b, "FAIL: Method " + to_func( _a ) + " generated an error!" );
-		syslog( _ex.message );
+		syslog( _ex.longMessage );
 	}
-	log_method( _a[ 0 ] );
+	log_test( _a[ 0 ] );
 	
 }
-test_throwable	= function( _a, _b ) {
+test_function	= function( _a, _b, _c, _d ) {
+	if ( is_array( _a ) == false ) { _a = [ _a ]; }
+	if ( _c == undefined ) { _c = function( _r ) { return is_struct( __source ) && __source[$ "toString" ] != undefined ? __source.toString() : string( __source ); } }
+	
+	_d	= asset_get_index( _d == undefined ? "assert_equal" : _d );
+	
 	try {
-		do_method( _a );
+		_d( _c( do_function( _a ) ), _b, "FAIL: Function " + to_func( _a ) + " failed." )
+	} catch ( _ex ) {
+		_d( instanceof( _ex ), _b, "FAIL: Function " + to_func( _a ) + " generated an error!" );
+		syslog( _ex.longMessage );
+	}
+	log_test( _a[ 0 ] );
+	
+}
+test_throwable	= function( _a, _b, _c ) {
+	try {
+		if ( _c != undefined ) { _c( _a ) } else { do_method( _a ); }
 		
 	} catch( _ex ) {
-		assert_equal( instanceof( _ex ), script_get_name( _b ), "FAIL: Method " + to_func( _a ) + " threw wrong error.\n" + _ex.message );
+		assert_equal( instanceof( _ex ), script_get_name( _b ), "FAIL: Throwable " + to_func( _a ) + " threw wrong error.\n" + _ex.message );
 		return;
 	}
-	assert_equal( "no throwable", script_get_name( _b ), "FAIL: Method " + to_func( _a ) + " did not throw an error." );
+	assert_equal( "no throwable", script_get_name( _b ), "FAIL: Throwable " + to_func( _a ) + " did not throw an error." );
 	
 }
 test_func	= function( _a, _b, _c ) {
 	assert( _c( _a, _b ), "Method " + _a + "() failed." )
 	
 }
-__returns	= function( _r ) { return _r; }
-__toString	= function( _r ) { return _r.toString() }
+__returns		= function( _r ) { return _r; }
+__returnError	= function( _r ) { return error_type( _r ); }
+__toString		= function( _r ) { return _r.toString() }
 
 to_func	= function( _a ) {
 	var _i = 1, _m = _a[ 0 ] + "("; repeat( array_length( _a ) - _i ) {
@@ -125,7 +141,37 @@ do_method	= function( _a ) {
 	}
 	
 }
-log_method	= function( _test ) {
+do_function	= function( _a ) {
+	if ( is_array( _a ) == false ) { _a = [ _a ]; }
+	
+	_a[ 0 ]	= asset_get_index( _a[ 0 ] );
+	
+	var _f	= _a[ 0 ];
+	
+	if ( __verbose ) {
+		print( "  running " + to_func( _a ) );
+		
+	}
+	if ( _a[ 0 ] == -1 ) {
+		print( "Warning! Function " + string( _a[ 0 ] ) + " not found." );
+		throw new ValueNotFound( "do_method", _a[ 0 ] );
+		
+	}
+	switch ( array_length( _a ) ) {
+		case 1 : return _f(); break;
+		case 2 : return _f( _a[ 1 ] );
+		case 3 : return _f( _a[ 1 ], _a[ 2 ] );
+		case 4 : return _f( _a[ 1 ], _a[ 2 ], _a[ 3 ] );
+		case 5 : return _f( _a[ 1 ], _a[ 2 ], _a[ 3 ], _a[ 4 ] );
+		case 6 : return _f( _a[ 1 ], _a[ 2 ], _a[ 3 ], _a[ 4 ], _a[ 5 ] );
+		case 7 : return _f( _a[ 1 ], _a[ 2 ], _a[ 3 ], _a[ 4 ], _a[ 5 ], _a[ 6 ] );
+		case 8 : return _f( _a[ 1 ], _a[ 2 ], _a[ 3 ], _a[ 4 ], _a[ 5 ], _a[ 6 ], _a[ 7 ] );
+		case 9 : return _f( _a[ 1 ], _a[ 2 ], _a[ 3 ], _a[ 4 ], _a[ 5 ], _a[ 6 ], _a[ 7 ], _a[ 8 ] );
+		
+	}
+	
+}
+log_test	= function( _test ) {
 	var _i = 0; repeat( array_length( __tests ) ) {
 		if ( __tests[ _i++ ] == _test ) { return; }
 		

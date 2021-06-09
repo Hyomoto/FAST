@@ -1,10 +1,10 @@
 /// @ func StringFormatter
 /// @desc	Used to store a set of rules than can then be applied to strings to return a formatted
-///		result.  For example, if you wanted to remove all the white space from a given string, or
-///		convert it to lower case letters.  While GML does have built-in functions for this,
-///		StringFormatter can apply multiple rules to a string.  It is generally designed for
-///		working with external files to produce a format that is easier for someone writing a
-///		parser.
+//		result.  For example, if you wanted to remove all the white space from a given string, or
+//		convert it to lower case letters.  While GML does have built-in functions for this,
+//		StringFormatter can apply multiple rules to a string.  It is generally designed for
+//		working with external files to produce a format that is easier for someone writing a
+//		parser.
 /// @example
 //var _formatter = new StringFormatter();
 //
@@ -14,10 +14,8 @@
 //
 //show_debug_message( _string );
 /// @output HelloWorld! is written to the output console.
-/**
- * @todo Write ATS test cast for StringFormatter
- * @body As the title implies
- */
+
+// @todo Write ATS test cast for StringFormatter
 function StringFormatter() constructor {
 	/// @param {String}	string	A string to format
 	/// @desc	Formats the given string and returns it.
@@ -51,7 +49,7 @@ function StringFormatter() constructor {
 	static set_rule		= function( _char, _f ) {
 		static __allowedRules	= { advance: advance, remove: remove, safe: safe, unsafe: unsafe, safexor: safexor };
 		
-		var _rule	= is_string( _rule ) ? __allowedRules[$ _f ] : _rule;
+		var _rule	= is_string( _f ) ? __allowedRules[$ _f ] : _f;
 		
 		if ( is_undefined( _rule ) ) { throw new ValueNotFound( "set_rule", _f, -1 ); }
 		if ( is_method( _rule ) == false ) { throw new InvalidArgumentType( "set_rule", 1, _f, "method" ); }

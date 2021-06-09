@@ -8,25 +8,20 @@
 /// @returns array
 /// @wiki Core-Index Functions
 function array_unique( _array ){
-	var _list	= new DsLinkedList();
+	var _hash	= {}
 	
-	if ( is_struct( _array ) ) {
-		try {
-			_array	= _array.toArray();
-			
-		} catch ( _ ) {
-			return undefined;
-			
-		}
+	var _i = -1; repeat( array_length( _array ) ) { ++_i;
+		_hash[$ string( _array[ _i ] ) ]	= _array[ _i ];
 		
 	}
-	var _i = 0; repeat( array_length( _array ) ) {
-		if ( _list.find( _array[ _i++ ] ) == undefined ) {
-			_list.add( _array[ _i - 1 ] );
-			
-		}
+	var _list	= variable_struct_get_names( _hash );
+	
+	_array	= array_create( array_length( _list ) );
+	
+	var _i = -1; repeat( array_length ( _list ) ) { ++_i;
+		_array[ _i ]	= _hash[$ _list[ _i ] ];
 		
 	}
-	return _list.toArray();
+	return _array;
 	
 }

@@ -8,7 +8,7 @@ function array_merge_sort( _arr, _sort_or_func ) {
             // Create L ← A[p..q] and M ← A[q+1..r]
             var n1 = q - p + 1;
             var n2 = r - q;
-
+			
             var L = array_create( n1 );
             var M = array_create( n2 );
     

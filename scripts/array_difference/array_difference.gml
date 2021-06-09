@@ -8,28 +8,28 @@
 //show_debug_message( _diff );
 /// @returns array
 /// @wiki Core-Index Functions
-function array_difference( _a ) {
-	var _list	= new LinkedList();
-	var _result	= new LinkedList();
-	var _array;
+function array_difference( _arr1, _arr2 ) {
+	var _hash	= {}
 	
-	var _i = 1; repeat( argument_count - 1 ) {
-		_array	= argument[ _i++ ];
-		
-		var _j = -1; repeat( array_length( _array ) ) { ++_j;
-			if ( _list.contains( _array[ _j ] )) { continue; }
-			
-			_list.push( _array[ _j ] );
-			
-		}
+	var _i = -1; repeat( array_length( _arr1 ) ) { ++_i;
+		_hash[$ string( _arr1[ _i ] ) ]	= _arr1[ _i ];
 		
 	}
-	var _i = -1; repeat( array_length( _a ) ) { ++_i;
-		if ( _list.contains( _a[ _i ] )) { continue; }
+	var _i = -1; repeat( array_length( _arr2 ) ) { ++_i;
+		var _key	= string( _arr2[ _i ] );
 		
-		_result.push( _a[ _i ] );
+		if ( variable_struct_exists( _hash, _key ) == false ) { continue; }
+		
+		variable_struct_remove( _hash, _key );
 		
 	}
-	return _result.to_array();
+	var _list	= variable_struct_get_names( _hash );
+	var _array	= array_create( array_length( _list ) );
+	
+	var _i = -1; repeat( array_length ( _list ) ) { ++_i;
+		_array[ _i ]	= _hash[$ _list[ _i ] ];
+		
+	}
+	return _array;
 	
 }

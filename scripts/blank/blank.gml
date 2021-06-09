@@ -32,8 +32,15 @@
 
 //syslog( _timer.elapsed() / 1000000 );
 
-var _format	= new StringFormatter();
+//var _format	= new StringFormatter();
 
-_format.set_rule( " \t", "strip" );
+//_format.set_rule( " \t", "remove" );
 
-syslog( _format.format( "Hello  There! I	 am a ROBOT man!	" ));
+//syslog( _format.format( "Hello  There! I	 am a ROBOT man!	" ));
+
+//var _list	= new LinkedList();
+
+//repeat( 10 ) { _list.push( irandom(100) ); }
+
+//syslog( _list.toString() );
+
