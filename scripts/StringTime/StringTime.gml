@@ -9,8 +9,6 @@
 //show_debug_message( _time );
 /// @wiki Core-Index Strings
 function StringTime( _value, _decimals, _format ) : String() constructor {
-	/// @override
-	static set_String	= set;
 	/// @param {int}	seconds			The number of seconds to set the time to
 	/// @desc	Will format the provided seconds into a formatted time string.
 	static set	= function( _value ) {
@@ -36,14 +34,17 @@ function StringTime( _value, _decimals, _format ) : String() constructor {
 			_string	= string_replace( _string, "$S", _second );
 			
 		}
-		set_String( _string );
+		__String	= _string;
 		
 	}
+	static toString	= function() {
+		return __String;
+		
+	}
+	__String	= "";
 	/// @desc the format as provided by the format argument
 	format		= _format;
 	/// @desc the decimals as provided by the decimals argument
 	decimals	= _decimals;
-	
-	set( _value );
 	
 }

@@ -39,9 +39,30 @@ function ats_f_arrays(){
 	
 	test_function( [ "array_reverse", __source ], "[ 97,44,23,10,7 ]" );
 	
-	test_function( [ "array_swap", __source, 2, 4 ], "[ 97,44,7,10,23 ]" );
+	repeat( 100 ) {
+		var _size	= array_length( __source ) - 1;
+		var _comp	= string( __source );
+		do {
+			var _a	= irandom( _size );
+			var _b	= irandom( _size );
+			
+		} until ( _a != _b );
+		
+		test_function( [ "array_swap", __source, _a, _b ], _comp, undefined, "assert_not_equal" );
+		
+	}
+	assert_equal( array_sort( __source, true ), array_sort( _array(), true ), "FAIL: array_swap failed, contents changed!" ); 
 	
-	test_function( [ "array_shuffle", __source ], [97,44,7,10,23], function( _r ) { return __source }, "assert_not_equal" );
+	var _rarr	= array_create( 100 ); var _i = 0; repeat( array_length( _rarr ) ) { _rarr[ _i++ ] = irandom( 100 ); }
+	var _tarr	= []; array_copy( _tarr, 0, _rarr, 0, array_length( _rarr ) );
+	
+	repeat( 100 ) {
+		var _comp	= string( _tarr );
+		
+		test_function( [ "array_shuffle", _tarr ], _comp, undefined, "assert_not_equal" );
+		
+	}
+	assert_equal( array_sort( _tarr, true ), array_sort( _rarr, true ), "FAIL: array_shuffle failed, contents changed!" ); 
 	
 	test_function( [ "array_combine", [ 0, 1 ], [ 2, 3 ] ], [ 0, 1, 2, 3 ], __returns );
 	

@@ -19,10 +19,10 @@ __run	= function() {
 			list	: _list,
 			errors	: 0,
 			timer	: new Timer(),
-			time	: 0,
 			index	: 0,
 			tested	: 0
 		}
+		timer.reset();
 		
 	}
 	
@@ -65,10 +65,10 @@ test_method	= function( _a, _b, _c, _d ) {
 		_d( _c( do_method( _a ) ), _b, "FAIL: Method " + to_func( _a ) + " failed." )
 	} catch ( _ex ) {
 		_d( instanceof( _ex ), _b, "FAIL: Method " + to_func( _a ) + " generated an error!" );
-		syslog( _ex.longMessage );
+		syslog( _ex.message );
 	}
 	log_test( _a[ 0 ] );
-	
+	running.tested++
 }
 test_function	= function( _a, _b, _c, _d ) {
 	if ( is_array( _a ) == false ) { _a = [ _a ]; }
@@ -80,10 +80,10 @@ test_function	= function( _a, _b, _c, _d ) {
 		_d( _c( do_function( _a ) ), _b, "FAIL: Function " + to_func( _a ) + " failed." )
 	} catch ( _ex ) {
 		_d( instanceof( _ex ), _b, "FAIL: Function " + to_func( _a ) + " generated an error!" );
-		syslog( _ex.longMessage );
+		syslog( _ex.message );
 	}
 	log_test( _a[ 0 ] );
-	
+	running.tested++
 }
 test_throwable	= function( _a, _b, _c ) {
 	try {
@@ -94,11 +94,11 @@ test_throwable	= function( _a, _b, _c ) {
 		return;
 	}
 	assert_equal( "no throwable", script_get_name( _b ), "FAIL: Throwable " + to_func( _a ) + " did not throw an error." );
-	
+	running.tested++
 }
 test_func	= function( _a, _b, _c ) {
 	assert( _c( _a, _b ), "Method " + _a + "() failed." )
-	
+	running.tested++
 }
 __returns		= function( _r ) { return _r; }
 __returnError	= function( _r ) { return error_type( _r ); }
@@ -205,7 +205,7 @@ print	= function() {
 		}
 		
 	}
-	surface.redraw	= true;
+	surface.redraw();
 	
 }
 surface	= new Surface();
@@ -216,8 +216,9 @@ lines	= 0;
 start	= 0;
 depth	= -1;
 running	= undefined;
-stepSpeed	= 250000;
+stepSpeed	= 100000;
 waitFor		= 0;
+timer	= new Timer();
 
 #macro ATS_TESTING_ENABLED			false
 #macro Testing:ATS_TESTING_ENABLED	true

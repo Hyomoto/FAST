@@ -1,25 +1,34 @@
 /// @func array_shuffle
 /// @param {array}	array	The array to shuffle
 /// @param {array}	*rand	A (#Randomizer) to use
-/// @desc	An implementation of the Fisher-Yates shuffle. Performs an in-place, single-pass
-///		randomization of the provided array.  If an array is not provided, InvalidArgumentType will
-///		be thrown.  If rand is defined, that will be used instead of the default GMS randomization.
+/// @desc	Returns a new array with the contents of the original array shuffled.  Utilizes a 
+///		Fisher-Yates shuffle.  If an array is not provided, InvalidArgumentType will be thrown.  If
+///		rand is defined, that will be used instead of the default GMS randomization.  If rand is
+///		defined but is not of type Randomizer, InvalidArgumentType will be thrown.
 /// @throws InvalidArgumentType
+/// @returns array
+/// @wiki Core-Index Functions
 function array_shuffle( _array ) {
 	if ( is_array( _array ) == false ) { throw new InvalidArgumentType( "array_shuffle", 0, _array, "array" ); }
 	
-	var _rand	= argument_count > 1 && struct_type( _rand, Randomizer ) ? method( argument[ 1 ], argument[ 1 ].next_range ) : irandom_range;
+	var _rand	= irandom;
 	
+	if ( argument_count > 1 ) {
+		if ( struct_type( argument[ 1 ], Randomizer ) == false ) { throw new InvalidArgumentType( "array_shuffle", 1, argument[1], "Randomizer" ); }
+		
+		_rand	= method( argument[ 1 ], argument[ 1 ].next_int );
+		
+	}
 	var _size	= array_length( _array );
+	var _new	= array_create( _size );
 	
-	var _i = _size; repeat( _size - 1 ) { -- _i;
-		var _j = _rand( 0, _i + 1 );
+	var _i = _size; repeat( _size - 1 ) { --_i;
+		var _j = _rand( _i );
 		
-		var _h	= _array[ _i ];
-		
-		_array[@ _i ]	= _array[ _j ];
-		_array[@ _j ]	= _h;
+		_new[ _i ]	= _array[ _j ];
+		_new[ _j ]	= _array[ _i ];
 		
     }
+	return _new;
 	
 }

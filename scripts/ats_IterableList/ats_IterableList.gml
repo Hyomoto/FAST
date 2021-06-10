@@ -33,7 +33,6 @@ function ats_IterableList( _type ){
 		"from_JSON", 
 		"to_JSON"
 	];
-	
 // # Set test source
 	test( new _type() );
 	
@@ -86,8 +85,6 @@ function ats_IterableList( _type ){
 	
 	test_method( ["push","1","2","3","c"],"[c,1,2,3,c]" );
 	
-	test_method( "shuffle","[c,1,2,3,c]", __toString, "assert_not_equal" );
-	
 	test_method( "reverse","[c,3,2,1,c]", function( _r ) { return _r.toString(); } );
 	
 	test_method( ["contains", ["c", "3", "1", "3"] ], true, __returns );
@@ -121,7 +118,38 @@ function ats_IterableList( _type ){
 	
 	test_method( ["replace", 2, "dog" ], "[c,1,dog,3,c]" );
 	
-	test_method( ["swap", 1, 3 ], "[c,3,dog,1,c]" );
+	test( new _type().from_array([ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]) );
+	var _tarr	= __source.sort().toString();
+	
+	repeat( 100 ) {
+		var _size	= __source.size() - 1;
+		var _comp	= __source.toString();
+		do {
+			var _a	= irandom( _size );
+			var _b	= irandom( _size );
+			
+		} until ( _a != _b );
+		
+		test_method( ["swap", _a, _b ], _comp, undefined, "assert_not_equal" );
+		
+	}
+	assert_equal( __source.sort().toString(), _tarr, "FAIL: swap failed, contents changed!" );
+	
+	var _rlist	= new _type(); repeat( 100 ) { _rlist.push( irandom( 100 ) ); }
+	
+	test( _rlist.copy() );
+	
+	repeat( 100 ) {
+		var _comp	= __source.toString();
+		
+		test_method( [ "shuffle" ], _comp, __toString, "assert_not_equal" );
+		
+	}
+	assert_equal( __source.sort().toString(), _rlist.sort().toString(), "FAIL: shuffle failed, contents changed!" ); 
+	
+	repeat( 10 ) {
+		test_method( "shuffle","[c,1,2,3,c]", __toString, "assert_not_equal" );
+	}
 	
 	test( new _type().order() );
 	array_push( __tests, "order" );

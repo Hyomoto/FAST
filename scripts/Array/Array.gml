@@ -1,5 +1,5 @@
 /// @func Array
-/// @param {mixed}	*values...	the default values to place in the list.
+/// @desc	A wrapper for the built-in GML array data structure.
 function Array() : __IterableList__() constructor {
 	/// @param {int}	index	The position to read from
 	/// @desc	Reads the value at the given index in the list.  If the index is out of range

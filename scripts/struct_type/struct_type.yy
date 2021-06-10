@@ -2,8 +2,8 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "is",
-    "path": "folders/FAST/Core/Functions/is.yy",
+    "name": "type",
+    "path": "folders/FAST/Core/Functions/type.yy",
   },
   "resourceVersion": "1.0",
   "name": "struct_type",

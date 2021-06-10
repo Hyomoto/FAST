@@ -3,7 +3,7 @@
   "isCompatibility": false,
   "parent": {
     "name": "Pointer",
-    "path": "folders/FAST/Pointer.yy",
+    "path": "folders/Depreciate/Pointer.yy",
   },
   "resourceVersion": "1.0",
   "name": "PointerManager",

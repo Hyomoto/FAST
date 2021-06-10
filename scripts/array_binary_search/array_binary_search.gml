@@ -1,13 +1,18 @@
 /// @func array_binary_search
 /// @param {Array}	array	The array to search
 /// @param {Mixed}	value	The value to find
-/// @desc	Performs a binary search on the given array for the specified value.  The array must
-///		be sorted for binary search to work.  You can adjust the function used for comparison by
-///		specifying function.  If an array or method are not provided, InvalidArgumentType will be
-///		thrown.  If the value is not found, ValueNotFound is returned with the index of the last
-///		searched index.
+/// @param {method}	*func	optional: If provided, will be used for sake of comparison
+/// @desc	Uses a binary search on the given array to find the position of value.  The array must
+///		be sorted for binary search to work, otherwise results will be inconsistent.   You can
+///		override the function used for comparison by specifying func. If the value is not found,
+///		ValueNotFound will be returned.  If an array is not provided to search, or a method is not
+///		provided for func InvalidArgumentType will be thrown.
 /// @throws InvalidArgumentType
 /// @returns Mixed or ValueNotFound
+/// @example
+//array_binary_search( [ 10, 20, 30, 40, 50 ], 40 );
+/// @output 3
+/// @wiki Core-Index Functions
 function array_binary_search( _array, _value, _f ) {
 	if ( is_array( _array ) == false ) { throw new InvalidArgumentType( "array_binary_search", 0, _array, "array" ); }
 	

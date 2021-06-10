@@ -11,6 +11,10 @@ function Randomizer() : __Struct__() constructor {
 		return self;
 		
 	}
+	static next_int		= function( _end ) {
+		return next() % _end;
+		
+	}
 	static next_range	= function( _start, _end ) {
 		var _range	= _end - _start + 1;
 		

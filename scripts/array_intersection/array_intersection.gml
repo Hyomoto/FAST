@@ -1,20 +1,23 @@
 /// @func array_intersection
-/// @param {array}	arrays...
-/// @desc Returns the unique entries of the given arrays combined into one.
+/// @param {array}	array1
+/// @param {array}	array2
+/// @desc	Returns a new array containing the intersection of both arrays. These are the values that
+///		are shared by both arrays, except duplicates.  If an array is not provided to either argument,
+///		InvalidArgumentType will be thrown.
 /// @example
-//var _union = array_intersection( [ 10, 20 ], [ 10, 20, 30 ] );
-//
-//show_debug_message( _union );
+//array_intersection( [ 10, 20, 30 ], [ 20, 30, 40 ] );
+/// @output [ 20,30 ]
 /// @returns array
+/// @throws InvalidArgumentType
 /// @wiki Core-Index Functions
 function array_intersection( _arr1, _arr2 ) {
-	if ( array_length( _arr1 ) > array_length( _arr2 ) ) {
-		var _h	= _arr1;
+	//if ( array_length( _arr1 ) > array_length( _arr2 ) ) {
+	//	var _h	= _arr1;
 		
-		_arr1	= _arr2;
-		_arr2	= _h;
+	//	_arr1	= _arr2;
+	//	_arr2	= _h;
 		
-	}
+	//}
 	var _hash	= {}
 	var _output	= {}
 	

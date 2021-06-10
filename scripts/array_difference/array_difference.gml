@@ -1,12 +1,14 @@
 /// @func array_difference
-/// @param {array}	array
-/// @param {array}	arrays...
-/// @desc Returns the first array with the entries of subsequent arrays removed.
+/// @param {array}	array1
+/// @param {array}	array2
+/// @desc	Returns a new array containing the difference of both arrays. These are the values that
+///		are only in the first array.  If an array is not provided to either argument, InvalidArgumentType
+///		will be thrown.
 /// @example
-//var _diff = array_difference( [ 10, 20, 30 ], [ 10, 20 ] );
-//
-//show_debug_message( _diff );
+//array_difference( [ 10, 20, 30 ], [ 20, 30, 40 ] );
+/// @output [ 10 ]
 /// @returns array
+/// @throws InvalidArgumentType
 /// @wiki Core-Index Functions
 function array_difference( _arr1, _arr2 ) {
 	var _hash	= {}

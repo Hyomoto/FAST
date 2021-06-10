@@ -238,11 +238,11 @@ function __IterableList__() : __Struct__() constructor {
 	///		If a randomizer is provided, that will be used instead of the GMS random functions.
 	/// @returns {$self}
 	static shuffle	= function( _rand ) {
-		var _f	= struct_type( _rand, Randomizer ) ? method( _rand, _rand.next_range ) : irandom_range;
+		var _f	= struct_type( _rand, Randomizer ) ? method( _rand, _rand.next_int ) : irandom;
 		var _iter	= copy();
 		
 		var _i = size(); repeat( size() - 1 ) { --_i;
-            var _j = _f( 0, _i + 1 );
+            var _j = _f( _i );
             
 			_iter.swap( _i, _j );
             

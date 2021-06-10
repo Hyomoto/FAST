@@ -1,9 +1,9 @@
-/// @func GenericOutput
+/// @func __GenericOutput__
 /// @param {func}	function	If provided, overrides the "write" function.
 /// @desc	inheritable template, provides a standardized way for dealing with
 ///		structures that can be written to
 /// @wiki Core-Index
-function GenericOutput() constructor {
+function __GenericOutput__() : __Struct__() constructor {
 	/// @desc	Used to write to an output.
 	static write	= function() {};
 	/// @desc	Used to close an output, this should save and clean up any internal structures.
@@ -15,5 +15,6 @@ function GenericOutput() constructor {
 		write	= argument[ 0 ];
 		
 	}
+	__Type__.add( __GenericOutput__ );
 	
 }

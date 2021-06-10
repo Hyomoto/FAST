@@ -7,7 +7,7 @@
 // 
 // _file.write( "Hello World!" );
 /// @wiki Core-Index Files
-function File( _readonly ) : GenericOutput() constructor {
+function File( _readonly ) : __GenericOutput__() constructor {
 	/// @desc Resets the read position of the file back to the start.
 	static reset	= function() {
 		next	= 0;

@@ -3,7 +3,7 @@
   "isCompatibility": false,
   "parent": {
     "name": "Functions",
-    "path": "folders/FAST/Core/File Handling/Functions.yy",
+    "path": "folders/FAST/File Handling/Functions.yy",
   },
   "resourceVersion": "1.0",
   "name": "file_get_directory",

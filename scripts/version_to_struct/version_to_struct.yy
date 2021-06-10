@@ -3,7 +3,7 @@
   "isCompatibility": false,
   "parent": {
     "name": "version",
-    "path": "folders/FAST/Core/Functions/version.yy",
+    "path": "folders/Depreciate/version.yy",
   },
   "resourceVersion": "1.0",
   "name": "version_to_struct",

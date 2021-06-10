@@ -1,6 +1,20 @@
 /// @func array_merge_sort
-/// @param    {array}    array            The array to sort
-/// @param    {mixed}    *sort_or_func    Whether or not to sort ascending, or a function to use instead.
+/// @param {array}	array			An array to sort
+/// @param {mixed}	*sort_or_func	optional: The sort logic to use
+/// @desc	A simple sort-in-place algorithm for arrays.
+/// @desc	An efficient, stable sorting algorithm for arrays.  Merge sort is much faster than insertion
+///		sort, but uses more space due to it's copying of internal portions of the array.  If sort_or_func
+///		is true, or not provided, the array will be sorted by ascending value.  Setting this to false will
+///		use descending logic.  If a method is provided, this will be used for the comparison.  If an array
+///		is not provided to sort, or a non-boolean, non-method is provided for sort, InvalidArgumentType
+///		will be thrown.
+/// @example
+//var _array	= [ 10, 4, 15, 23, 12, 4 ];
+//
+//array_merge_sort( _array );
+/// @output [ 4,4,10,12,15,23 ]
+/// @throws InvalidArgumentType
+/// @wiki Core-Index Functions
 function array_merge_sort( _arr, _sort_or_func ) {
     // Divide the array into two subarrays, sort them and merge them
     static __sort__    = function( arr, l, r, f, s ) {

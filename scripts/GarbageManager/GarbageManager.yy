@@ -3,7 +3,7 @@
   "isCompatibility": false,
   "parent": {
     "name": "Garbage",
-    "path": "folders/FAST/Garbage.yy",
+    "path": "folders/Depreciate/Garbage.yy",
   },
   "resourceVersion": "1.0",
   "name": "GarbageManager",

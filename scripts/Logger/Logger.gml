@@ -1,9 +1,9 @@
 /// @func Logger
 /// @param {string}			name		The name of the logger, will be used to differentiate its output
 /// @param {intp}			length		The maximum length of a line before it should wrap
-/// @param {GenericOutput}	Outputs...	The outputs that this Logger will write to
+/// @param {__GenericOutput__}	Outputs...	The outputs that this Logger will write to
 /// @desc	Logger is used to write custom debug and logging routines.  You simply give it a name,
-//		a truncation length, and a list of outputs.  The outputs should inherit from (#GenericOutput) to
+//		a truncation length, and a list of outputs.  The outputs should inherit from (#__GenericOutput__) to
 //		ensure compatibility.  A common use is to write something that should appear in the GMS Output
 //		window, as well as be written to an external file.  Additionally, the use of multiple loggers
 //		allows separating where messages are coming from easily.

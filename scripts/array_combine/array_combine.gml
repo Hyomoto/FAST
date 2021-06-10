@@ -1,11 +1,10 @@
 /// @func array_combine
 /// @param {array}	arrays...
-/// @desc	Combines the provided arrays into a single one and returns it.  If an a value other than
-///		an array is provided, InvalidArgumentType will be thrown.
+/// @desc	Returns a new array containing all the elements of the provided arrays.  If any arguments
+///		are not an array, InvalidArgumentType will be thrown.
 /// @example
-//var _concat = array_combine( [ 10, 20 ], [ "a, "b" ] );
-//
-//show_debug_message( _concat );
+//array_combine( [ 10, 20 ], [ "a, "b" ] );
+/// @output [ 10,20,"a","b" ]
 /// @throws InvalidArgumentType
 /// @returns Array
 /// @wiki Core-Index Functions

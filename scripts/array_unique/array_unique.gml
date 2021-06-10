@@ -1,13 +1,16 @@
 /// @func array_unique
-/// @param {array}	arrays
-/// @desc Returns the unique entries in the given array.
+/// @param {array}	array
+/// @desc	Returns a new array that contains the unique elements of `array`.  If an array is not
+///		provided, InvalidArgumentType will be thrown.
 /// @example
-//var _unique = array_unique( [ 10, 10, 20 ] );
-//
-//show_debug_message( _unqiue );
+//array_unique( [ 10, 10, 20, 20, 30 ] );
+/// @output [ 10,20,30 ]
 /// @returns array
+/// @throws InvalidArgumentType
 /// @wiki Core-Index Functions
 function array_unique( _array ){
+	if ( is_array( _array ) == false ) { throw new InvalidArgumentType( "array_unique", 0, _array, "array" ); }
+	
 	var _hash	= {}
 	
 	var _i = -1; repeat( array_length( _array ) ) { ++_i;

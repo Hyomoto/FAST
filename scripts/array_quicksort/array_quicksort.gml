@@ -1,12 +1,12 @@
 /// @func array_quicksort
 /// @param {array}	array			An array to sort
-/// @param {mixed}	sort_or_func	optional: The sort type logic to use
+/// @param {mixed}	*sort_or_func	optional: The sort logic to use
 /// @param {func}	*pivot			optional: A function to retrieve the pivot
-/// @desc	A sort-in-place algorithm for arrays.  If sort_or_func true, or not provided, the array
-///		will be sorted by ascending value.  Setting this to false will use descending logic.  If a
-///		method is provided, this will be used for the comparison.  For complex behaviors, the pivot
-///		can also be overriden. If an array is not provided to sort, or a method is not provided to
-///		the optional arguments, InvalidArgumentType will be thrown.
+/// @desc	A sort-in-place, non-stable sorting algorithm for arrays.  If sort_or_func is true, or not
+///		provided, the array will be sorted by ascending value.  Setting this to false will use descending
+///		logic.  If a method is provided, this will be used for the comparison.  For complex behaviors, the
+///		pivot can also be overriden. If an array is not provided to sort, a non-boolean, non-method is
+///		provided to the sort or pivot arguments, InvalidArgumentType will be thrown.
 /// @example
 //var _array	= [ 10, 4, 15, 23, 12, 4 ];
 //

@@ -1,9 +1,18 @@
 /// @func array_insertion_sort
-/// @param    {array}    array            The array to sort
-/// @param    {mixed}    *sort_or_func    Whether or not to sort ascending, or a function to use instead.
-/// @desc	Sorts the provided array using insertion sort.  If an array is not provided or an invalid
-///		value for sort_or_func is provided, InvalidArgumentType will be thrown.
+/// @param {array}	array			An array to sort
+/// @param {mixed}	*sort_or_func	optional: The sort logic to use
+/// @desc	A sort-in-place, stable algorithm for arrays.  While less efficient than quick or merge sort,
+///		can be very efficient on small arrays due to its simple code. If sort_or_func is true, or not
+///		provided, the array will be sorted by ascending value.  Setting this to false will use descending
+///		logic.  If a method is provided, this will be used for the comparison.  If an array is not provided
+///		to sort, or a non-boolean, non-method is provided for sort, InvalidArgumentType will be thrown.
+/// @example
+//var _array	= [ 10, 4, 15, 23, 12, 4 ];
+//
+//array_insertion_sort( _array );
+/// @output [ 4,4,10,12,15,23 ]
 /// @throws InvalidArgumentType
+/// @wiki Core-Index Functions
 function array_insertion_sort( _array, _sort_or_func ) {
 	if ( is_array( _array ) == false ) { throw new InvalidArgumentType( "array_shuffle", 0, _array, "array" ); }
 	

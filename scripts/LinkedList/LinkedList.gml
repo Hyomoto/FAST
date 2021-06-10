@@ -1,5 +1,5 @@
 /// @func LinkedList
-/// @param {mixed}	*values...	the default values to place in the list.
+/// @desc	A GML-based linked list data structure.
 function LinkedList() : __IterableList__() constructor {
 	/// @param {int}	index	The position to read from
 	/// @desc	Reads the value at the given index in the list.  If the index is out of range

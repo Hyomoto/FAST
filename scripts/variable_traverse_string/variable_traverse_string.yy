@@ -3,7 +3,7 @@
   "isCompatibility": false,
   "parent": {
     "name": "variable",
-    "path": "folders/FAST/Core/Functions/variable.yy",
+    "path": "folders/Depreciate/variable.yy",
   },
   "resourceVersion": "1.0",
   "name": "variable_traverse_string",

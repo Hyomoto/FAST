@@ -1,6 +1,6 @@
 // # FAST engine version
 #macro __FAST_version	"3.5"
-#macro __FAST_date		"05/30/2021"
+#macro __FAST_date		"06/09/2021"
 
 #macro FAST_DISABLE_EVENTS	false
 

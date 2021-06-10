@@ -2,8 +2,8 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Data Structures",
-    "path": "folders/FAST/Core/Data Structures.yy",
+    "name": "Structs",
+    "path": "folders/FAST/Core/Structs.yy",
   },
   "resourceVersion": "1.0",
   "name": "Dictionary",

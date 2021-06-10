@@ -4,7 +4,7 @@
 /// @desc	Returns the entries in array converted to a string using `divider` to separate them.  If an
 ///		array is not provided or the divider is not a string, InvalidArgumentType will be thrown.
 /// @throws InvalidArgumentType
-/// @returns String
+/// @returns string
 /// @wiki Core-Index Functions
 function array_to_string( _array, _divider ){
 	if ( is_array( _array ) == false ) { throw new InvalidArgumentType( "array_to_string", 0, _array, "array" ); }

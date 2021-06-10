@@ -13,13 +13,13 @@ function string_justify( _string, _spaces, _alignment ) {
 	
 	switch ( _alignment ) {
 		case fa_left :
-			return _string + ( _spaces - _length ) * _char;
+			return _string + max( _spaces - _length, 0 ) * _char;
 			
 		case fa_center :
-			return ( _spaces - _length ) div 2 * _char + _string;
+			return max( _spaces - _length, 0 ) div 2 * _char + _string;
 			
 		case fa_right :
-			return ( _spaces - _length ) * _char + _string;
+			return max( _spaces - _length, 0 ) * _char + _string;
 			
 	}
 	

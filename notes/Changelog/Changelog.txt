@@ -13,7 +13,7 @@ complex enough to justfiy being a separate module.
 your own and using the one I built was roughly the same amount of work.
 * PublisherManager is no longer a default Publisher, but rather a proper manager like the others.
 
-GenericOutput
+__GenericOutput__
 * Removed clear() and size(). They didn't make any sense outside of the context of the outputs. Structs such
 as File still have size() and clear(), but SystemOutput does not, for example.
 

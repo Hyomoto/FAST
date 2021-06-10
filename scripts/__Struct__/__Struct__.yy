@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Structs",
-    "path": "folders/FAST/Core/System/Structs.yy",
+    "name": "Implements",
+    "path": "folders/FAST/Core/Implements.yy",
   },
   "resourceVersion": "1.0",
-  "name": "GenericOutput",
+  "name": "__Struct__",
   "tags": [],
   "resourceType": "GMScript",
 }

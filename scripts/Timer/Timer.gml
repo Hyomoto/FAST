@@ -26,20 +26,20 @@ function Timer() constructor {
 	static toString	= function() {
 		var _passed	= elapsed() / 1000000;
 		
-		content.set( _passed );
-		
-		return content.toString();
+		return time_to_string( _passed, decimals, format );
 		
 	}
 	static is		= function( _data_type ) {
 		return _data_type == Timer;
 		
 	}
-	var _format		= ( argument_count > 0 ? argument[ 0 ] : "$S" );
-	var _decimals	= ( argument_count > 1 ? argument[ 1 ] : 1 );
-	/// @desc the internal StringTime that is used to format the elapsed time
-	content	= new StringTime( 0, _decimals, _format );
-	/// @desc the moment the timer was last started, either when it was created or the last reset()
+	/// @var {string}	The formatting string to use to display the elapsed time
+	/// @ouput "$S"
+	format		= ( argument_count > 0 ? argument[ 0 ] : "$S" );
+	/// @var {int} The number of decimals to show in the result
+	/// @output 1
+	decimals	= ( argument_count > 1 ? argument[ 1 ] : 1 );
+	/// @var {int} The number of microseconds since the timer was last started
 	start	= 0;
 	
 	reset();

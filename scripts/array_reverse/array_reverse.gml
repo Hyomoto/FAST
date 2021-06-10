@@ -1,12 +1,12 @@
 /// @func array_reverse
 /// @param {array}	array	The array to reverse
-/// @desc	Performs an in-place reversal of the contents of the provided array and returns it.  Since
-///		the original array is modified, it is not necessary to catch the result.
+/// @desc	Returns a new array with the elements of the provided array reversed.  If an array is not
+///		provided, InvalidArgumentType will be thrown.
 /// @example
 //array = array_reverse( [0, 1, 2, 3] );
 /// @output [3, 2, 1, 0]
 /// @throws InvalidArgumentType
-/// @returns Array
+/// @returns array
 /// @wiki Core-Index Functions
 function array_reverse( _array ) {
 	if ( is_array( _array ) == false ) { throw new InvalidArgumentType( "array_reverse", 0, _array, "array" ); }

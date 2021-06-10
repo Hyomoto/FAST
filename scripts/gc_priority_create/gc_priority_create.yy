@@ -3,7 +3,7 @@
   "isCompatibility": false,
   "parent": {
     "name": "Functions",
-    "path": "folders/FAST/Garbage/Functions.yy",
+    "path": "folders/Depreciate/Garbage/Functions.yy",
   },
   "resourceVersion": "1.0",
   "name": "gc_priority_create",

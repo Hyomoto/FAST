@@ -1,5 +1,5 @@
 /// @func Dictionary
-/// @desc    Creates a dictionary-type structure. Will be cleaned up automatically once the reference is lost.
+/// @desc    Creates a dictionary-type structure.
 /// @wiki Core-Index Data Structures
 function Dictionary() constructor {
     /// @param {string}    key        The key used to look up the value

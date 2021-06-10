@@ -1,4 +1,4 @@
-__run();
+//__run();
 
 watch	= [ (room_width - sprite_get_width( gfx_FAST_watch )) div 2, (room_height - sprite_get_height( gfx_FAST_watch)) div 5 ];
 logo	= [ (room_width - sprite_get_width( gfx_fast )) div 2, watch[ 1 ] + sprite_get_height( gfx_FAST_watch ) - 32 ];
@@ -21,3 +21,4 @@ color	= [
 	0xF0F0F0,
 	0x050505
 ];
+print( "FAST Automatic Testing Suite v6.9.21 by Devon Mullane" );

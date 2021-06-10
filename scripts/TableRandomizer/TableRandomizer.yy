@@ -3,7 +3,7 @@
   "isCompatibility": false,
   "parent": {
     "name": "Random",
-    "path": "folders/FAST/Math/Random.yy",
+    "path": "folders/FAST/Numbers/Random.yy",
   },
   "resourceVersion": "1.0",
   "name": "TableRandomizer",

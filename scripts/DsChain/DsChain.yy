@@ -3,7 +3,7 @@
   "isCompatibility": false,
   "parent": {
     "name": "Compatibility DS",
-    "path": "folders/FAST/Core/Data Structures/Compatibility DS.yy",
+    "path": "folders/Depreciate/Compatibility DS.yy",
   },
   "resourceVersion": "1.0",
   "name": "DsChain",
