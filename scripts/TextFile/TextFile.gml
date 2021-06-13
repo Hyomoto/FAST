@@ -5,7 +5,7 @@
 //
 //list.from_input( _file );
 /// @output Will open text.txt and read its contents into list
-/// @wiki Core-Index IO
+/// @wiki Core-Index Constructors
 function TextFile() : __File__() constructor {
 	/// @desc	Reads the next portion of the text file and returns it.  If the file is not open,
 	///		or the file is not opened for reading, IllegalFileOperation will be thrown.

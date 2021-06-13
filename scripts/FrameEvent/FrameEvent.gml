@@ -4,8 +4,7 @@
 /// @param {func}	function	The function to call when the delay has passed
 /// @desc	Creates a new event that will be updated based on delta time.  After the time has elapsed
 ///		the event will be triggered.  If the event is flagged to only happen once, it will be discarded
-///		afterwards, otherwise it will start the counter over again.
-///
+///		afterwards, otherwise it will start the counter over again.\n
 /// * FAST.CREATE
 /// * FAST.GAME_END
 /// * FAST.ROOM_START
@@ -19,9 +18,9 @@
 //    show_debug_message( "Hello World!" );
 //}).once();
 /// @output Hello World! is written to the console after 30 frames.
-/// @wiki Core-Index Events
+/// @wiki Core-Index Constructors
 function FrameEvent( _event, _delay, _function ) : __Struct__() constructor {
-	/// @desc Called to update the event during the event it was assigned to.
+	/// @desc	Called to update the event.
 	static update	= function() {
 		if ( ++__Tick >= __Tock ) {
 			trigger();

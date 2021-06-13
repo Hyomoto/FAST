@@ -5,10 +5,16 @@
 ///		requirements to properly implement a file as both an input and output stream.
 /// @wiki Core-Index Abstract
 function __File__() : __Struct__() constructor {
+	/// @desc	Reads the next chunk of data from the file
 	static read		= function() {}					// override
+	/// @desc	Writes a chunk of data to the file
 	static write	= function() {}					// override
+	/// @desc	Opens the file.  This should facilitate re-opening a closed file
+	///		if no arguments are provided.
 	static open		= function( _filename ) {}		// override
+	/// @desc	Closes the file.
 	static close	= function() {}					// override
+	/// @desc	Returns true if reading the file has reached the end.
 	static finished	= function() { return false; }	// override
 	/// @desc	Returns the last value read/written to this file
 	static buffer	= function() { return __Buffer; }

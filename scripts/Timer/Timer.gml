@@ -12,7 +12,7 @@
 //	timer.reset()
 //}
 /// @output	"1 second" is displayed once every second.
-/// @wiki Core-Index
+/// @wiki Core-Index Constructors
 function Timer() : __Struct__() constructor {
 	/// @desc Resets the elapsed time to the current moment.
 	/// @returns self
@@ -37,7 +37,7 @@ function Timer() : __Struct__() constructor {
 		
 	}
 	/// @var {string}	The format string to use to display the elapsed time
-	/// @ouput "$S"
+	/// @output "$S"
 	__Format	= ( argument_count > 0 ? argument[ 0 ] : "$S" );
 	/// @var {int} The time at which the timer was started
 	__Start		= get_timer();

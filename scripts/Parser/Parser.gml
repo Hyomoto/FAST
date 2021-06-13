@@ -9,7 +9,7 @@
 //
 //_parser.next();
 /// @output "Hello"
-/// @wiki Core-Index Parsing
+/// @wiki Core-Index Constructors
 function Parser() : __Struct__() constructor {
 	/// @param {string} string	The string to parse
 	/// @desc	Sets string as the target for parsing.

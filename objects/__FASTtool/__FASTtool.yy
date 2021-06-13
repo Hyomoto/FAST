@@ -30,8 +30,8 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Objects",
-    "path": "folders/FAST/Core/System/Objects.yy",
+    "name": "System",
+    "path": "folders/FAST/Core/System.yy",
   },
   "resourceVersion": "1.0",
   "name": "__FASTtool",

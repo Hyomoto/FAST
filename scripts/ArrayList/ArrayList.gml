@@ -1,5 +1,6 @@
 /// @func ArrayList
-/// @desc	A wrapper for the built-in GML array data structure.
+/// @desc	An array-based list-type data structure.
+/// @wiki Core-Index Data Structures
 function ArrayList() : __IterableList__() constructor {
 	/// @param {int}	index	The position to read from
 	/// @desc	Reads the value at the given index in the list.  If the index is out of range
@@ -14,7 +15,7 @@ function ArrayList() : __IterableList__() constructor {
 		return __Content[ _index ];
 		
 	}
-	/// @func	Seeks the next value in the list after the last read position, or EOL if the list has
+	/// @desc	Seeks the next value in the list after the last read position, or EOL if the list has
 	///		been fully traversed.  Can use index() to set the next read position.
 	/// @returns mixed or EOL
 	static next	= function() {
@@ -23,7 +24,7 @@ function ArrayList() : __IterableList__() constructor {
 		return __Content[ __Index++ ];
 		
 	}
-	/// @func	Seeks the previous value in the list before the last read position, or EOL if the front
+	/// @desc	Seeks the previous value in the list before the last read position, or EOL if the front
 	///		of the list has been reached.  Can use index() to set the next read position.
 	/// @returns mixed or EOL
 	static previous	= function() {
@@ -99,6 +100,11 @@ function ArrayList() : __IterableList__() constructor {
 	/// @desc	Returns the size of the list
 	/// @returns int
 	static size		= function() { return array_length( __Content ); }
+	/// @param {array} array	An array to retrieve values from
+	/// @desc	Traverses the array and adds those values to this list.  If array is not an array,
+	///		InvalidArgumentType is thrown.
+	/// @throws InvalidArgumentType
+	/// @returns self
 	static from_array	= function( _a ) {
 		if ( is_array( _a ) == false ) { throw new InvalidArgumentType( "from_array", 0, _a, "array" ); }
 		
@@ -107,8 +113,11 @@ function ArrayList() : __IterableList__() constructor {
 		return self;
 		
 	}
+	/// @var {array}	The internal array of data
 	__Content	= [];
+	/// @var {int}		The last traversed index
 	__Index		= 0;
+	
 	__Type__.add( ArrayList );
 	
 }

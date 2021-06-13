@@ -8,6 +8,7 @@
 /// @output 669 hours 37.05 minutes
 /// @throws InvalidArgumentType
 /// @returns string
+/// @wiki Core-Index Functions
 function string_from_time( _sec, _format ) {
 	if ( is_numeric( _sec ) == false ) { throw new InvalidArgumentType( "string_from_time", 0, _sec, "integer" ); }
 	if ( is_string( _format ) == false ) { throw new InvalidArgumentType( "string_from_time", 1, _format, "string" ); }

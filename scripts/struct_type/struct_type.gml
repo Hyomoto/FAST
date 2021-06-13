@@ -5,6 +5,7 @@
 ///		struct, false is returned.  If the struct inherited from __Struct__ then __Type__ will be checked,
 ///		otherwise a direct string comparison is used.
 /// @retuns bool
+/// @wiki Core-Index Functions
 function struct_type( _struct, _type ) {
 	if ( is_struct( _struct ) == false ) { return false; }
 	

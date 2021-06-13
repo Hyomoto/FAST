@@ -11,8 +11,9 @@
 //    show_debug_message( "Hello World!" );
 //});
 /// @output Hello World! is written to the console every one seconds.
-/// @wiki Core-Index Events
+/// @wiki Core-Index Constructors
 function DeltaEvent( _event, _delay, _function ) : FrameEvent( _event, _delay, _function ) constructor {
+	/// @desc	Called to update the event.
 	static update	= function() {
 		__Tick	+= delta_time;
 		

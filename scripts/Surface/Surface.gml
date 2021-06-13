@@ -11,7 +11,7 @@
 //}
 //surface.draw( 0, 0 );
 /// @output The surface will be cached as white, and drawn
-/// @wiki Core-Index
+/// @wiki Core-Index Constructors
 function Surface( _width, _height ) constructor {
 	/// @param {int}	width	The width of the surface
 	/// @param {int}	height	The height of the surface
@@ -118,7 +118,7 @@ function Surface( _width, _height ) constructor {
 	}
 	/// @var {int}	A pointer to the internal surface
 	__Surface		= -1;
-	// @desc when set to `true`, will trigger a surface redraw on the next frame
+	/// @var {bool} when set to `true`, will trigger a surface redraw on the next frame
 	__Redraw		= false;
 	/// @var {int}	The width of the surface.  Changing this will not resize the surface, use resize() instead.
 	width		= _width;

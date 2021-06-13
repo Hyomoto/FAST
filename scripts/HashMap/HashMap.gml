@@ -1,5 +1,6 @@
 /// @func HashMap
-/// @desc    Creates a hash table-type structure.
+/// @desc    Creates a hash table-type structure.  Can be used a garbage-collected replacement
+///		for ds_map.
 /// @wiki Core-Index Data Structures
 function HashMap() : __Struct__() constructor {
     /// @param {string}	key		The key used to look up the value
@@ -122,7 +123,7 @@ function HashMap() : __Struct__() constructor {
         return variable_struct_names_count( __Content );
         
     }
-    /// @desc    The internal struct which holds the key/value pairs.
+    /// @var {struct}    The internal struct which holds the key/value pairs.
     __Content	= {}
     
 	__Type__.add( HashMap );

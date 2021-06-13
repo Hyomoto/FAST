@@ -6,10 +6,15 @@
 ///		must implement these methods to ensure a consistent point of access for read operations.
 /// @wiki Core-Index Abstract
 function __InputStream__() : __Struct__() constructor {
+	/// @desc	Opens the stream
 	static open		= function() {} // override
+	/// @desc	Reads the next chunk of data from the stream
 	static read		= function() {}	// override
+	/// @desc	Returns true if the end of the stream has been reached
 	static finished	= function() {}	// override
+	/// @desc	Closes the stream
 	static close	= function() {} // override
+	/// @desc	Returns the last chunk of data that was read from the stream
 	static buffer	= function() { return __Buffer }
 	/// @var {string}	The last thing read from the stream
 	__Buffer	= undefined;

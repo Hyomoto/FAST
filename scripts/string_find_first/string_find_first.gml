@@ -15,6 +15,7 @@
 function string_find_first( _chars, _string, _start ) {
 	if ( is_string( _chars ) == false ) { throw new InvalidArgumentType( "string_find_first", 0, _chars, "string" ); }
 	if ( is_string( _string ) == false ) { throw new InvalidArgumentType( "string_find_first", 1, _string, "string" ); }
+	if ( _chars == "" ) { throw new BadValueFormat( "string_find_first", "string", "An empty string was provided for chars." ); }
 	
 	if ( _start == undefined ) { _start = 0; }
 	

@@ -113,7 +113,9 @@ function Dictionary() : HashMap() constructor {
 		return __Keys.index( --__Last );
 		
 	}
-	/// @param
+	/// @param {string}	pattern	The search pattern to look for
+	/// @desc	Searches for the nearest key to the given search pattern.
+	/// @returns string or ValueNotFound
 	static search	= function( _pattern ) {
 		if ( size() == 0 ) { return new ValueNotFound( "search", _pattern, -1 ); }
 		if ( size() == 1 ) { return __Keys.index( 0 ); }

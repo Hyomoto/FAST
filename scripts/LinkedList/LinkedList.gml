@@ -1,5 +1,7 @@
 /// @func LinkedList
-/// @desc	A GML-based linked list data structure.
+/// @desc	A GML-based linked list data structure.  Can be used as a garbage-collected replacement
+///		for the built-in ds_list.
+/// @wiki Core-Index Data Structures
 function LinkedList() : __IterableList__() constructor {
 	/// @param {int}	index	The position to read from
 	/// @desc	Reads the value at the given index in the list.  If the index is out of range
@@ -15,7 +17,7 @@ function LinkedList() : __IterableList__() constructor {
 		}
 		
 	}
-	/// @func	Seeks the next value in the list after the last read position, or EOL if the list has
+	/// @desc	Seeks the next value in the list after the last read position, or EOL if the list has
 	///		been fully traversed.  Can use index() to set the next read position.
 	/// @returns mixed or EOL
 	static next	= function() {
@@ -30,7 +32,7 @@ function LinkedList() : __IterableList__() constructor {
 		return _value;
 		
 	}
-	/// @func	Seeks the previous value in the list before the last read position, or EOL if the front
+	/// @desc	Seeks the previous value in the list before the last read position, or EOL if the front
 	///		of the list has been reached.  Can use index() to set the next read position.
 	/// @returns value or EOL
 	static previous	= function() {
@@ -174,10 +176,15 @@ function LinkedList() : __IterableList__() constructor {
 	/// @returns int
 	static size		= function() { return __Size; }
 	
+	/// @var {struct}	A pointer to the first item in the list
 	__First		= undefined;
+	/// @var {struct}	A pointer to the last item in the list
 	__Last		= undefined;
+	/// @var {struct}	A pointer to the last item traversed in the list
 	__Index		= undefined;
+	/// @var {int}		The size of the list
 	__Size		= 0;
+	
 	__Type__.add( LinkedList );
 	
 }

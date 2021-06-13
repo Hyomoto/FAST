@@ -3,6 +3,9 @@
 ///		entry and formatting for GML errors and is used by all errors thrown by FAST.
 /// @wiki Core-Index Abstract
 function __Error__() : __Struct__() constructor {
+	/// @param {struct}	error	A previously generated error
+	/// @desc	Can be used to inject one error into another.  This is to allow injecting
+	///		GMS-thrown exceptions into FAST's error handling.
 	static from_error	= function( _err ) {
 		message		= _err.message;
 		longMessage	= _err.longMessage;
@@ -12,18 +15,25 @@ function __Error__() : __Struct__() constructor {
 		return self;
 		
 	}
+	/// @param {mixed}	values...
+	/// @desc	Concantates the provided values into a message string.
 	static conc	= function() { var _s = ""; var _i = 0; repeat( argument_count ) { _s += string( argument[ _i++ ] ); }; return _s; }
+	/// @desc	Returns the error message formatted for the unhandled exception handler.
 	static toString	= function() {
 		var _msg	= string_break( instanceof( self ) + " :: " + message, __Width__ );
 		
 		return "\n\n\n" + _msg + "\n\n";
 		
 	}
+	/// @var {int}		Determines where line breaks should be inserted into error messages
 	static __Width__	= 92;
-	
+	/// @var {string}	A short, descriptive error message that will be displayed to the user
 	message		= "";
+	/// @var {string}	Unused, a full more descriptive error message
 	longMessage	= "";
+	/// @var {array}	The stack trace that caused the error
 	stacktrace	= [];
+	/// @var {string}	The script that caused the error
 	script		= "";
 	
 	__Type__.add( __Error__ );
