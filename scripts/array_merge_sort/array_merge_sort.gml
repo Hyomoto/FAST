@@ -16,6 +16,7 @@
 /// @throws InvalidArgumentType
 /// @wiki Core-Index Functions
 function array_merge_sort( _arr, _sort_or_func ) {
+	if ( is_array( _arr ) == false ) { throw new InvalidArgumentType( "array_shuffle", 0, _arr, "array" ); }
     // Divide the array into two subarrays, sort them and merge them
     static __sort__    = function( arr, l, r, f, s ) {
         static __merge__    = function( arr, p, q, r, f) {
@@ -82,6 +83,8 @@ function array_merge_sort( _arr, _sort_or_func ) {
         case false: _sort_or_func = function( _a, _b ) { return _a >= _b ? 1 : -1; }; break;
         
     }
+	if ( is_method( _sort_or_func ) == false ) { throw new InvalidArgumentType( "array_binary_search", 1, _sort_or_func, "method" ); }
+	
     __sort__( _arr, 0, array_length( _arr ) - 1, _sort_or_func, __sort__ );
     
 }

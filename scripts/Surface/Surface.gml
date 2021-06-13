@@ -7,12 +7,10 @@
 ///		the update function to check if it should be redrawn.  The example demonstrates this feature.
 /// @example
 //if ( surface.update() ) {
-//	surface.set();
-//		draw_clear( c_white );
-//	
-//	surface.reset();
+//	draw_clear( c_white );
 //}
 //surface.draw( 0, 0 );
+/// @output The surface will be cached as white, and drawn
 /// @wiki Core-Index
 function Surface( _width, _height ) constructor {
 	/// @param {int}	width	The width of the surface
@@ -45,19 +43,7 @@ function Surface( _width, _height ) constructor {
 		if ( __Redraw == true ) {
 			__Redraw	= false;
 			
-			return true;
-			
-		}
-		return false;
-		
-	}
-	/// @param {bool} *forced	optional: Whether to force an update
-	/// @desc	The same as update, except the surface will be set as the current draw target if
-	///		update would return true.
-	/// @returns bool
-	static update_set	= function( _forced ) {
-		if ( update( _forced ) ) {
-			surface_set_target( __Surface );
+			set();
 			
 			return true;
 			
@@ -80,7 +66,7 @@ function Surface( _width, _height ) constructor {
 	static draw	= function( _x, _y ) {
 		if ( surface_exists( __Surface ) == false ) { return; }
 		
-		if ( surface_get_target() == __Surface ) { surface_reset_target(); }
+		reset();
 		
 		draw_surface( __Surface, _x, _y );
 		
@@ -104,7 +90,8 @@ function Surface( _width, _height ) constructor {
 			__Surface	= surface_create( width, height );
 			
 		}
-		surface_set_target( __Surface );
+		if ( surface_get_target() != __Surface )
+			surface_set_target( __Surface );
 		
 		return self;
 		
@@ -112,10 +99,9 @@ function Surface( _width, _height ) constructor {
 	/// @desc The same as calling `surface_reset_target()`
 	/// @returns self
 	static reset	= function() {
-		if ( surface_get_target() == __Surface ) {
+		if ( surface_get_target() == __Surface )
 			surface_reset_target();
-			
-		}
+		
 		return self;
 		
 	}

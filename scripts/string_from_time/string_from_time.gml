@@ -1,11 +1,17 @@
 /// @func string_from_time
 /// @param {real}	seconds	The number of seconds to convert
 /// @param {string}	format	The format to use
-/// @desc	Given a number of seconds, formats the time using the given formatting string
+/// @desc	Given a number of seconds, formats the time using the given formatting string.	If seconds
+///		is not a number, or format is not a string, InvalidArgumentType will be thrown.
 /// @example
 //string_from_time( 2410623, "$H hours $M.MM minutes" );
 /// @output 669 hours 37.05 minutes
+/// @throws InvalidArgumentType
+/// @returns string
 function string_from_time( _sec, _format ) {
+	if ( is_numeric( _sec ) == false ) { throw new InvalidArgumentType( "string_from_time", 0, _sec, "integer" ); }
+	if ( is_string( _format ) == false ) { throw new InvalidArgumentType( "string_from_time", 1, _format, "string" ); }
+	
 	static __get__	= function( _format, _start, _char, _time ) {
 		static __format__	= function( _start, _char, _format ) {
 			var _i		= _start;

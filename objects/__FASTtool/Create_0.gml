@@ -1,22 +1,14 @@
-fast	= FASTManager();
+__Fast__	= FAST;
 
-if ( fast.start ) {
-	syslog( "Duplicate FAST Manager created, destroying." );
+if ( __Fast__.start ) {
+	syslog( "Duplicate __Fast__ Manager created, destroying." );
 	
 	instance_destroy();
 	
 	exit;
 	
 }
-System.write( string_repeat( "~", 40 ) );
-System.write( fast );
-System.write( string_repeat( "~", 40 ) );
+syslog( __Fast__.toString( true ) );
 
-var _i = 0; repeat( ds_list_size( fast.features ) ) {
-	var _feature	= fast.features[| _i++ ];
-	
-	syslog( _feature );
-	
-}
-fast.start	= true;
-fast.call_events( fast.CREATE );
+__Fast__.start	= true;
+__Fast__.call_events( __Fast__.CREATE );

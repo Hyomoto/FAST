@@ -1,2 +1,2 @@
-fast.NEXT_STEP	= fast.STEP_BEGIN;
-fast.call_events( fast.STEP_END );
+__Fast__.NEXT_STEP	= __Fast__.STEP_BEGIN;
+__Fast__.call_events( __Fast__.STEP_END );

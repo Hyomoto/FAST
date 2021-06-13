@@ -17,7 +17,7 @@ function LinkedList() : __IterableList__() constructor {
 	}
 	/// @func	Seeks the next value in the list after the last read position, or EOL if the list has
 	///		been fully traversed.  Can use index() to set the next read position.
-	/// @returns value or EOL
+	/// @returns mixed or EOL
 	static next	= function() {
 		if ( __Size == 0 ) { return EOL; }
 		if ( __Index == undefined ) { __Index = { p: __First, i: 0 }; }
@@ -28,6 +28,17 @@ function LinkedList() : __IterableList__() constructor {
 		__Index = { p: __Index.p.next, i: __Index.i + 1 };
 		
 		return _value;
+		
+	}
+	/// @func	Seeks the previous value in the list before the last read position, or EOL if the front
+	///		of the list has been reached.  Can use index() to set the next read position.
+	/// @returns value or EOL
+	static previous	= function() {
+		if ( size() == 0 || __Index == undefined || __Index.i == 0 ) { return EOL; }
+		
+		index( __Index.i - 1 );
+		
+		return __Index.p.value;
 		
 	}
 	/// @param {mixed} *values...	One or more values
@@ -102,7 +113,7 @@ function LinkedList() : __IterableList__() constructor {
 		
 	}
 	/// @param {int}	*index	If provided, the value will be 'popped' from this position
-	/// @desc	Removes an entry from the list an returns its value.  If an index is provided it
+	/// @desc	Removes an entry from the list and returns its value.  If an index is provided it
 	///		will remove and return that item, otherwise it will look for the last entry in the list. If
 	///		the index is out of range, or the list is empty, an IndexOutOfBounds will be thrown.
 	/// @returns Mixed

@@ -12,6 +12,8 @@ function array_combine() {
 	var _size	= 0;
 	
 	var _i = 0; repeat( argument_count ) {
+		if ( is_array( argument[ _i ] ) == false ) { throw new InvalidArgumentType( "array_combine", _i, argument[ _i ], "array" ); }
+		
 		_size	+= array_length( argument[ _i++ ] );
 		
 	}
@@ -19,8 +21,6 @@ function array_combine() {
 	var _last	= 0;
 	
 	var _i = 0; repeat( argument_count ) {
-		if ( is_array( argument[ _i ] ) == false ) { throw new InvalidArgumentType( "array_combine", _i, argument[ _i ], "array" ); }
-		
 		array_copy( _array, _last, argument[ _i ], 0, array_length( argument[ _i ] ) );
 		
 		_last	= array_length( argument[ _i ] );

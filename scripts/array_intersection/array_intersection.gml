@@ -18,6 +18,9 @@ function array_intersection( _arr1, _arr2 ) {
 	//	_arr2	= _h;
 		
 	//}
+	if ( is_array( _arr1 ) == false ) { throw new InvalidArgumentType( "array_intersection", 0, _arr1, "array" ); }
+	if ( is_array( _arr2 ) == false ) { throw new InvalidArgumentType( "array_intersection", 1, _arr2, "array" ); }
+	
 	var _hash	= {}
 	var _output	= {}
 	

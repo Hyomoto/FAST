@@ -1,1 +1,0 @@
-RenderManager().instance	= noone;

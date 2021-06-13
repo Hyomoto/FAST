@@ -5,12 +5,15 @@ function ats_IterableList( _type ){
 	var _methods	= [
 		"index",
 		"next", 
+		"previous",
 		"push", 
 		"insert",
 		"replace",
 		"pop", 
 		"clear", 
 		"size",
+		"first",
+		"last",
 		"swap",
 		"remove", 
 		"count", 
@@ -59,12 +62,18 @@ function ats_IterableList( _type ){
 	
 	test_method( ["from_array", ["a", "b", "c" ]], "[a,b,c]" );
 	
-	test_method( ["index",0], "a", __returns );
+	test_method( ["last",0], "c", __returns );
+	test_method( ["first",0], "a", __returns );
 	
 	test_method( ["next"], "a", __returns );
 	test_method( ["next"], "b", __returns );
 	test_method( ["next"], "c", __returns );
 	test_method( ["next"], __source.EOL, __returns );
+	
+	test_method( ["previous"], "c", __returns );
+	test_method( ["previous"], "b", __returns );
+	test_method( ["previous"], "a", __returns );
+	test_method( ["previous"], __source.EOL, __returns );
 	
 	test_method( ["remove","b"],"[a,c]" );
 	

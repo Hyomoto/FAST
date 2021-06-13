@@ -1,1 +1,1 @@
-fast.call_events( fast.ASYNC_SYSTEM );
+__Fast__.call_events( __Fast__.ASYNC_SYSTEM );

@@ -14,7 +14,7 @@ __run	= function() {
 			
 		}
 		print( "#### STARTING TEST #####" );
-	
+		
 		running = {
 			list	: _list,
 			errors	: 0,
@@ -32,6 +32,7 @@ __test_start	= function( _script ) {
 	__tests			= [];
 // # Write test
 	print( ">> ", script_get_name( _script ), " <<" );
+	syslog( ">> ", script_get_name( _script ), " <<" );
 // # Perform test
 	var _methods	= _script();
 // # Check for completeness
@@ -56,6 +57,7 @@ test	= function( _thing ) {
 			
 }
 test_method	= function( _a, _b, _c, _d ) {
+	running.tested++
 	if ( is_array( _a ) == false ) { _a = [ _a ]; }
 	if ( _c == undefined ) { _c = function( _r ) { return __source[$ "toString" ] != undefined ? __source.toString() : string( __source ); } }
 	
@@ -65,12 +67,16 @@ test_method	= function( _a, _b, _c, _d ) {
 		_d( _c( do_method( _a ) ), _b, "FAIL: Method " + to_func( _a ) + " failed." )
 	} catch ( _ex ) {
 		_d( instanceof( _ex ), _b, "FAIL: Method " + to_func( _a ) + " generated an error!" );
-		syslog( _ex.message );
+		if ( _ex.longMessage == "" ) {
+			syslog( _ex.message );
+		} else {
+			syslog( _ex.longMessage );}
 	}
 	log_test( _a[ 0 ] );
-	running.tested++
+	
 }
 test_function	= function( _a, _b, _c, _d ) {
+	running.tested++
 	if ( is_array( _a ) == false ) { _a = [ _a ]; }
 	if ( _c == undefined ) { _c = function( _r ) { return is_struct( __source ) && __source[$ "toString" ] != undefined ? __source.toString() : string( __source ); } }
 	
@@ -80,25 +86,27 @@ test_function	= function( _a, _b, _c, _d ) {
 		_d( _c( do_function( _a ) ), _b, "FAIL: Function " + to_func( _a ) + " failed." )
 	} catch ( _ex ) {
 		_d( instanceof( _ex ), _b, "FAIL: Function " + to_func( _a ) + " generated an error!" );
-		syslog( _ex.message );
+		if ( _ex.longMessage == "" ) {
+			syslog( _ex.message );
+		} else {
+			syslog( _ex.longMessage );}
 	}
 	log_test( _a[ 0 ] );
-	running.tested++
+	
 }
 test_throwable	= function( _a, _b, _c ) {
+	running.tested++
 	try {
-		if ( _c != undefined ) { _c( _a ) } else { do_method( _a ); }
+		if ( _c != undefined ) { _c( _a ); } else { do_method( _a ); }
 		
 	} catch( _ex ) {
 		assert_equal( instanceof( _ex ), script_get_name( _b ), "FAIL: Throwable " + to_func( _a ) + " threw wrong error.\n" + _ex.message );
+		if ( instanceof( _ex ) != script_get_name( _b ) )
+			show_debug_message( _ex.longMessage );
 		return;
 	}
 	assert_equal( "no throwable", script_get_name( _b ), "FAIL: Throwable " + to_func( _a ) + " did not throw an error." );
-	running.tested++
-}
-test_func	= function( _a, _b, _c ) {
-	assert( _c( _a, _b ), "Method " + _a + "() failed." )
-	running.tested++
+	
 }
 __returns		= function( _r ) { return _r; }
 __returnError	= function( _r ) { return error_type( _r ); }
@@ -108,7 +116,7 @@ to_func	= function( _a ) {
 	var _i = 1, _m = _a[ 0 ] + "("; repeat( array_length( _a ) - _i ) {
 		if ( _i > 1 ) { _m += ", "; }
 		_m	+= string( _a[ _i++ ] );
-				
+		
 	}
 	return _m + ")";
 			
@@ -144,9 +152,7 @@ do_method	= function( _a ) {
 do_function	= function( _a ) {
 	if ( is_array( _a ) == false ) { _a = [ _a ]; }
 	
-	_a[ 0 ]	= asset_get_index( _a[ 0 ] );
-	
-	var _f	= _a[ 0 ];
+	var _f	= asset_get_index( _a[ 0 ] );
 	
 	if ( __verbose ) {
 		print( "  running " + to_func( _a ) );

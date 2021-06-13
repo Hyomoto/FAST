@@ -1,55 +1,81 @@
 function ats_Dictionary(){
 // # TOTAL METHODS LOOKING TO TEST
-	var _methods	= [ "set", "unset", "lookup", "lookup_by_array", "key_exists", "size", "keys_to_array", "from_JSON", "to_JSON" ];
+	var _methods	= ats_HashMap( Dictionary );
 	
-// # Set test source
+	_methods	= array_union( _methods, [ "search", "peek", "poke", "first", "last", "next", "previous" ] );
+	
+	var _words	= [ 
+		"annoy",
+		"possible",
+		"enormous",
+		"powder",
+		"peace",
+		"burst",
+		"rot",
+		"spectacular",
+		"abundant",
+		"listen",
+		"frog",
+		"cheat",
+		"books",
+		"capable",
+		"rhyme",
+		"slope",
+		"file",
+		"future",
+		"price",
+		"ticket"
+	];
 	test( new Dictionary() );
 	
-// # Test errors
-	test_throwable( ["set", 4, "a"], InvalidArgumentType );
-	test_throwable( ["unset", 4 ], InvalidArgumentType );
-	test_throwable( ["unset", "a" ], ValueNotFound );
-	test_throwable( ["lookup", 4 ], InvalidArgumentType );
-	test_throwable( ["lookup", "a" ], ValueNotFound );
-	test_throwable( ["lookup_by_array", "a" ], InvalidArgumentType );
-	test_throwable( ["key_exists", 0 ], InvalidArgumentType );
+	var _i = -1; repeat( array_length( _words ) ) { ++_i; __source.set( _words[ _i ], _i ); }
 	
-	test_throwable( ["from_JSON", 0], InvalidArgumentType );
-	test_throwable( ["from_JSON", "d"], BadJSONFormat );
-	test_throwable( ["from_JSON", "[]"], UnexpectedTypeMismatch );
+	test_method( "last", "ticket", __returns );
+	test_method( "first", "abundant", __returns );
 	
-// # TEST METHODS
-	test_method( ["is_empty" ], True, __returns );
+	array_sort( _words, true );
 	
-	test_method( ["set", "foo", "bar"], "bar", function ( _r ) { return _r.__Content[$ "foo" ] } );
+	var _i = 1; repeat( __source.size() - 1 ) { test_method( "next", _words[ _i++ ], __returns ); }
+	--_i; repeat( __source.size() - 1 ) { test_method( "previous", _words[ --_i ], __returns ); }
 	
-	test_method( ["lookup", "foo" ], "bar", __returns );
+	test_method( [ "search", "a" ], "abundant", __returns );
+	test_method( [ "search", "b" ], "books", __returns );
+	test_method( [ "search", "c" ], "capable", __returns );
+	test_method( [ "search", "cal" ], "capable", __returns );
 	
-	test_method( ["from_JSON", "{ \"foo\": 10, \"bar\": 20 }" ], 20, function ( _r ) { return _r.__Content[$ "bar" ] } );
+	test_method( "next", "cheat", __returns );
 	
-	test_method( ["unset", "foo" ], undefined, function( _r ) { return _r.__Content[$ "foo" ] } );
+	test_method( [ "search", "caq" ], "cheat", __returns );
+	test_method( [ "search", "cha" ], "cheat", __returns );
 	
-	test_method( ["to_JSON" ], "{ \"bar\": 20.0 }", __returns );
+	test_method( [ "search", "z" ], "ticket", __returns );
 	
-	__source.set( "foo", 10 );
+	test_method( "previous", "spectacular", __returns );
 	
-	test_method( ["key_exists", "foo"], True, __returns );
+	test_method( [ "unset", "burst" ], "capable", function ( _r ) { return __source.search( "burst" ); });
 	
-	test_method( ["size"], 2, __returns );
+	repeat( __source.size() ) { __source.unset( __source.search( "a" ) ); }
 	
-	test_method( ["keys_to_array"], True, function( _r ) {
-		try {
-			array_simple_search( _r, "foo" )
-			array_simple_search( _r, "bar" )
-		} catch ( _ex ) {
-			return False;
-			
-		}
-		return True;
-		
-	});
-	test_method( ["lookup_by_array", ["bar","foo"] ], [20,10], __returns );
+	test_method( "size", 0, __returns );
 	
+	test_method( ["from_JSON", "{ \"foo\": 10, \"bar\": 20 }" ], "[bar,foo]", function ( _r ) { return __source.__Keys.toString() } );
+	
+	test_method( "peek", ValueNotFound, function( _r ) { return error_type( _r ); });
+	__source.first();
+	
+	test_method( "peek", 20, __returns );
+	__source.poke( 40 );
+	log_test( "poke" );
+	
+	test_method( "peek", 40, __returns );
+	__source.next();
+	
+	test_method( "peek", 10, __returns );
+	__source.next();
+	
+	test_method( "peek", ValueNotFound, function( _r ) { return error_type( _r ); } );
+	
+	//[ "abundant","annoy","books","burst","capable","cheat","enormous","file","frog","future","listen","peace","possible","powder","price","rhyme","rot","slope","spectacular","ticket" ]
 // # END TEST BODY
 	return _methods;
 	

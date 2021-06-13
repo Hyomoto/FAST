@@ -2,7 +2,7 @@
 
 watch	= [ (room_width - sprite_get_width( gfx_FAST_watch )) div 2, (room_height - sprite_get_height( gfx_FAST_watch)) div 5 ];
 logo	= [ (room_width - sprite_get_width( gfx_fast )) div 2, watch[ 1 ] + sprite_get_height( gfx_FAST_watch ) - 32 ];
-box		= [ 0, ( RenderManager().render_height div 3 ) * 2, RenderManager().render_width, RenderManager().render_height div 3 ];
+box		= [ 0, ( room_height div 3 ) * 2, room_width, room_height div 3 ];
 
 var _w	= room_width div 5;
 var _h	= 64;

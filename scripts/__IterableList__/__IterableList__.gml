@@ -4,11 +4,14 @@
 ///		another, despite any underlying differences in structure choice.  They can be used as stacks,
 ///		queues, unordered or ordered lists, and sets.  When used as an ordered list, binary search is
 ///		used for insertion and traversal, but this behavior can be changed by overwriting __Search.
+/// @wiki Core-Index Abstract
 function __IterableList__() : __Struct__() constructor {
 	/// @desc Retrieves the value at the given index and sets the traversal pointer
 	static index	= function(i) {}	// @overload
 	/// @desc Returns the next value in the list, or EOL if the end has been reached
 	static next		= function(i) {}	// @overload
+	/// @desc Returns the previous value in the list, or EOL if the end has been reached
+	static previous	= function(i) {}	// @overload
 	/// @desc Adds the given values to the list
 	static push		= function(v) {}	// @overload
 	/// @desc Inserts the value at the given index
@@ -21,6 +24,22 @@ function __IterableList__() : __Struct__() constructor {
 	static clear	= function() {}		// @overload
 	/// @desc Returns the size of the list
 	static size		= function() {}		// @overload
+	/// @desc	Returns the first element in the data structure.
+	/// @returns mixed or EOL
+	static first	= function() {
+		if ( size() == 0 ) { return EOL; }
+		
+		return index( 0 );
+		
+	}
+	/// @desc	Returns the last element in the data structure.
+	/// @returns mixed or ValueNotFound
+	static last	= function() {
+		if ( size() == 0 ) { return ValueNotFound( "last", "", -1 ); }
+		
+		return index( size() - 1 );
+		
+	}
 	/// @param {int}	first	The first position
 	/// @param {int}	second	The second position
 	/// @desc	Swaps the position of the first and second elements.
@@ -36,20 +55,19 @@ function __IterableList__() : __Struct__() constructor {
 		
 	}
 	/// @param {mixed}	value	The value to be removed
+	/// @param {method}	*func	optional: If provided, will be used for sake of comparison
 	/// @desc	Removes the first item in the list that matches value.  If no such value exists,
 	///		a ValueNotFound will be returned.
-	/// @returns Mixed or ValueNotFound
-	static remove	= function( _value ) {
+	/// @returns mixed or ValueNotFound
+	static remove	= function( _value, _f ) {
 		if ( size() > 0 ) {
-			index( 0 );
+			var _i = find( _value, _f );
 			
-			var _i = -1; repeat( size() ) { ++_i;
-				if ( next() == _value ) { return pop( _i ); }
-				
-			}
+			if ( error_type( _i ) != ValueNotFound )
+				return pop( _i );
 			
 		}
-		return new ValueNotFound( "remove", _value );
+		return new ValueNotFound( "remove", _value, -1 );
 		
 	}
 	/// @param {mixed}	value	The value to count
@@ -75,7 +93,7 @@ function __IterableList__() : __Struct__() constructor {
 	/// @throws InvalidArgumentType
 	/// @returns {$self}
 	static filter	= function( _key, _f ) {
-		var _iter	= new __Self();
+		var _iter	= new __Self__();
 		
 		if ( size == 0 ) { return _iter; }
 		
@@ -102,7 +120,7 @@ function __IterableList__() : __Struct__() constructor {
 	/// @throws InvalidArgumentType
 	/// @returns {$self}
 	static sort	= function( _sort_or_func ) {
-		var _iter	= new __Self();
+		var _iter	= new __Self__();
 		
 		var _array	= to_array();
 		
@@ -143,25 +161,29 @@ function __IterableList__() : __Struct__() constructor {
 		if ( _f == undefined ) { _f = function( _v ) { return _v; }}
 		if ( is_method( _f ) == false ) { throw new InvalidArgumentType( "unique", 1, _f, "method" ); }
 		
-		var _iter	= new __Self();
+		if ( is_array( _list ) ) { _list = new __Self__().from_array( _list ); }
+		if ( struct_type( _list, __IterableList__ ) == false ) { throw new InvalidArgumentType("intersection", 0, _list, "__IterableList__" ); }
+		if ( _list.size() == 0 && size() == 0 ) { return new __Self__(); }
 		
-		_list = [ self, _list ];
+		if ( _f == undefined ) { _f = string; }
 		
-		var _i = 0; repeat( array_length( _list ) ) {
-			var _t	= _list[ _i++ ];
+		var _iter	= new __Self__();
+		var _hold	= {};
+		
+		var _i = -1; repeat( size() ) { ++_i;
+			if ( variable_struct_exists( _hold, _f( index( _i ) ) ))
+				continue;
 			
-			if ( is_array( _t ) ) { var _a = new Array(); _a.__Content = _t; _t = _a; }
-			if ( struct_type( _t, __IterableList__ ) == false ) { throw new UnexpectedTypeMismatch("union", _t, "__IterableList__" ); }
+			_hold[$ _f( index( _i ) ) ]	= 1;
+			_iter.push( index( _i ) )
 			
-			if ( _t.size() == 0 ) { continue; }
+		}
+		var _i = -1; repeat( _list.size() ) { ++_i;
+			if ( variable_struct_exists( _hold, _f( _list.index( _i ) ) ))
+				continue;
 			
-			_t.index( 0 ); repeat( _t.size() ) {
-				var _next	= _t.next();
-				
-				if ( error_type( _iter.find( _next, _f ) ) == ValueNotFound )
-					_iter.push( _next );
-					
-			}
+			_hold[$ _f( _list.index( _i ) ) ]	= 1;
+			_iter.push( _list.index( _i ) )
 			
 		}
 		return _iter;
@@ -178,16 +200,27 @@ function __IterableList__() : __Struct__() constructor {
 		if ( _f == undefined ) { _f = function( _v ) { return _v; }}
 		if ( is_method( _f ) == false ) { throw new InvalidArgumentType( "unique", 1, _f, "method" ); }
 		
-		var _iter	= new __Self();
+		if ( is_array( _list ) ) { _list = new __Self__().from_array( _list ); }
+		if ( struct_type( _list, __IterableList__ ) == false ) { throw new InvalidArgumentType("intersection", 0, _list, "__IterableList__" ); }
+		if ( _list.size() == 0 || size() == 0 ) { return new __Self__(); }
 		
-		if ( is_array( _list ) ) { var _a = new Array(); _a.__Content = _list; _list = _a; }
-		if ( struct_type( _list, __IterableList__ ) == false ) { throw new UnexpectedTypeMismatch("union", _list, "__IterableList__" ); }
-		if ( _list.size() == 0 || size() == 0 ) { return _iter; }
+		if ( _f == undefined ) { _f = string; }
 		
-		_list.index(0); repeat( _list.size() ) {
-			var _next	= _list.next();
+		var _iter	= new __Self__();
+		var _hold	= {};
+		
+		var _i = -1; repeat( size() ) { ++_i;
+			_hold[$ _f( index( _i ) ) ]	= index( _i );
 			
-			if ( contains( _next, _f ) ) { _iter.push( _next ); }
+		}
+		var _i = -1; repeat( _list.size() ) { ++_i;
+			var _key	= _f( _list.index( _i ) );
+			
+			if ( variable_struct_exists( _hold, _key ) == false ) { continue; }
+			
+			_iter.push( _hold[$ _key ] );
+			
+			variable_struct_remove( _hold, _key );
 			
 		}
 		return _iter;
@@ -204,16 +237,28 @@ function __IterableList__() : __Struct__() constructor {
 		if ( _f == undefined ) { _f = function( _v ) { return _v; }}
 		if ( is_method( _f ) == false ) { throw new InvalidArgumentType( "unique", 1, _f, "method" ); }
 		
-		var _iter	= new __Self();
+		if ( is_array( _list ) ) { _list = new __Self__().from_array( _list ); }
+		if ( struct_type( _list, __IterableList__ ) == false ) { throw new InvalidArgumentType("difference", 0, _list, "__IterableList__" ); }
 		
-		if ( is_array( _list ) ) { var _a = new Array(); _a.__Content = _list; _list = _a; }
-		if ( struct_type( _list, __IterableList__ ) == false ) { throw new UnexpectedTypeMismatch("union", _list, "__IterableList__" ); }
-		if ( size() == 0 ) { return _iter; }
+		if ( _f == undefined ) { _f = string; }
 		
-		index(0); repeat( size() ) {
-			var _next	= next();
+		if ( size() == 0 ) { return new __Self__(); }
+		
+		var _iter	= new __Self__();
+		var _hold	= {};
+		
+		var _i = -1; repeat( _list.size() ) { ++_i;
+			_hold[$ _f( _list.index( _i ) ) ]	= 1;
 			
-			if ( _list.contains( _next, _f ) == false ) { _iter.push( _next ); _list.push( _next ); }
+		}
+		var _i = -1; repeat( size() ) { ++_i;
+			var _key	= _f( index( _i ) );
+			
+			if ( variable_struct_exists( _hold, _key ) ) { continue; }
+			
+			_iter.push( index( _i ) );
+			
+			variable_struct_set( _hold, _key, 1 );
 			
 		}
 		return _iter;
@@ -262,7 +307,7 @@ function __IterableList__() : __Struct__() constructor {
 		if ( _f == undefined ) { _f = function( _v ) { return _v; }}
 		if ( is_method( _f ) == false ) { throw new InvalidArgumentType( "find", 1, _f, "method" ); }
 		
-		if ( size() = 0 ) { return new ValueNotFound( "find", _v ); }
+		if ( size() = 0 ) { return new ValueNotFound( "find", _v, -1 ); }
 		
 		if ( __OrderedBy != undefined ) {
 			return __Search( _v );
@@ -276,7 +321,7 @@ function __IterableList__() : __Struct__() constructor {
 			if ( _v == _f( next() )) { return _i; }
 			
 		}
-		return new ValueNotFound( "find", _v );
+		return new ValueNotFound( "find", _v, -1 );
 		
 	}
 	/// @param {mixed}	value...	The value(s) to check for
@@ -300,7 +345,7 @@ function __IterableList__() : __Struct__() constructor {
 	/// @desc	Returns a copy of this {$self}
 	/// @returns {$self}
 	static copy	= function() {
-		var _iter	= new __Self();
+		var _iter	= new __Self__();
 		
 		if ( size() == 0 ) { return _iter; }
 		
@@ -331,7 +376,7 @@ function __IterableList__() : __Struct__() constructor {
 					
 					return _v > index( _m ) ? _m + 1 : _m;
 					
-				} 
+				}
 				break;
 				
 			case false	:
@@ -351,6 +396,51 @@ function __IterableList__() : __Struct__() constructor {
 		return self;
 		
 	}
+	/// @param {__InputStream__}	input	An InputStream to read from.
+	/// @param {bool}				close	If false, the stream will not be closed after reading
+	/// @desc	Populates this structure with values from the provided input stream.  By default,
+	///		the stream will be closed afterwards.  If close is false, however, this behavior will
+	///		be overridden.  If input is not an (#__InputStream__), InvalidArgumentType will be
+	///		thrown.
+	/// @throws InvalidArgumentType
+	/// @returns self
+	static from_input	= function( _input, _close ) {
+		if ( struct_type( _input, __InputStream__ ) == false ) { throw new InvalidArgumentType( "from_input", 0, _input, "__InputStream__" ); }
+		clear();
+		while( _input.finished() == false ) {
+			push( _input.read() );
+			
+		}
+		if ( _close != false ) { _input.close(); }
+		
+		return self;
+		
+	}
+	/// @param {__OutputStream__}	output	An OutputStream to write to
+	/// @param {bool}				close	If false, the stream will not be closed after writing
+	/// @param {method}				*func	If provided, is used to determine what is sent to the stream.
+	/// @desc	Writes this data structure to the provided output stream. By default, the stream will
+	///		be closed after writing.  If close is false, however, this behavior will be overridden. If
+	///		output is not an (#__OutputStream__) or func is not a method, InvalidArgumentType will be
+	///		thrown.
+	/// @throws InvalidArgumentType
+	/// @returns output
+	static to_output	= function( _output, _close, _f ) {
+		if ( struct_type( _output, __OutputStream__ ) == false ) { throw new InvalidArgumentType( "to_output", 0, _output, "__OutputStream__" ); }
+		
+		if ( _f == undefined ) { _f = function( _v ) { return _v; }}
+		
+		if ( is_method( _f ) == false ) { throw new InvalidArgumentType( "to_array", 1, _f, "method" ); }
+		
+		index(0); repeat( size() ) {
+			_output.write( _f( next() ) );
+			
+		}
+		if ( _close != false ) { _output.close(); }
+		
+		return _output;
+		
+	}
 	/// @param {array}	array	An array of values
 	/// @desc	Populates this structure with values from the provided array.
 	static from_array	= function( _a ) {
@@ -363,7 +453,6 @@ function __IterableList__() : __Struct__() constructor {
 		return self;
 		
 	}
-	/// @desc	Converts this data structure into an array and returns it.
 	/// @param	{method}	*func	If provided, is used to populate the array.
 	/// @desc	Returns this list as an array.  If func is defined, the value is passed into
 	///		the function and the return is written instead.  If func is provided, but not
@@ -453,11 +542,9 @@ function __IterableList__() : __Struct__() constructor {
 	static EOL	= {}
 	/// @var {bool}	Whether or not this {$self} will accept duplicates
 	__Dupes		= true;
-	/// @var {int}	A pointer to the asset this struct was created from
-	/// @output	script_index
-	__Self		= asset_get_index( instanceof( self ) );
 	/// @var {method}	The function used to perform ordered insertions
 	__OrderedBy	= undefined;
+	
 	__Type__.add( __IterableList__ );
 	
 }
