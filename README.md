@@ -6,7 +6,7 @@ by Devon Mullane<br>
   <a href="https://github.com/Hyomoto/FAST/wiki"><img src="https://user-images.githubusercontent.com/6281477/95689209-359b9a00-0bdd-11eb-8f94-850252d47c68.png" align="center"></a><br>
   A complimentary GML library to make development easier<br><br>
   <a href="https://github.com/Hyomoto/FAST/releases">Latest Releases</a><br>
-  <a href="https://github.com/Hyomoto/FAST/releases/tag/v3.3hRC4">Last 2.3.X stable</a><br><br>
+  <a href="https://github.com/Hyomoto/FAST/releases/tag/3.5">Last 2.3.X stable</a><br><br>
   Check the <a href="https://github.com/Hyomoto/FAST/wiki">Wiki</a> for the most up-to-date documentation on each module.<br>
   You can also visit the <a href="https://discord.gg/YaKukPUpmS">FAST Discord</a> for more interactive help!<br>
 </p>
