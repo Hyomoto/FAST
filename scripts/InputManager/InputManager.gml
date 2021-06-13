@@ -28,7 +28,7 @@ function InputManager() {
 				}
 				if ( event == undefined ) {
 					last	= true;
-					event	= new FrameEvent( FAST.STEP_END, 0, undefined, function() {
+					event	= new FrameEvent( FAST_EVENT_STEP_END, 0, function() {
 						if ( state() == false ) {
 							event.discard();
 							
@@ -76,4 +76,3 @@ function InputManager() {
 	return instance.struct;
 	
 }
-InputManager();

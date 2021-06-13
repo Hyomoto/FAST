@@ -1,132 +1,114 @@
 /// @func ArrayList
-/// @param array/size	{mixed}	Either the starting array to use, or the size of the array to create.
-/// @param default		{mixed}	optional: if provided, will fill the newly created array. Default: `undefined`
-/// @desc An array that has the same functionality as a list. The array size is managed internally, and
-//		when entries are added or removed, the array will grow to accomidate future values.  It does not
-//		deallocate when shrunk.  Thus you should alway use methods to interact with the array to ensure
-//		it is not destabilized.  You can change the `aggressiveness` to affect how much space is allocated
-//		when the array grows.
-/// @example
-//var _array = new ArrayList( 10, 0 );
-//
-//_array.insert( 5, 10 );
-//_array.remove( 0 );
-//
-//show_debug_message( _array );
-/// @wiki Core-Index Arrays
-function ArrayList( _size ) : Array( _size ) constructor {
-	/// @override
-	static size	= function() { return length; }
-	/// @override
-	static resize_Array	= resize;
-	/// @override
-	static resize	= function( _size, _default ) {
-		resize_Array( ceil( _size == 0 ? 10 : _size * aggression ), _default );
+/// @desc	A wrapper for the built-in GML array data structure.
+function ArrayList() : __IterableList__() constructor {
+	/// @param {int}	index	The position to read from
+	/// @desc	Reads the value at the given index in the list.  If the index is out of range
+	///		an IndexOutOfBounds will be thrown.
+	/// @returns Mixed
+	/// @throws IndexOutOfBounds
+	static index	= function( _index ) {
+		if ( _index < 0 || _index >= size() ) { throw new IndexOutOfBounds( "index", _index, size() ); }
 		
-		length	= _size;
+		__Index	= _index;
+		
+		return __Content[ _index ];
 		
 	}
-	/// @param {int} index The index to insert the value at, must be <= the size of the array
-	/// @param {mixed} value The value to insert into the array
-	/// @returns `value`
+	/// @func	Seeks the next value in the list after the last read position, or EOL if the list has
+	///		been fully traversed.  Can use index() to set the next read position.
+	/// @returns mixed or EOL
+	static next	= function() {
+		if ( size() == 0 || __Index >= size() ) { return EOL; }
+		
+		return __Content[ __Index++ ];
+		
+	}
+	/// @func	Seeks the previous value in the list before the last read position, or EOL if the front
+	///		of the list has been reached.  Can use index() to set the next read position.
+	/// @returns mixed or EOL
+	static previous	= function() {
+		if ( size() == 0 || __Index == 0 ) { return EOL; }
+		
+		return __Content[ --__Index ];
+		
+	}
+	/// @param {mixed} *values...	One or more values
+	/// @desc	Adds the given values to the end of the list
+	/// @returns self
+	static push	= function() {
+		var _f = __OrderedBy == undefined ? function( _v ) { array_push( __Content, _v ) } : function( _v ) { array_insert( __Content, __OrderedBy( _v ), _v ); }
+		var _i = 0;
+		
+		if ( size() == 0 ) { array_push( __Content, argument[ _i++ ] ); }
+		
+		repeat( argument_count - _i ) {
+			if ( __Dupes == false && contains( argument[ _i ] ) ) { continue; }
+			
+			_f( argument[ _i++ ] );
+			
+		}
+		return self;
+		
+	}
+	/// @param {int}	index	The position to insert at
+	/// @param {mixed}	value	The value to be inserted
+	/// @desc	Inserts the value at the given index in the list.  If the index is out of range
+	///		an IndexOutOfBounds will be thrown.
+	/// @throws IndexOutOfBounds
 	static insert	= function( _index, _value ) {
-		if ( _index < 0 || _index > size() ) { return; }
+		if ( __Dupes == false && contains( _value ) ) { return; }
+		if ( _index < 0 || _index > size() ) { throw new IndexOutOfBounds( "insert", _index, size() ); }
 		
-		if ( length == array_length( content ) ) {
-			resize_Array( ceil( length * aggression ), undefined );
+		array_insert( __Content, _index, _value );
+		
+	}
+	/// @param {int}	index	The position to write to
+	/// @param {Mixed}	value	The value to write
+	/// @desc	Writes the value to the given index in the list.  If the index is out of range
+	///		an IndexOutOfBounds will be thrown.
+	/// @throws IndexOutOfBounds
+	static replace	= function( _index, _value ) {
+		if ( _index < 0 || _index >= size() ) { throw new IndexOutOfBounds( "index", _index, size() ); }
+		
+		__Content[ _index ]	= _value;
+		
+	}
+	/// @param {int}	*index	If provided, the value will be 'popped' from this position
+	/// @desc	Removes an entry from the list and returns its value.  If an index is provided it
+	///		will remove and return that item, otherwise it will look for the last entry in the list. If
+	///		the index is out of range, or the list is empty, an IndexOutOfBounds will be thrown.
+	/// @returns Mixed
+	/// @throws IndexOutOfBounds
+	static pop	= function( _index ) {
+		var _value;
+		
+		if ( _index < 0 || _index >= size() ) { throw new IndexOutOfBounds( "pop", _index, size() ); }
+		
+		if ( _index == undefined || _index == size() - 1 )
+			return array_pop( __Content );
 			
-		}
-		var _array	= array_create( array_length( content ), undefined );
+		var _value	= __Content[ _index ];
 		
-		if ( _index > 0 ) {
-			array_copy( _array, 0, content, 0, _index );
-			
-		}
-		array_copy( _array, _index + 1, content, _index, length - _index );
-		
-		_array[ _index ]	= _value;
-		
-		content	= _array;
-		
-		++length;
+		array_delete( __Content, _index, 1 );
 		
 		return _value;
 		
 	}
-	/// @param {int} index The index to remove
-	/// @desc Removes an index from the array, shrinking it.
-	static remove	= function( _index ) {
-		if ( _index < 0 || _index >= size() ) { return; }
+	/// @desc	Clears the list
+	static clear	= function() { __Content = []; }
+	/// @desc	Returns the size of the list
+	/// @returns int
+	static size		= function() { return array_length( __Content ); }
+	static from_array	= function( _a ) {
+		if ( is_array( _a ) == false ) { throw new InvalidArgumentType( "from_array", 0, _a, "array" ); }
 		
-		var _array	= array_create( array_length( content ), undefined );
+		__Content	= _a;
 		
-		if ( _index > 0 ) {
-			array_copy( _array, 0, content, 0, _index );
-			
-		}
-		if ( _index < length - 1 ) {
-			array_copy( _array, _index, content, _index + 1, length - _index );
-			
-		}
-		content	= _array;
-		
-		--length;
+		return self;
 		
 	}
-	/// @param {mixed} value The value to add to the array
-	/// @returns `value`
-	/// @desc Adds a value to the end of the array, growing it if necessarry.
-	static add	= function( _value ) {
-		if ( length == array_length( content ) ) {
-			resize_Array( max( length + 1, ceil( length * aggression ) ), undefined );
-			
-		}
-		content[ length ]	= _value;
-		
-		++length;
-		
-		return _value;
-		
-	}
-	/// @override
-	static toArray	= function() {
-		if ( array_length( content ) == length ) {
-			return content;
-			
-		}
-		var _array	= array_create( length );
-		
-		array_copy( _array, 0, content, 0, length );
-		
-		return _array;
-		
-	}
-	/// @override
-	static toString	= function( _divider ) {
-		if ( is_string( _divider ) == false ) { _divider = ", " }
-		
-		var _array	= array_create( length );
-		
-		array_copy( _array, 0, content, 0, length );
-		
-		return array_to_string( _array, _divider );
-		
-	}
-	/// @desc A multiplier for many extra elements will be allocated when the array resizes. Default: 1.33
-	aggression	= 1.33;
-	
-	if ( is_array( _size ) ) {
-		length	= ceil( array_length( _size ) );
-		content	= array_create( ceil( length * aggression ), undefined);
-		
-		array_copy( content, 0, _size, 0, length );
-		
-	} else {
-		var _default	= ( argument_count > 1 ? argument[ 1 ] : undefined );
-		
-		length	= ceil( _size );
-		content	= array_create( _size == 0 ? 10 : _size * aggression, _default );
-		
-	}
+	__Content	= [];
+	__Index		= 0;
+	__Type__.add( ArrayList );
 	
 }

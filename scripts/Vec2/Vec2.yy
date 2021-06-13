@@ -2,8 +2,8 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Data Types",
-    "path": "folders/FAST/Core/Data Types.yy",
+    "name": "Numbers",
+    "path": "folders/FAST/Numbers.yy",
   },
   "resourceVersion": "1.0",
   "name": "Vec2",

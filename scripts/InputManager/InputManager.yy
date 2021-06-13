@@ -2,8 +2,8 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Input Handling",
-    "path": "folders/FAST/Input Handling.yy",
+    "name": "IO",
+    "path": "folders/FAST/IO.yy",
   },
   "resourceVersion": "1.0",
   "name": "InputManager",

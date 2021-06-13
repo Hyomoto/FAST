@@ -1,1 +1,1 @@
-fast.call_events( fast.ROOM_START );
+__Fast__.call_events( __Fast__.ROOM_START );

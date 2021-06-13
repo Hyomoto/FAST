@@ -1,0 +1,38 @@
+3.5 is a huge stability and clean-up release aimed at making FAST easier to approach and more immediately useful. This includes the removal of a number of data structures that are now redundant, slimming down of Core by pushing out modules absorbed in previous updates, and proper documentation of every component.  Unfortunately 3.5 can be considered a somewhat destructive update.  For most functions and FAST features you shouldn't see any changes other than improved documentation and organization.  The only major destructive change is Array now makes use of IterableList and is not just a wrapper for native arrays, thusly it makes use of different methods.  Nevertheless, due to the removal of features and restructured folders, updating from an older version may cause issues.  However, if you would like to update, please read the second on changes and depreciation for what has changed and how to fix it.
+
+# New Features
+* Errors - FAST will now throw useful errors when data structures or functions are used improperly.  These errors can be tested for and caught easily.
+* Struct Parentage - Structs can inherit from __Struct__ and make use of the new __Type__.add function to easily test for type.  is_struct_of has been replaced with struct_type, which will test against type if it exists, otherwise it will perform a basic string match using instanceof()
+* Iterable Lists - Array and LinkedList now inherit from __IterableList__ which will wrap up both data types with the same feature set.  This includes set rules such as union, intersect and difference, sorting, filtering, shuffling, have built-in JSON export/import, and are garbage collected.
+* HashMap - A simple replacement for ds_map that is also garbage collected and also provides built-in convenience features.
+* Dictionary - An ordered HashMap that can be traversed and searched.
+
+# Updated
+* Surface - If update() returns true, the surface will be set for drawing.  Similarly, if draw() is called and the surface is the current draw target, it will be unset.  This reduces the verbosity of caching the surface.  Note, you can still use set() and reset() to target and untarget the surface, these calls serve as a safety as well as quality improvement.  This should not break previous implementations, but should make using them easier moving forwards.
+
+# Changes
+* Logging moved out of Core. FAST no longer makes use of the logging module internally.  This is because FAST will now throw errors rather than log warnings.  Due to the depreciation of __GenericOutput__, you will have to keep that file should you wish to use the old version of Logging.  The system is being updated to make use of input and output streams instead, and should be available soon.
+* File Handling has been somewhat depreciated.  FileText has been replaced with TextFile.  This is for clarity, but also because files are now based on input and output streams to allow compatibility across the library.  Additionally, it had excessive dependencies on the rest of the library.  There is no easy fix for this one, but updating to the new file handling code should be relatively painless, see below.
+* ArrayList now makes use of __IterableList__ and therefore has a different feature set.  The two are substantially different, but the major comparisons are, get() is roughly the same as index(), set() is similar to replace(), and pop() replaces delete().  However, if you were using ArrayList you may be able to swap to Array without breaking anything.  Array is depreciated, but does not conflict with 3.5
+	
+# Depreciated, and replacement
+* variable_traverse_string - used by Database, shouldn't be in Core
+* version_to_struct - unused, no replacement
+* Shapes - unused, no replacement
+* DsChain - redundant, no replacement, no conflicts
+* DsLinkedList - LinkedList
+* DsList - LinkedList
+* DsMap - HashMap
+* DsQueue - LinkedList
+* DsStack - LinkedList
+* DsTable - Dictionary
+* DsWalkable - LinkedList
+* DsTree - will reworked and re-added, for now use legacy but is no longer supported, no conflicts but may have multiple dependencies
+* Array - redundant, no replacement, no conflicts
+* String - redundant, no replacement, no conflicts
+* StringNumber - no replacement, no conflicts
+* StringTime - time_to_string now provides the same output, no conflicts
+* __GenericOutput__ - replaced with __OutputStream__
+* FileText - TextFile
+* FileBinary - no replacement, will be updated
+* FileCSV - no replacement, can replace with TextFile, LinkedList and Parser, but replacement will be coming
