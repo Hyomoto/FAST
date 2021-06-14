@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Depreciated",
-    "path": "folders/Depreciated.yy",
+    "name": "Structs",
+    "path": "folders/FAST/Input/Gamepad/Structs.yy",
   },
   "resourceVersion": "1.0",
-  "name": "Feature",
+  "name": "GamepadXbox",
   "tags": [],
   "resourceType": "GMScript",
 }

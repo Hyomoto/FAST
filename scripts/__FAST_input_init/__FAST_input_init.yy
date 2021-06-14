@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Constructors",
-    "path": "folders/FAST/Logging/Constructors.yy",
+    "name": "Input",
+    "path": "folders/FAST/Input.yy",
   },
   "resourceVersion": "1.0",
-  "name": "BufferedOutput",
+  "name": "__FAST_input_init",
   "tags": [],
   "resourceType": "GMScript",
 }

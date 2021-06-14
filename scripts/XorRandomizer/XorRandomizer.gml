@@ -1,5 +1,5 @@
 /// @func XorRandomizer
-function XorRandomizer() : Randomizer() constructor {
+function XorRandomizer() : __Randomizer__() constructor {
 	static seed	= function( _seed ) {
 		if ( _seed == undefined ) {
 			__State	= date_current_datetime() | 0;

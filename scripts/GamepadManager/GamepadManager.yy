@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Constructors",
-    "path": "folders/FAST/Logging/Constructors.yy",
+    "name": "Gamepad",
+    "path": "folders/FAST/Input/Gamepad.yy",
   },
   "resourceVersion": "1.0",
-  "name": "BufferedOutput",
+  "name": "GamepadManager",
   "tags": [],
   "resourceType": "GMScript",
 }

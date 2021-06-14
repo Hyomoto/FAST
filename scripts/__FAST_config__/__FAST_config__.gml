@@ -34,8 +34,8 @@ if ( FAST_DISABLE_EVENTS != true ) {
 
 /// @func __output_to_stream__
 /// @desc	__output_to_stream__ is a wrapper for the common console output in the GMS IDE. It instantiates
-//		itself when called and uses the SystemOutput and syslog methods as simple references. To write
-//		to the console simply call `syslog()`.  SystemOutput is an {!__OutputStream__} and can be
+//		itself when called and uses the SystemOutput and syslog macros as simple references. To write
+//		to the console simply call `syslog()`.  SystemOutput is an {#__OutputStream__} and can be
 //		used as a valid target for functions that write to an output stream.
 function __output_to_stream__() {
 	static instance	= ( function() {
@@ -44,8 +44,8 @@ function __output_to_stream__() {
 		_output.write	= method( _output, function() {
 			__Buffer	= "";
 			
-			var _i = 0; repeat( argument_count ) {
-				__Buffer	+= string( argument[ _i++ ] );
+			var _i = -1; repeat( argument_count ) { ++_i;
+				__Buffer	+= string( argument[ _i ] );
 				
 			}
 			show_debug_message( __Buffer );
@@ -183,4 +183,20 @@ function BadJSONFormat( _call ) : __Error__() constructor {
 /// @wiki Core-Index Errors
 function BadValueFormat( _call, _type, _extra ) : __Error__() constructor {
 	message	= conc( "The function ", _call, " failed to perform the expected type conversion to ", _type ,". ", _extra );
+}
+/// @func FileNotFound
+/// @desc	Thrown when a request for a file is made and it didn't exist.
+function FileNotFound( _call, _file ) : __Error__() constructor {
+	message	= conc( "The function ", _call, " failed because it could not find ", _file )
+}
+/// @func IllegalFileOperation
+/// @desc	Thrown when an illegal call is made to operate on a file.
+function IllegalFileOperation( _call, _msg ) : __Error__() constructor {
+	message	= conc( "The function ", _call, " failed because ", _msg )
+}
+/// @func ReservedKeyword
+/// @desc	Thrown when a call is made to use a keyword that is reserved.
+/// @wiki Core-Index Errors
+function ReservedKeyword( _call, _value ) : __Error__() constructor {
+	message	= conc( "The function ", _call, " failed because ", _value, " is a reserved keyword." );
 }

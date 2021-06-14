@@ -1,7 +1,26 @@
-/// @func InputManager
-/// @desc	InputManager is a wrapper for internal file system functions.
-/// @wiki Input-Handling-Index
-function InputManager() {
+// # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//								User-definable Macros
+// # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//		The number of virtual ports to connect gamepads to.  If another gamepad is
+//	discovered and there is no free port, it will be ignored until a port is freed.
+#macro FAST_GAMEPAD_VIRTUAL_PORTS	4
+
+//		This is the event that controller events will be checked for clearing.  It is
+//	suggested that you do not set this to the same event you intend to check for
+//	inputs as that could cause unexpected behaviors.
+#macro FAST_GAMEPAD_UPDATE_EVENT	FAST_EVENT_STEP_BEGIN
+
+// # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// #							End of User Defines
+// # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#macro FAST_BUTTON_FREE		0x0
+#macro FAST_BUTTON_PRESSED	0x1
+#macro FAST_BUTTON_CHECK	0x3
+#macro FAST_BUTTON_RELEASED	0x4
+
+FAST.feature( "FIOM", "Input", (1 << 32 ) + (1 << 16), "6/12/2021" );
+
+function __FAST_input_init() {
 	static manager	= function() constructor {
 		static log	= function() {
 			if ( FAST_DEBUGGER_ENABLE == false ) { return; }
@@ -72,7 +91,7 @@ function InputManager() {
 		}
 		
 	}
-	static instance	= new Feature( "FAST Input Handling", "1.0a", "10/18/2020", new manager() );
-	return instance.struct;
+	static instance	= new manager();
+	return instance;
 	
 }

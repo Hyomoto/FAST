@@ -5,14 +5,14 @@
 /// @desc Writes `values...` to the system output and log/nonfatal.txt when ERROR_LEVEL >= ERROR_CRITICAL
 /// @example
 //log_debug( id, "load", "Could not load, ", _value, ". File doesn't exist." )
-/// @wiki Core-Index Logging
+/// @wiki Logging-Index Functions
 function log_critical( _id, _event ) {
-	if ( ERROR_LEVEL >= ERROR_CRITICAL ) {
-		static instance	= new Logger( "critical", FAST_LOGGER_DEFAULT_LENGTH, System, new FileText( "log/critical.txt", false, true ) );
+	if ( FAST_ERROR_LOG & FAST_LOGGER_CRITICAL ) {
+		static instance	= new Logger( "critical", SystemOutput, new BufferedOutput( new TextFile().open( "log/critical.txt", FAST_FILE_OPEN_NEW ), 20 ));
 		
-		var _string	= ( is_undefined( _id ) ? "" : string( _id ) ) + " [" + _event + "] ";
+		var _string	= ( is_undefined( _id ) ? "<undefined>" : string( _id ) ) + " [" + _event + "] ";
 		
-		var _i = 2; repeat( argument_count - 1 ) {
+		var _i = 2; repeat( argument_count - 2 ) {
 			_string	+= string( argument[ _i++ ] );
 			
 		}

@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "IO",
-    "path": "folders/FAST/IO.yy",
+    "name": "Random",
+    "path": "folders/FAST/Numbers/Random.yy",
   },
   "resourceVersion": "1.0",
-  "name": "__FAST_input_config",
+  "name": "__Randomizer__",
   "tags": [],
   "resourceType": "GMScript",
 }

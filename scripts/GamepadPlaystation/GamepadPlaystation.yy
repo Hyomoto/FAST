@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "IO",
-    "path": "folders/FAST/IO.yy",
+    "name": "Structs",
+    "path": "folders/FAST/Input/Gamepad/Structs.yy",
   },
   "resourceVersion": "1.0",
-  "name": "InputManager",
+  "name": "GamepadPlaystation",
   "tags": [],
   "resourceType": "GMScript",
 }

@@ -13,6 +13,7 @@
 //var _i = 0; repeat( 18 ) { _output.write( _i++, "\n" ); }
 /// @output 0-9 will be written to the text file, and 10-17 will remain in the buffer until more entries are buffered or the output is closed
 /// @throws InvalidArgumentType
+/// @wiki Logging-Index Constructors
 function BufferedOutput( _output, _size ) : __OutputStream__() constructor {
 	static write	= function() {
 		var _i = 0; repeat( argument_count ) {
@@ -57,6 +58,8 @@ function BufferedOutput( _output, _size ) : __OutputStream__() constructor {
 	__Length	= max( 1, floor( _size ));
 	__Buffer	= array_create( _size );
 	__Index		= 0;
+	
+	__Output.close();
 	
 	__Type__.add( BufferedOutput );
 	

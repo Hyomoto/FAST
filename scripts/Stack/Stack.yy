@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Random",
-    "path": "folders/FAST/Numbers/Random.yy",
+    "name": "Data Types",
+    "path": "folders/FAST/Core/Constructors/Data Types.yy",
   },
   "resourceVersion": "1.0",
-  "name": "Randomizer",
+  "name": "Stack",
   "tags": [],
   "resourceType": "GMScript",
 }

@@ -1,10 +1,10 @@
 {
   "parent": {
-    "name": "FAST",
-    "path": "FAST.yyp",
+    "name": "Changelogs",
+    "path": "folders/Changelogs.yy",
   },
   "resourceVersion": "1.1",
-  "name": "Changelog",
+  "name": "CL_3.3",
   "tags": [],
   "resourceType": "GMNotes",
 }
