@@ -8,7 +8,7 @@ function Stack() constructor {
 	/// @returns self
 	static push	= function() {
 		var _i = 0; repeat( argument_count ) {
-			__Stack	= { value: argument[ _i ], next: __Stack }
+			__Stack	= { value: argument[ _i++ ], next: __Stack }
 			__Size	+= 1;
 			
 		}

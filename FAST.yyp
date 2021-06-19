@@ -198,7 +198,7 @@
     {"CopyToMask":-1,"filePath":"datafiles","resourceVersion":"1.0","name":"test.txt","resourceType":"GMIncludedFile",},
   ],
   "MetaData": {
-    "IDEVersion": "23.1.1.290",
+    "IDEVersion": "23.1.1.300",
   },
   "resourceVersion": "1.4",
   "name": "FAST",

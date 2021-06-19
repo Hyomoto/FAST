@@ -10,7 +10,7 @@
 //_parser.next();
 /// @output "Hello"
 /// @wiki Core-Index Constructors
-function Parser() : __Struct__() constructor {
+function Parser( _divider ) : __Struct__() constructor {
 	/// @param {string} string	The string to parse
 	/// @desc	Sets string as the target for parsing.
 	/// @throws InvalidArgumentType
@@ -54,23 +54,18 @@ function Parser() : __Struct__() constructor {
 		if ( has_next() == false )
 			return EOS;
 		
-		var _string = ""; while ( _string == "" ) {
-			var _next	= string_find_first( __Divider, __Content, __Last );
+		var _s = 0; repeat( string_length( __Content ) - __Last + 1 ) {
+			var _c = string_char_at( __Content, ++__Last );
 			
-			if ( _next == 0 ) {
-				_string	= string_trim( string_delete( __Content, 1, __Last - 1 ), __Divider );
-				
-				__Last	= size();
+			if ( string_pos( _c, __Divider ) > 0 ) {
+				if ( _s == 0 ) { continue; }
 				
 				break;
 				
-			}
-			_string	= string_trim( string_copy( __Content, __Last, _next - max( 1, __Last ) ), __Divider );
-			
-			__Last	= _next + 1;
+			} else if ( _s == 0 ) { _s = __Last; }
 			
 		}
-		return _string;
+		return string_copy( __Content, _s, __Last - _s );
 		
 	}
 	/// @desc	Returns the remaining unparsed string, or EOS if the end of the string has been reached.
@@ -81,7 +76,7 @@ function Parser() : __Struct__() constructor {
 		
 		var _string	= string_delete( __Content, 1, __Last - 1 );
 		
-		__Last	= size();
+		//__Last	= size();
 		
 		return _string;
 		
@@ -172,7 +167,7 @@ function Parser() : __Struct__() constructor {
 	__Content	= "";
 	/// @var {string}	The character string used to find the next breakpoint.
 	/// @output " \t" (whitespace)
-	__Divider	= " \t";
+	__Divider	= _divider == undefined ? " \t" : _divider;
 	/// @var {int}		The last position read from.
 	__Last	= 0;
 	
