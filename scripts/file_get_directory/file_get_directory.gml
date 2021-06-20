@@ -51,6 +51,6 @@ function file_get_directory( _directory, _mask, _sub ) {
 	
 	delete _paths;
 	
-	return _return.to_array();
+	return _return;
 	
 }

@@ -1,4 +1,7 @@
 {
+  "ConfigValues": {
+    "Testing": {"textureGroupId":"{\"name\":\"Default\",\"path\":\"texturegroups/Default\"}",},
+  },
   "bboxMode": 1,
   "collisionKind": 1,
   "type": 0,

@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Abstract",
-    "path": "folders/FAST/Core/Abstract.yy",
+    "name": "Constructors",
+    "path": "folders/FAST/Scripting/Constructors.yy",
   },
   "resourceVersion": "1.0",
-  "name": "__File__",
+  "name": "ScriptCoroutine",
   "tags": [],
   "resourceType": "GMScript",
 }

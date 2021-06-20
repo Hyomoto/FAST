@@ -12,10 +12,14 @@
 #macro syslog		( __output_to_stream__() ).write
 #macro SystemOutput	( __output_to_stream__() )
 
-#macro __FAST_version__	"3.5"
-#macro __FAST_date__	"06/12/2021"
+#macro __FAST_version__	"3.5.1"
+#macro __FAST_date__	"06/20/2021"
 
 #macro EVENT	function()
+
+#macro FAST_FILE_OPEN_READ	0
+#macro FAST_FILE_OPEN_WRITE	1
+#macro FAST_FILE_OPEN_NEW	2
 
 #macro FAST_EVENT_STEP			FAST.STEP
 #macro FAST_EVENT_STEP_BEGIN	FAST.STEP_BEGIN
@@ -57,7 +61,6 @@ function __output_to_stream__() {
 	return instance;
 	
 }
-
 /// @desc	FASTManager is a wrapper for internal FAST system functions.  It provides hooks for the
 //		event system.
 function __FAST_config__() {

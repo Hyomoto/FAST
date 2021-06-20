@@ -8,7 +8,7 @@ function Stack() constructor {
 	/// @returns self
 	static push	= function() {
 		var _i = 0; repeat( argument_count ) {
-			__Stack	= { value: argument[ _i ], next: __Stack }
+			__Stack	= { value: argument[ _i++ ], next: __Stack }
 			__Size	+= 1;
 			
 		}
@@ -27,6 +27,22 @@ function Stack() constructor {
 		__Size	-= 1;
 		
 		return _value;
+		
+	}
+	/// @desc	Peeks at the top value of the stack and returns it.  If the stack is empty,
+	///		EOS is returned instead.
+	/// @returns mixed or EOS
+	static top	= function() {
+		if ( __Size == 0 ) { return EOS; }
+		
+		return __Stack.value;
+		
+	}
+	/// @desc	Returns the value on top of the stack without popping it.  If the stack is empty,
+	///		EOS is return instead.
+	/// @returns mixed or EOS
+	static peek	= function() {
+		return __Stack.value;
 		
 	}
 	/// @desc	Returns true if the stack is empty.

@@ -2,8 +2,8 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Random",
-    "path": "folders/FAST/Numbers/Random.yy",
+    "name": "Constructors",
+    "path": "folders/FAST/Numbers/Constructors.yy",
   },
   "resourceVersion": "1.0",
   "name": "TableRandomizer",

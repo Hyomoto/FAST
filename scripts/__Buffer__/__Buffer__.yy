@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Constructors",
-    "path": "folders/FAST/Numbers/Constructors.yy",
+    "name": "Abstract",
+    "path": "folders/FAST/Core/Abstract.yy",
   },
   "resourceVersion": "1.0",
-  "name": "Well512Randomizer",
+  "name": "__Buffer__",
   "tags": [],
   "resourceType": "GMScript",
 }

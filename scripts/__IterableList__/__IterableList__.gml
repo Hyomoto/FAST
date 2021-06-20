@@ -409,7 +409,7 @@ function __IterableList__() : __Struct__() constructor {
 		clear();
 		while( _input.finished() == false ) {
 			push( _input.read() );
-
+			
 		}
 		if ( _close != false ) { _input.close(); }
 

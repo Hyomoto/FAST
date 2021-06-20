@@ -2,8 +2,8 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Random",
-    "path": "folders/FAST/Numbers/Random.yy",
+    "name": "Abstract",
+    "path": "folders/FAST/Numbers/Abstract.yy",
   },
   "resourceVersion": "1.0",
   "name": "__Randomizer__",

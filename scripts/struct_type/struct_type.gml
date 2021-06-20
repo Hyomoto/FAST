@@ -13,6 +13,7 @@ function struct_type( _struct, _type ) {
 	
 	if ( _is == undefined ) {
 		if ( instanceof( _struct ) == script_get_name( _type ) ) { return true; }
+		return false;
 		
 	}
 	return _is[$ string( _type ) ] == 1;

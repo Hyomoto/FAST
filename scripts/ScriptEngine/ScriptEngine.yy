@@ -3,10 +3,10 @@
   "isCompatibility": false,
   "parent": {
     "name": "Constructors",
-    "path": "folders/FAST/Numbers/Constructors.yy",
+    "path": "folders/FAST/Scripting/Constructors.yy",
   },
   "resourceVersion": "1.0",
-  "name": "Well512Randomizer",
+  "name": "ScriptEngine",
   "tags": [],
   "resourceType": "GMScript",
 }

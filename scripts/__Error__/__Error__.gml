@@ -15,6 +15,14 @@ function __Error__() : __Struct__() constructor {
 		return self;
 		
 	}
+	/// @param {struct}	error	A previously generated error
+	/// @desc	Can be used to create a generic error from a string.  This is to allow injecting
+	///		GMS-thrown one-off errors into FAST's error handling.
+	static from_string	= function( _string ) {
+		message		= _string;
+		return self;
+		
+	}
 	/// @param {mixed}	values...
 	/// @desc	Concantates the provided values into a message string.
 	static conc	= function() { var _s = ""; var _i = 0; repeat( argument_count ) { _s += string( argument[ _i++ ] ); }; return _s; }
