@@ -3,6 +3,7 @@
 ///		for the built-in ds_list.
 /// @wiki Core-Index Data Structures
 function LinkedList() : __IterableList__() constructor {
+	static __pool__	= new ObjectPool();
 	/// @param {int}	index	The position to read from
 	/// @desc	Reads the value at the given index in the list.  If the index is out of range
 	///		an IndexOutOfBounds will be thrown.
@@ -57,12 +58,17 @@ function LinkedList() : __IterableList__() constructor {
 	/// @returns self
 	static push	= function() {
 		static __add__	= function( _v ) {
+			var _link	= __pool__.get();
+			
+			_link.value	= _v;
+			_link.next	= undefined;
+			
 			if ( __Last == undefined ) {
-				__First	= { value: _v, next: undefined }
+				__First		= _link;
 				__Last		= __First;
 				
 			} else {
-				__Last.next	= { value: _v, next: undefined }
+				__Last.next	= _link;
 				__Last		= __Last.next;
 				
 			}
@@ -96,16 +102,23 @@ function LinkedList() : __IterableList__() constructor {
 	static insert	= function( _index, _value ) {
 		if ( __Dupes == false && contains( _value ) ) { return; }
 		if ( _index < 0 || _index > size() ) { throw new IndexOutOfBounds( "insert", _index, size() ); }
+		
+		var _link	= __pool__.get();
+		_link.value	= _value;
+		
 		if ( _index = 0 ) {
 			if ( __Index == undefined ) { __Index = {}; }
 			
-			__First	= { value: _value, next: __First }
+			_link.next	= __First;
+			
+			__First	=	_link;
 			__Index.p	= __First;
 			__Index.i	= 0;
 			
 		} else {
 			index( _index - 1 );
-			__Index.p.next	= { value: _value, next: __Index.p.next }
+			_link.next	= __Index.p.next;
+			__Index.p.next	= _link;
 			
 		}
 		++__Size;
@@ -140,6 +153,8 @@ function LinkedList() : __IterableList__() constructor {
 		if ( size() == 1 && ( _index == 0 || _index == undefined ) ) {
 			_value	= __First.value;
 			
+			__pool__.put( __First ).next	= undefined;
+			
 			__First	= undefined;
 			__Last	= undefined;
 			__Index	= undefined;
@@ -147,15 +162,18 @@ function LinkedList() : __IterableList__() constructor {
 		} else {
 			_index = _index == undefined ? __Size : _index + 1;
 			
-			var _i = 0, _l = __First, _last = undefined; repeat( _index ) {
+			var _i = 0, _l = __First, _last = undefined, _link; repeat( _index ) {
 				if ( ++_i == _index ) {
 					_value	= _l.value;
 					
-					if ( _last == undefined )
+					if ( _last == undefined ) {
+						_link	= __First;
 						__First	= _l.next;
-					else
+						
+					} else {
+						_link		= _l;
 						_last.next	= _l.next;
-					
+					}	
 					if ( _l == __Last ) {
 						__Last		= _last;
 						__Index		= undefined;
@@ -172,6 +190,8 @@ function LinkedList() : __IterableList__() constructor {
 			}
 			
 		}
+		__pool__.put( _link ).next	= undefined;
+		
 		--__Size;
 		
 		return _value;
