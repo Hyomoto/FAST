@@ -131,7 +131,7 @@ function __FAST_config__() {
 				var _i = 0; repeat( array_length( _list ) ) {
 					var _f	= features[$ _list[ _i++ ] ];
 					
-					_string	+= _f.__Name + ( flength - string_length( _f.__Name )) * " " + " v" + _f.version() + " " + _f.__Date + "\n";
+					_string	+= _f.__Name + string_repeat( " ", flength - string_length( _f.__Name )) + " v" + _f.version() + " " + _f.__Date + "\n";
 					
 				}
 				return _string;

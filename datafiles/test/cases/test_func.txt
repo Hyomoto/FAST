@@ -1,4 +1,0 @@
-function()
-trace( "Testing functions..." )
-trace( "--> Passed" )
-return 1

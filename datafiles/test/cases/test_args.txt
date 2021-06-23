@@ -1,9 +1,0 @@
-function( a, b, c )
-trace( "Testing arguments..." )
-set local d to a + b + c
-if d != 6
-	trace( "--> Failed" )
-	return 0
-end
-trace( "--> Passed" )
-return 1

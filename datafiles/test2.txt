@@ -1,6 +1,0 @@
-if ( a + b == c ) {
-	let x "be 10  ";
-	// back
-123 4521 /* this is
-the text */ also this
-}

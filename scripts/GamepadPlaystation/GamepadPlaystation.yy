@@ -2,8 +2,8 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Structs",
-    "path": "folders/FAST/Input/Gamepad/Structs.yy",
+    "name": "Gamepad",
+    "path": "folders/FAST/Input Handling/Gamepad.yy",
   },
   "resourceVersion": "1.0",
   "name": "GamepadPlaystation",

@@ -10,24 +10,30 @@ function Vec2( _x, _y ) constructor {
 	/// @param {real} x The x position to set this vector
 	/// @param {real} y The y position to set this vector
 	/// @desc Used to set both the x and y coordinates in this vector with a single method.
+	/// @returns self
 	static set	= function( _x, _y ) {
 		x	= _x;
 		y	= _y;
 		
+		return self;
+		
 	}
-	/// @returns real
 	/// @desc Used to get the vectors length.
+	/// @returns real
 	static len	= function() {
 		return 	sqrt( x * x + y * y );
 	}
-	/// @returns real
 	/// @desc Used to get the vectors squared length.
+	/// @returns real
 	static lensqr	= function() {
 		return (x * x + y * y);	
 	}
 	/// @param {Vec2} Vec2 The vector to subtract from this one.
 	/// @returns Vec2
-	static add	= function( _Vec2 ) { return new Vec2( x + _Vec2.x, y + _Vec2.y ); }
+	static add	= function( _Vec2 ) {
+		return new Vec2( x + _Vec2.x, y + _Vec2.y );
+		
+	}
 	/// @param {Vec2} Vec2 The vector to subtract from this one.
 	/// @returns Vec2
 	static subtract	= function( _Vec2 ) {
@@ -82,8 +88,8 @@ function Vec2( _x, _y ) constructor {
 		return self;
 	}
 	/// @desc Returns this vector as an array.
-	/// @returns array `[ x, y ]`
-	static toArray	= function() {
+	/// @returns array
+	static to_array	= function() {
 		return [ x, y ];
 		
 	}
@@ -93,15 +99,9 @@ function Vec2( _x, _y ) constructor {
 		return string( x ) + ", " + string( y );
 		
 	}
-	static is		= function( _data_type ) {
-		return _data_type == Vec2;
-		
-	}
-	/// @desc the x position of this vector
-	x	= 0;
-	/// @desc the y position of this vector
-	y	= 0;
-	
-	set( _x, _y );
+	/// @var {real} the x position of this vector
+	x	= _x;
+	/// @var {real} the y position of this vector
+	y	= _y;
 	
 }

@@ -3,7 +3,7 @@
   "isCompatibility": false,
   "parent": {
     "name": "Constructors",
-    "path": "folders/FAST/Scripting/Constructors.yy",
+    "path": "folders/FAST/Scripts/Constructors.yy",
   },
   "resourceVersion": "1.0",
   "name": "ScriptCoroutine",

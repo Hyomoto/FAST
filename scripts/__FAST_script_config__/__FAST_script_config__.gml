@@ -3,7 +3,7 @@
 // # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //		Provides a wrapper for GMS internal functions to prevent arbitrary code injection
 //	by simply assigning an index to a variable and then running it.  If set to false this
-//	check is not performed but the system will otherwise behave the same.  There is little
+//	check is not performed but the system will otherwise behave the same.  There is a
 //	to no performance benefit to turning this off.
 #macro FAST_SCRIPT_PROTECT_FUNCTIONS	true
 
@@ -45,29 +45,47 @@ enum FAST_SCRIPT_FLAG {
 	SkipClimbUp,
 	RightAssociative,
 	
-	IF,
-	ELSE,
-	WHILE,
-	RETURN,
-	YIELD,
-	TEMP,
-	PUT,
-	EXECUTE
-	
 }
+enum FAST_SCRIPT_CODE {
+	IF,		// 0
+	ELSE,	// 1
+	WHILE,	// 2
+	RETURN,	// 3
+	YIELD,	// 4
+	TEMP,	// 5
+	PUT,	// 6
+	LOAD,	// 7
+	EXECUTE,	// 8
+	LAST_BYTE
+}
+enum FAST_SCRIPT_INDEX {
+	INDENT,
+	JUMPTO,
+	INSTRUCTION,
+	DATA,
+	DEBUG_LINE
+}
+/// @func BadScriptFormat
+/// @desc	Returned when a search is made for a value that doesn't exist in a data structure.
+/// @wiki Core-Index Errors
+function BadScriptFormat( _type, _source, _line_number, _line ) : __Error__() constructor {
+	message	= conc( _type, " at line ", _line_number, " in " + _source + "!\n>> " + _line);
+}
+
 FAST.feature( "FSCR", "Scripting", __FAST_script_config__().version , "6/20/2021" );
 
 function __FAST_script_config__() {
 	static instance	= new ( function() constructor {
-		static toString	= function() {
-			
-			
-		}
 		static parser	= function( _char ) constructor {
 			static parse	= function( _string ) {
 				__String	= _string;
 				__Size		= string_length( _string );
 				__Last		= 0;
+				__Count		= string_count( __Char, _string );
+			}
+			static count	= function() {
+				return __Count;
+				
 			}
 			static has_next	= function() {
 				return __Last < __Size;

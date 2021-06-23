@@ -1,7 +1,0 @@
-function()
-trace( "Testing cast to real..." )
-trace( 10 + real->"10" + 10 )
-trace( "Testing cast to string..." )
-trace( "Concan" + string->10 + "tate" )
-trace( "--> Passed" )
-return 1

@@ -3,12 +3,18 @@
 ///		effectively as a queue or list, this structure provides only those two functions using the
 ///		terminology that is common to the data type.
 function Stack() constructor {
+	static __pool__ = new ObjectPool();
 	/// @param {mixed}	values...	Values to push
 	/// @desc	Adds the values in order to the top of the stack.
 	/// @returns self
 	static push	= function() {
 		var _i = 0; repeat( argument_count ) {
-			__Stack	= { value: argument[ _i++ ], next: __Stack }
+			var _get	= __pool__.get();
+			
+			_get.value	= argument[ _i++ ];
+			_get.next	= __Stack;
+			
+			__Stack	= _get;
 			__Size	+= 1;
 			
 		}
@@ -22,6 +28,8 @@ function Stack() constructor {
 		if ( __Size == 0 ) { return EOS; }
 		
 		var _value	= __Stack.value;
+		
+		__pool__.put( __Stack ).next	= undefined;
 		
 		__Stack	= __Stack.next;
 		__Size	-= 1;

@@ -11,7 +11,7 @@
 //
 //debug.write( "Hello World!" );
 /// @wiki Logging-Index Constructors
-function Logger( _name, _output ) constructor {
+function Logger( _name ) constructor {
 	static write	= function() {
 		var _string = __Name + " :: ", _i = 0; repeat( argument_count ) {
 			_string	+= string( argument[ _i++ ] );

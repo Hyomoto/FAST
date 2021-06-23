@@ -10,8 +10,16 @@ function LinkedList() : __IterableList__() constructor {
 	/// @throws IndexOutOfBounds
 	static index	= function( _index ) {
 		if ( _index < 0 || _index >= size() ) { throw new IndexOutOfBounds( "index", _index, size() ); }
-		var _i = ( __Index != undefined && _index >= __Index.i ? __Index.i : 0 ), _l = ( __Index != undefined && _i >= __Index.i ? __Index.p : __First ); repeat( size() ) {
-			if ( _i++ == _index ) { __Index = { p: _l, i: _index }; return _l.value; }
+		if ( __Index == undefined ) { __Index = { i: 0, p: __First }; }
+		// ( __Index != undefined && _index >= __Index.i ? __Index.i : 0 ), _l = ( __Index != undefined && _i >= __Index.i ? __Index.p : __First )
+		var _i = _index >= __Index.i ? __Index.i : 0, _l = _index >= __Index.i ? __Index.p : __First; repeat( size() ) {
+			if ( _i++ == _index ) {
+				__Index.p	= _l;
+				__Index.i	= _index;
+				
+				return _l.value;
+				
+			}
 			_l	= _l.next;
 			
 		}
@@ -27,7 +35,8 @@ function LinkedList() : __IterableList__() constructor {
 		
 		var _value	= __Index.p.value;
 		
-		__Index = { p: __Index.p.next, i: __Index.i + 1 };
+		__Index.p	= __Index.p.next;
+		__Index.i	= __Index.i + 1;
 		
 		return _value;
 		
@@ -88,8 +97,11 @@ function LinkedList() : __IterableList__() constructor {
 		if ( __Dupes == false && contains( _value ) ) { return; }
 		if ( _index < 0 || _index > size() ) { throw new IndexOutOfBounds( "insert", _index, size() ); }
 		if ( _index = 0 ) {
+			if ( __Index == undefined ) { __Index = {}; }
+			
 			__First	= { value: _value, next: __First }
-			__Index	= { p: __First, i: 0 }
+			__Index.p	= __First;
+			__Index.i	= 0;
 			
 		} else {
 			index( _index - 1 );

@@ -1,5 +1,6 @@
 /// @func Script
 function Script() : __Struct__() constructor {
+	static __pool__	= new ObjectPool();
 	/// @param {struct}	vars	A struct containing variables
 	/// @param {int}	start	A line to start execution at
 	/// @desc	Executes the given script with the provided variables at the stated line.
@@ -17,18 +18,15 @@ function Script() : __Struct__() constructor {
 			if ( variable_struct_exists( _local, _key ) || _global == undefined ) { _source = _local; }
 			else { _source = _global; }
 			
-			while ( __parser.has_next() ) {
-				if ( is_struct( _source ) ) { _source = _source[$ _key ]; }
-				else { _source = variable_instance_get( _source, _key ); }
-				
-				if ( struct_type( _source, ScriptSafe ))
-					throw new BadScriptFormat( "BAD VARIABLE", __Source, string( _data.last ), "Could not find " + _var + "!");
-				
+			repeat( __parser.count() ) {
+				_source = variable_instance_get( _source, _key );
 				_key	= __parser.next();
 				
+				//if ( FAST_SCRIPT_PROTECT_FUNCTIONS && struct_type( _source, ScriptFunctionWrapper ))
+				//	throw new BadScriptFormat( "BAD VARIABLE", __Source, string( _data.last ), "Could not find " + _var + "!");
+				
 			}
-			if ( is_struct( _source ) ) { _source[$ _key ] = _value; }
-			else { variable_instance_set( _source, _key, _value ); }
+			variable_instance_set( _source, _key, _value );
 			
 		}
 		static __eval__	= function( _node, _data, _global ) {
@@ -42,6 +40,88 @@ function Script() : __Struct__() constructor {
 			return _out;
 			
 		}
+		static __code__	= [ // language byte table
+			function( _content, _data, _global, _eval_, _put_ ) { // 0, if
+				var _eval	= _eval_( _content[ 3 ], _data, _global );
+				if ( _eval == false || _eval == undefined ) {
+					_data.line	= _content[ 1 ] == undefined ? _data.line = __Base[ _data.exto ] : _content[ 1 ];
+					return true;
+				}
+			},
+			function( _content, _data, _global, _eval_, _put_ ) { // 1, else
+				var _eval	= _eval_( _content[ 3 ], _data, _global );
+				if ( _content[ 0 ] < _data.ident || _eval == false ) {
+					_data.line = _content[ 1 ] == undefined ? __Base[ _data.exto ] : _content[ 1 ];
+					return true;
+				}
+			},
+			function( _content, _data, _global, _eval_, _put_ ) { // 2, while
+				var _eval	= _eval_( _content[ 3 ], _data, _global );
+				if ( _eval == false || _eval == undefined ) {
+					_data.line	= _content[ 1 ] == undefined ? __Base[ _data.exto ] : _content[ 1 ];
+					return true;
+				}
+				var _struct	= __pool__.get();
+				
+				_struct.line	= _data.line;
+				_struct.ident	= _content[ 0 ] + 1;
+				
+				_data.loopTo.push(_struct);
+				
+			},
+			function( _content, _data, _global, _eval_, _put_ ) { // 3, return
+				//var _struct	= { result: _eval_( _content[ 3 ], _data, _global ), state: FAST_SCRIPT_RETURN };
+				with( __pool__.get() ) {
+					result	= _eval_( _content[ 3 ], _data, _global );
+					state	= FAST_SCRIPT_RETURN;
+					return self;
+				}
+				
+			},
+			function( _content, _data, _global, _eval_, _put_ ) { // 4, yield
+				_data.ident	= _content[ 0 ];
+				_data.line	= _content[ 3 ].wait == undefined || !_eval_( _content[ 3 ].wait, _data, _global ) ? _data.line + 1: _data.line;
+				_data.result= _eval_( _content[ 3 ].yield, _data, _data.local );
+				_data.state	= FAST_SCRIPT_YIELD;
+				return _data;
+			},
+			function( _content, _data, _global, _eval_, _put_ ) { // 5, temp
+				var _j = 0; repeat( array_length( _content[ 3 ][ 0 ] ) ) {
+					var _eval	= _content[ 3 ][ 1 ] == undefined ? undefined : _eval_( _content[ 3 ][ 1 ][ _j ], _data, _global );
+					_put_( _content[ 3 ][ 0 ][ _j ], _eval, _data, undefined );
+					++_j;
+				}
+			},
+			function( _content, _data, _global, _eval_, _put_ ) { // 6, put
+				var _j = 0; repeat( array_length( _content[ 3 ][ 0 ] ) ) {
+					var _eval	= _eval_( _content[ 3 ][ 1 ][ _j ], _data, _global );
+					_put_( _content[ 3 ][ 0 ][ _j ], _eval, _data, _global );
+					++_j;
+				}
+			},
+			function( _content, _data, _global, _eval_, _put_ ) { // 7, load
+				var _key		= _content[ 3 ][ 0 ];
+				var _filename	= _eval_( _content[ 3 ][ 1 ], _data, _global );
+				// error handling
+				if ( is_string( _filename ) == false ) { throw new InvalidArgumentType( "load", 0, _filename, "string" ); }
+				if ( file_exists( _filename ) == false ) { throw new FileNotFound( "load", _filename ); }
+				if ( _key == undefined ) {
+					var _name	= filename_name( _filename );
+					var _dot	= string_pos( ".", _name );
+						
+					_key	= _dot == 0 ? _name : string_copy( _name, 1, _dot - 1 );
+						
+				}
+				// get script name
+				if ( is_string( _key ) == false ) { throw new InvalidArgumentType( "load", 1, _key, "string" ); }
+				
+				_put_( _key, new Script().from_input( new TextFile().open( _filename )), _data, _global );
+				
+			},
+			function( _content, _data, _global, _eval_, _put_ ) { // 8, execute
+				_eval_( _content[ 3 ], _data, _global )
+			}
+		];
 		// # if the script is being started from the top
 		if ( _data == undefined ) {
 			_data	= {
@@ -50,8 +130,14 @@ function Script() : __Struct__() constructor {
 				ident : 0,			// last level of indentation
 				loopTo: new Stack(),// line to loop back to
 				coro  : {},			// list of coroutines
-				last  : 0,
+				last  : 0,			// last script line
+				exto  : 0,			// jumpto line
 			}
+			// seek the next line in the jump table after the current line
+			var _jump_index	= array_binary_search( __Base, _data.line );
+			if ( error_type( _jump_index ) == ValueNotFound ) { _jump_index = _jump_index.index; }
+			_data.exto	= _jump_index;
+			// import header variables into local table
 			var _j = 0; repeat( array_length( __Header ) ) {
 				_data.local[$ __Header[ _j ] ] = _j + 2 < argument_count ? argument[ _j + 2 ] : undefined;
 				++_j;
@@ -59,119 +145,42 @@ function Script() : __Struct__() constructor {
 			
 		}
 		// set up execution variables
-		var _local	= _data.local;
-		var _line	= _data.line;
 		var _ident	= _data.ident;
 		var _loopto	= _data.loopTo;
-		var _coro	= _data.coro;
-		var _lastid	= 0;
-		
-		// seek the next line in the jump table after the current line
-		var _exto	= array_binary_search( __Base, _line );
-		if ( error_type( _exto ) == ValueNotFound ) { _exto = _exto.index; }
 		
 		__Timer.reset();
 		
-		while ( _line < __Size ) {
+		while ( _data.line < __Size ) {
+			// set up convenience vars
+			var _line		= _data.line;
+			var _content	= __Content[ _line ];
+			// loop if loop
+			if ( _loopto.size() > 0 && _content[ FAST_SCRIPT_INDEX.INDENT ] < _loopto.top().ident ) {
+				var _struct = __pool__.put( _loopto.pop() );
+				_data.line	= _struct.line;
+				continue;
+				
+			}
 			// set indentation level
-			_lastid	= _ident;
-			_ident	= __Content[ _line ][ 0 ];
-			_data.last	= __Content[ _line ][ 4 ]
+			_data.ident	= _ident;
+			_data.last	= _content[ FAST_SCRIPT_INDEX.DEBUG_LINE ];
 			// update exto table jump position
-			while ( _line > __Base[ _exto ] ) { _exto++; }
+			while ( _line > __Base[ _data.exto ] ) { _data.exto++; }
 			// check if script has executed for too long
 			if ( __Timer.elapsed() > __Timeout )
 				throw new __Error__().from_string( "Script execution took too long, execution aborted!" );
-			// loop if loop
-			if ( _loopto.size() > 0 && _ident < _loopto.top().ident ) {
-				var _pop	= _loopto.pop();
-				_line	= _pop.line;
-				_ident	= _pop.ident;
-				
+			
+			if ( _content[ FAST_SCRIPT_INDEX.INSTRUCTION ] >= FAST_SCRIPT_CODE.LAST_BYTE ) {
+				throw new BadScriptFormat( "UNEXPECTED INSTRUCTION CODE", __Source, string( _data.last ) );
 			}
-			switch ( __Content[ _line ][ 2 ] ) {
-				case "if" : // if
-					var _eval	= __eval__( __Content[ _line ][ 3 ], _data, _global );
-					if ( _eval == false || _eval == undefined ) {
-						_line	=  __Content[ _line ][ 1 ] == undefined ? __Base[ _exto ] : __Content[ _line ][ 1 ];
-						continue;
-						
-					} break;
-					
-				case "el" : // else
-					var _eval	= __eval__( __Content[ _line ][ 3 ], _data, _global );
-					if ( _ident < _lastid || _eval == false ) {
-						_line = __Content[ _line ][ 1 ] == undefined ? __Base[ _exto ] : __Content[ _line ][ 1 ];
-						continue;
-					} break;
-					
-				case "wh" : // while
-					var _eval	= __eval__( __Content[ _line ][ 3 ], _data, _global );
-					if ( _eval == false || _eval == undefined ) {
-						_line	=  __Content[ _line ][ 1 ] == undefined ? __Base[ _exto ] : __Content[ _line ][ 1 ];
-						continue;
-						
-					}
-					_loopto.push({ line: _line, ident: __Content[ _line ][ 0 ] + 1 });
-					
-					break;
-					
-				case "re" : // return
-					return {
-						result: __eval__( __Content[ _line ][ 3 ], _data, _global ),
-						state: FAST_SCRIPT_RETURN
-					}
-					
-				case "yi" : // yield
-					_data.ident	= _ident;
-					_data.line	= __Content[ _line ][ 3 ].wait == undefined || !__eval__( __Content[ _line ][ 3 ].wait, _data, _global ) ? _line + 1: _line;
-					_data.result= __eval__( __Content[ _line ][ 3 ].yield, _data, _local )
-					_data.state	= FAST_SCRIPT_YIELD
-					
-					return _data;
-					
-				case "va" : // temp
-					var _j = 0; repeat( array_length( __Content[ _line ][ 3 ][ 0 ] ) ) {
-						var _eval	= __Content[ _line ][ 3 ][ 1 ] == undefined ? undefined : __eval__( __Content[ _line ][ 3 ][ 1 ][ _j ], _data, _global );
-						__put__( __Content[ _line ][ 3 ][ 0 ][ _j ], _eval, _data, undefined );
-						++_j;
-					}
-					break;
-					
-				case "pu" : // put
-					var _j = 0; repeat( array_length( __Content[ _line ][ 3 ][ 0 ] ) ) {
-						var _eval	= __eval__( __Content[ _line ][ 3 ][ 1 ][ _j ], _data, _global );
-						__put__( __Content[ _line ][ 3 ][ 0 ][ _j ], _eval, _data, _global );
-						++_j;
-					}
-					break;
-					
-				case "lo" : // load
-					var _key		= __Content[ _line ][ 3 ][ 0 ];
-					var _filename	= __eval__( __Content[ _line ][ 3 ][ 1 ], _data, _global );
-					// error handling
-					if ( is_string( _filename ) == false ) { throw new InvalidArgumentType( "load", 0, _filename, "string" ); }
-					if ( file_exists( _filename ) == false ) { throw new FileNotFound( "load", _filename ); }
-					if ( _key == undefined ) {
-						var _name	= filename_name( _filename );
-						var _dot	= string_pos( ".", _name );
-						
-						_key	= _dot == 0 ? _name : string_copy( _name, 1, _dot - 1 );
-						
-					}
-					// get script name
-					if ( is_string( _key ) == false ) { throw new InvalidArgumentType( "load", 1, _key, "string" ); }
-					
-					__put__( _key, new Script().from_input( new TextFile().open( _filename )), _data, _global );
-					
-					break;
-					
-				case "0x" : __eval__( __Content[ _line ][ 3 ], _data, _global ); break;
-				default :
-					throw new __Error__().from_string( "Unexpected byte code enountered in Script: " + __Content[ _i ][ 2 ] );
-					
-			}
-			++_line;
+			var _output	= __code__[ _content[ FAST_SCRIPT_INDEX.INSTRUCTION ] ]( _content, _data, _global, __eval__, __put__ );
+			// instruction has ended/yielded
+			if ( is_struct( _output ) ) { return _output; }
+			// instruction has called jump to
+			if ( _output == true ) { continue; }
+			// normal progression
+			_ident	= _content[ FAST_SCRIPT_INDEX.INDENT ];
+			_data.line += 1;
 			
 		}
 		throw new __Error__().from_string( "Script " + __Source + " ended in an unexpected way!" );
@@ -271,15 +280,15 @@ function Script() : __Struct__() constructor {
 				}
 				
 			}
-			var _code	= "if";
+			var _code	= 0;
 			var _exp	= undefined;
 			
 			try {
 				switch( __parser.next() ) {
-					case "if"		: _code = "if"; _exp = parse_expression( __parser.remaining() ); _nexti = _i + 1; break;
-					case "else"		: _code = "el"; _exp = __parser.has_next() ? parse_expression( __parser.remaining()) : true; _nexti = _i + 1; break;
-					case "return"	: _code = "re"; _exp = __parser.has_next() ? parse_expression( __parser.remaining()) : undefined; break;
-					case "temp"		: _code = "va";
+					case "if"		: _code = FAST_SCRIPT_CODE.IF; _exp = parse_expression( __parser.remaining() ); _nexti = _i + 1; break;
+					case "else"		: _code = FAST_SCRIPT_CODE.ELSE; _exp = __parser.has_next() ? parse_expression( __parser.remaining()) : true; _nexti = _i + 1; break;
+					case "return"	: _code = FAST_SCRIPT_CODE.RETURN; _exp = __parser.has_next() ? parse_expression( __parser.remaining()) : undefined; break;
+					case "temp"		: _code = FAST_SCRIPT_CODE.TEMP;
 						var _t	= string_explode( __parser.remaining(), string_pos( " as ", __parser.remaining() ) ? " as " : "=", true );
 						var _left	= string_explode( _t[ 0 ], ",", true );
 					
@@ -299,7 +308,7 @@ function Script() : __Struct__() constructor {
 						}
 						break;
 					
-					case "put"		: _code = "pu";
+					case "put"		: _code = FAST_SCRIPT_CODE.PUT;
 						var _t	= string_explode( __parser.remaining(), " into ", true );
 						var _left	= string_explode( _t[ 0 ], ",", true );
 						
@@ -320,7 +329,7 @@ function Script() : __Struct__() constructor {
 						}
 						break;
 				
-					case "load"		: _code = "lo";
+					case "load"		: _code = FAST_SCRIPT_CODE.LOAD;
 						var _t	= string_explode( __parser.remaining(), " as ", true );
 						var _exp	= [ undefined, parse_expression( _t[ 0 ] ) ];
 						
@@ -329,12 +338,12 @@ function Script() : __Struct__() constructor {
 						
 						break;
 					
-					case "while"	: _code = "wh";
+					case "while"	: _code = FAST_SCRIPT_CODE.WHILE;
 						_exp	= parse_expression( __parser.remaining() );
 						_nexti	= _i + 1; 
 						break;
 					
-					case "yield"	: _code = "yi";
+					case "yield"	: _code = FAST_SCRIPT_CODE.YIELD;
 						var _yield	= string_explode( __parser.has_next() ? __parser.remaining() : "", " while ", true );
 					
 						_exp	= { yield: undefined, wait: undefined }
@@ -349,8 +358,8 @@ function Script() : __Struct__() constructor {
 						}
 						break;
 					
-					default			:
-						_code = "0x"; _exp = parse_expression( _line ); break;
+					default			: _code = FAST_SCRIPT_CODE.EXECUTE;
+						_exp = parse_expression( _line ); break;
 					
 				}
 			} catch ( _ex ) {
@@ -364,7 +373,7 @@ function Script() : __Struct__() constructor {
 		}
 		if ( _list.size() == 0 || _indent > 0 || _list.last()[ 2 ] != "re" ) {
 			array_push( __Base, _list.size() );
-			_list.push([ 0, undefined, "re", undefined, _lines ]);
+			_list.push([ 0, undefined, FAST_SCRIPT_CODE.RETURN, undefined, _lines ]);
 			
 		}
 		__Source	= _input.__Source;
@@ -395,10 +404,4 @@ function Script() : __Struct__() constructor {
 	
 	__Type__.add( Script );
 	
-}
-/// @func BadScriptFormat
-/// @desc	Returned when a search is made for a value that doesn't exist in a data structure.
-/// @wiki Core-Index Errors
-function BadScriptFormat( _type, _source, _line_number, _line ) : __Error__() constructor {
-	message	= conc( _type, " at line ", _line_number, " in " + _source + "!\n>> " + _line);
 }
