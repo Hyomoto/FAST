@@ -405,41 +405,53 @@ function __IterableList__() : __Struct__() constructor {
 	/// @throws InvalidArgumentType
 	/// @returns self
 	static from_input	= function( _input, _close ) {
-		if ( struct_type( _input, __InputStream__ ) == false ) { throw new InvalidArgumentType( "from_input", 0, _input, "__InputStream__" ); }
+		if ( struct_type( _input, __Stream__ ))
+			_input	= new __Stream__( _input ).open();
+		if ( struct_type( _input, __InputStream__ ) == false )
+			throw new InvalidArgumentType( "from_input", 0, _input, "__InputStream__" );
+		
 		clear();
 		while( _input.finished() == false ) {
 			push( _input.read() );
 			
 		}
 		if ( _close != false ) { _input.close(); }
-
+		
 		return self;
-
+		
 	}
-	/// @param {__OutputStream__}	output	An OutputStream to write to
-	/// @param {bool}				close	If false, the stream will not be closed after writing
-	/// @param {method}				*func	If provided, is used to determine what is sent to the stream.
+	/// @param {__Stream__}	output	An stream to write to
+	/// @param {bool}		close	If false, the stream will not be closed after writing
+	/// @param {method}		*func	If provided, is used to determine what is sent to the stream
 	/// @desc	Writes this data structure to the provided output stream. By default, the stream will
 	///		be closed after writing.  If close is false, however, this behavior will be overridden. If
-	///		output is not an {#__OutputStream__} or func is not a method, InvalidArgumentType will be
+	///		output is not a {#__Stream__} or func is not a method, InvalidArgumentType will be
 	///		thrown.
 	/// @throws InvalidArgumentType
 	/// @returns output
 	static to_output	= function( _output, _close, _f ) {
-		if ( struct_type( _output, __OutputStream__ ) == false ) { throw new InvalidArgumentType( "to_output", 0, _output, "__OutputStream__" ); }
-
+		var _wrapper	= undefined;
+		
+		if ( struct_type( _input, __Stream__ )) {
+			_wrapper	= _output;
+			_output		= new __Stream__( _input ).open();
+			
+		}
+		if ( struct_type( _output, __OutputStream__ ) == false )
+			throw new InvalidArgumentType( "to_output", 0, _output, "__OutputStream__" );
+		
 		if ( _f == undefined ) { _f = function( _v ) { return _v; }}
-
+		
 		if ( is_method( _f ) == false ) { throw new InvalidArgumentType( "to_array", 1, _f, "method" ); }
-
+		
 		index(0); repeat( size() ) {
 			_output.write( _f( next() ) );
-
+			
 		}
 		if ( _close != false ) { _output.close(); }
-
-		return _output;
-
+		
+		return _wrapper == undefined ? _output : _wrapper;
+		
 	}
 	/// @param {array}	array	An array of values
 	/// @desc	Populates this structure with values from the provided array.
@@ -448,10 +460,10 @@ function __IterableList__() : __Struct__() constructor {
 		clear();
 		var _i = 0; repeat( array_length( _a ) ) {
 			push( _a[ _i++ ] );
-
+			
 		}
 		return self;
-
+		
 	}
 	/// @param	{method}	*func	If provided, is used to populate the array.
 	/// @desc	Returns this list as an array.  If func is defined, the value is passed into
@@ -461,11 +473,11 @@ function __IterableList__() : __Struct__() constructor {
 	/// @returns Array
 	static to_array	= function( _f ) {
 		if ( _f == undefined ) { _f = function( _v ) { return _v; }}
-
+		
 		if ( is_method( _f ) == false ) { throw new InvalidArgumentType( "to_array", 0, _f, "method" ); }
-
+		
 		if ( size() == 0 ) { return []; }
-
+		
 		index( 0 );
 
 		var _a = array_create( size() ), _i = 0; repeat( size() ) {
@@ -544,7 +556,8 @@ function __IterableList__() : __Struct__() constructor {
 	__Dupes		= true;
 	/// @var {method}	The function used to perform ordered insertions
 	__OrderedBy	= undefined;
-
+	
+	__Type__.add( __Stream__ );
 	__Type__.add( __IterableList__ );
-
+	
 }

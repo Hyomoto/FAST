@@ -121,7 +121,7 @@ function ScriptEngine() : __Struct__() constructor {
 	static load_async	= function( _source ) {
 		if ( __Async__ != undefined ) { return; }
 		
-		static __load__	= new Script().from_input( new QueueBuffer().write(
+		static __load__	= new Script().from_input( new Queue().write(
 			"func time_, list_, print_",
 			"while list_.finished:: == False",
 			" load list_.read::",

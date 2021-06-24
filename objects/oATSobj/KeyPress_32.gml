@@ -12,10 +12,7 @@ var _total	= 0;
 	}
 	_total	+= _timer.elapsed();
 	
-	while ( _script.__pool__.is_empty() == false ) {
-		syslog( _script.__pool__.get() );
-		
-	}
+	syslog( "ObjectPool size was ", _script.__pool__.size() );
 	
 //
 syslog( "Scripts GML ", _loop * 100,": ", string_from_time( _total/1000000, "$S.SSSS seconds" ));

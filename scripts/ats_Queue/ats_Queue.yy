@@ -6,11 +6,10 @@
     "path": "folders/Automated Testing Suite/Test Cases/Core.yy",
   },
   "resourceVersion": "1.0",
-  "name": "ats_LinkedList",
+  "name": "ats_Queue",
   "tags": [
     "ATS",
     "Core",
-    "ATS_list",
   ],
   "resourceType": "GMScript",
 }

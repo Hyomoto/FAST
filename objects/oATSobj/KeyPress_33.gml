@@ -1,0 +1,2 @@
+start	+= lines;
+surface.redraw();

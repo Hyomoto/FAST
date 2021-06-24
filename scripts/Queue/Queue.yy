@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "FAST",
-    "path": "folders/FAST.yy",
+    "name": "Data Types",
+    "path": "folders/FAST/Core/Constructors/Data Types.yy",
   },
   "resourceVersion": "1.0",
-  "name": "FAST_macros",
+  "name": "Queue",
   "tags": [],
   "resourceType": "GMScript",
 }

@@ -1,7 +1,7 @@
 /// @func ObjectPool
 /// @param {method}	new		A method that returns a new object for this pool.
 /// @desc	Holds a pool of objects that can be reused.
-function ObjectPool( _new = function() { return {}; } ) constructor {
+function ObjectPool( _new ) constructor {
 	/// @param {mixed}	value	An object
 	/// @desc	Puts an object into the pool and returns it.
 	/// @returns mixed
@@ -16,6 +16,12 @@ function ObjectPool( _new = function() { return {}; } ) constructor {
 	static get	= function() {
 		if ( ds_stack_empty( __Pool ) ) { return __New(); }
 		return ds_stack_pop( __Pool );
+		
+	}
+	/// @desc	Returns the number of objects in the pool
+	/// @returns int
+	static size		= function() {
+		return ds_stack_size( __Pool );
 		
 	}
 	/// @desc	Returns true if the pool is empty.
@@ -48,7 +54,7 @@ function ObjectPool( _new = function() { return {}; } ) constructor {
 		return self;
 		
 	}
-	__New	= _new;
+	__New	= _new == undefined ? function() { return {}; } : _new;
 	__Pool	= ds_stack_create();
 	
 }

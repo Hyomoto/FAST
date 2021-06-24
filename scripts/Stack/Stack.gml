@@ -1,8 +1,7 @@
 /// @func Stack
-/// @desc	A garbage-collected alternative to the built-in stack. While {#LinkedList} can also be used
-///		effectively as a queue or list, this structure provides only those two functions using the
-///		terminology that is common to the data type.
-function Stack() constructor {
+/// @desc	Am alternative to the built-in stack. It makes use of a simple linked list to provide
+///		a fast, cheap, garbage-collected stack.
+function Stack() : __Struct__() constructor {
 	static __pool__ = new ObjectPool();
 	/// @param {mixed}	values...	Values to push
 	/// @desc	Adds the values in order to the top of the stack.
@@ -28,11 +27,12 @@ function Stack() constructor {
 		if ( __Size == 0 ) { return EOS; }
 		
 		var _value	= __Stack.value;
-		
-		__pool__.put( __Stack ).next	= undefined;
+		var _stack	= __Stack;
 		
 		__Stack	= __Stack.next;
 		__Size	-= 1;
+		
+		__pool__.put( _stack ).next	= undefined;
 		
 		return _value;
 		
@@ -43,13 +43,6 @@ function Stack() constructor {
 	static top	= function() {
 		if ( __Size == 0 ) { return EOS; }
 		
-		return __Stack.value;
-		
-	}
-	/// @desc	Returns the value on top of the stack without popping it.  If the stack is empty,
-	///		EOS is return instead.
-	/// @returns mixed or EOS
-	static peek	= function() {
 		return __Stack.value;
 		
 	}
@@ -65,11 +58,27 @@ function Stack() constructor {
 		return __Size;
 		
 	}
+	/// @desc	Returns the contents of the stack as a string
+	static toString	= function() {
+		var _str	= "";
+		
+		var _node	= __Stack; repeat( size() ) {
+			if ( _str != "" ) { _str += ","; }
+			_str	+= string( _node.value );
+			_node	= _node.next;
+			
+		}
+		return "[ " + _str + " ]";
+		
+	}
 	/// @var {strict}	A value that is returned when the stack is empty
 	static EOS	= {}
-	/// @var {struct}	The value at the top of the stack.
+	/// @var {struct}	A pointer to the next node in the stack
 	__Stack	= undefined;
-	/// @var {int}		The size of the stack
+	/// @var {int}	The number of nodes in the stack
 	__Size	= 0;
+	
+	__Type__.add( __Stream__ );
+	__Type__.add( Stack );
 	
 }

@@ -219,6 +219,8 @@ function Script() : __Struct__() constructor {
 			return _string;
 			
 		}
+		if ( struct_type( _input, __Stream__ ))
+			_input	= new __Stream__( _input );
 		if ( struct_type( _input, __InputStream__ ) == false )
 			throw new InvalidArgumentType( "Script.from_input", 0, _input, "__InputStream__" );
 		

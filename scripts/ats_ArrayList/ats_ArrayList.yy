@@ -10,6 +10,7 @@
   "tags": [
     "ATS",
     "Core",
+    "ATS_list",
   ],
   "resourceType": "GMScript",
 }

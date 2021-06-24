@@ -203,3 +203,8 @@ function IllegalFileOperation( _call, _msg ) : __Error__() constructor {
 function ReservedKeyword( _call, _value ) : __Error__() constructor {
 	message	= conc( "The function ", _call, " failed because ", _value, " is a reserved keyword." );
 }
+/// @func IllegalStreamOperation
+/// @desc	Thrown when an illegal call is made to operate on a stream.
+function IllegalStreamOperation( _call, _msg ) : __Error__() constructor {
+	message	= conc( "The function ", _call, " failed because ", _msg )
+}

@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Files",
-    "path": "folders/FAST/Core/Constructors/Files.yy",
+    "name": "Abstract",
+    "path": "folders/FAST/Core/Abstract.yy",
   },
   "resourceVersion": "1.0",
-  "name": "TextFile",
+  "name": "__Stream__",
   "tags": [],
   "resourceType": "GMScript",
 }
