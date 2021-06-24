@@ -1,4 +1,5 @@
 /// @func XorRandomizer
+/// @wiki Numbers-Index Randomizers
 function XorRandomizer() : __Randomizer__() constructor {
 	static seed	= function( _seed ) {
 		if ( _seed == undefined ) {

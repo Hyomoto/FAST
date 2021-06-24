@@ -1,7 +1,8 @@
 /// @func Well512Randomizer
 /// @desc	A GML implementation of the Well512 randomizer as described by Chris Lomont in
-///		http://lomont.org/papers/2008/Lomont_PRNG_2008.pdf.  This is the same one used
-///		internally by GMS to produce random numbers, 
+///		http://lomont.org/papers/2008/Lomont_PRNG_2008.pdf.  This is the same type used
+///		internally by GMS to produce random numbers.
+/// @wiki Numbers-Index Randomizers
 function Well512Randomizer() : __Randomizer__() constructor {
 	static seed	= function( _seed ) {
 		if ( _seed == undefined ) { _seed = date_current_datetime(); }

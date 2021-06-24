@@ -1,6 +1,7 @@
 /// @func __Randomizer__
 /// @desc	A template for creating psuedorandom number generators.  By itself it produces no output,
 ///		as it must be extended to produce a result.
+/// @wiki Numbers-Index Abstract
 function __Randomizer__() : __Struct__() constructor {
 	/// @desc Returns the next random integer from the generator.
     /// @returns int

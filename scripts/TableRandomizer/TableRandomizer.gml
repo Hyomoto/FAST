@@ -9,6 +9,7 @@
 /// @example
 ///global.rng	= new TableRandomizer( undefined, 256 );
 /// @output A randomizer that contains a table of 256 values.
+/// @wiki Numbers-Index Randomizers
 function TableRandomizer() : __Randomizer__() constructor {
     /// @desc	Returns the next number in the table.  If the last number has been read, the
 	///		read position will return to the start of the table.

@@ -2,12 +2,15 @@
 function Database() : __Struct__() constructor {
 	static node = function( _value, _id, _source ) constructor {
 		static read	= function( _path ) {
+			// this is the final node
 			if ( _path.has_next() == false ) { return __Value; }
+			// otherwise, if this node is not traversable
 			if ( __ID & FAST_DB_IDS.NODE == 0 )
 				throw new __Error__().from_string("Traversal of " + _path.__String + " failed because " + _path.__Buffer + " is not traversable!" );
+			// if the next node doesn't exist
 			if ( variable_struct_exists( __Value, _path.next() ) == false )
 				throw new __Error__().from_string("Traversal of " + _path.__String + " failed because " + _path.__Buffer + " does not exist!" );
-			
+			// continue traversal
 			return __Value[$ _path.__Buffer ].read( _path );
 			
 		}
@@ -16,17 +19,24 @@ function Database() : __Struct__() constructor {
 			// this is the final node
 			if ( _path.has_next() == false ) {
 				if ( variable_struct_exists( __Value, _key )) {
-					var _f	= variable_struct_get( __Source.__NodeTypes, string( _id ) );
+					var _node	= __Value[$ _key ];
+					// key exists, destroy it
+					var _f	= variable_struct_get( __Source.__NodeTypes, _node.__ID );
 					if ( _f != undefined && _f.onDestroy != undefined )
-						_f.onDestroy( __Value[$ _key ] );
-					__Value.__Value	= _value;
-					__Value.__ID	= _id;
-					return _value;
+						_f.onDestroy( _node );
+					// write data to existing node
+					_node.__Value	= _value;
+					_node.__ID		= _id;
+					
+				} else {
+					// write value to new node
+					__Value[$ _key ]	= new __Source.node( _value, _id, __Source );
+					
 				}
-				__Value[$ _key ]	= new __Source.node( _value, _id, __Source );
 				return _value;
+				
 			}
-			// if the next node is not traversable
+			// if this node is not traversable
 			if ( __ID != FAST_DB_IDS.NODE )
 				throw new __Error__().from_string("Traversal of " + _path.__String + " failed because " + _path.__Buffer + " is not traversable!" );
 			// if the next node doesn't exist, or is not a traversable node
@@ -38,18 +48,29 @@ function Database() : __Struct__() constructor {
 		}
 		static remove	= function( _path ) {
 			var _key	= _path.next();
+			// this is the final node
 			if ( _path.has_next() == false ) {
-				return;
+				if ( variable_struct_exists( __Value, _key )) {
+					var _node	= __Value[$ _key ];
+					// key exists, destroy it
+					var _f	= variable_struct_get( __Source.__NodeTypes, _node.__ID );
+					if ( _f != undefined && _f.onDestroy != undefined )
+						_f.onDestroy( _node );
+					// remove node
+					variable_struct_remove( __Value, _key );
+					
+				}
+				return new ValueNotFound( "remove", _path.__String, -1 );
 				
 			}
-			// if the next node is not traversable
-			if ( __ID & FAST_DB_IDS.NODE == 0 )
+			// if this node is not traversable
+			if ( __ID != FAST_DB_IDS.NODE )
 				throw new __Error__().from_string("Traversal of " + _path.__String + " failed because " + _path.__Buffer + " is not traversable!" );
 			// if the next node doesn't exist, or is not a traversable node
-			if ( variable_struct_exists( __Value, _key ) || __Value[$ _key ].__ID != FAST_DB_IDS.NODE )
+			if ( !variable_struct_exists( __Value, _key ) || __Value[$ _key ].__ID != FAST_DB_IDS.NODE )
 				throw new __Error__().from_string("Traversal of " + _path.__String + " failed because " + _path.__Buffer + " is not traversable!" );
 			
-			return __Value[$ _key ].remove( _key );
+			return __Value[$ _key ].remove( _path );
 			
 		}
 		static destroy	= function() {
@@ -63,6 +84,10 @@ function Database() : __Struct__() constructor {
 				}
 				
 			}
+			
+		}
+		static keys		= function() {
+			return variable_struct_get_names( __Value );
 			
 		}
 		static toString	= function( _indent ) {
@@ -93,20 +118,30 @@ function Database() : __Struct__() constructor {
 			return _string;
 			
 		}
-		__Value	= _value;
+		var _f	= variable_struct_get( __Source.__NodeTypes, string( _id ) );
+		if ( _f != undefined && _f.onCreate != undefined )
+			__Value = _f.onCreate( self, _value );
+		else
+			__Value	= _value;
 		__ID	= _id;
 		__Source= _source;
 		
-		var _f	= variable_struct_get( __Source.__NodeTypes, string( _id ) );
-		if ( _f != undefined && _f.onCreate != undefined )
-			_f.onCreate( self );
+	}
+	/// @param {string}	path	A path to a key
+	/// @desc	Reads from the path and returns the value  if it exists, or ValueNotFound
+	///		if it didn't.
+	/// @returns mixed or ValueNotFound
+	static read		= function( _path ) {
+		return __Node.read( __parser__.parse( _path ) );
 		
 	}
-	static read		= function( _key ) {
-		return __Node.read( __parser__.parse( _key ) );
-		
-	}
-	static write	= function( _key, _value, _id ) {
+	/// @param {string}			path	A path to a key
+	/// @param {mixed}			value	The value to write
+	/// @param {FAST_DB_FLAGS}	flag	optional: A flag specifying the type of value this is
+	/// @desc	Writes the given value to the specified path.  The type will be inferred, but
+	///		if it is a custom type, the id given must be provided.  Returns the written value.
+	/// @returns mixed
+	static write	= function( _path, _value, _id ) {
 		if ( _id == undefined ) {
 			if ( is_numeric( _value ) )		{ _id = FAST_DB_IDS.NUMBER; }
 			else if ( is_string( _value ) )	{ _id = FAST_DB_IDS.STRING; }
@@ -115,21 +150,37 @@ function Database() : __Struct__() constructor {
 			else
 				throw new __Error__().from_string( "Write failed because value was unrecognized and id was not specified!" );
 		}
-		return __Node.write( __parser__.parse( _key ), _value, _id );
+		return __Node.write( __parser__.parse( _path ), _value, _id );
 		
 	}
+	/// @param {string}	path	A path to a key
+	/// @desc	Removes the key at the given path and returns it.
+	/// @returns mixed
+	static remove	= function( _path ) {
+		return __Node.remove( __parser__.parse( _path ) );
+		
+	}
+	/// @desc	Destroys the database.
 	static destroy	= function() {
 		__Node.destroy();
 		
 	}
-	static toString	= function() {
-		return "root:\n" + __Node.toString(1);
+	/// @param {method}	funcs	A struct of methods
+	/// @param {int}	ID		optional: The id to bind to
+	/// @desc	Declares a new value type for the database.  The struct provided can contain up
+	///		to three methods, onCreate, onDestroy and toString.  These methods are used to ensure
+	///		custom data types can be created, cleaned up and debugged properly.
+	/// @returns int
+	static add_node_type	= function( _func, _id ) {
+		if ( _id == undefined ) { _id = __NodeIds++; }
 		
-	}
-	static add_node_type	= function( _id, _func ) {
 		__NodeTypes[$ string( _id ) ] = _func;
 		
+		return _id;
+		
 	}
+	/// @param {__InputStream__}	source	An input stream to read from
+	/// @desc	Reads from the given source to populate the database.
 	static from_input	= function( _source ) {
 		if ( struct_type( _source, __Stream__ ))
 			_source	= new __Stream__( _source );
@@ -137,18 +188,25 @@ function Database() : __Struct__() constructor {
 			throw new InvalidArgumentType( "from_input", 0, _source, "__InputStream__" );
 		
 	}
+	/// @desc	Converts the database to a string.  Used for debugging.
+	static toString	= function() {
+		return "root:\n" + __Node.toString(1);
+		
+	}
 	static __parser__	= new ( __FAST_database_config__().parser )(".");
 	
 	
 	__NodeTypes	= {}
-	__NodeIds	= FAST_DB_IDS.LAST;
+	__NodeIds	= 0;
 	
-	add_node_type( FAST_DB_IDS.NODE, {
-		onCreate: function( _node ) { _node.__Value = {} },
+	add_node_type({
+		onCreate: function( _node, _value ) { return {}},
 		onDestroy: function( _node ) { _node.destroy(); },
 		toString: function( _node, _indent ) { return _node.toString( _indent ); }
-	});
+	}, FAST_DB_IDS.NODE );
+	
 	__Node		= new node({}, FAST_DB_IDS.NODE, self);
+	__NodeIds	= FAST_DB_IDS.LAST;
 	
 	__Type__.add( Database );
 	
