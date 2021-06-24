@@ -10,11 +10,21 @@
 //_data.remove( "foo" );
 //syslog( "output" );
 //show_debug_message( _data.toString() );
-repeat ( 100 ) {
-	var _a	= irandom( 360 );
-	var _b	= irandom( 360 );
-	var _angle	= irandom( 360 );
-	
-	syslog( _angle, angle_is_between( _a, _b, _angle ) ? " is " : " is NOT ", "between ", _a, " and ", _b );
-	
+RenderManager.set_resolution( 1280, 720 );
+RenderManager.set_overscan( 0, 16 );
+RenderManager.create_camera( 640, 360 );
+RenderManager.camera.set_offset( 320, 180 );
+
+
+//syslog( RenderManager.camera.__Event.__Param );
+
+/// @func ease_in_circ
+/// @param {float}	t	A float 0.0 - 1.0
+/// @desc	An easing function.  Check <https://easings.net/> for examples on how these functions
+///		behave.
+function ease_in_circ( _x ) {
+	return 1 - sqrt(1 - power(_x, 2));
+}
+function ease_out_circ( _x ) {
+	return sqrt(1 - power(_x - 1, 2));
 }

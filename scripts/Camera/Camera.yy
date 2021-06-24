@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Functions",
-    "path": "folders/FAST/Render/Functions.yy",
+    "name": "Constructors",
+    "path": "folders/FAST/Render/Constructors.yy",
   },
   "resourceVersion": "1.0",
-  "name": "render_set_precision",
+  "name": "Camera",
   "tags": [],
   "resourceType": "GMScript",
 }

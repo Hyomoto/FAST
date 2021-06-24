@@ -8,93 +8,101 @@
 FAST.feature( "FREN", "Render", (1 << 32 ) + ( 2 << 16 ) + 1, "06/22/2021" );
 
 #macro RenderManager	( __FAST_render_config__() )
-/// @func RenderManager
-/// @param *render_object
-/// @desc	Provides an interface for setting up and calling functions as part of the FAST render.  You are
-//		able to override the default FASTRender object by providing it as an argument to this function, as
-//		well as set up internal resolution and scaling parameters.  These functions can be called after the
-//		program starts, but it is generally best to call them as part of an initialization script.
-/// @example
-//RenderManager().set_resolution( 1280, 720 )
-//RenderManager().set_precision( 0.5 )
-/// @wiki Render-Index
+
 function __FAST_render_config__() {
-	static render	= function( _render ) constructor {
-		static update_window	= function() {
-			if ( event != undefined ) { return; }
-			
-			event	= new FrameEvent( FAST.STEP, 0, function() {
-				var _scale	= min( display_get_width() / render_width, display_get_height() / render_height );
-				
-				_scale	*= scale_value;
-				_scale	-= ( _scale % 1 ) % precision;
-				
-				window_scale	= _scale;
-				
-				set_window( floor( render_width * window_scale ), floor( render_height * window_scale ) );
-				event	= undefined;
-				
-				surface_resize( application_surface, render_width, render_height );
-				
-			}).once();
-			
-		}
-		static set_precision	= function( _precision ) {
-			precision		= clamp( _precision, 0.1, 1.0 );
-			
-			update_window();
-			
-		}
+	static instance	= new ( function() constructor {
 		static set_resolution	= function( _width, _height ) {
 			render_width	= _width;
 			render_height	= _height;
 			
-			update_window();
+		}
+		static set_max_scale	= function( _scale ) {
+			max_scale	= _scale;
 			
 		}
-		static set_scale	= function( _percent ) {
-			scale_value	= _percent;
+		static set_overscan		= function( _width, _height ) {
+			overscan_width	= _width;
+			overscan_height	= _height;
 			
-			update_window();
+		}
+		static set_precision	= function( _prec ) {
+			precision	= _prec;
+			
+		}
+		static set_fullscreen	= function() {
+			window_set_fullscreen( true );
+			
+			
 			
 		}
 		static set_window	= function( _width, _height ) {
 			var _x	= ( display_get_width() - _width ) div 2;
 			var _y	= ( display_get_height()- _height) div 2;
 			
+			view_xport[ 0 ]	= 0;
+			view_yport[ 0 ] = 0;
+			
 			window_width	= _width;
 			window_height	= _height;
 			
 			window_set_rectangle( _x, _y, window_width, window_height );
 			
-		}
-		static use_views	= function( _true ) {
-			bUseViews	= _true;
+			window_set_fullscreen( false );
 			
 		}
-		render_width	= 0;
-		render_height	= 0;
+		static create_camera	= function( _width, _height ) {
+			if ( _width == undefined ) { _width = render_width; }
+			if ( _height== undefined ) { _height= render_height; }
+			
+			if ( camera != undefined ) { camera.destroy(); }
+			
+			camera	= new Camera( _width, _height );
+			
+		}
+		var _e	= new FrameEvent( FAST.ROOM_START, 0, function() {
+			if ( render_width == undefined || render_height == undefined ) {
+				render_width	= room_width;
+				render_height	= room_height;
+				
+			}
+			var _scale	= min( display_get_width() / render_width, display_get_height() / render_height );
+			
+			_scale	*= max_scale;
+			_scale	-= ( _scale % 1 ) % precision;
+			
+			window_scale	= _scale;
+			
+			surface_resize( application_surface, render_width, render_height );
+			
+		}).once();
+		__event	= new FrameEvent( FAST.ROOM_START, 0, function() {
+			view_wport[ 0 ]		= render_width;
+			view_hport[ 0 ]		= render_height;
+			view_visible[ 0 ]	= true;
+			
+			view_enabled	= true;
+			
+			camera_set_view_size( view_camera[ 0 ], render_width, render_height );
+			
+			if ( fullscreen == false )
+				set_window( floor( render_width * window_scale ), floor( render_height * window_scale ) );
+			else
+				set_fullscreen();
+			
+		});
+		camera			= undefined;
+		render_width	= undefined;
+		render_height	= undefined;
 		window_width	= 0;
 		window_height	= 0;
-		
 		window_scale	= 1.0;
+		max_scale		= 0.8;
+		overscan_width	= 0;
+		overscan_height	= 0;
 		precision		= 1.0;
+		fullscreen		= window_get_fullscreen();
 		
-		scale_value		= 0.9;
-		
-		bUseViews		= true;
-		
-		instance		= noone;
-		event			= undefined;
-		
-		if ( FAST.start )
-			instance_create_depth( 0, 0, 0, _render );
-		else
-			room_instance_add( room_first, 0, 0, _render );
-		
-	}
-	static instance	= new render( argument_count > 0 ? argument[ 0 ] : FASTRender );
+	})();
 	return instance;
 	
 }
-device_get_tilt_x()

@@ -26,6 +26,7 @@
 #macro FAST_EVENT_STEP_END		FAST.STEP_END
 
 #macro FAST_EVENT_CREATE		FAST.CREATE
+#macro FAST_EVENT_GAME_START	FAST.GAME_START
 #macro FAST_EVENT_GAME_END		FAST.GAME_END
 #macro FAST_EVENT_ROOM_START	FAST.ROOM_START
 #macro FAST_EVENT_ROOM_END		FAST.ROOM_END
@@ -66,6 +67,7 @@ function __output_to_stream__() {
 function __FAST_config__() {
 	static instance = new ( function() constructor {
 		static CREATE		= ds_list_create();
+		static GAME_START	= ds_list_create();
 		static GAME_END		= ds_list_create();
 		static ROOM_START	= ds_list_create();
 		static ROOM_END		= ds_list_create();
@@ -74,7 +76,7 @@ function __FAST_config__() {
 		static STEP_END		= ds_list_create();
 		static ASYNC_SYSTEM	= ds_list_create();
 		
-		__Events__	= [ CREATE, GAME_END, ROOM_START, ROOM_END, STEP_BEGIN, STEP, STEP_END, ASYNC_SYSTEM ];
+		__Events__	= [ CREATE, GAME_START, GAME_END, ROOM_START, ROOM_END, STEP_BEGIN, STEP, STEP_END, ASYNC_SYSTEM ];
 		
 		NEXT_STEP	= STEP_BEGIN;
 		

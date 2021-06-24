@@ -1,4 +1,7 @@
 {
+  "ConfigValues": {
+    "Testing": {"option_windows_allow_fullscreen_switching":"true","option_windows_start_fullscreen":"false",},
+  },
   "option_windows_display_name": "Created with GameMaker Studio 2",
   "option_windows_executable_name": "${project_name}.exe",
   "option_windows_version": "1.0.0.0",

@@ -72,6 +72,15 @@ function FrameEvent( _event, _delay, _function ) : __Struct__() constructor {
 		return self;
 		
 	}
+	/// @param {bool}	false?	Whether to ignore
+	/// @desc	Sets this event to be ignored, unless set to false.
+	/// @returns self
+	static ignore	= function( _false ) {
+		__Ignore = _false != false;
+		
+		return self;
+		
+	}
 	/// @desc Returns the event as a string, for debugging.
 	static toString	= function() {
 		return "FrameEvent : Trigger " + string( __Tick ) + ", " + string( __Tock ) + ", Once? " + ( once ? "true" : "false" );

@@ -7,78 +7,42 @@
 /// @output A new Vec2 is created with an x of 32 and a y of 20
 /// @wiki Numbers-Index Constructors
 function Vec2( _x, _y ) constructor {
-	/// @param {Vec2} Vec2 The vector to subtract from this one.
+	/// @param {Vec2} Vec2	A vector
+	/// @desc	Adds this vector to vec and returns the result.
 	/// @returns Vec2
-	static add	= function( _Vec2 ) {
-		return new Vec2( x + _Vec2.x, y + _Vec2.y );
+	static add	= function( _vec ) {
+		return new Vec2( x + _vec.x, y + _vec.y );
 		
 	}
-	/// @param {Vec2} Vec2 The vector to subtract from this one.
+	/// @param {Vec2} vec	A vector
+	/// @desc	Substracts this vector from vec and returns the result.
 	/// @returns Vec2
-	static subtract	= function( _Vec2 ) {
-		return new Vec2(  x	- _Vec2.x, y - _Vec2.y );
+	static subtract	= function( _vec ) {
+		return new Vec2(  x	- _vec.x, y - _vec.y );
 		
 	}
-	/// @param {Vec2} Vec2 The vector to multiply this one component wise with.
+	/// @param {Vec2} vec	A vector
+	/// @desc	Multiplies this vector by vec and returns the result.
 	/// @returns Vec2
-	static multiply	= function( _Vec2 ) {
-		return new Vec2( x * _Vec2.x, y * _Vec2.y );
+	static multiply	= function( _vec ) {
+		return new Vec2( x * _vec.x, y * _vec.y );
 		
 	}
-	/// @param {Vec2} Vec2 The vector to divide this one one component wise by.
+	/// @param {Vec2} vec	A vector
+	/// @desc	Divides this vector by vec and returns the result.
 	/// @returns Vec2
-	static divide	= function( _Vec2 ) {
-		return new Vec2( x / _Vec2.x, y / _Vec2.y );
+	static divide	= function( _vec ) {
+		return new Vec2( x / _vec.x, y / _vec.y );
 		
 	}
-	/// @param {Vec2} Vec2 The vector to get the cross product with.
+	/// @param {Vec2} vec	A vector
+	/// @desc	Returns the cross product this vector and vec.
 	/// @returns Vec2
-	static cross	= function( _Vec2 ) {
-		return x * _Vec2.x - y * _Vec2.y;
+	static cross	= function( _vec ) {
+		return x * _vec.x - y * _vec.y;
 		
 	}
-	/// @param {real}	x	An x position
-	/// @param {real}	y	An y position
-	/// @desc Used to set both the x and y coordinates in this vector with a single method.
-	/// @returns self
-	static set	= function( _x, _y ) {
-		x	= _x;
-		y	= _y;
-		
-		return self;
-		
-	}
-	/// @desc Used to get the vectors length.
-	/// @returns real
-	static len	= function() {
-		return sqrt( x * x + y * y );
-		
-	}
-	/// @desc Used to get the vectors squared length.
-	/// @returns real
-	static lensqr	= function() {
-		return (x * x + y * y);
-		
-	}
-	/// @param {Vec2} Vec2 The vector to get the dot product with.
-	/// @returns real
-	static dot	= function( _Vec2 ) {
-		return x * _Vec2.x + y * _Vec2.y;
-		
-	}
-	/// @param {Vec2} Vec2 The vector to get the distance to.
-	/// @returns real
-	static dist_to	= function( _Vec2 ) {
-		return sqrt((x - _Vec2.x) * (x - _Vec2.x) + (y - _Vec2.y) * (y - _Vec2.y));
-		
-	}	
-	/// @param {Vec2} Vec2 The vector to get the squared distance to.
-	/// @returns real
-	static dist_to_sqr	= function( _Vec2 ) {
-		return ((x - _Vec2.x) * (x - _Vec2.x) + (y - _Vec2.y) * (y - _Vec2.y));
-		
-	}
-	/// @desc Used to normalise the vector to unit length.
+	/// @desc	Returns this vector normallized to unit length.
 	/// @returns Vec2
 	static normalize	= function() {
 		var _len_sqr	= lensqr();
@@ -90,6 +54,50 @@ function Vec2( _x, _y ) constructor {
 			
 		}
 		throw new __Error__().from_string( "Vec2 length must be greater than 0 to normalize!" );
+		
+	}
+	/// @param {Vec2} vec	A vector
+	/// @desc	Returns the dot product of this vector and vec.
+	/// @returns real
+	static dot	= function( _vec ) {
+		return x * _vec.x + y * _vec.y;
+		
+	}
+	/// @param {Vec2} vec	A vector
+	/// @desc	Returns the distance between this vector and vec.
+	/// @returns real
+	static dist_to	= function( _vec ) {
+		return sqrt((x - _vec.x) * (x - _vec.x) + (y - _vec.y) * (y - _vec.y));
+		
+	}	
+	/// @param {Vec2} vec	A vector
+	/// @desc	Returns the squared distance between this vector and vec.
+	/// @returns real
+	static dist_to_sqr	= function( _vec ) {
+		return ((x - _vec.x) * (x - _vec.x) + (y - _vec.y) * (y - _vec.y));
+		
+	}
+	/// @desc	Returns the length of this vector.
+	/// @returns real
+	static len	= function() {
+		return sqrt( x * x + y * y );
+		
+	}
+	/// @desc	Returns the squared length of this vector.
+	/// @returns real
+	static lensqr	= function() {
+		return (x * x + y * y);
+		
+	}
+	/// @param {real}	x	An x position
+	/// @param {real}	y	An y position
+	/// @desc	Set the x and y values of this vector.
+	/// @returns self
+	static set	= function( _x, _y ) {
+		x	= _x;
+		y	= _y;
+		
+		return self;
 		
 	}
 	/// @desc Returns this vector as an array.
