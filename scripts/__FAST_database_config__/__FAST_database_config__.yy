@@ -6,7 +6,7 @@
     "path": "folders/FAST/Database.yy",
   },
   "resourceVersion": "1.0",
-  "name": "StringFormatter",
+  "name": "__FAST_database_config__",
   "tags": [],
   "resourceType": "GMScript",
 }

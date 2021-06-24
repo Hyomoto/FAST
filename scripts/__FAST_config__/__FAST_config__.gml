@@ -13,7 +13,7 @@
 #macro SystemOutput	( __output_to_stream__() )
 
 #macro __FAST_version__	"3.5.1"
-#macro __FAST_date__	"06/20/2021"
+#macro __FAST_date__	"06/23/2021"
 
 #macro EVENT	function()
 

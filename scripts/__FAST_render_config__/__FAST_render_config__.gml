@@ -5,7 +5,7 @@
 // # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // #							End of User Defines
 // # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-FAST.feature( "FREN", "FAST Render", (1 << 32 ) + ( 2 << 16 ) + 1, "06/22/2021" );
+FAST.feature( "FREN", "Render", (1 << 32 ) + ( 2 << 16 ) + 1, "06/22/2021" );
 
 #macro RenderManager	( __FAST_render_config__() )
 /// @func RenderManager
@@ -97,3 +97,4 @@ function __FAST_render_config__() {
 	return instance;
 	
 }
+device_get_tilt_x()

@@ -1,6 +1,7 @@
 /// @func ObjectPool
 /// @param {method}	new		A method that returns a new object for this pool.
 /// @desc	Holds a pool of objects that can be reused.
+/// @wiki Core-Index Data Structures
 function ObjectPool( _new ) constructor {
 	/// @param {mixed}	value	An object
 	/// @desc	Puts an object into the pool and returns it.

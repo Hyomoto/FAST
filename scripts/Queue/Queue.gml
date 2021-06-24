@@ -1,6 +1,7 @@
 /// @func Queue
 /// @desc	Am alternative to the built-in queue. It makes use of a simple linked list to provide
 ///		a fast, cheap, garbage-collected queue.
+/// @wiki Core-Index Data Structures
 function Queue() : __Struct__() constructor {
 	static __pool__	= new ObjectPool();
 	/// @param {mixed}	values...	Values to add to the queue

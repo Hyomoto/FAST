@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Database",
-    "path": "folders/FAST/Database.yy",
+    "name": "Input Handling",
+    "path": "folders/FAST/Input Handling.yy",
   },
   "resourceVersion": "1.0",
-  "name": "StringFormatter",
+  "name": "__FAST_input_config__",
   "tags": [],
   "resourceType": "GMScript",
 }

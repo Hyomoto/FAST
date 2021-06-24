@@ -21,7 +21,7 @@ function NoGamepadVirtualPortAvailable( _type ) : __Error__() constructor {
 
 /// @func __FAST_input_config__
 function __FAST_input_config__() {
-	static manager	= function() constructor {
+	static instance	= ( function() constructor {
 		static log	= function() {
 			static logger	= new Logger( SystemOutput );
 			
@@ -181,8 +181,8 @@ function __FAST_input_config__() {
 			
 		}).once();
 		
-	}
-	static instance	= new manager();
+	})();
+	
 	return instance;
 	
 }

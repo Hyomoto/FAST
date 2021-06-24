@@ -1,6 +1,7 @@
 /// @func Stack
 /// @desc	Am alternative to the built-in stack. It makes use of a simple linked list to provide
 ///		a fast, cheap, garbage-collected stack.
+/// @wiki Core-Index Data Structures
 function Stack() : __Struct__() constructor {
 	static __pool__ = new ObjectPool();
 	/// @param {mixed}	values...	Values to push

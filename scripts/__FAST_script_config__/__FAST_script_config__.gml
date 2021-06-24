@@ -72,7 +72,7 @@ function BadScriptFormat( _type, _source, _line_number, _line ) : __Error__() co
 	message	= conc( _type, " at line ", _line_number, " in " + _source + "!\n>> " + _line);
 }
 
-FAST.feature( "FSCR", "Scripting", __FAST_script_config__().version , "6/20/2021" );
+FAST.feature( "FSCR", "Scripting", __FAST_script_config__().version, __FAST_script_config__().date );
 
 function __FAST_script_config__() {
 	static instance	= new ( function() constructor {
@@ -121,6 +121,7 @@ function __FAST_script_config__() {
 			__String= "";
 		};
 		version		= (0 << 32 ) + (1 << 16);
+		date		= "06/20/2021";
 		
 	})();
 	return instance;
