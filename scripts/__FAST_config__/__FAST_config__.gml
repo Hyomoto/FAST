@@ -158,6 +158,12 @@ function __FAST_config__() {
 function IndexOutOfBounds( _call, _index, _bounds ) : __Error__() constructor {
 	message	= conc( "The provided index(", _index, ") to function \"", _call, "\" was out of range(size was ", _bounds, ")." )
 }
+/// @func ValueOutOfBounds
+/// @desc	Thrown when a call is made a value that is outside of an acceptible range
+/// @wiki Core-Index Errors
+function ValueOutOfBounds( _call, _value, _low, _high ) : __Error__() constructor {
+	message	= conc( "The provided value(", _value, ") to function \"", _call, "\" was out of range(expects ", _low, " >= value >= ", _high, ")." )
+}
 /// @func ValueNotFound
 /// @desc	Returned when a search is made for a value that doesn't exist in a data structure.
 /// @wiki Core-Index Errors

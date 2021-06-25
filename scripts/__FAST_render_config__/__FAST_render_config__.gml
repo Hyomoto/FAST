@@ -32,31 +32,31 @@ function __FAST_render_config__() {
 		static set_fullscreen	= function() {
 			window_set_fullscreen( true );
 			
-			
-			
 		}
-		static set_window	= function( _width, _height ) {
-			var _x	= ( display_get_width() - _width ) div 2;
-			var _y	= ( display_get_height()- _height) div 2;
+		static set_windowed	= function() {
+			var _x	= ( display_get_width() - window_width ) div 2;
+			var _y	= ( display_get_height()- window_height ) div 2;
 			
 			view_xport[ 0 ]	= 0;
 			view_yport[ 0 ] = 0;
-			
-			window_width	= _width;
-			window_height	= _height;
 			
 			window_set_rectangle( _x, _y, window_width, window_height );
 			
 			window_set_fullscreen( false );
 			
 		}
-		static create_camera	= function( _width, _height ) {
+		static create_camera	= function( _width, _height, _ease ) {
 			if ( _width == undefined ) { _width = render_width; }
 			if ( _height== undefined ) { _height= render_height; }
 			
 			if ( camera != undefined ) { camera.destroy(); }
 			
 			camera	= new Camera( _width, _height );
+			
+			if ( _ease != undefined )
+				camera.set_easing( _ease );
+				
+			return camera;
 			
 		}
 		var _e	= new FrameEvent( FAST.ROOM_START, 0, function() {
@@ -71,6 +71,8 @@ function __FAST_render_config__() {
 			_scale	-= ( _scale % 1 ) % precision;
 			
 			window_scale	= _scale;
+			window_width	= render_width * window_scale;
+			window_height	= render_width * window_scale;
 			
 			surface_resize( application_surface, render_width, render_height );
 			
@@ -84,10 +86,10 @@ function __FAST_render_config__() {
 			
 			camera_set_view_size( view_camera[ 0 ], render_width, render_height );
 			
-			if ( fullscreen == false )
-				set_window( floor( render_width * window_scale ), floor( render_height * window_scale ) );
-			else
+			if ( fullscreen )
 				set_fullscreen();
+			else
+				set_windowed();
 			
 		});
 		camera			= undefined;
