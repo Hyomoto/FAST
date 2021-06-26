@@ -35,7 +35,8 @@ function ObjectPool( _new ) constructor {
 	/// @desc	Frees the objects in the pool.  If `func` is provided, each item will be passed
 	///		into the function.
 	/// @returns self
-	static free		= function( _f = function(){} ) {
+	static free		= function( _f ) {
+		_f = is_undefined(_f) ? function() {} : _f
 		var _i = 0; repeat( ds_stack_size( __Pool ) ) {
 			_f( ds_stack_pop( __Pool ));
 			
