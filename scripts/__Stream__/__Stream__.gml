@@ -11,7 +11,7 @@ function __Stream__( _type ) : __Struct__() constructor {
 		if ( __Id == undefined )
 			throw new IllegalStreamOperation( "read", "the stream target is not defined." );
 		
-		__Buffer	= __Content.pop()
+		__Buffer	= __Id.pop()
 		return __Buffer;
 		
 	}					
@@ -21,7 +21,7 @@ function __Stream__( _type ) : __Struct__() constructor {
 			throw new IllegalStreamOperation( "write", "the stream target is not defined." );
 		
 		var _i = 0; repeat( argument_count ) {
-			__Buffer	= __Content.push( argument[ _i++ ]);
+			__Buffer	= __Id.push( argument[ _i++ ]);
 			
 		}
 		return self;
@@ -56,7 +56,7 @@ function __Stream__( _type ) : __Struct__() constructor {
 	}
 	/// @desc	Returns true if the stream has nothing left to read
 	static finished	= function() {
-		return __Content.is_empty();
+		return __Id.is_empty();
 		
 	}
 	/// @desc	Returns the last value read/written to this stream

@@ -23,9 +23,10 @@ function __Error__() : __Struct__() constructor {
 		return self;
 		
 	}
-	/// @param {mixed}	values...
-	/// @desc	Concantates the provided values into a message string.
-	static conc	= function() { var _s = ""; var _i = 0; repeat( argument_count ) { _s += string( argument[ _i++ ] ); }; return _s; }
+	/// @desc	Provides a shortened call to string_formatted
+	static f	= string_formatted
+	/// @desc	Provides a shortened call to string_concantate
+	static c	= function() { var _s = ""; var _i = 0; repeat( argument_count ) { _s += string( argument[ _i++ ] ); }; return _s; }
 	/// @desc	Returns the error message formatted for the unhandled exception handler.
 	static toString	= function() {
 		var _msg	= string_break( instanceof( self ) + " :: " + message, __Width__ );

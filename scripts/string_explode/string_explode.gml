@@ -1,7 +1,7 @@
 /// @func string_explode
 /// @param {string}	string	The string to explode
 /// @param {string}	divider	The character(s) to use to break up the string
-/// @param {bool}	*trim	optional: Whether to trim whitespace from each item
+/// @param {bool}	*trim?	optional: If true, whitespace will be trimmed. Default: false
 /// @desc	Breaks the input string up based on divider and returns the results as an array.  If
 ///		trim is true, whitespace will also be trimmed from each element. If a non-string is provided
 ///		for string or divider, or a non-number for trim, InvalidArgumentType will be thrown.

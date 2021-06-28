@@ -20,6 +20,7 @@ function Queue() : __Struct__() constructor {
 				
 			} else {
 				__Last.next	= _link;
+				__Last		= _link;
 				
 			}
 			__Size	+= 1;

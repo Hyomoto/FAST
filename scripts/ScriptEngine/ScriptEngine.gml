@@ -25,55 +25,55 @@ function ScriptEngine() : __Struct__() constructor {
 			_args[ _i - 1 ]	= argument[ _i ];
 			
 		}
-		if ( _f == undefined )
+		if ( _f == undefined || struct_type( _f, Script ) == false )
 			throw new InvalidArgumentType( "ScriptEngine.execute", 0, _script, "Script" );
 		
+		__fast_script_origin__( self ); // set this engine as the script scope
 		try {
-			if ( struct_type( _f, Script )) {
-				switch ( array_length( _args ) ) {
-					case 0 : _output = _f.execute( __Global__, undefined ); break;
-					case 1 : _output = _f.execute( __Global__, undefined, _args[ 0 ] ); break;
-					case 2 : _output = _f.execute( __Global__, undefined, _args[ 0 ], _args[ 1 ] ); break;
-					case 3 : _output = _f.execute( __Global__, undefined, _args[ 0 ], _args[ 1 ], _args[ 2 ] ); break;
-					case 4 : _output = _f.execute( __Global__, undefined, _args[ 0 ], _args[ 1 ], _args[ 2 ], _args[ 3 ] ); break;
-					case 5 : _output = _f.execute( __Global__, undefined, _args[ 0 ], _args[ 1 ], _args[ 2 ], _args[ 3 ], _args[ 4 ] ); break;
-				}
-				if ( _output.state == FAST_SCRIPT_YIELD )
-					__Coroutines__.push( new ScriptCoroutine( _f, _output ));
-				return _output.result;
-			
-			}
 			switch ( array_length( _args ) ) {
-				case 0 : return _f();
-				case 1 : return _f( _args[ 0 ] );
-				case 2 : return _f( _args[ 0 ], _args[ 1 ] );
-				case 3 : return _f( _args[ 0 ], _args[ 1 ], _args[ 2 ] );
-				case 4 : return _f( _args[ 0 ], _args[ 1 ], _args[ 2 ], _args[ 3 ] );
-				case 5 : return _f( _args[ 0 ], _args[ 1 ], _args[ 2 ], _args[ 3 ], _args[ 4 ] );
+				case 0 : _output = _f.execute( __Global__, undefined ); break;
+				case 1 : _output = _f.execute( __Global__, undefined, _args[ 0 ] ); break;
+				case 2 : _output = _f.execute( __Global__, undefined, _args[ 0 ], _args[ 1 ] ); break;
+				case 3 : _output = _f.execute( __Global__, undefined, _args[ 0 ], _args[ 1 ], _args[ 2 ] ); break;
+				case 4 : _output = _f.execute( __Global__, undefined, _args[ 0 ], _args[ 1 ], _args[ 2 ], _args[ 3 ] ); break;
+				case 5 : _output = _f.execute( __Global__, undefined, _args[ 0 ], _args[ 1 ], _args[ 2 ], _args[ 3 ], _args[ 4 ] ); break;
 			}
+			if ( _output.state == FAST_SCRIPT_YIELD )
+				__Coroutines__.push( new ScriptCoroutine( _f, _output ));
 			
 		} catch ( _ex ) {
-			show_debug_message( "ScriptEngine error::\n" + _ex.message );
+			trace( "ScriptEngine error::\n" + _ex.message );
 			
 		}
+		__fast_script_origin__( undefined ); // unset engine scope
+		
+		return _output.result;
+		
+	}
+	/// @desc	Used to route calls to the output in this engine, allowing routing of trace
+	///		calls from within scripts.
+	static trace	= function( _string ) {
+		__Output.write( _string );
 		
 	}
 	/// @desc	Calls for the engine to execute any scripts that have yielded.
 	static update	= function() {
+		__fast_script_origin__( self ); // set this engine as the script scope
 		try {
 			repeat( __Coroutines__.size() ) {
 				var _co	= __Coroutines__.pop(0);
-			
+				
 				_co.execute( __Variables__ );
-			
+				
 				if ( _co.is_yielded() )
 					__Coroutines__.push( _co );
-			
+				
 			}
 		} catch ( _ex ) {
-			show_debug_message( "ScriptEngine error::\n" + _ex.message );
+			trace( "ScriptEngine error::\n" + _ex.message );
 			
 		}
+		__fast_script_origin__( undefined ); // unset engine scope
 		
 	}
 	/// @param {bool}	allow	If false, will not allow global access
@@ -90,8 +90,18 @@ function ScriptEngine() : __Struct__() constructor {
 	/// @desc	Allows you to define the global space that is passed into scripts when they are
 	///		executed.  This space is persistent unless overwritten.
 	static set_global	= function( _struct ) {
-		if ( _allow == false ) { __Global__ = undefined; }
-		__Global__ = __Variables__;
+		__Global__ = _struct;
+		
+		return self;
+		
+	}
+	/// @param {__OutputStream__}	output	An output stream
+	/// @desc	By default ScriptEngine will write trace calls and errors to {$SystemOutput}, but you
+	///		can override this behavior by providing an output stream.
+	static set_output	= function( _struct ) {
+		if ( struct_type( _struct, __OutputStream__ ) == false )
+			throw new InvalidArgumentType( "set_output", 0, _struct, "__OutputStream__" );
+		__Output	= _struct;
 		
 		return self;
 		
@@ -115,20 +125,23 @@ function ScriptEngine() : __Struct__() constructor {
 		
 	}
 	/// @param {__InputStream__}	source	A input stream
-	/// @desc	Loads the given stream of files.  Execution is yielded if the load process takes
-	///		too long.  If source is not an {#__InputStream__}, InvalidArgumentType is thrown.
+	/// @desc	Loads the given stream of files.  Execution is yielded if the load process takes too
+	///		long. Returns a method that, when called, will return if load_async has completed.  If
+	///		source is not an {#__InputStream__}, InvalidArgumentType is thrown.  If a file is not
+	///		found, FileNotFound will be thrown.
 	/// @throws InvalidArgumentType, FileNotFound
+	/// @returns method
 	static load_async	= function( _source ) {
 		if ( __Async__ != undefined ) { return; }
 		
-		static __load__	= new Script().from_input( new Queue().write(
-			"func time_, list_, print_",
-			"while list_.finished:: == False",
-			" load list_.read::",
-			" if time_.elapsed:: > 250000",
-			"  yield",
+		static __load__	= new Script().from_string(
+			"func time_, list_, print_\n" +
+			"while list_.finished:: == False\n" +
+			" load list_.read::\n" +
+			" if time_.elapsed:: > 250000\n" +
+			"  yield\n" +
 			"  time_.reset::"
-		)).timeout(infinity);
+		).timeout(infinity);
 		
 		if ( struct_type( _source, __InputStream__ ) == false ) { throw new InvalidArgumentType( "ScriptEngine.load", 0, _source, "__InputStream__" ); }
 		
@@ -140,18 +153,24 @@ function ScriptEngine() : __Struct__() constructor {
 					_p.execute( __Variables__ );
 					
 					if ( not _p.is_yielded() ) {
-						show_debug_message( "ScriptEngine load_async complete." );
+						trace( "ScriptEngine load_async complete." );
 						__Async__.discard();
 						__Async__ = undefined;
 						
 					}
 					
 				} catch ( _ex ) {
-					show_debug_message( "ScriptEngine load_async error::\n" + _ex.message );
+					trace( "ScriptEngine load_async error::\n" + _ex.message );
 					
 				}
 				
 			}).parameter( new ScriptCoroutine( __load__, _output ));
+			
+		}
+		// should return a function that can be used to measure progress, for now just returns if async completed
+		return function() {
+			if ( __Async__ == undefined ) { return true; }
+			return false;
 			
 		}
 		
@@ -181,6 +200,8 @@ function ScriptEngine() : __Struct__() constructor {
 		return self;
 		
 	}
+	__Output		= SystemOutput;
+	
 	__Coroutines__	= new LinkedList();
 	__Variables__	= {};
 	__Global__		= undefined;

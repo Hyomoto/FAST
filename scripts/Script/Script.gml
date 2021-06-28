@@ -120,6 +120,13 @@ function Script() : __Struct__() constructor {
 			},
 			function( _content, _data, _global, _eval_, _put_ ) { // 8, execute
 				_eval_( _content[ 3 ], _data, _global )
+			},
+			function( _content, _data, _global, _eval_, _put_ ) {
+				if ( __fast_script_origin__() == undefined )
+					show_debug_message( strf("{1} line {2} : {0}", _eval_( _content[ 3 ], _data, _global ), __Source, _data.last ) );
+				else
+					( __fast_script_origin__().trace )( strf("{1} line {2} : {0}", _eval_( _content[ 3 ], _data, _global ), __Source, _data.last ) );
+				//"UNEXPECTED INSTRUCTION CODE", __Source, string( _data.last ) );
 			}
 		];
 		// # if the script is being started from the top
@@ -186,7 +193,7 @@ function Script() : __Struct__() constructor {
 		throw new __Error__().from_string( "Script " + __Source + " ended in an unexpected way!" );
 		
 	}
-	/// @param {__InputStream__}	An input source
+	/// @param {__InputStream__}	input	An input source
 	/// @desc	Populates the script using the given input source.
 	/// @returns self
 	static from_input	= function( _input ) {
@@ -220,7 +227,7 @@ function Script() : __Struct__() constructor {
 			
 		}
 		if ( struct_type( _input, __Stream__ ))
-			_input	= new __Stream__( _input );
+			_input	= new __Stream__( _input ).open();
 		if ( struct_type( _input, __InputStream__ ) == false )
 			throw new InvalidArgumentType( "Script.from_input", 0, _input, "__InputStream__" );
 		
@@ -235,7 +242,7 @@ function Script() : __Struct__() constructor {
 		
 		while ( _input.finished() == false ) { ++_lines;
 			var _line	= __rtrim__( _input.read() );
-			
+			syslog( _line );
 			if ( _line == "" ) { continue; }
 			if ( string_copy( string_trim( _line ), 1, 2 ) == "//" ) { continue; }
 			
@@ -287,6 +294,7 @@ function Script() : __Struct__() constructor {
 			
 			try {
 				switch( __parser.next() ) {
+					case "trace"	: _code = FAST_SCRIPT_CODE.TRACE; _exp = parse_expression( __parser.remaining() ); break;
 					case "if"		: _code = FAST_SCRIPT_CODE.IF; _exp = parse_expression( __parser.remaining() ); _nexti = _i + 1; break;
 					case "else"		: _code = FAST_SCRIPT_CODE.ELSE; _exp = __parser.has_next() ? parse_expression( __parser.remaining()) : true; _nexti = _i + 1; break;
 					case "return"	: _code = FAST_SCRIPT_CODE.RETURN; _exp = __parser.has_next() ? parse_expression( __parser.remaining()) : undefined; break;
@@ -384,6 +392,30 @@ function Script() : __Struct__() constructor {
 		_input.close();
 		
 		return self;
+		
+	}
+	/// @param {string}	string	A string to convert into a script
+	/// @desc	Converts the given string into a script. All normal rules apply.  You can use \n
+	///		to create a new line.
+	/// @returns self
+	static from_string	= function( _string ) {
+		if ( _string == "" ) { return; }
+		
+		var _queue	= new __Stream__( new Queue() ).open();
+		
+		_queue.__Source	= "string";
+		
+		var _i = 0; repeat( string_count( "\n", _string ) + 1) {
+			var _l	= string_pos_ext( "\n", _string, _i );
+			
+			if ( _l == 0 ) { _l = string_length( _string ) + 1 };
+			
+			_queue.write( string_copy( _string, _i + 1, _l - _i ));
+			
+			_i	= _l;
+			
+		}
+		return from_input( _queue );
 		
 	}
 	static timeout	= function( _value ) {

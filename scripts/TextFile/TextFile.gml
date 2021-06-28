@@ -48,7 +48,7 @@ function TextFile( _new ) : __Stream__() constructor {
 	/// @param {string}	filename	The name and path to the file to open
 	/// @param {int}	action		The type of action to take
 	/// @desc	Opens the specified file for futher processing.  If action is not specified, the file
-	///		will be opened for reading, otherwise FAST_FILE_OPEN_* should be specified.  If a file is
+	///		will be opened for reading, otherwise FAST_FILE_* should be specified.  If a file is
 	///		already opened, it will be closed first.  If the filename is not a string, or action is an
 	///		invalid type, InvalidArgumentType will be thrown.  If the file does not exist, FileNotFound
 	///		will be thrown.  If too many files are currently open, an IllegalFileOperation will be thrown.
@@ -64,15 +64,15 @@ function TextFile( _new ) : __Stream__() constructor {
 		var _f	= undefined;
 		
 		switch ( _action ) {
-			case undefined: _action = FAST_FILE_OPEN_READ;
-			case FAST_FILE_OPEN_READ	: _f = file_text_open_read; break;
-			case FAST_FILE_OPEN_WRITE	: _f = file_text_open_append; break;
-			case FAST_FILE_OPEN_NEW		: _f = file_text_open_write; _action = FAST_FILE_OPEN_WRITE; break;
+			case undefined: _action = FAST_FILE_READ;
+			case FAST_FILE_READ	: _f = file_text_open_read; break;
+			case FAST_FILE_WRITE	: _f = file_text_open_append; break;
+			case FAST_FILE_NEW		: _f = file_text_open_write; _action = FAST_FILE_WRITE; break;
 			default:
-				throw new InvalidArgumentType( "open", 1, _action, "FAST_FILE_OPEN_*" );
+				throw new InvalidArgumentType( "open", 1, _action, "FAST_FILE_*" );
 			
 		}
-		if ( _action == FAST_FILE_OPEN_READ && file_exists( _filename ) == false ) { throw new FileNotFound( "open", _filename ); }
+		if ( _action == FAST_FILE_READ && file_exists( _filename ) == false ) { throw new FileNotFound( "open", _filename ); }
 		
 		try {
 			__Id	= _f( _filename );
@@ -82,7 +82,7 @@ function TextFile( _new ) : __Stream__() constructor {
 			
 		}
 		switch ( _action ) {
-			case FAST_FILE_OPEN_READ:	__Type__.add( __InputStream__ ); break;
+			case FAST_FILE_READ:	__Type__.add( __InputStream__ ); break;
 			default:					__Type__.add( __OutputStream__ ); break;
 		}
 		__Source	= _filename;
@@ -101,7 +101,7 @@ function TextFile( _new ) : __Stream__() constructor {
 		file_text_close( __Id );
 		
 		switch ( __Operation ) {
-			case FAST_FILE_OPEN_READ:	variable_struct_remove( __Type__, string( __InputStream__ )); break;
+			case FAST_FILE_READ:	variable_struct_remove( __Type__, string( __InputStream__ )); break;
 			default:					variable_struct_remove( __Type__, string( __OutputStream__ )); break;
 		}
 		__Id		= undefined;

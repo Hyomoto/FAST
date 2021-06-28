@@ -36,7 +36,8 @@ function ObjectPool( _new ) constructor {
 	///		into the function.
 	/// @returns self
 	static free		= function( _f ) {
-		_f = is_undefined(_f) ? function() {} : _f
+		if ( _f == undefined ) { _f = function(){}; }
+		
 		var _i = 0; repeat( ds_stack_size( __Pool ) ) {
 			_f( ds_stack_pop( __Pool ));
 			

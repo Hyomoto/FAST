@@ -17,9 +17,9 @@
 
 #macro EVENT	function()
 
-#macro FAST_FILE_OPEN_READ	0
-#macro FAST_FILE_OPEN_WRITE	1
-#macro FAST_FILE_OPEN_NEW	2
+#macro FAST_FILE_READ	0
+#macro FAST_FILE_WRITE	1
+#macro FAST_FILE_NEW	2
 
 #macro FAST_EVENT_STEP			FAST.STEP
 #macro FAST_EVENT_STEP_BEGIN	FAST.STEP_BEGIN
@@ -104,7 +104,7 @@ function __FAST_config__() {
 		static feature	= function( _tag, _name, _version, _date) {
 			if ( variable_struct_exists( features, _tag ) ) {
 				log.write( "FAST :: ", _tag, " already defined with version ", features[$ _tag ].version(), " and replaced " +
-					 "with version " + string_con( ( _version >> 32 ) & 0xFF, ".", ( _version >> 16 ) & 0xFF, ".", _version & 0xFF ) + "." );
+					 "with version " + string_combine( ( _version >> 32 ) & 0xFF, ".", ( _version >> 16 ) & 0xFF, ".", _version & 0xFF ) + "." );
 				
 			}
 			features[$ _tag ]	= {
@@ -112,7 +112,7 @@ function __FAST_config__() {
 					return __Name + " v" + version() + ", " + __Date;
 				},
 				version: function() {
-					return string_con( ( __Vers >> 32 ) & 0xFF, ".", ( __Vers >> 16 ) & 0xFF, ".", __Vers & 0xFF )
+					return string_combine( ( __Vers >> 32 ) & 0xFF, ".", ( __Vers >> 16 ) & 0xFF, ".", __Vers & 0xFF )
 					
 				},
 				__Name	: _name,
@@ -156,63 +156,63 @@ function __FAST_config__() {
 /// @desc	Thrown when a call is made to index a data structure that is out of bounds
 /// @wiki Core-Index Errors
 function IndexOutOfBounds( _call, _index, _bounds ) : __Error__() constructor {
-	message	= conc( "The provided index(", _index, ") to function \"", _call, "\" was out of range(size was ", _bounds, ")." )
+	message	= f( "The provided index({}) to function \"{}\" was out of range(size was {}).", _index, _call, _bounds );
 }
 /// @func ValueOutOfBounds
 /// @desc	Thrown when a call is made a value that is outside of an acceptible range
 /// @wiki Core-Index Errors
 function ValueOutOfBounds( _call, _value, _low, _high ) : __Error__() constructor {
-	message	= conc( "The provided value(", _value, ") to function \"", _call, "\" was out of range(expects ", _low, " >= value >= ", _high, ")." )
+	message	= f( "The provided value({}) to function \"{}\" was out of range(expects {} >= value >= {}).", _value, _call, _low, _high );
 }
 /// @func ValueNotFound
 /// @desc	Returned when a search is made for a value that doesn't exist in a data structure.
 /// @wiki Core-Index Errors
 function ValueNotFound( _call, _value, _index ) : __Error__() constructor {
-	message	= conc( "The value(", _value, ") provided to function \"", _call, "\" didn't exist in the structure." );
+	message	= f( "The value({}) provided to function \"{}\" didn't exist in the structure.", _value, _call );
 	index	= _index;
 }
 /// @func InvalidArgumentType
 /// @desc	Thrown when an argument is provided of the wrong type.
 /// @wiki Core-Index Errors
 function InvalidArgumentType( _call, _arg, _value, _expected ) : __Error__() constructor {
-	message	= conc( "The value(", _value, ") provided as argument ", _arg, " to function \"", _call, "\" was of the wrong type(got ", typeof( _value ), ", expected ", _expected, ")" );
+	message	= f( "The value({}) provided as argument {} to function \"{}\" was of the wrong type(got {} expected {})", _value, _arg, _call, typeof( _value ), _expected );
 }
 /// @func UnexpectedTypeMismatch
 /// @desc	Thrown when a value is returned legally, but is not of the type expected.
 /// @wiki Core-Index Errors
 function UnexpectedTypeMismatch( _call, _value, _expected ) : __Error__() constructor {
-	message	= conc( "The function ", _call, " expected type of ", _expected, " but recieved ", typeof( _value ), "." );
+	message	= f( "The function {} expected type of {} but recieved {}.", _call, _expected, typeof( _value ) );
 }
 /// @func BadJSONFormat
 /// @desc	Thrown when a JSON string is provided that can not be properly converted into an expected type.
 /// @wiki Core-Index Errors
 function BadJSONFormat( _call ) : __Error__() constructor {
-	message	= conc( "The function ", _call, " expected a JSON string, but it could not be converted." );
+	message	= f( "The function {} expected a JSON string, but it could not be converted.", _call );
 }
 /// @func BadValueFormat
 /// @desc	Thrown when a value could not be converted into an expected type.
 /// @wiki Core-Index Errors
 function BadValueFormat( _call, _type, _extra ) : __Error__() constructor {
-	message	= conc( "The function ", _call, " failed to perform the expected type conversion to ", _type ,". ", _extra );
+	message	= f( "The function {} failed to perform the expected type conversion to {}. {}", _call, _type, _extra );
 }
 /// @func FileNotFound
 /// @desc	Thrown when a request for a file is made and it didn't exist.
 function FileNotFound( _call, _file ) : __Error__() constructor {
-	message	= conc( "The function ", _call, " failed because it could not find ", _file )
+	message	= f( "The function {} failed because it could not find \"{}.\"", _call, _file );
 }
 /// @func IllegalFileOperation
 /// @desc	Thrown when an illegal call is made to operate on a file.
 function IllegalFileOperation( _call, _msg ) : __Error__() constructor {
-	message	= conc( "The function ", _call, " failed because ", _msg )
+	message	= f( "The function {} failed because {}.", _call, _msg );
 }
 /// @func ReservedKeyword
 /// @desc	Thrown when a call is made to use a keyword that is reserved.
 /// @wiki Core-Index Errors
 function ReservedKeyword( _call, _value ) : __Error__() constructor {
-	message	= conc( "The function ", _call, " failed because ", _value, " is a reserved keyword." );
+	message	= f( "The function {} failed because {} is a reserved keyword.", _call, _value );
 }
 /// @func IllegalStreamOperation
 /// @desc	Thrown when an illegal call is made to operate on a stream.
 function IllegalStreamOperation( _call, _msg ) : __Error__() constructor {
-	message	= conc( "The function ", _call, " failed because ", _msg )
+	message	= f( "The function {} failed because {}.", _call, _msg );
 }

@@ -13,17 +13,31 @@ function ats_Queue( _type ){
 	test_method( ["is_empty" ], True, __returns );
 	test_method( ["pop"], __source.EOQ, __returns );
 	
-	repeat( 10 ) {
-		var _a	= irandom( 100 );
-		var _b	= irandom( 100 );
+	
+	repeat( 1 ) {
+		var _i = 0, _a = undefined, _b = undefined, _str = "";
 		
-		test_method( ["push", _b, _a ], "[ " + string( _b ) + "," + string( _a ) + " ]" );
-		test_method( ["size"], 2, __returns );
-		test_method( ["pop"], _b, __returns );
-		test_method( ["top"], _a, __returns );
-		test_method( ["is_empty" ], False, __returns );
-		test_method( ["size"], 1, __returns );
+		repeat( 2 + irandom( 50 )) { ++_i;
+			if ( _str != "" ) { _str += ","; }
+			var _d	= irandom( 0xFF );
+			if ( _a == undefined ) { _a = _d; }
+			else if ( _b == undefined ) { _b = _d; }
+			
+			_str	+= string( _d );
+			
+			test_method( ["push", _d ], _i, function() { return __source.size() });
+			
+		}
+		test_method( "toString", "[ " + _str + " ]" );
 		test_method( ["pop"], _a, __returns );
+		test_method( ["top"], _b, __returns );
+		test_method( ["is_empty" ], False, __returns );
+		
+		repeat( __source.size() ) {
+			__source.pop();
+			
+		}
+		test_method( ["is_empty" ], True, __returns );
 		
 	}
 	test_method( ["pop"], __source.EOQ, __returns );

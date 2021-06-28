@@ -8,7 +8,7 @@
 /// @wiki Logging-Index Functions
 function log_critical( _id, _event ) {
 	if ( FAST_ERROR_LOG & FAST_LOGGER_CRITICAL ) {
-		static instance	= new Logger( "critical", SystemOutput, [ 20, new TextFile().open( "log/critical.txt", FAST_FILE_OPEN_NEW ) ] );
+		static instance	= new Logger( "critical", SystemOutput, [ 20, new TextFile().open( "log/critical.txt", FAST_FILE_NEW ) ] );
 		
 		var _string	= ( is_undefined( _id ) ? "<undefined>" : string( _id ) ) + " [" + _event + "] ";
 		

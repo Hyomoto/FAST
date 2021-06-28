@@ -1,3 +1,4 @@
 func a
 while a > 0
  put a - 1 into a
+trace "Done!"

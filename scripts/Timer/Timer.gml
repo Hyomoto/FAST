@@ -28,6 +28,15 @@ function Timer() : __Struct__() constructor {
 		return get_timer() - __Start;
 		
 	}
+	/// @param {string}	format	The format to use
+	/// @desc	Sets the format to use when toString is called.  The format is the same as
+	///		{$string_from_time}.
+	static format	= function( _format ) {
+		__Format	= _format;
+		
+		return self;
+		
+	}
 	/// @desc Returns the elapsed time as a formatted StringTime-formatted string.
 	/// @returns string
 	static toString	= function() {

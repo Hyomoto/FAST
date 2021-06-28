@@ -13,6 +13,13 @@
 #macro FAST_SCRIPT_RETURN			0x0
 #macro FAST_SCRIPT_YIELD			0x1
 
+function __fast_script_origin__() {
+	static __set__	= undefined;
+	if ( argument_count > 0 ) { __set__ = argument[ 0 ]; }
+	return __set__;
+	
+}
+
 enum FAST_SCRIPT_FLAG {
 	OPENBRACKET, // 0
 	CLOSEBRACKET,// 1
@@ -56,6 +63,7 @@ enum FAST_SCRIPT_CODE {
 	PUT,	// 6
 	LOAD,	// 7
 	EXECUTE,	// 8
+	TRACE,		// 9
 	LAST_BYTE
 }
 enum FAST_SCRIPT_INDEX {
@@ -69,7 +77,7 @@ enum FAST_SCRIPT_INDEX {
 /// @desc	Returned when a search is made for a value that doesn't exist in a data structure.
 /// @wiki Core-Index Errors
 function BadScriptFormat( _type, _source, _line_number, _line ) : __Error__() constructor {
-	message	= conc( _type, " at line ", _line_number, " in " + _source + "!\n>> " + _line);
+	message	= f( "{} at line {} in {}!\n>> {}", _type, _line_number, _source, _line);
 }
 
 FAST.feature( "FSCR", "Scripting", __FAST_script_config__().version, __FAST_script_config__().date );

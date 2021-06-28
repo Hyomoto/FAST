@@ -11,7 +11,7 @@ function ats_Errors() {
 	
 	__source.message	= "test";
 	
-	test_method( ["conc", "a", "b", "c" ], "abc", __returns );
+	test_method( ["c", "a", "b", "c" ], "abc", __returns );
 	test_method( ["toString" ], "\n\n\n__Error__ :: test\n\n", __returns );
 	test_function( ["error_type", __source ], __Error__, __returns );
 	

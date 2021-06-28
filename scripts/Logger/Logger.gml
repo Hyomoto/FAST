@@ -8,7 +8,7 @@
 ///		output, use the format [size, Output], this will open and close the output once size has been
 ///		reached.  For example, a 
 /// @example
-//global.debug	= new Logger( "debug", FAST_LOGGER_DEFAULT_LENGTH, System, [ 10, new TextFile().open( "log/debug.text", FAST_FILE_OPEN_NEW ) ] )
+//global.debug	= new Logger( "debug", FAST_LOGGER_DEFAULT_LENGTH, System, [ 10, new TextFile().open( "log/debug.text", FAST_FILE_NEW ) ] )
 //
 //debug.write( "Hello World!" );
 /// @output Hello World! would be written to the console, but not to debug.txt until 9 more writes are

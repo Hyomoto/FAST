@@ -1,6 +1,6 @@
 function ats_f_strings() {
 	var _test	= [
-		"string_con",
+		"string_combine",
 		"string_explode",
 		"string_find_first",
 		"string_from_time",
@@ -8,7 +8,7 @@ function ats_f_strings() {
 		"string_to_real",
 		"string_trim"
 	]
-	test_function( [ "string_con", "a", "b", "c" ], "abc", __returns );
+	test_function( [ "string_combine", "a", "b", "c" ], "abc", __returns );
 	
 	test_function( [ "string_explode", "a b c", " " ], ["a","b","c"], __returns );
 	test_throwable( [ "string_explode", 9 ], InvalidArgumentType, do_function );
