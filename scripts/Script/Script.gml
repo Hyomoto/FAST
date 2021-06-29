@@ -231,7 +231,7 @@ function Script() : __Struct__() constructor {
 		if ( struct_type( _input, __InputStream__ ) == false )
 			throw new InvalidArgumentType( "Script.from_input", 0, _input, "__InputStream__" );
 		
-		static __parser	= new Parser(" \t");
+		static __parser	= new StringParser(" \t");
 		
 		var _list	= new LinkedList();
 		var _idents	= [ "", undefined, undefined ];

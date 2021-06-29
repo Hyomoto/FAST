@@ -1,4 +1,4 @@
-function ats_Parser() {
+function ats_StringParser() {
 // # TOTAL METHODS LOOKING TO TEST
 	var _methods	= [
 		"parse",
@@ -19,7 +19,7 @@ function ats_Parser() {
 	var _text	= "The quick brown fox jumped over the lazy dog.";
 	var _test	= string_explode( _text, " " );
 	
-	test( new Parser() );
+	test( new StringParser() );
 	
 	test_method( "size", 0, __returns );
 	test_method( ["parse", _text ], _text );

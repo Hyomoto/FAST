@@ -13,6 +13,10 @@ enum FAST_DB_IDS {
 	STRUCT,
 	LAST
 }
+enum FAST_DB {
+	NORMAL,
+	DEFINE
+}
 
 FAST.feature( "FTDB", "Database", (2 << 32 ) + ( 0 << 16 ) + 0, "06/23/2021" );
 
@@ -73,4 +77,10 @@ function __FAST_database_config__() {
 	})();
 	return instance;
 	
+}
+/// @func BadDatabaseFormat
+/// @desc	Returned when the database fails to read from an input.
+/// @wiki Database Errors
+function BadDatabaseFormat( _value, _msg ) : __Error__() constructor {
+	message	= f( "Could not read {}, {}", _value, _msg );
 }

@@ -1,16 +1,16 @@
-/// @func Parser
+/// @func StringParser
 /// @desc	The parser is used to break apart strings based on character runs.  By default, it will
 ///		uses spaces and tabs to break apart strings, but this can be changed by using the divider
 ///		method.
 /// @example
-//var _parser = new Parser().parse( "Hello.World!" )
+//var _parser = new StringParser().parse( "Hello.World!" )
 //
 //_parser.divider(".");
 //
 //_parser.next();
 /// @output "Hello"
 /// @wiki Core-Index Constructors
-function Parser( _divider ) : __Struct__() constructor {
+function StringParser( _divider ) : __Struct__() constructor {
 	/// @param {string} string	The string to parse
 	/// @desc	Sets string as the target for parsing.
 	/// @throws InvalidArgumentType
@@ -171,6 +171,6 @@ function Parser( _divider ) : __Struct__() constructor {
 	/// @var {int}		The last position read from.
 	__Last	= 0;
 	
-	__Type__.add( Parser );
+	__Type__.add( StringParser );
 	
 }

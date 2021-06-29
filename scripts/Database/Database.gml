@@ -118,7 +118,7 @@ function Database() : __Struct__() constructor {
 			return _string;
 			
 		}
-		var _f	= variable_struct_get( __Source.__NodeTypes, string( _id ) );
+		var _f	= variable_struct_get( _source.__NodeTypes, string( _id ) );
 		if ( _f != undefined && _f.onCreate != undefined )
 			__Value = _f.onCreate( self, _value );
 		else
@@ -181,11 +181,130 @@ function Database() : __Struct__() constructor {
 	}
 	/// @param {__InputStream__}	source	An input stream to read from
 	/// @desc	Reads from the given source to populate the database.
+	/// @returns self
 	static from_input	= function( _source ) {
+		static __read_until__	= function( _str, _i, _f ) {
+			var _eos	= string_length( _str ) - _i + 1;
+			var _len	= 0;
+			var _pos	= _i;
+			
+			repeat( _eos ) {
+				if ( _f( string_char_at( _str, _pos ) ))
+					break;
+				++_len;
+				++_pos;
+			}
+			return _len;
+			
+		}
+		static __read_number__	= function( _str, _i ) {
+			var _eos	= string_length( _str ) - _i + 1;
+			var _digits	= 0;
+			var _pos	= _i;
+			
+			if ( _eos > 2 && string_copy( _str, 1, 2 ) == "0x" ) {
+				_digits	+= 2; _pos += 2;
+				
+			}
+			repeat ( _eos ) {
+				var _dv	= string_char_at( _str, _pos );
+				if ( _dv < "0" || "9" < _dv )
+		            break;
+				++_digits;
+				++_pos;
+				
+		    }
+			switch( string_char_at( _str, _pos ) ) {
+				case "b" : ++_digits;
+			}
+			return _digits;
+			
+		}
+		static __eval__	= function( _e, _d ) {
+			var _eval	= new StringExpression().from_string( _e );
+			var _result	= _eval.evaluate( _d );
+			// clean up memory
+			_eval.destroy();
+			
+			return _result;
+			
+		}
+		static __format__	= ( function( _f ) {
+			_f.set_rule( ";", function() { remove(); insert( "\n" ); });
+			_f.set_rule( "{", function() { advance(); insert( "\n" ); });
+			_f.set_rule( "}", function() { insert( "\n" ); advance(); insert( "\n" ); });
+			_f.set_rule( "\"", function() {
+				if ( __Read > 1 && string_char_at( __String, __Read - 1 ) == "\"" ) { advance(); }
+				else { remove(); safexor(); }
+			});
+			return _f;
+			
+		})( new StringFormatter() );
+		static __line_parser__	= new StringParser("\n\r");
+		
 		if ( struct_type( _source, __Stream__ ))
-			_source	= new __Stream__( _source );
+			_source	= new __Stream__( _source ).open();
 		if ( struct_type( _source, __InputStream__ ) == false )
 			throw new InvalidArgumentType( "from_input", 0, _source, "__InputStream__" );
+		
+		var _line	= 0;
+		var _mode	= FAST_DB.NORMAL;
+		var _defines= {};
+		
+		while ( _source.finished()	= false ) {
+			// read next entry, pass through formatter
+			__line_parser__.parse( __format__.format( _source.read() ));
+			++_line;
+			
+			while( __line_parser__.has_next() ) {
+				// read next break
+				var _string	= string_trim( __line_parser__.next() );
+				// discard empty lines
+				if ( _string == "" ) { continue; }
+				// check for operators
+				switch ( string_char_at( _string, 1 )) {
+					case "#" :
+						if ( _string == "#define" ) {
+							_mode = FAST_DB.DEFINE; continue; }
+						if ( _string == "#endef" ) {
+							_mode = FAST_DB.NORMAL; continue; }
+				}
+				var _pos	= 1;
+				
+				if ( _mode == FAST_DB.DEFINE ) {
+					var _def	= string_copy( _string, _pos, __read_until__( _string, _pos, function( _c ) { return _c == " " || _c == "\t" || _c == "="; }));
+					_pos	+= string_length( _def );
+					_pos	+= __read_until__( _string, _pos, function( _c ) { return _c != " " && _c != "\t"; });
+					
+					var _value	= __eval__( string_delete( _string, 1, _pos - 1 ), _defines );
+					
+					//switch( string_char_at( _string, _pos ) ) {
+						//case "0": case "1": case "2": case "3": case "4": case "5": case "6": case "7": case "8": case "9":
+						//	_value	= string_copy( _string, _pos, __read_number__( _string, _pos ));
+						//	switch ( string_char_at( _value, string_length( _value )) ) {
+						//		case "b": _value	= bool(real( string_copy( _value, 1, string_length( _value ) - 1 ) )); break;
+						//		default	: _value	= real( _value );
+						//	}
+						//	break;
+						//case "\"":
+						//	show_debug_message( "str" ); break;
+						//default:
+						//	show_debug_message( "def" ); break;
+						
+					//}
+					//_defines[$ _def ]	= _value;
+					
+					syslog( "def: % %", _def, _value );
+					
+				} else {
+					syslog("%: %", _line, _string );
+					
+				}
+				
+			}
+			
+		}
+		return self;
 		
 	}
 	/// @desc	Converts the database to a string.  Used for debugging.
@@ -194,7 +313,6 @@ function Database() : __Struct__() constructor {
 		
 	}
 	static __parser__	= new ( __FAST_database_config__().parser )(".");
-	
 	
 	__NodeTypes	= {}
 	__NodeIds	= 0;

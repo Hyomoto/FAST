@@ -6,7 +6,7 @@
     "path": "folders/FAST/Core/Constructors/Strings.yy",
   },
   "resourceVersion": "1.0",
-  "name": "Parser",
+  "name": "StringParser",
   "tags": [],
   "resourceType": "GMScript",
 }

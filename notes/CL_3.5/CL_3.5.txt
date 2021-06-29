@@ -35,4 +35,4 @@
 * __GenericOutput__ - replaced with __OutputStream__
 * FileText - TextFile
 * FileBinary - no replacement, will be updated
-* FileCSV - no replacement, can replace with TextFile, LinkedList and Parser, but replacement will be coming
+* FileCSV - no replacement, can replace with TextFile, LinkedList and StringParser, but replacement will be coming

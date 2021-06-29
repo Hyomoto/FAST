@@ -3,7 +3,13 @@
 
 //syslog( string_repeat( "~", 72 ) )
 
-//var _data	= new Database();
+var _data	= new Database().from_input( new Queue().push( @"#define
+True	1
+False	0
+#endef" ));
+
+show_debug_message( new StringExpression().from_string( "1 * (2 + 5)" ).evaluate() );
+
 //syslog( "write" );
 //_data.write( "foo.bar", 0, FAST_DB_IDS.NODE );
 //_data.write( "foo.bar", "jello world!" );

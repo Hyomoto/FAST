@@ -6,7 +6,7 @@
     "path": "folders/FAST/Core/Constructors/Strings.yy",
   },
   "resourceVersion": "1.0",
-  "name": "StringFormatter",
+  "name": "ScriptExpression",
   "tags": [],
   "resourceType": "GMScript",
 }

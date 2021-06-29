@@ -12,8 +12,8 @@
 #macro syslog		( __output_to_stream__() ).write
 #macro SystemOutput	( __output_to_stream__() )
 
-#macro __FAST_version__	"3.5.1"
-#macro __FAST_date__	"06/23/2021"
+#macro __FAST_version__	"3.5.2"
+#macro __FAST_date__	"06/29/2021"
 
 #macro EVENT	function()
 
@@ -47,10 +47,40 @@ function __output_to_stream__() {
 		var _output	= new __OutputStream__();
 		
 		_output.write	= method( _output, function() {
+			static __replace__	= function( _sub, _str, _p ) {
+				return string_copy( _str, 1, _p - 1 ) + string( _sub ) + string_delete( _str, 1, _p );
+				
+			}
 			__Buffer	= "";
 			
-			var _i = -1; repeat( argument_count ) { ++_i;
-				__Buffer	+= string( argument[ _i ] );
+			if ( argument_count == 0 ) { return; }
+			
+			var _r	= string_count( "%", argument[ 0 ] );
+			
+			if ( _r > 0 ) {
+				__Buffer	= argument[ 0 ];
+				
+				var _i = 1, _c = 0; repeat( _r ) {
+					if ( _i == argument_count ) { break; }
+					
+					var _n = string_pos_ext( "%", __Buffer, _c );
+					if ( _n == 1 || string_char_at( __Buffer, _n - 1 ) != "\\" ) {
+						_c	= _n + string_length( argument[ _i ] ) - 1;
+						__Buffer	= __replace__( argument[ _i++ ], __Buffer, _n );
+						
+					} else {
+						__Buffer	= string_delete( __Buffer, _n - 1, 1 );
+						_c	= _n;
+						
+					}
+					
+				}
+				
+			} else {
+				var _i = -1; repeat( argument_count ) { ++_i;
+					__Buffer	+= string( argument[ _i ] );
+					
+				}
 				
 			}
 			show_debug_message( __Buffer );
