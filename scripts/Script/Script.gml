@@ -162,7 +162,7 @@ function Script() : __Struct__() constructor {
 			var _line		= _data.line;
 			var _content	= __Content[ _line ];
 			// loop if loop
-			if ( _loopto.size() > 0 && _content[ FAST_SCRIPT_INDEX.INDENT ] < _loopto.top().ident ) {
+			if ( _loopto.size() > 0 && _content[ FAST_SCRIPT_INDEX.INDENT ] < _loopto.peek().ident ) {
 				var _struct = __pool__.put( _loopto.pop() );
 				_data.line	= _struct.line;
 				continue;
@@ -279,7 +279,7 @@ function Script() : __Struct__() constructor {
 				_stack.push([ _indent, _list.size() - 1 ]);
 				
 			} else if ( _i < _indent ) {
-				while ( _stack.top()[ 0 ] != _i ) {
+				while ( _stack.peek()[ 0 ] != _i ) {
 					_stack.pop();
 				}
 				_list.index( _stack.pop()[ 1 ] )[@ 1 ] = _list.size();

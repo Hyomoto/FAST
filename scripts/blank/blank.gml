@@ -4,11 +4,12 @@
 //syslog( string_repeat( "~", 72 ) )
 
 var _data	= new Database().from_input( new Queue().push( @"#define
-True	1
-False	0
-#endef" ));
+value	10
+#endef
+dare.wolf = @value
+foo = dare.wolf" ));
 
-show_debug_message( new StringExpression().from_string( "1 * (2 + 5)" ).evaluate() );
+show_debug_message( _data.toString() );
 
 //syslog( "write" );
 //_data.write( "foo.bar", 0, FAST_DB_IDS.NODE );

@@ -55,7 +55,7 @@ function __output_to_stream__() {
 			
 			if ( argument_count == 0 ) { return; }
 			
-			var _r	= string_count( "%", argument[ 0 ] );
+			var _r	= is_string( argument[ 0 ] ) ? string_count( "%", argument[ 0 ] ) : 0;
 			
 			if ( _r > 0 ) {
 				__Buffer	= argument[ 0 ];

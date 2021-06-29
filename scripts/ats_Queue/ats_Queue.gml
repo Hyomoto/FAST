@@ -1,7 +1,7 @@
 function ats_Queue( _type ){
 	_type = _type == undefined ? HashMap : _type;
 // # TOTAL METHODS LOOKING TO TEST
-	var _methods	= [ "push", "pop", "top", "is_empty", "size" ];
+	var _methods	= [ "push", "pop", "peek", "is_empty", "size" ];
 	
 // # Set test source
 	test( new Queue() );
@@ -30,7 +30,7 @@ function ats_Queue( _type ){
 		}
 		test_method( "toString", "[ " + _str + " ]" );
 		test_method( ["pop"], _a, __returns );
-		test_method( ["top"], _b, __returns );
+		test_method( ["peek"], _b, __returns );
 		test_method( ["is_empty" ], False, __returns );
 		
 		repeat( __source.size() ) {

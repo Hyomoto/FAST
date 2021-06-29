@@ -6,7 +6,7 @@
     "path": "folders/Automated Testing Suite/Test Cases/Core.yy",
   },
   "resourceVersion": "1.0",
-  "name": "ats_Parser",
+  "name": "ats_StringParser",
   "tags": [
     "ATS",
     "Core",

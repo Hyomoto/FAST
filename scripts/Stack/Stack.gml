@@ -41,7 +41,7 @@ function Stack() : __Struct__() constructor {
 	/// @desc	Peeks at the top value of the stack and returns it.  If the stack is empty,
 	///		EOS is returned instead.
 	/// @returns mixed or EOS
-	static top	= function() {
+	static peek	= function() {
 		if ( __Size == 0 ) { return EOS; }
 		
 		return __Stack.value;

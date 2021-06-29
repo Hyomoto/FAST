@@ -1,11 +1,14 @@
 /// @func Database
 function Database() : __Struct__() constructor {
 	static node = function( _value, _id, _source ) constructor {
-		static read	= function( _path ) {
+		static __parser__	= new ( __FAST_database_config__().parser )(".");
+		
+		static read	= function( _path ) { 
+			if ( is_string( _path ) ) { _path = __parser__.parse( _path ); }
 			// this is the final node
 			if ( _path.has_next() == false ) { return __Value; }
 			// otherwise, if this node is not traversable
-			if ( __ID & FAST_DB_IDS.NODE == 0 )
+			if ( __ID != FAST_DB_IDS.NODE )
 				throw new __Error__().from_string("Traversal of " + _path.__String + " failed because " + _path.__Buffer + " is not traversable!" );
 			// if the next node doesn't exist
 			if ( variable_struct_exists( __Value, _path.next() ) == false )
@@ -14,10 +17,20 @@ function Database() : __Struct__() constructor {
 			return __Value[$ _path.__Buffer ].read( _path );
 			
 		}
-		static write	= function( _path, _value, _id ) { 
+		static write	= function( _path, _value, _id ) {
+			if ( is_string( _path ) ) { _path	= __parser__.parse( _path ); }
+			
 			var _key	= _path.next();
 			// this is the final node
 			if ( _path.has_next() == false ) {
+				if ( _id == undefined ) {
+					if ( is_numeric( _value ) )		{ _id = FAST_DB_IDS.NUMBER; }
+					else if ( is_string( _value ) )	{ _id = FAST_DB_IDS.STRING; }
+					else if ( is_array( _value ) )	{ _id = FAST_DB_IDS.ARRAY; }
+					else if ( is_struct( _value ) )	{ _id = FAST_DB_IDS.STRUCT; }
+					else
+						throw new __Error__().from_string( "Write failed because value was unrecognized and id was not specified!" );
+				}
 				if ( variable_struct_exists( __Value, _key )) {
 					var _node	= __Value[$ _key ];
 					// key exists, destroy it
@@ -132,7 +145,7 @@ function Database() : __Struct__() constructor {
 	///		if it didn't.
 	/// @returns mixed or ValueNotFound
 	static read		= function( _path ) {
-		return __Node.read( __parser__.parse( _path ) );
+		return __Node.read( _path );
 		
 	}
 	/// @param {string}			path	A path to a key
@@ -142,15 +155,7 @@ function Database() : __Struct__() constructor {
 	///		if it is a custom type, the id given must be provided.  Returns the written value.
 	/// @returns mixed
 	static write	= function( _path, _value, _id ) {
-		if ( _id == undefined ) {
-			if ( is_numeric( _value ) )		{ _id = FAST_DB_IDS.NUMBER; }
-			else if ( is_string( _value ) )	{ _id = FAST_DB_IDS.STRING; }
-			else if ( is_array( _value ) )	{ _id = FAST_DB_IDS.ARRAY; }
-			else if ( is_struct( _value ) )	{ _id = FAST_DB_IDS.STRUCT; }
-			else
-				throw new __Error__().from_string( "Write failed because value was unrecognized and id was not specified!" );
-		}
-		return __Node.write( __parser__.parse( _path ), _value, _id );
+		return __Node.write( _path, _value, _id );
 		
 	}
 	/// @param {string}	path	A path to a key
@@ -220,9 +225,9 @@ function Database() : __Struct__() constructor {
 			return _digits;
 			
 		}
-		static __eval__	= function( _e, _d ) {
-			var _eval	= new StringExpression().from_string( _e );
-			var _result	= _eval.evaluate( _d );
+		static __eval__	= function( _e, _l, _d ) {
+			var _eval	= new DatabaseExpression().from_string( _e );
+			var _result	= _eval.evaluate( _l, _d );
 			// clean up memory
 			_eval.destroy();
 			
@@ -250,6 +255,7 @@ function Database() : __Struct__() constructor {
 		var _line	= 0;
 		var _mode	= FAST_DB.NORMAL;
 		var _defines= {};
+		var _stack	= new Stack().push( __Node );
 		
 		while ( _source.finished()	= false ) {
 			// read next entry, pass through formatter
@@ -278,26 +284,16 @@ function Database() : __Struct__() constructor {
 					
 					var _value	= __eval__( string_delete( _string, 1, _pos - 1 ), _defines );
 					
-					//switch( string_char_at( _string, _pos ) ) {
-						//case "0": case "1": case "2": case "3": case "4": case "5": case "6": case "7": case "8": case "9":
-						//	_value	= string_copy( _string, _pos, __read_number__( _string, _pos ));
-						//	switch ( string_char_at( _value, string_length( _value )) ) {
-						//		case "b": _value	= bool(real( string_copy( _value, 1, string_length( _value ) - 1 ) )); break;
-						//		default	: _value	= real( _value );
-						//	}
-						//	break;
-						//case "\"":
-						//	show_debug_message( "str" ); break;
-						//default:
-						//	show_debug_message( "def" ); break;
-						
-					//}
-					//_defines[$ _def ]	= _value;
-					
-					syslog( "def: % %", _def, _value );
+					_defines[$ _def ]	= _value;
 					
 				} else {
-					syslog("%: %", _line, _string );
+					var _split	= string_explode( _string, "=", true );
+					var _left	= _split[ 0 ];
+					var _right	= __eval__( _split[ 1 ], _defines, _stack.peek() );
+					
+					_stack.peek().write( _left, _right );
+					
+					syslog("%: % %", _line, _left, _right );
 					
 				}
 				
@@ -312,14 +308,13 @@ function Database() : __Struct__() constructor {
 		return "root:\n" + __Node.toString(1);
 		
 	}
-	static __parser__	= new ( __FAST_database_config__().parser )(".");
-	
 	__NodeTypes	= {}
 	__NodeIds	= 0;
 	
 	add_node_type({
 		onCreate: function( _node, _value ) { return {}},
 		onDestroy: function( _node ) { _node.destroy(); },
+		onCopy: function( _node ) {},
 		toString: function( _node, _indent ) { return _node.toString( _indent ); }
 	}, FAST_DB_IDS.NODE );
 	

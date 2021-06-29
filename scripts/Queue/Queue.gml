@@ -44,7 +44,7 @@ function Queue() : __Struct__() constructor {
 	}
 	/// @desc	Returns the value at the head of the queue, or EOQ if it is empty.
 	/// @returns mixed
-	static top	= function() {
+	static peek	= function() {
 		if ( __Size == 0 ) { return EOQ; }
 		
 		return __First.value;

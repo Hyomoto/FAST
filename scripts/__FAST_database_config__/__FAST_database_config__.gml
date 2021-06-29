@@ -47,6 +47,7 @@ function __FAST_database_config__() {
 				if ( _i == 0 ) {
 					var _c = string_delete( __String, 1, __Last );
 					__Last	= __Size;
+					__Buffer	= _c;
 					return _c;
 					
 				}
