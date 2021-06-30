@@ -49,6 +49,7 @@
     {"id":{"name":"ats_LinkedList","path":"scripts/ats_LinkedList/ats_LinkedList.yy",},"order":7,},
     {"id":{"name":"GamepadPlaystation","path":"scripts/GamepadPlaystation/GamepadPlaystation.yy",},"order":2,},
     {"id":{"name":"struct_type","path":"scripts/struct_type/struct_type.yy",},"order":1,},
+    {"id":{"name":"FAST Database Manual","path":"notes/FAST Database Manual/FAST Database Manual.yy",},"order":5,},
     {"id":{"name":"ats_StringParser","path":"scripts/ats_StringParser/ats_StringParser.yy",},"order":8,},
     {"id":{"name":"Timer","path":"scripts/Timer/Timer.yy",},"order":2,},
     {"id":{"name":"Queue","path":"scripts/Queue/Queue.yy",},"order":5,},
@@ -255,6 +256,9 @@
   "IncludedFiles": [
     {"ConfigValues":{"Testing":{"CopyToMask":"153157610357391598",},},"CopyToMask":-1,"filePath":"datafiles","resourceVersion":"1.0","name":"test.txt","resourceType":"GMIncludedFile",},
     {"CopyToMask":-1,"filePath":"datafiles","resourceVersion":"1.0","name":"wait.txt","resourceType":"GMIncludedFile",},
+    {"CopyToMask":-1,"filePath":"datafiles","resourceVersion":"1.0","name":"test.foo","resourceType":"GMIncludedFile",},
+    {"CopyToMask":-1,"filePath":"datafiles","resourceVersion":"1.0","name":"bar.dat","resourceType":"GMIncludedFile",},
+    {"CopyToMask":-1,"filePath":"datafiles","resourceVersion":"1.0","name":"foo.dat","resourceType":"GMIncludedFile",},
   ],
   "MetaData": {
     "IDEVersion": "23.1.1.306",

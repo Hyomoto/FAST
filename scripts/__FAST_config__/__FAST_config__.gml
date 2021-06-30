@@ -65,7 +65,7 @@ function __output_to_stream__() {
 					
 					var _n = string_pos_ext( "%", __Buffer, _c );
 					if ( _n == 1 || string_char_at( __Buffer, _n - 1 ) != "\\" ) {
-						_c	= _n + string_length( argument[ _i ] ) - 1;
+						_c	= _n + string_length( string( argument[ _i ] )) - 1;
 						__Buffer	= __replace__( argument[ _i++ ], __Buffer, _n );
 						
 					} else {

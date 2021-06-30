@@ -18,7 +18,7 @@ enum FAST_DB {
 	DEFINE
 }
 
-FAST.feature( "FTDB", "Database", (2 << 32 ) + ( 0 << 16 ) + 0, "06/23/2021" );
+FAST.feature( "FTDB", "Database", (2 << 32 ) + ( 0 << 16 ) + 0, "06/29/2021" );
 
 /// @func __FAST_input_config__
 function __FAST_database_config__() {
@@ -82,6 +82,6 @@ function __FAST_database_config__() {
 /// @func BadDatabaseFormat
 /// @desc	Returned when the database fails to read from an input.
 /// @wiki Database Errors
-function BadDatabaseFormat( _value, _msg ) : __Error__() constructor {
-	message	= f( "Could not read {}, {}", _value, _msg );
+function BadDatabaseFormat( _source, _line_number, _line, _value, _msg ) : __Error__() constructor {
+	message	= f( "line {} in {} :\n\tError caused by '{}' in {}.  {}", _line_number, _source, _value, _line, _msg );
 }

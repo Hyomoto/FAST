@@ -6,8 +6,15 @@
 var _data	= new Database().from_input( new Queue().push( @"#define
 value	10
 #endef
-dare.wolf = @value
-foo = dare.wolf" ));
+foo = { bar = { dime = 10 }; word = 'ban'}
+bar<-foo = { bar = 2}
+#template foo.bar
+doze = {#copy foo}
+#tempend
+list = { 10, 20, 30, 40, 50, 60 }
+"
+));
+//var _data	= new Database().from_input( new TextFile().open("test.foo"));
 
 show_debug_message( _data.toString() );
 

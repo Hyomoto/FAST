@@ -14,8 +14,10 @@ function file_search( _mask, _directory, _sub, _output ) {
 	var _list	= _output == undefined ? new LinkedList() : _output;
 	var _dirs	= new Stack();
 	
+	if ( struct_type( _output, __Stream__ ))
+			_output	= new __Stream__( _output ).open();
 	if ( struct_type( _output, __OutputStream__ ) == false )
-			throw new InvalidArgumentType( "file_search", 0, _output, "__OutputStream__" );
+			throw new InvalidArgumentType( "file_search", 3, _output, "__OutputStream__" );
 	
 	if ( _mask == undefined ) { _mask = "*"; }
 	if ( _directory == undefined ) { _directory = ""; }

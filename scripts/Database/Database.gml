@@ -6,13 +6,18 @@ function Database() : __Struct__() constructor {
 		static read	= function( _path ) { 
 			if ( is_string( _path ) ) { _path = __parser__.parse( _path ); }
 			// this is the final node
-			if ( _path.has_next() == false ) { return __Value; }
+			if ( _path.has_next() == false ) {
+				__Source.__Last = self;
+				
+				return __Value;
+				
+			}
 			// otherwise, if this node is not traversable
 			if ( __ID != FAST_DB_IDS.NODE )
 				throw new __Error__().from_string("Traversal of " + _path.__String + " failed because " + _path.__Buffer + " is not traversable!" );
 			// if the next node doesn't exist
 			if ( variable_struct_exists( __Value, _path.next() ) == false )
-				throw new __Error__().from_string("Traversal of " + _path.__String + " failed because " + _path.__Buffer + " does not exist!" );
+				return new ValueNotFound( "read", _path.__String, _path.__Buffer );
 			// continue traversal
 			return __Value[$ _path.__Buffer ].read( _path );
 			
@@ -46,7 +51,9 @@ function Database() : __Struct__() constructor {
 					__Value[$ _key ]	= new __Source.node( _value, _id, __Source );
 					
 				}
-				return _value;
+				__Source.__Last = __Value[$ _key ];
+				
+				return __Value[$ _key ].__Value;
 				
 			}
 			// if this node is not traversable
@@ -84,6 +91,24 @@ function Database() : __Struct__() constructor {
 				throw new __Error__().from_string("Traversal of " + _path.__String + " failed because " + _path.__Buffer + " is not traversable!" );
 			
 			return __Value[$ _key ].remove( _path );
+			
+		}
+		static copy		= function( _node ) {
+			if ( _node == undefined ) { _node = new __Source.node( undefined, FAST_DB_IDS.NODE, __Source ); }
+			
+			var _keys	= variable_struct_get_names( __Value );
+			var _i = 0; repeat( array_length( _keys )) {
+				var _value	= __Value[$ _keys[ _i ]];
+				var _id		= _value.__ID;
+				var _f	= variable_struct_get( __Source.__NodeTypes, string( _id ) );
+				if ( _f != undefined && _f.onCopy != undefined ) {
+					_value	= _f.onCopy( _value ).__Value; }
+				else
+					_value	= _value.__Value;
+				_node.write( _keys[ _i++ ], _value, _id );
+				
+			}
+			return _node;
 			
 		}
 		static destroy	= function() {
@@ -166,6 +191,11 @@ function Database() : __Struct__() constructor {
 		
 	}
 	/// @desc	Destroys the database.
+	static copy	= function() {
+		return __Node.copy();
+		
+	}
+	/// @desc	Destroys the database.
 	static destroy	= function() {
 		__Node.destroy();
 		
@@ -187,7 +217,19 @@ function Database() : __Struct__() constructor {
 	/// @param {__InputStream__}	source	An input stream to read from
 	/// @desc	Reads from the given source to populate the database.
 	/// @returns self
-	static from_input	= function( _source ) {
+	static from_node	= function( _source ) {
+		if ( is_struct( _source ) == false )
+			throw new __Error__().from_string( "Source was not a struct!" );
+		__Node	= _source;
+		
+		return self;
+		
+	}
+	/// @param {__InputStream__}	source		An input stream to read from
+	/// @param {struct}				*defines	optional: Used to pass in static defines
+	/// @desc	Reads from the given source to populate the database.
+	/// @returns self
+	static from_input	= function( _source, _defines ) {
 		static __read_until__	= function( _str, _i, _f ) {
 			var _eos	= string_length( _str ) - _i + 1;
 			var _len	= 0;
@@ -240,7 +282,7 @@ function Database() : __Struct__() constructor {
 			_f.set_rule( "}", function() { insert( "\n" ); advance(); insert( "\n" ); });
 			_f.set_rule( "\"", function() {
 				if ( __Read > 1 && string_char_at( __String, __Read - 1 ) == "\"" ) { advance(); }
-				else { remove(); safexor(); }
+				else { safexor(); advance(); }
 			});
 			return _f;
 			
@@ -254,8 +296,10 @@ function Database() : __Struct__() constructor {
 		
 		var _line	= 0;
 		var _mode	= FAST_DB.NORMAL;
-		var _defines= {};
-		var _stack	= new Stack().push( __Node );
+		var _stack		= new Stack().push( __Node );
+		var _template	= new Stack().push( undefined );
+		// pull in defines if not redeclared
+		_defines	= _defines == undefined ? {} : _defines;
 		
 		while ( _source.finished()	= false ) {
 			// read next entry, pass through formatter
@@ -270,10 +314,65 @@ function Database() : __Struct__() constructor {
 				// check for operators
 				switch ( string_char_at( _string, 1 )) {
 					case "#" :
-						if ( _string == "#define" ) {
-							_mode = FAST_DB.DEFINE; continue; }
-						if ( _string == "#endef" ) {
-							_mode = FAST_DB.NORMAL; continue; }
+						if ( _string == "#define" )
+							_mode = FAST_DB.DEFINE;
+						else if ( _string == "#endef" )
+							_mode = FAST_DB.NORMAL;
+						else if ( string_copy( _string, 1, 5 ) == "#copy" ) {
+							_string	= string_trim( string_delete( _string, 1, 5 ));
+							var _import	= read( _string );
+							//_source.__Source, _line, _string, _split[ 1 ]
+							if ( error_type( _import ) == ValueNotFound )
+								throw new BadDatabaseFormat( _source.__Source, _line, _string, "#copy", "Could not import path because it doesn't exist." )
+							if ( __Last.__ID != FAST_DB_IDS.NODE )
+								throw new BadDatabaseFormat( _source.__Source, _line, _string, "#copy", "Could not import path because it isn't a node." )
+							
+							__Last.copy( _stack.peek() );
+							
+						}
+						else if ( string_copy( _string, 1, 9 ) == "#template" ) {
+							_string	= string_trim( string_delete( _string, 1, 9 ));
+							var _import	= read( _string );
+							
+							if ( error_type( _import ) == ValueNotFound )
+								throw new BadDatabaseFormat( _source.__Source, _line, _string, "#template", "Could not import path because it doesn't exist." )
+							if ( __Last.__ID != FAST_DB_IDS.NODE )
+								throw new BadDatabaseFormat( _source.__Source, _line, _string, "#template", "Could not import path because it isn't a node." )
+							
+							_template.pop();
+							_template.push( __Last );
+							
+						}
+						else if ( string_copy( _string, 1, 8 ) == "#tempend" ) {
+							if ( _template.peek() == undefined )
+								throw new BadDatabaseFormat( _source.__Source, _line, _string, "#tempend", "#tempend called without #template." )
+							_template.pop();
+							_template.push( undefined );
+							
+						}
+						else if ( string_copy( _string, 1, 8 ) == "#include" ) {
+							var _import	= string_trim( string_delete( _string, 1, 8 ));
+							var _dir	= filename_dir( _import );
+							var _name	= filename_name( _import );
+							
+							if ( _name == "" ) { _name = "*"; }
+							else if ( string_pos( ".", _name ) > 0 ) {
+								_name	= string_delete( _name, 1, string_pos( ".", _name ));
+								
+							}
+							var _files	= file_search( _name, _dir, true, new Queue() );
+							
+							var _save	= __line_parser__.save();
+							
+							repeat( _files.size() ) {
+								from_input( new TextFile().open( _files.pop() ), _defines );
+								
+							}
+							__line_parser__.load( _save );
+							
+						}
+						continue;
+						
 				}
 				var _pos	= 1;
 				
@@ -287,19 +386,96 @@ function Database() : __Struct__() constructor {
 					_defines[$ _def ]	= _value;
 					
 				} else {
+					// pop if end of node
+					if ( _string == "}" ) {
+						_stack.pop();
+						_template.pop();
+						
+						continue;
+						
+					}
 					var _split	= string_explode( _string, "=", true );
+					if ( array_length( _split ) == 1 ) {
+						var _i = array_length( variable_struct_get_names( _stack.peek().__Value ) );
+						_split	= string_explode( _split[ 0 ], ",", true );
+						
+						var _j = 0; repeat( array_length( _split )) {
+							if ( _split[ _j ] != "" ) {
+								_stack.peek().write( string( _i++ ), __eval__( _split[ _j ], _defines, _stack.peek() ), undefined );
+								
+							}
+							++_j;
+						}
+						continue;
+						
+					}
 					var _left	= _split[ 0 ];
-					var _right	= __eval__( _split[ 1 ], _defines, _stack.peek() );
+					var _right	= _split[ 1 ];
+					var _id		= undefined;
+					var _import	= undefined;
+					var _templ	= undefined;
 					
-					_stack.peek().write( _left, _right );
+					if ( string_pos( "<-", _left )) {
+						if ( _right != "{" )
+							throw new BadDatabaseFormat( _source.__Source, _line, _string, _split[ 1 ], "Import '<-' can only be used on nodes." )
+						
+						_split	= string_explode( _left, "<-" );
+						_left	= _split[ 0 ];
+						_import	= read( _split[ 1 ] );
+						
+						if ( error_type( _import ) == ValueNotFound )
+							throw new BadDatabaseFormat( _source.__Source, _line, _string, _split[ 1 ], "Import path doesn't exist." )
+						if ( __Last.__ID != FAST_DB_IDS.NODE )
+							throw new BadDatabaseFormat( _source.__Source, _line, _string, _split[ 1 ], "Import path must point to a node." )
+						
+						_import	= __Last;
+						
+					}
+					// push if start of node
+					if ( _right	= "{" ) {
+						var _read	= _stack.peek().read( _left );
+						// if a template is available, grab it before pushing the new scope
+						if ( _template.peek() != undefined )
+							_templ	= _template.peek();
+						
+						if ( error_type( _read ) != ValueNotFound && __Last.__ID == FAST_DB_IDS.NODE ) {
+							_stack.push( __Last );
+							_template.push( undefined );
+							
+							if ( _import != undefined )
+								_import.copy( __Last );
+								
+							continue;
+							
+						} else {
+							_right	= undefined;
+							_id		= FAST_DB_IDS.NODE;
+							
+						}
+						
+					} else
+						_right	= __eval__( _right, _defines, _stack.peek() )
 					
-					syslog("%: % %", _line, _left, _right );
-					
+					_stack.peek().write( _left, _right, _id );
+					// if last write was a node, it becomes the new scope
+					if ( _id == FAST_DB_IDS.NODE ) {
+						_stack.push( __Last );
+						_template.push( undefined );
+					}
+					// if last node included an import, copy it
+					if ( _import != undefined )
+						_import.copy( __Last );
+					// if last node included a template, copy it
+					if ( _templ != undefined )
+						_templ.copy( __Last );
+						
 				}
 				
 			}
 			
 		}
+		_source.close();
+		
 		return self;
 		
 	}
@@ -312,14 +488,15 @@ function Database() : __Struct__() constructor {
 	__NodeIds	= 0;
 	
 	add_node_type({
-		onCreate: function( _node, _value ) { return {}},
+		onCreate: function( _node, _value ) { return is_struct( _value ) ? _value : {}},
 		onDestroy: function( _node ) { _node.destroy(); },
-		onCopy: function( _node ) {},
+		onCopy: function( _node ) { return _node.copy(); },
 		toString: function( _node, _indent ) { return _node.toString( _indent ); }
 	}, FAST_DB_IDS.NODE );
 	
 	__Node		= new node({}, FAST_DB_IDS.NODE, self);
 	__NodeIds	= FAST_DB_IDS.LAST;
+	__Last		= undefined;
 	
 	__Type__.add( Database );
 	
