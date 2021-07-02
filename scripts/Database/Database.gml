@@ -289,7 +289,7 @@ function Database() : __Struct__() constructor {
 			return _f;
 			
 		})( new StringFormatter() );
-		static __line_parser__	= new StringParser("\n\r");
+		static __line_parser__	= new Parser();
 		
 		if ( struct_type( _source, __Stream__ ))
 			_source	= new __Stream__( _source ).open();
@@ -306,12 +306,12 @@ function Database() : __Struct__() constructor {
 		
 		while ( _source.finished()	= false ) {
 			// read next entry, pass through formatter
-			__line_parser__.parse( __format__.format( _source.read() ));
+			__line_parser__.open( __format__.format( _source.read() ));
 			++_line;
 			
-			while( __line_parser__.has_next() ) {
+			while( __line_parser__.finished() == false ) {
 				// read next break
-				var _string	= string_trim( __line_parser__.next() );
+				var _string	= string_trim( __line_parser__.word( char_is_linebreak, false) );
 				// discard empty lines
 				if ( _string == "" ) { continue; }
 				// check for operators
@@ -367,13 +367,13 @@ function Database() : __Struct__() constructor {
 							}
 							var _files	= file_search( _name, _dir, true, new Queue() );
 							
-							var _save	= __line_parser__.save();
+							__line_parser__.push();
 							
 							repeat( _files.size() ) {
 								from_input( new TextFile().open( _files.pop() ), _defines );
 								
 							}
-							__line_parser__.load( _save );
+							__line_parser__.pop();
 							
 						}
 						continue;

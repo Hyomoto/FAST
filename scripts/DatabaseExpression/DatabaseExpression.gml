@@ -2,7 +2,6 @@
 function DatabaseExpression( _string, _global ) constructor {
 	static __pool__	= new ObjectPool(function() { return { left: undefined, right: undefined, parent: undefined, size: 0 } });
 	static from_string	= function( _string ) {
-		static __hash__ = 0;
 		// look at the next char in expression
 		static __next_char__ = function( _ex ) {
 			if ( _ex.i > string_length( _ex.str ) )

@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Strings",
-    "path": "folders/FAST/Core/Constructors/Strings.yy",
+    "name": "char",
+    "path": "folders/FAST/Core/Functions/char.yy",
   },
   "resourceVersion": "1.0",
-  "name": "StringParser",
+  "name": "char_is_printable",
   "tags": [],
   "resourceType": "GMScript",
 }

@@ -83,7 +83,7 @@ function TextFile( _new ) : __Stream__() constructor {
 		}
 		switch ( _action ) {
 			case FAST_FILE_READ:	__Type__.add( __InputStream__ ); break;
-			default:					__Type__.add( __OutputStream__ ); break;
+			default:				__Type__.add( __OutputStream__ ); break;
 		}
 		__Source	= _filename;
 		__Operation	= _action;

@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Abstract",
-    "path": "folders/FAST/Core/Abstract.yy",
+    "name": "char",
+    "path": "folders/FAST/Core/Functions/char.yy",
   },
   "resourceVersion": "1.0",
-  "name": "__Parser__",
+  "name": "char_is_linebreak",
   "tags": [],
   "resourceType": "GMScript",
 }
