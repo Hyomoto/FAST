@@ -118,6 +118,7 @@
     {"id":{"name":"TableRandomizer","path":"scripts/TableRandomizer/TableRandomizer.yy",},"order":1,},
     {"id":{"name":"ats_Stack","path":"scripts/ats_Stack/ats_Stack.yy",},"order":9,},
     {"id":{"name":"ScriptExpression","path":"scripts/ScriptExpression/ScriptExpression.yy",},"order":4,},
+    {"id":{"name":"__Parser__","path":"scripts/__Parser__/__Parser__.yy",},"order":8,},
     {"id":{"name":"font_sys_debug","path":"fonts/font_sys_debug/font_sys_debug.yy",},"order":0,},
     {"id":{"name":"Vec2","path":"scripts/Vec2/Vec2.yy",},"order":4,},
     {"id":{"name":"ease_in_out_elastic","path":"scripts/ease_in_out_elastic/ease_in_out_elastic.yy",},"order":1,},
@@ -261,7 +262,7 @@
     {"CopyToMask":-1,"filePath":"datafiles","resourceVersion":"1.0","name":"foo.dat","resourceType":"GMIncludedFile",},
   ],
   "MetaData": {
-    "IDEVersion": "23.1.1.306",
+    "IDEVersion": "23.1.1.312",
   },
   "resourceVersion": "1.4",
   "name": "FAST",

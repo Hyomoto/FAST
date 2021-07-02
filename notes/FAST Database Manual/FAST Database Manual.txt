@@ -41,3 +41,17 @@ is not explicitly required.
 	#copy 'path'
 ~~~~~~~~~~~~~~~~~~~~~~~~
 Copies the node at the given path into the current scope.
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~
+	* Nodes and Values
+~~~~~~~~~~~~~~~~~~~~~~~~
+Databases are made up of values.  Nodes are a special type of value that can be traversed.  For example,
+"enemy.goblin.hp" would traverse "enemy" to "goblin" and return "hp".  If "enemy" or "goblin" were not
+a node, an error would be thrown.  Nodes are declared with the "{" character:
+
+node = {}
+
+Similarly, the "}" character is used to terminate a node.  Note, you do not have to include "}" but
+doing so may cause an unexpected layout of data, thus it is recommended to always terminate your
+nodes.

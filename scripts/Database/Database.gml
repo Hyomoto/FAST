@@ -236,12 +236,14 @@ function Database() : __Struct__() constructor {
 			var _pos	= _i;
 			
 			repeat( _eos ) {
-				if ( _f( string_char_at( _str, _pos ) ))
+				if ( _f( string_char_at( _str, _pos )) )
 					break;
 				++_len;
 				++_pos;
 			}
-			return _len;
+			if ( _f( string_char_at( _str, _pos )) )
+				return _len;
+			return 0;
 			
 		}
 		static __read_number__	= function( _str, _i ) {
@@ -296,8 +298,9 @@ function Database() : __Struct__() constructor {
 		
 		var _line	= 0;
 		var _mode	= FAST_DB.NORMAL;
-		var _stack		= new Stack().push( __Node );
-		var _template	= new Stack().push( undefined );
+		var _stack			= new Stack().push( __Node );
+		var _template		= new Stack().push( undefined );
+		var _default_type	= undefined;
 		// pull in defines if not redeclared
 		_defines	= _defines == undefined ? {} : _defines;
 		
@@ -314,11 +317,16 @@ function Database() : __Struct__() constructor {
 				// check for operators
 				switch ( string_char_at( _string, 1 )) {
 					case "#" :
-						if ( _string == "#define" )
+						if ( _string == "#define" ) {
 							_mode = FAST_DB.DEFINE;
-						else if ( _string == "#endef" )
+							
+						} else if ( _string == "#endef" ) {
 							_mode = FAST_DB.NORMAL;
-						else if ( string_copy( _string, 1, 5 ) == "#copy" ) {
+							
+						} else if ( _string == "#type" ) {
+							_mode = FAST_DB.NORMAL;
+							
+						} else if ( string_copy( _string, 1, 5 ) == "#copy" ) {
 							_string	= string_trim( string_delete( _string, 1, 5 ));
 							var _import	= read( _string );
 							//_source.__Source, _line, _string, _split[ 1 ]
@@ -329,8 +337,7 @@ function Database() : __Struct__() constructor {
 							
 							__Last.copy( _stack.peek() );
 							
-						}
-						else if ( string_copy( _string, 1, 9 ) == "#template" ) {
+						} else if ( string_copy( _string, 1, 9 ) == "#template" ) {
 							_string	= string_trim( string_delete( _string, 1, 9 ));
 							var _import	= read( _string );
 							
@@ -342,15 +349,13 @@ function Database() : __Struct__() constructor {
 							_template.pop();
 							_template.push( __Last );
 							
-						}
-						else if ( string_copy( _string, 1, 8 ) == "#tempend" ) {
+						} else if ( string_copy( _string, 1, 8 ) == "#tempend" ) {
 							if ( _template.peek() == undefined )
 								throw new BadDatabaseFormat( _source.__Source, _line, _string, "#tempend", "#tempend called without #template." )
 							_template.pop();
 							_template.push( undefined );
 							
-						}
-						else if ( string_copy( _string, 1, 8 ) == "#include" ) {
+						} else if ( string_copy( _string, 1, 8 ) == "#include" ) {
 							var _import	= string_trim( string_delete( _string, 1, 8 ));
 							var _dir	= filename_dir( _import );
 							var _name	= filename_name( _import );
@@ -411,7 +416,7 @@ function Database() : __Struct__() constructor {
 					}
 					var _left	= _split[ 0 ];
 					var _right	= _split[ 1 ];
-					var _id		= undefined;
+					var _id		= _default_type;
 					var _import	= undefined;
 					var _templ	= undefined;
 					
