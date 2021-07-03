@@ -306,7 +306,7 @@ function ScriptExpression( _string, _global ) constructor {
 						}
 						
 					} else {
-						throw new __Error__().from_string( "Unrecognised character " + _c + " at position " + string( _string.i -1 ) + "." );
+						throw new __Error__().from_string( "Unrecognized character " + _c + " at position " + string( _string.i -1 ) + "." );
 						
 					}
 					break;

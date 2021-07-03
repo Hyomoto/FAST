@@ -11,12 +11,13 @@ bar<-foo = { bar = 2}
 #template foo.bar
 doze = {#copy foo}
 #tempend
-list = { 10, 20, 30, 40, 50, 60 }
+list = {10, 20, 30, 40, 50, 60}
 "
 ));
 //var _data	= new Database().from_input( new TextFile().open("test.foo"));
 
 show_debug_message( _data.toString() );
+
 
 //syslog( "write" );
 //_data.write( "foo.bar", 0, FAST_DB_IDS.NODE );
@@ -39,4 +40,4 @@ show_debug_message( _data.toString() );
 //var _scr	= new Script().from_input( new TextFile().open("test.txt"));
 
 //_eng.execute( _scr, 10 );
-//_scr.execute( 10 );
+//_scr.execute( undefined, undefined, 10 );

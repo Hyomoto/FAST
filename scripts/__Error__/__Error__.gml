@@ -31,7 +31,6 @@ function __Error__() : __Struct__() constructor {
 	static toString	= function() {
 		static __H__	= string_repeat( "~", __Width__ );
 		var _msg	= string_break( instanceof( self ) + " :: " + message, __Width__ );
-		
 		return "\r\n" + __H__ + "\n" + _msg + "\n\r\n" + __H__ + "\n";
 		
 	}

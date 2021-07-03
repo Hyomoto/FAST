@@ -231,7 +231,7 @@ function Script() : __Struct__() constructor {
 		if ( struct_type( _input, __InputStream__ ) == false )
 			throw new InvalidArgumentType( "Script.from_input", 0, _input, "__InputStream__" );
 		
-		static __parser	= new StringParser(" \t");
+		static __parser	= new Parser();
 		
 		var _list	= new LinkedList();
 		var _idents	= [ "", undefined, undefined ];
@@ -242,7 +242,7 @@ function Script() : __Struct__() constructor {
 		
 		while ( _input.finished() == false ) { ++_lines;
 			var _line	= __rtrim__( _input.read() );
-			syslog( _line );
+			
 			if ( _line == "" ) { continue; }
 			if ( string_copy( string_trim( _line ), 1, 2 ) == "//" ) { continue; }
 			
@@ -273,7 +273,7 @@ function Script() : __Struct__() constructor {
 			}
 			_line	= string_delete( _line, 1, string_length( _idents[ _i ] ))
 			
-			__parser.parse( _line );
+			__parser.open( _line );
 			
 			if ( _i > _indent ) {
 				_stack.push([ _indent, _list.size() - 1 ]);
@@ -284,20 +284,21 @@ function Script() : __Struct__() constructor {
 				}
 				_list.index( _stack.pop()[ 1 ] )[@ 1 ] = _list.size();
 				
-				if ( __parser.peek() != "else" ) {
+				__parser.mark();
+				if ( __parser.word( char_is_whitespace, false ) != "else" ) {
 					array_push( __Base, _list.size() );
 				}
+				__parser.reset();
 				
 			}
 			var _code	= 0;
 			var _exp	= undefined;
-			
 			try {
-				switch( __parser.next() ) {
-					case "trace"	: _code = FAST_SCRIPT_CODE.TRACE; _exp = parse_expression( __parser.remaining() ); break;
-					case "if"		: _code = FAST_SCRIPT_CODE.IF; _exp = parse_expression( __parser.remaining() ); _nexti = _i + 1; break;
-					case "else"		: _code = FAST_SCRIPT_CODE.ELSE; _exp = __parser.has_next() ? parse_expression( __parser.remaining()) : true; _nexti = _i + 1; break;
-					case "return"	: _code = FAST_SCRIPT_CODE.RETURN; _exp = __parser.has_next() ? parse_expression( __parser.remaining()) : undefined; break;
+				switch( __parser.word( char_is_whitespace, false )) {
+					case "trace"	: _code = FAST_SCRIPT_CODE.TRACE;	_exp = parse_expression( __parser.remaining() ); break;
+					case "if"		: _code = FAST_SCRIPT_CODE.IF;		_exp = parse_expression( __parser.remaining() ); _nexti = _i + 1; break;
+					case "else"		: _code = FAST_SCRIPT_CODE.ELSE;	_exp = __parser.finished() ? true : parse_expression( __parser.remaining()); _nexti = _i + 1; break;
+					case "return"	: _code = FAST_SCRIPT_CODE.RETURN;	_exp = __parser.finished() ? undefined : parse_expression( __parser.remaining()); break;
 					case "temp"		: _code = FAST_SCRIPT_CODE.TEMP;
 						var _t	= string_explode( __parser.remaining(), string_pos( " as ", __parser.remaining() ) ? " as " : "=", true );
 						var _left	= string_explode( _t[ 0 ], ",", true );
@@ -354,20 +355,20 @@ function Script() : __Struct__() constructor {
 						break;
 					
 					case "yield"	: _code = FAST_SCRIPT_CODE.YIELD;
-						var _yield	= string_explode( __parser.has_next() ? __parser.remaining() : "", " while ", true );
-					
+						var _yield	= string_explode( __parser.finished() ? "" : __parser.remaining(), " while ", true );
+						
 						_exp	= { yield: undefined, wait: undefined }
-					
+						
 						if ( array_length( _yield ) > 0 ) {
 							_exp.yield = parse_expression( _yield[ 0 ] );
-						
+							
 						}
 						if ( array_length( _yield ) > 1 ) {
 							_exp.wait = parse_expression( _yield[ 1 ] );
-						
+							
 						}
 						break;
-					
+						
 					default			: _code = FAST_SCRIPT_CODE.EXECUTE;
 						_exp = parse_expression( _line ); break;
 					

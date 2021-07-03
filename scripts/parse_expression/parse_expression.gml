@@ -304,7 +304,7 @@ function parse_expression( expression ) {
 					}
 					
 				} else {
-					throw new __Error__().from_string( "Unrecognised character " + _c + " at position " + string( expression.i -1 ) + "." );
+					throw new __Error__().from_string( "Unrecognized character " + _c + " at position " + string( expression.i -1 ) + "." );
 					
 				}
 				break;

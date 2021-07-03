@@ -27,7 +27,7 @@ function Parser() : __InputStream__() constructor {
 		return self;
 		
 	}
-	static close	= function() {}
+	static close	= function() { return self; }
 	static finished	= function() {
 		return __Index == __Size;
 		
@@ -36,7 +36,8 @@ function Parser() : __InputStream__() constructor {
 	/// @param {bool}	*is_true	optional: If false, will invert the comparison
 	/// @desc	Reads the next 'word' in the string based on the character function.
 	static word	= function( _c, _false ) {
-		_false = _false == false;
+		_c		= _c == undefined ? char_is_whitespace : _c;
+		_false	= _false == false;
 		
 		skip( _c, _false );
 		
@@ -56,6 +57,13 @@ function Parser() : __InputStream__() constructor {
 		__Buffer	= string_copy( __Content, __Index + 1, _i );
 		
 		advance( _i );
+		
+		return __Buffer;
+		
+	}
+	static remaining	= function() {
+		__Buffer	= string_copy( __Content, __Index + 1, __Size - __Index );
+		__Index		= __Size;
 		
 		return __Buffer;
 		
@@ -81,7 +89,10 @@ function Parser() : __InputStream__() constructor {
 	}
 	/// @desc	Advances the read position in the string.
 	static advance	= function( _c ) {
+		//__Buffer	= string_copy( __Size, __Index + 1, min( __Size - __Index, _c ));
 		__Index	= min( __Size, __Index + _c );
+		return self;
+		//return __Buffer;
 		
 	}
 	/// @desc	Returns the next character in the string.
@@ -95,17 +106,21 @@ function Parser() : __InputStream__() constructor {
 		return __Buffer;
 		
 	}
+	/// @param {int}	*num	optional: Number of characters to peek
 	/// @desc	Returns the next character in the string without advancing the index.
 	/// @returns char
-	static peek	= function() {
-		var _c	= read();
-		unread();
-		return _c;
+	static peek	= function( _num ) {
+		if ( _num == undefined ) { _num = 1; }
+		if ( __Index + 1 + _num > __Size ) { _num = __Size - __Index; }
+		
+		return string_copy( __Content, __Index + 1, _num );
 		
 	}
 	/// @desc	Remembers the last read position.
 	static mark	= function() {
 		__Marks[ ++__Level ] = __Index;
+		
+		return self;
 		
 	}
 	/// @desc	Returns the last marked position and unsets it.
@@ -117,7 +132,16 @@ function Parser() : __InputStream__() constructor {
 	}
 	/// @desc	Returns processing to the last marked position.
 	static reset	= function() {
-	    __Index = unmark();
+		try {
+			__Index = unmark();
+			
+		} catch ( _ex ) {
+			if ( error_type( _ex ) != IndexOutOfBounds )
+				throw new IndexOutOfBounds().from_error( _ex );
+			__Index	= 0;
+			
+		}
+		return self;
 		
 	}
 	/// @desc	Reverses the last read.
@@ -142,6 +166,38 @@ function Parser() : __InputStream__() constructor {
 	/// @returns struct
 	static push	= function() {
 		__State.push({ i: __Index, c: __Content });
+		
+	}
+	static count	= function( _c, _false ) {
+		mark();
+		var _i = 0; while( finished() == false ) {
+			word( _c, _false ); ++_i;
+			
+		}
+		reset();
+		
+		return _i;
+		
+	}
+	static to_array	= function( _c, _false ) {
+		if ( _c == undefined ) { _c = char_is_whitespace; }
+		if ( _false == undefined ) { _false = false; }
+		
+		push();
+		reset();
+		
+		var _array	= array_create( count( _c, _false ));
+		var _i = 0; repeat( array_length( _array )) {
+			_array[ _i++ ]	= word( _c, _false );
+			
+		}
+		pop();
+		
+		return _array;
+		
+	}
+	static toString	= function() {
+		return __Content;
 		
 	}
 	static END	= {}

@@ -178,11 +178,15 @@ do_function	= function( _a ) {
 	
 }
 log_test	= function( _test ) {
-	var _i = 0; repeat( array_length( __tests ) ) {
-		if ( __tests[ _i++ ] == _test ) { return; }
-		
+	var _j = 0; repeat( argument_count ) {
+		var _i = 0; repeat( array_length( __tests ) ) {
+			if ( __tests[ _i++ ] == argument[ _j ] ) { break; }
+			
+		}
+		if ( _i == 0 || __tests[ _i - 1 ] != argument[ _j ] )
+			array_push( __tests, argument[ _j ] );
+		++_j;
 	}
-	array_push( __tests, _test );
 			
 }
 __tests			= undefined;
