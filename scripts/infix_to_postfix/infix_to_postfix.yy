@@ -6,7 +6,7 @@
     "path": "folders/IN_WORK/DELETE.yy",
   },
   "resourceVersion": "1.0",
-  "name": "parse_expression",
+  "name": "infix_to_postfix",
   "tags": [],
   "resourceType": "GMScript",
 }

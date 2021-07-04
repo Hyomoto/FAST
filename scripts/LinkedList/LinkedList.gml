@@ -188,20 +188,33 @@ function LinkedList() : __IterableList__() constructor {
 				_l		= _l.next;
 				
 			}
+			__pool__.put( _link ).next	= undefined;
 			
 		}
-		__pool__.put( _link ).next	= undefined;
-		
 		--__Size;
 		
 		return _value;
 		
 	}
-	/// @desc	Clears the list
-	static clear	= function() {
-		__First	= undefined;
-		__Last	= undefined;
-		__Size	= 0;
+	/// @param {bool} *safe?	Default: true
+	/// @desc	Clears the list of entries.  If safe is true, the cleanup will make use of the object-
+	///		pool to help with memory management.  On a large list, an unsafe cleanup will be faster.
+	/// @returns int
+	/// @returns self
+	static clear	= function( _safe ) {
+		if ( _safe == false ) {
+			__First	= undefined;
+			__Last	= undefined;
+			__Size	= 0;
+			
+		} else {
+			repeat( __Size ) {
+				pop(0);
+				
+			}
+			
+		}
+		return self;
 		
 	}
 	/// @desc	Returns the size of the list

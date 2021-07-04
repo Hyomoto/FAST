@@ -2,8 +2,8 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Functions",
-    "path": "folders/FAST/Scripts/Functions.yy",
+    "name": "DELETE",
+    "path": "folders/IN_WORK/DELETE.yy",
   },
   "resourceVersion": "1.0",
   "name": "evaluate_expression",

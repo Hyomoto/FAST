@@ -2,8 +2,8 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Strings",
-    "path": "folders/FAST/Core/Constructors/Strings.yy",
+    "name": "DELETE",
+    "path": "folders/IN_WORK/DELETE.yy",
   },
   "resourceVersion": "1.0",
   "name": "StringExpression",

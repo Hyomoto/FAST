@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "DELETE",
-    "path": "folders/IN_WORK/DELETE.yy",
+    "name": "Sort",
+    "path": "folders/FAST/Core/Constructors/Sort.yy",
   },
   "resourceVersion": "1.0",
-  "name": "parse_expression",
+  "name": "Sort",
   "tags": [],
   "resourceType": "GMScript",
 }

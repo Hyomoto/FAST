@@ -68,7 +68,7 @@ function ats_Parser() {
 	
 	test_method( "to_array", ["The", "quick", "brown", "fox", "jumped", "over", "the", "lazy", "dog."], __returns );
 	
-	test_method( "close", _text, __returns );
+	test_method( "close", _text, function() { return __source.toString() });
 	
 // # END TEST BODY
 	return _methods;

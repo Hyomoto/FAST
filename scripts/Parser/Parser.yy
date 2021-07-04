@@ -2,8 +2,8 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "FAST",
-    "path": "FAST.yyp",
+    "name": "Strings",
+    "path": "folders/FAST/Core/Constructors/Strings.yy",
   },
   "resourceVersion": "1.0",
   "name": "Parser",

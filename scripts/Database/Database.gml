@@ -303,8 +303,8 @@ function Database() : __Struct__() constructor {
 		if ( struct_type( _source, __InputStream__ ) == false )
 			throw new InvalidArgumentType( "from_input", 0, _source, "__InputStream__" );
 		
-		var _line	= 0;
-		var _mode	= FAST_DB.NORMAL;
+		var _line			= 0;
+		var _mode			= FAST_DB.NORMAL;
 		var _stack			= new Stack().push( __Node );
 		var _template		= new Stack().push( undefined );
 		var _default_type	= undefined;
@@ -319,70 +319,81 @@ function Database() : __Struct__() constructor {
 			
 			while( __line_parser__.finished() == false ) {
 				// read next break
-				var _string	= string_trim( __line_parser__.word( char_is_linebreak, false) );
+				__char_parser__.open( string_trim( __line_parser__.word( char_is_linebreak, false)) );
 				// discard empty lines
-				if ( _string == "" ) { continue; }
+				if ( __char_parser__.peek() == "" ) { continue; }
 				// check for operators
-				switch ( string_char_at( _string, 1 )) {
+				switch ( __char_parser__.peek() ) {
 					case "#" :
-						if ( _string == "#define" ) {
-							_mode = FAST_DB.DEFINE;
-							
-						} else if ( _string == "#endef" ) {
-							_mode = FAST_DB.NORMAL;
-							
-						} else if ( _string == "#type" ) {
-							_mode = FAST_DB.NORMAL;
-							
-						} else if ( string_copy( _string, 1, 5 ) == "#copy" ) {
-							_string	= string_trim( string_delete( _string, 1, 5 ));
-							var _import	= read( _string );
-							//_source.__Source, _line, _string, _split[ 1 ]
-							if ( error_type( _import ) == ValueNotFound )
-								throw new BadDatabaseFormat( _source.__Source, _line, _string, "#copy", "Could not import path because it doesn't exist." )
-							if ( __Last.__ID != FAST_DB_IDS.NODE )
-								throw new BadDatabaseFormat( _source.__Source, _line, _string, "#copy", "Could not import path because it isn't a node." )
-							
-							__Last.copy( _stack.peek() );
-							
-						} else if ( string_copy( _string, 1, 9 ) == "#template" ) {
-							_string	= string_trim( string_delete( _string, 1, 9 ));
-							var _import	= read( _string );
-							
-							if ( error_type( _import ) == ValueNotFound )
-								throw new BadDatabaseFormat( _source.__Source, _line, _string, "#template", "Could not import path because it doesn't exist." )
-							if ( __Last.__ID != FAST_DB_IDS.NODE )
-								throw new BadDatabaseFormat( _source.__Source, _line, _string, "#template", "Could not import path because it isn't a node." )
-							
-							_template.pop();
-							_template.push( __Last );
-							
-						} else if ( string_copy( _string, 1, 8 ) == "#tempend" ) {
-							if ( _template.peek() == undefined )
-								throw new BadDatabaseFormat( _source.__Source, _line, _string, "#tempend", "#tempend called without #template." )
-							_template.pop();
-							_template.push( undefined );
-							
-						} else if ( string_copy( _string, 1, 8 ) == "#include" ) {
-							var _import	= string_trim( string_delete( _string, 1, 8 ));
-							var _dir	= filename_dir( _import );
-							var _name	= filename_name( _import );
-							
-							if ( _name == "" ) { _name = "*"; }
-							else if ( string_pos( ".", _name ) > 0 ) {
-								_name	= string_delete( _name, 1, string_pos( ".", _name ));
+						var _processor	= __char_parser__.word( char_is_whitespace, false )
+						var _string		= string_trim( __char_parser__.remaining() );
+						switch( _processor ) {
+							case "#define": // start defines
+								_mode = FAST_DB.DEFINE;
+								break;
 								
-							}
-							var _files	= file_search( _name, _dir, true, new Queue() );
-							
-							__line_parser__.push();
-							
-							repeat( _files.size() ) {
-								from_input( new TextFile().open( _files.pop() ), _defines );
+							case "#endef": // end defines
+								_mode = FAST_DB.NORMAL;
+								break;
 								
-							}
-							__line_parser__.pop();
-							
+							case "#type": // set default type
+								//_mode = FAST_DB.NORMAL;
+								break;
+								
+							case "#copy": // copy source into current node
+								var _import	= read( _string );
+								
+								if ( error_type( _import ) == ValueNotFound )
+									throw new BadDatabaseFormat( _source.__Source, _line, _string, "#copy", "Could not import path because it doesn't exist." )
+								if ( __Last.__ID != FAST_DB_IDS.NODE )
+									throw new BadDatabaseFormat( _source.__Source, _line, _string, "#copy", "Could not import path because it isn't a node." )
+								
+								__Last.copy( _stack.peek() );
+								
+								break;
+								
+							case "#template":
+								var _import	= read( _string );
+								
+								if ( error_type( _import ) == ValueNotFound )
+									throw new BadDatabaseFormat( _source.__Source, _line, _string, "#template", "Could not import path because it doesn't exist." )
+								if ( __Last.__ID != FAST_DB_IDS.NODE )
+									throw new BadDatabaseFormat( _source.__Source, _line, _string, "#template", "Could not import path because it isn't a node." )
+								
+								_template.pop();
+								_template.push( __Last );
+								
+								break;
+								
+							case "#tempend":
+								if ( _template.peek() == undefined )
+									throw new BadDatabaseFormat( _source.__Source, _line, _string, "#tempend", "#tempend called without #template." )
+								_template.pop();
+								_template.push( undefined );
+								
+								break;
+								
+							case "#include":
+								var _dir	= filename_dir( _string );
+								var _name	= filename_name( _string );
+								
+								if ( _name == "" ) { _name = "*"; }
+								else if ( string_pos( ".", _name ) > 0 ) {
+									_name	= string_delete( _name, 1, string_pos( ".", _name ));
+									
+								}
+								var _files	= file_search( _name, _dir, true, new Queue() );
+								
+								__line_parser__.push();
+								
+								repeat( _files.size() ) {
+									from_input( new TextFile().open( _files.pop() ), _defines );
+									
+								}
+								__line_parser__.pop();
+								
+								break;
+								
 						}
 						continue;
 						
@@ -390,25 +401,20 @@ function Database() : __Struct__() constructor {
 				var _pos	= 1;
 				
 				if ( _mode == FAST_DB.DEFINE ) {
-					var _def	= string_copy( _string, _pos, __read_until__( _string, _pos, function( _c ) { return _c == " " || _c == "\t" || _c == "="; }));
-					_pos	+= string_length( _def );
-					_pos	+= __read_until__( _string, _pos, function( _c ) { return _c != " " && _c != "\t"; });
-					
-					var _value	= __eval__( string_delete( _string, 1, _pos - 1 ), _defines );
+					var _def	= __char_parser__.word( char_is_whitespace, false );
+					var _value	= __eval__( __char_parser__.remaining(), _defines );
 					
 					_defines[$ _def ]	= _value;
 					
 				} else {
 					// pop if end of node
-					if ( _string == "}" ) {
+					if ( __char_parser__.peek() == "}" ) {
 						_stack.pop();
 						_template.pop();
 						
 						continue;
 						
 					}
-					__char_parser__.open( string_trim( _string ));
-					
 					var _left	= string_explode( __char_parser__.word( function( _c ) { return _c == " " || _c == "\t" || _c == "="; }, false ), "<-", true );
 					
 					__char_parser__.skip( char_is_whitespace );

@@ -59,6 +59,22 @@ function Stack() : __Struct__() constructor {
 		return __Size;
 		
 	}
+	/// @param {bool} *safe?	Default: true
+	/// @desc	Empties the stack.  If safe is true, the cleanup is memory-managed.  Unsafe cleanup
+	///		is faster on large stacks.
+	/// @returns int
+	static clear	= function( _safe ) {
+		if ( _safe == false ) {
+			__Stack	= undefined;
+			__Size	= 0;
+			return;
+		}
+		repeat( __Size ) {
+			pop();
+			
+		}
+		
+	}
 	/// @desc	Returns the contents of the stack as a string
 	static toString	= function() {
 		var _str	= "";

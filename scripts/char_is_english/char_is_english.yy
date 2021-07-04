@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "DELETE",
-    "path": "folders/IN_WORK/DELETE.yy",
+    "name": "char",
+    "path": "folders/FAST/Core/Functions/char.yy",
   },
   "resourceVersion": "1.0",
-  "name": "parse_expression",
+  "name": "char_is_english",
   "tags": [],
   "resourceType": "GMScript",
 }
