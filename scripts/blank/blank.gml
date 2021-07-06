@@ -6,14 +6,14 @@
 
 //var _ex	= expression_parse("a.b * ( b + c ) / d");
 //syslog( "%=%", _ex.toString(), _ex.evaluate({a:{b:100}, b:2, c:12, d:14}) );
-//var _n	= new ( function( _value ) constructor {
-//	static value	= function() { return __Value; }
-//	__Value = _value;
+var _n	= new ( function( _value ) constructor {
+	static value	= function() { return __Value; }
+	__Value = _value;
 	
-//})(10);
+})(10);
 
-//var _ex	= expression_parse("n.value() + 10");
-//syslog( "%=%", _ex.toString(), _ex.evaluate({n: _n }) );
+var _ex	= expression_parse("n.value() + 10");
+syslog( "%=%", _ex.toString(), _ex.evaluate({n: _n }) );
 //expression_parse( "a + ( 2 + 3 )" );
 
 //syslog( string_repeat( "~", 72 ) )
@@ -73,11 +73,52 @@
 //var _eng	= new ScriptEngine().set_output( new __OutputStream__() );;
 
 //var _scr	= new Script().from_string("trace \"Hello World!\"\ntrace \"Goodbye!\"");
-//var _scr	= new Script().from_string("func a\nwhile a > 0\n put a - 1 into a\ntrace \"Done!\"");
-var _scr	= new Script().from_input( new TextFile().open("test.txt"));
+var _pas	= new NuScript().from_string("trace \"Passed!\"");
+var _scr	= new NuScript().from_string(@"temp a
+while a > 0
+ trace a
+ put a - 1 into a
+" + "load \"nutest.txt\" as tmin\ntmin(10)");
+//var _scr	= new NuScript().from_input( new TextFile().open("nutest.txt"));
+
+var _i = 0; repeat( _scr.size() ) {
+	var _line	= _scr.__Content[ _i++ ];
+	show_debug_message( string_formatted("{: >3}: {}->{} {}", _line[ 4 ], _line[ 2 ], _line[ 1 ], _line[ 3 ] ));
+	
+}
 
 //_eng.execute( _scr, 10 );
-_scr.execute( undefined, undefined, 10 );
+_scr.use_global({}).execute( 10 );
+
+//var __break__	= function( _p, _word ) {
+//	_p.mark();
+//	while( _p.finished() == false ) {
+//		_p.mark();
+//		if ( _p.word( char_is_whitespace, false ) == _word) {
+//			var _r	= _p.remaining();
+//			_p.reset();
+//			var _i	= _p.__Index;
+//			_p.reset();
+//			var _l	= _p.read( _i - _p.__Index );
+//			_p.remaining();
+						
+//			return [ _l, _r ];
+						
+//		}
+//		_p.unmark();
+					
+//	}
+//	_p.reset();
+				
+//	return [ _p.remaining() ];
+				
+//}
+
+//var _p	= new Parser().open( "yield 10" );
+//_p.word( char_is_whitespace, false );
+
+//syslog( __break__( _p, "while" ) );
+
 //var _names	= array_create( 20 );
 
 //var _i = 0; repeat( array_length( _names )) {

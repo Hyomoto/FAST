@@ -17,8 +17,8 @@ function expression_parse( _string ) {
 			return _r;
 			
 		}
-		static	evaluate	= function( _lookup ) {
-			static __execute_func__	= function( _func, _args ) {
+		static	evaluate	= function( _lookup, _lump ) {
+			static __execute_func__	= function( _func, _args, _hash, _coro ) {
 				switch ( array_length( _args )) {
 					case 0 : return _func();
 					case 1 : return _func( _args[ 0 ]);
@@ -37,6 +37,8 @@ function expression_parse( _string ) {
 				return value;
 			if ( is_array( value ))
 				__parser__.parse( value[ 0 ] );
+			else if ( string_char_at( value, 1 ) == "\"" ) // inefficient but fix later
+				return string_copy( value, 2, string_length( value ) - 2 );
 			else
 				__parser__.parse( value );
 			
@@ -52,17 +54,47 @@ function expression_parse( _string ) {
 						_key	= __parser__.next();
 						
 					}
+					// this is a function
 					if ( is_array( value )) {
-						var _args	= array_create( array_length( value ) - 1);
+						var _func	= _value[$ _key ];
+						var _args	= array_create( array_length( value ) - 2);
 						
 						var _i = 0; repeat( array_length( _args ) ) {
-							_args[ _i ]	= value[ _i + 1 ].evaluate( _lookup );
+							_args[ _i ]	= value[ _i + 2 ].evaluate( _lookup );
 							++_i;
 						}
-						return __execute_func__( method( _value, _value[$ _key ]), _args );
+						// handle scripts
+						if ( struct_type( _func, Script )) {
+							var _hash	= value[ 1 ];
+							var _coro	= _lump.coro[$ _hash ];
+							
+							// handle coroutines
+							if ( _coro != undefined ) {
+								var _output	= _coro.execute();
+								
+								if ( _coro.is_yielded() == false )
+									variable_struct_remove( _lump.coro, _hash );
+								
+								return _output;
+								
+							}
+							// handle scripts
+							if ( array_length( _lookup ) > 1 )
+								_func.use_global( _lookup[ 1 ] );
+							var _output	= __execute_func__( method( _func, _func.execute ), _args )
+							
+							if ( _output[ 0 ] == FAST_SCRIPT_YIELD )
+								_lump.coro[$ _hash ]	= new ScriptCoroutine( _value, _lump );
+							
+							return _output[ 1 ];
+							
+						}
+						// handle methods
+						return __execute_func__( method( _value, _func), _args );
 						
 					}
-					return _value;
+					// handle values
+					return _value[$ _key ];
 					
 				}
 				++_i;
@@ -167,6 +199,9 @@ function expression_parse( _string ) {
 	static __values__	= new Stack();
 	static __ops__		= new Stack();
 	
+	if ( _string == "" )
+		throw new InvalidArgumentType( "expression_parse", 0, _string, "expression" );
+	
 	__parser__.open( _string );
 	
 	while ( __parser__.finished() == false ) {
@@ -199,11 +234,12 @@ function expression_parse( _string ) {
 			
 			var _i	= __seek_pair__( __parser__, _c );
 			
-			__parser__.unmark();
+			__parser__.reset();
 			
 			__values__.push( make( undefined, undefined, "\"" + __parser__.read( _i ), __pool__, __node__ ) );
             
 		} else if ( char_is_english( _c )) {
+			static __hash__	= 0;
 			// Current token is a number, push it to stack for numbers.
 	        __parser__.unread().mark();
 			
@@ -214,7 +250,7 @@ function expression_parse( _string ) {
 					__parser__.push();
 					__parser__.reset();
 					
-					var _exp	= [ __parser__.read(_i) ];
+					var _exp	= [ __parser__.read(_i), string( __hash__++ ) ];
 					
 					var _j = 0, _b = 0; while( __parser__.finished() == false ) {
 						var _c	= __parser__.read();

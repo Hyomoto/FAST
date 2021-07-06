@@ -3,7 +3,7 @@
 /// @param {string}	string		The string to format
 /// @param {mixed}	values...	optional: The values to add to the string
 /// @desc	Formats the provided string with the given values. Insertion points are denoted with
-///		{}, and you can escape with \{.  The format is {[[fill]align][width][.precision][type]}
+///		{}, and you can escape with \{.  The format is {[id][:[[fill]align][width][.precision][type]]}
 ///		where fill is the character used to fill in space when width is greater than the value
 ///		length.  Alignments are <,^,> for left, center and right justify.  Precision is only
 ///		valid for number types and will be ignored for strings.  Lastly, the only type currently

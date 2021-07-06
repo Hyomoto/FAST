@@ -20,15 +20,15 @@ function array_shuffle( _array ) {
 		
 	}
 	var _size	= array_length( _array );
-	var _new	= array_create( _size );
+	//var _new	= array_create( _size );
 	
 	var _i = _size; repeat( _size - 1 ) { --_i;
-		var _j = _rand( _i );
+		var _j	= _rand( _i );
+		var _h	= _array[ _i ];
 		
-		_new[ _i ]	= _array[ _j ];
-		_new[ _j ]	= _array[ _i ];
+		_array[@ _i ]	= _array[ _j ];
+		_array[@ _j ]	= _h;
 		
     }
-	return _new;
 	
 }

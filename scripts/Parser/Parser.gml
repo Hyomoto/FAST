@@ -174,15 +174,11 @@ function Parser() : __InputStream__() constructor {
 	}
 	/// @desc	Returns processing to the last marked position.
 	static reset	= function() {
-		try {
+		if ( __Level < 0 )
+			__Index = 0;
+		else
 			__Index = unmark();
-			
-		} catch ( _ex ) {
-			if ( error_type( _ex ) != IndexOutOfBounds )
-				throw new IndexOutOfBounds().from_error( _ex );
-			__Index	= 0;
-			
-		}
+		
 		return self;
 		
 	}

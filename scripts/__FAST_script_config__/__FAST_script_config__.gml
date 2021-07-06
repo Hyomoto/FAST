@@ -13,9 +13,19 @@
 #macro FAST_SCRIPT_RETURN			0x0
 #macro FAST_SCRIPT_YIELD			0x1
 
-function __fast_script_origin__() {
-	static __set__	= undefined;
-	if ( argument_count > 0 ) { __set__ = argument[ 0 ]; }
+#macro FAST_SCRIPT_TRACE ( __fast_script_trace__() )
+function __fast_script_trace__() {
+	static __set__	= show_debug_message;
+	if ( argument_count > 0 ) {
+		var _set	= argument[ 0 ];
+		
+		if ( struct_type( _set, __OutputStream__ ))
+			__set__ = method( argument[ 0 ], (argument[ 0 ]).write )
+		else if ( is_method( _set ) || ( is_real( _set ) && script_exists( _set )) )
+			__set__ = argument[ 0 ];
+		throw new InvalidArgumentType( "FAST_SCRIPT_TRACE", 0, _set, "function/__OutputStream__" );
+		
+	}
 	return __set__;
 	
 }
@@ -64,6 +74,7 @@ enum FAST_SCRIPT_CODE {
 	LOAD,	// 7
 	EXECUTE,	// 8
 	TRACE,		// 9
+	EXPRESSION, // 10
 	LAST_BYTE
 }
 enum FAST_SCRIPT_INDEX {

@@ -122,11 +122,8 @@ function Script() : __Struct__() constructor {
 				_eval_( _content[ 3 ], _data, _global )
 			},
 			function( _content, _data, _global, _eval_, _put_ ) {
-				if ( __fast_script_origin__() == undefined )
-					show_debug_message( strf("{1} line {2} : {0}", _eval_( _content[ 3 ], _data, _global ), __Source, _data.last ) );
-				else
-					( __fast_script_origin__().trace )( strf("{1} line {2} : {0}", _eval_( _content[ 3 ], _data, _global ), __Source, _data.last ) );
-				//"UNEXPECTED INSTRUCTION CODE", __Source, string( _data.last ) );
+				FAST_SCRIPT_TRACE( strf("{1} line {2} : {0}", _eval_( _content[ 3 ], _data, _global ), __Source, _data.last ) );
+				
 			}
 		];
 		// # if the script is being started from the top
