@@ -18,7 +18,7 @@ function expression_parse( _string ) {
 			
 		}
 		static	evaluate	= function( _lookup, _lump ) {
-			static __execute_func__	= function( _func, _args, _hash, _coro ) {
+			static __execute_func__	= function( _func, _args ) {
 				switch ( array_length( _args )) {
 					case 0 : return _func();
 					case 1 : return _func( _args[ 0 ]);
@@ -31,13 +31,29 @@ function expression_parse( _string ) {
 				}
 				
 			}
+			// Function to extract the scope of the key base
+			static __get_scope__	= function( _lookup, _key ) {
+				var _scope, _i = 0; repeat( array_length( _lookup )) {
+					if ( variable_instance_exists( _lookup[ _i ], _key ))
+						return _lookup[ _i ];
+					++_i;
+				}
+				// value couldn't be looked up
+				throw new ValueNotFound("evaluate", _key, -1 );
+				
+			}
+			// Function to return the function piece of a function value
+			static __get_func__	= function( _a ) { return _a[ 0 ]; }
+			// Function to return the hash piece of a function value
+			static __get_hash__	= function( _a ) { return _a[ 1 ]; }
+			
 			if ( is_method( value ))
 				return value( left.evaluate( _lookup ), right.evaluate( _lookup ));
 			if ( is_real( value ))
 				return value;
 			if ( is_array( value ))
-				__parser__.parse( value[ 0 ] );
-			else if ( string_char_at( value, 1 ) == "\"" ) // inefficient but fix later
+				__parser__.parse( __get_func__( value ) );
+			else if ( string_pos( string_char_at( value, 1 ), "\"'" ) > 0 ) // inefficient but fix later
 				return string_copy( value, 2, string_length( value ) - 2 );
 			else
 				__parser__.parse( value );
@@ -45,63 +61,61 @@ function expression_parse( _string ) {
 			if ( is_array( _lookup ) == false ) { _lookup = [ _lookup ]; }
 			var _key	= __parser__.next();
 			
-			var _i = 0; repeat( array_length( _lookup )) {
-				if ( variable_struct_exists( _lookup[ _i ], _key )) {
-					var _value	= _lookup[ _i ];
-					
-					repeat( __parser__.count() ) {
-						_value	= variable_instance_get( _value, _key );
-						_key	= __parser__.next();
-						
-					}
-					// this is a function
-					if ( is_array( value )) {
-						var _func	= _value[$ _key ];
-						var _args	= array_create( array_length( value ) - 2);
-						
-						var _i = 0; repeat( array_length( _args ) ) {
-							_args[ _i ]	= value[ _i + 2 ].evaluate( _lookup );
-							++_i;
-						}
-						// handle scripts
-						if ( struct_type( _func, Script )) {
-							var _hash	= value[ 1 ];
-							var _coro	= _lump.coro[$ _hash ];
-							
-							// handle coroutines
-							if ( _coro != undefined ) {
-								var _output	= _coro.execute();
-								
-								if ( _coro.is_yielded() == false )
-									variable_struct_remove( _lump.coro, _hash );
-								
-								return _output;
-								
-							}
-							// handle scripts
-							if ( array_length( _lookup ) > 1 )
-								_func.use_global( _lookup[ 1 ] );
-							var _output	= __execute_func__( method( _func, _func.execute ), _args )
-							
-							if ( _output[ 0 ] == FAST_SCRIPT_YIELD )
-								_lump.coro[$ _hash ]	= new ScriptCoroutine( _value, _lump );
-							
-							return _output[ 1 ];
-							
-						}
-						// handle methods
-						return __execute_func__( method( _value, _func), _args );
-						
-					}
-					// handle values
-					return _value[$ _key ];
-					
-				}
-				++_i;
+			var _scope	= __get_scope__( _lookup, _key );
+			repeat( __parser__.count() ) {
+				_scope	= variable_instance_get( _scope, _key );
+				_key	= __parser__.next();
 				
 			}
-			// value couldn't be looked up
-			throw new ValueNotFound("evaluate", _key, -1 );
+			// this is a function
+			if ( is_array( value )) {
+				var _func	= _scope[$ _key ];
+				var _args	= array_create( array_length( value ) - 2);
+				
+				var _i = 0; repeat( array_length( _args ) ) {
+					_args[ _i ]	= value[ _i + 2 ].evaluate( _lookup );
+					++_i;
+				}
+				// handle scripts
+				if ( struct_type( _func, Script )) {
+					var _hash	= value[ 1 ];
+					var _coro	= _lump.coro[$ _hash ];
+					
+					// handle coroutines
+					if ( _coro != undefined ) {
+						var _output	= _coro.execute();
+						
+						if ( _coro.is_yielded() == false )
+							variable_struct_remove( _lump.coro, _hash );
+						
+						return _output;
+						
+					}
+					// handle scripts
+					if ( array_length( _lookup ) > 1 )
+						_func.use_global( _lookup[ 1 ] );
+					var _output	= __execute_func__( method( _func, _func.execute ), _args )
+					
+					if ( _func.__Lump.state == FAST_SCRIPT_YIELD )
+						_lump.coro[$ _hash ]	= new ScriptCoroutine( _func, _func.__Lump );
+					
+					return _output;
+					
+				}
+				if ( FAST_SCRIPT_PROTECT_FUNCTIONS && is_method( _func ) == false ) {
+					throw new __Error__().from_string( "Function " + string( _key ) + " couldn't be called because it is unsafe. Functions must be bound as methods." );
+					
+				}
+				// fixes error with rebinding runtime functions that were already bound
+				var _method	= method( _scope, _func);
+				if ( _method == undefined ) { _method = _func; }
+				
+				// handle methods
+				return __execute_func__( _method, _args );
+				
+			}
+			// handle values
+			return _scope[$ _key ];
 			
 		}
 		// Function to dispose of the expression.  Not strictly required, but will free the nodes
@@ -229,14 +243,14 @@ function expression_parse( _string ) {
 			
 			__values__.push( make( undefined, undefined, real( __parser__.read( _i )), __pool__, __node__ ) );
             
-		} else if ( _c == "\"" ) {
+		} else if ( _c == "\"" || _c == "'" ) {
 			__parser__.mark();
 			
 			var _i	= __seek_pair__( __parser__, _c );
 			
 			__parser__.reset();
 			
-			__values__.push( make( undefined, undefined, "\"" + __parser__.read( _i ), __pool__, __node__ ) );
+			__values__.push( make( undefined, undefined, _c + __parser__.read( _i ), __pool__, __node__ ) );
             
 		} else if ( char_is_english( _c )) {
 			static __hash__	= 0;
@@ -308,7 +322,14 @@ function expression_parse( _string ) {
 			if ( __parser__.__Level > -1 ) {
 				__parser__.reset();
 				
-				__values__.push( make( undefined, undefined, __parser__.read( _i ), __pool__, __node__ ) );
+				var _v; switch ( __parser__.read( _i )) {
+					case "True"		: _v = 1; break;
+					case "False"	: _v = 0; break;
+					case "Null"		: _v = undefined; break;
+					default			: _v = __parser__.buffer();
+					
+				}
+				__values__.push( make( undefined, undefined, _v, __pool__, __node__ ) );
             
 			}
 		

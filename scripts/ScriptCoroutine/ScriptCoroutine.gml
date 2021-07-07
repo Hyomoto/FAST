@@ -9,13 +9,17 @@ function ScriptCoroutine( _script, _lump ) : __Struct__() constructor {
 	static execute	= function() {
 		var _result	= __Script.from_lump().execute( __Lump );
 		
-		__Yield	= _result[ 0 ] == FAST_SCRIPT_YIELD;
+		__Yield	= __Lump.state == FAST_SCRIPT_YIELD;
 		
-		return _result[ 1 ];
+		return _result;
 		
 	}
 	static is_yielded	= function() {
 		return __Yield;
+		
+	}
+	static toString	= function() {
+		return __Script.__Source;
 		
 	}
 	__Yield		= true;

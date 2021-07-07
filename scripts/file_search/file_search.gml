@@ -1,8 +1,8 @@
 /// @func file_search
-/// @param {string}	filetype	The file extension to search for.
-/// @param {string}	directory	The directory to start searching from.
-/// @param {bool}	*sub		optional: If `true`, will include sub-directories.
-/// @param {__Stream__} output	optional: If provided, this output stream will be used
+/// @param {string}		filetype	The file extension to search for.
+/// @param {string}		directory	The directory to start searching from.
+/// @param {bool}		*sub		optional: If `true`, will include sub-directories.
+/// @param {__Stream__} *output		optional: If provided, this output stream will be used
 /// @desc	Searches the given directory for files that match the mask.  If sub is true, all
 ///		sub directories will also be traversed.
 /// @example

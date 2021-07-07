@@ -70,25 +70,57 @@ syslog( "%=%", _ex.toString(), _ex.evaluate({n: _n }) );
 //var _i	= interface_start_box({width: "80%", height: "80%"})
 //show_debug_message( _i );
 //interface_end_box();
-//var _eng	= new ScriptEngine().set_output( new __OutputStream__() );;
+//var _eng	= new ScriptEngine().allow_global();//.set_output( new __OutputStream__() );;
 
+//_eng.load_async( file_search( "txt", "", false ), function() { show_debug_message( "Done!" ) });
 //var _scr	= new Script().from_string("trace \"Hello World!\"\ntrace \"Goodbye!\"");
-var _pas	= new NuScript().from_string("trace \"Passed!\"");
-var _scr	= new NuScript().from_string(@"temp a
-while a > 0
- trace a
- put a - 1 into a
-" + "load \"nutest.txt\" as tmin\ntmin(10)");
-//var _scr	= new NuScript().from_input( new TextFile().open("nutest.txt"));
+//var _scr	= new Script().from_string(@"
+//temp a
+//yield while pas(a)
+//trace 'Done!'
+//");
+//_scr.__Source	= "SCR";
+var _pas	= new Script().from_string("temp a\nwhile a > 0\n  put a - 1 into a").timeout( infinity );
+var _timer	= new Timer();
+var _i		= 0;
+var _l		= 10000;
+var _r		= 1;
+var _f		= 1/60 * 1000000;
 
-var _i = 0; repeat( _scr.size() ) {
-	var _line	= _scr.__Content[ _i++ ];
-	show_debug_message( string_formatted("{: >3}: {}->{} {}", _line[ 4 ], _line[ 2 ], _line[ 1 ], _line[ 3 ] ));
-	
+repeat( _l ) {
+	if ( _timer.elapsed() > 16666 ) { break; }
+	_pas.execute( _r );
+	++_i;
 }
+_pas.dump();
+syslog(string_formatted( "{} operations took {:1.4f} seconds.", _i * _r * 6, _timer.elapsed()/1000000 ));
+//_pas.__Source	= "PAS";
+//var _scr	= new NuScript().from_string(@"temp a
+//while a > 0
+// trace a
+// put a - 1 into a
+//" + "load \"nutest.txt\" as tmin\ntmin(10)");
+//var _scr	= new NuScript().from_input( new TextFile().open("nutest.txt"));
+//_scr.dump();
+//_pas.dump();
+//_scr.execute(20);
 
-//_eng.execute( _scr, 10 );
-_scr.use_global({}).execute( 10 );
+//if ( _scr.__Lump != undefined ) {
+//	_scr	= new ScriptCoroutine( _scr, _scr.__Lump );
+	
+//	while ( _scr.is_yielded() ) {
+//		_scr.execute();
+		
+//	}
+	
+//}
+//_eng.bind( "pas", _pas );
+//_eng.execute( _scr, 20 );
+
+//while ( _eng.__Coroutines__.size() > 0 ) {
+//	_eng.update();
+	
+//}
 
 //var __break__	= function( _p, _word ) {
 //	_p.mark();

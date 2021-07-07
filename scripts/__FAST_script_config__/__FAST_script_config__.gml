@@ -18,49 +18,19 @@ function __fast_script_trace__() {
 	static __set__	= show_debug_message;
 	if ( argument_count > 0 ) {
 		var _set	= argument[ 0 ];
+		var _h		= __set__;
 		
-		if ( struct_type( _set, __OutputStream__ ))
-			__set__ = method( argument[ 0 ], (argument[ 0 ]).write )
-		else if ( is_method( _set ) || ( is_real( _set ) && script_exists( _set )) )
+		if ( struct_type( _set, __OutputStream__ )) {
+			__set__ = method( argument[ 0 ], (argument[ 0 ]).write );
+			return _h;
+		} else if ( is_method( _set ) || ( is_real( _set ) && script_exists( _set )) ) {
 			__set__ = argument[ 0 ];
+			return _h;
+		}
 		throw new InvalidArgumentType( "FAST_SCRIPT_TRACE", 0, _set, "function/__OutputStream__" );
 		
 	}
 	return __set__;
-	
-}
-
-enum FAST_SCRIPT_FLAG {
-	OPENBRACKET, // 0
-	CLOSEBRACKET,// 1
-	
-	POSITIVE,	 // 2
-	NEGATIVE,	 // 3
-	
-	PLUS,		// 4
-	MINUS,		// 5
-	TIMES,		// 6
-	DIVIDE,		// 7
-	
-	GREATERTHAN,		// 8
-	GREATERTHANOREQUAL,	// 9
-	LESSTHAN,			// 10
-	LESSTHANOREQUAL,	// 11
-	EQUAL,				// 12
-	NOTEQUAL,			// 13
-	
-	AND,		// 14
-	OR,			// 15
-	NOT,		// 16
-	
-	NUMBER,		// 17
-	STRING,		// 18
-	VARIABLE,	// 19
-	FUNCTION,	// 20
-	
-	NoInfo,
-	SkipClimbUp,
-	RightAssociative,
 	
 }
 enum FAST_SCRIPT_CODE {

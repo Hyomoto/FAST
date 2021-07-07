@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "IN_WORK",
-    "path": "folders/IN_WORK.yy",
+    "name": "DELETE",
+    "path": "folders/IN_WORK/DELETE.yy",
   },
   "resourceVersion": "1.0",
-  "name": "NuScript",
+  "name": "OldScript",
   "tags": [],
   "resourceType": "GMScript",
 }
