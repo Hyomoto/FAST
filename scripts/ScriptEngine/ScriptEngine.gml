@@ -33,12 +33,12 @@ function ScriptEngine() : __Struct__() constructor {
 			if ( __Global__ != undefined )
 				_f.use_global( __Global__ );
 			switch ( array_length( _args ) ) {
-				case 0 : _output = _f.execute(); break;
-				case 1 : _output = _f.execute( _args[ 0 ] ); break;
-				case 2 : _output = _f.execute( _args[ 0 ], _args[ 1 ] ); break;
-				case 3 : _output = _f.execute( _args[ 0 ], _args[ 1 ], _args[ 2 ] ); break;
-				case 4 : _output = _f.execute( _args[ 0 ], _args[ 1 ], _args[ 2 ], _args[ 3 ] ); break;
-				case 5 : _output = _f.execute( _args[ 0 ], _args[ 1 ], _args[ 2 ], _args[ 3 ], _args[ 4 ] ); break;
+				case 0 : _output = _f.restrict( __Restrict__.top()).execute(); break;
+				case 1 : _output = _f.restrict( __Restrict__.top()).execute( _args[ 0 ] ); break;
+				case 2 : _output = _f.restrict( __Restrict__.top()).execute( _args[ 0 ], _args[ 1 ] ); break;
+				case 3 : _output = _f.restrict( __Restrict__.top()).execute( _args[ 0 ], _args[ 1 ], _args[ 2 ] ); break;
+				case 4 : _output = _f.restrict( __Restrict__.top()).execute( _args[ 0 ], _args[ 1 ], _args[ 2 ], _args[ 3 ] ); break;
+				case 5 : _output = _f.restrict( __Restrict__.top()).execute( _args[ 0 ], _args[ 1 ], _args[ 2 ], _args[ 3 ], _args[ 4 ] ); break;
 			}
 			if ( _f.__Lump.state == FAST_SCRIPT_YIELD )
 				__Coroutines__.push( new ScriptCoroutine( _f, _f.__Lump ));
@@ -117,6 +117,26 @@ function ScriptEngine() : __Struct__() constructor {
 			__Variables__[$ _name ]	= _value;
 		else
 			__Variables__[$ _name ]	= method( undefined, _value );
+		
+	}
+	static push_restriction	= function() {
+		var _arr = array_length( argument_count );
+		var _i = 0; repeat( argument_count ) {
+			_arr[ _i ]	= argument[ _i ];
+			++_i;
+		}
+		__Restrict__.push( array_sort( _arr, true ));
+		
+		return self;
+		
+	}
+	static pop_restriction	= function() {
+		if ( __Restrict__.pop() == 1 )
+			throw new __Error__().from_string( "pop_restriction() failed because no restrictions were pushed to stack!" );
+		
+		__Restrict__.pop();
+		
+		return self;
 		
 	}
 	/// @param {__InputStream__}	source	A input stream
@@ -210,6 +230,7 @@ function ScriptEngine() : __Struct__() constructor {
 	__Variables__	= {};
 	__Global__		= undefined;
 	__Async__		= undefined;
+	__Restrict__	= new Stack().push([]);
 	
 	__Type__.add( ScriptEngine );
 	

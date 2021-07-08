@@ -67,6 +67,8 @@ function Database() : __Struct__() constructor {
 			
 		}
 		static remove	= function( _path ) {
+			if ( is_string( _path ) ) { _path = __parser__.parse( _path ); }
+			
 			var _key	= _path.next();
 			// this is the final node
 			if ( _path.has_next() == false ) {
@@ -187,7 +189,7 @@ function Database() : __Struct__() constructor {
 	/// @desc	Removes the key at the given path and returns it.
 	/// @returns mixed
 	static remove	= function( _path ) {
-		return __Node.remove( __parser__.parse( _path ) );
+		return __Node.remove( _path );
 		
 	}
 	/// @desc	Destroys the database.
@@ -223,6 +225,28 @@ function Database() : __Struct__() constructor {
 		__Node	= _source;
 		
 		return self;
+		
+	}
+	/// @param {string}	string	The string to use
+	/// @desc	Converts the given string into an input which can be used to create a new database.
+	static from_string	= function( _string ) {
+		static __parser__	= new Parser();
+		var _queue	= new Queue();
+		
+		if ( is_string( _string ) == false )
+			throw new InvalidArgumentType( "Database.from_string", 0, _string, "string" );
+		
+		__parser__.open( _string );
+		
+		while( __parser__.finished() == false ) {
+			var _read	= __parser__.word( char_is_linebreak, false );
+			// discard blanks
+			if ( _read == "" )
+				continue;
+			_queue.push( _read );
+			
+		}
+		return from_input( _queue );
 		
 	}
 	/// @param {__InputStream__}	source		An input stream to read from
@@ -271,10 +295,10 @@ function Database() : __Struct__() constructor {
 		}
 		static __eval__	= function( _e, _l, _d ) {
 			try {
-				var _eval	= new DatabaseExpression().from_string( _e );
+				var _eval	= expression_parse( _e );
 				
 			} catch ( _ex ) {
-				throw new __Error__().from_string( string_formatted( "> {}\n{}", _e, _ex.message ));
+				throw new __Error__().from_string( string_formatted( "> {}\n{}", _e, _ex.longMessage ));
 				
 			}
 			var _result	= _eval.evaluate( _l, _d );

@@ -12,6 +12,12 @@ function Script() : __Struct__() constructor {
 		return self;
 		
 	}
+	static restrict		= function( _restrict ) {
+		__Restrict	= _restrict;
+		
+		return self;
+		
+	}
 	static execute	= function() {
 		// Object pool for throwaway structs
 		static __pool__	= new ObjectPool();
@@ -37,6 +43,9 @@ function Script() : __Struct__() constructor {
 				_key	= __parser__.next();
 				
 			}
+			if ( variable_instance_exists( _scope, "__read_only__" ))
+				throw new BadScriptFormat( "BAD INSTRUCTION :: ", __Source, _lump.last, "Could not 'put' because scope was read only." );
+			
 			variable_instance_set( _scope, _key, _value );
 			
 		}
@@ -44,7 +53,7 @@ function Script() : __Struct__() constructor {
 		static __eval__	= function( _exp, _lump ) {
 			try { var _out	= _exp.evaluate( _lump.lookup, _lump ); }
 			catch ( _ex ) {
-				throw new BadScriptFormat( "BAD VARIABLE :: ", __Source, string( _lump.last ), _ex.message );
+				throw new BadScriptFormat( "BAD VARIABLE :: ", __Source, _lump.last, _ex.message );
 				
 			}
 			return _out;
@@ -80,6 +89,7 @@ function Script() : __Struct__() constructor {
 				line	: 0,			// line to execute
 				last	: 0,			// script line number(for errors)
 				state	: FAST_SCRIPT_RETURN,
+				restrict: __Restrict,
 			}
 			var _header	= __Content[ 0 ];
 			// read in arguments as local vars
@@ -109,6 +119,7 @@ function Script() : __Struct__() constructor {
 		__UseLump	= false;
 		__Global	= undefined;
 		__Lump		= undefined;
+		__Restrict	= undefined;
 		
 		// set up execution shortcuts
 		var _indent	= _lump.indent;
@@ -124,7 +135,7 @@ function Script() : __Struct__() constructor {
 				__pool__.put( _loopto.peek() );
 				_lump.line	= _loopto.pop().line;
 				
-				continue;
+				_line	= __Content[ _lump.line ];
 				
 			}
 			// write position info
@@ -155,6 +166,9 @@ function Script() : __Struct__() constructor {
 				_res	= __eval__( _exp, _lump );
 				
 			}
+			if ( _lump.restrict != undefined && is_numeric( array_binary_search( _lump.restrict, _line[ FAST_SCRIPT_INDEX.INSTRUCTION ] )) )
+				throw new BadScriptFormat( "BAD INSTRUCTION :: ", __Source, _lump.last, "Instruction is disabled, and cannot be called." );
+			
 			// execute instructions
 			switch ( _line[ FAST_SCRIPT_INDEX.INSTRUCTION ] ) {
 				case FAST_SCRIPT_CODE.IF :
@@ -573,7 +587,8 @@ function Script() : __Struct__() constructor {
 	__Content	= undefined;
 	__UseLump	= false;
 	__Global	= undefined;
-	__Timeout	= 250000;
+	__Restrict	= undefined;
+	__Timeout	= FAST_SCRIPT_DEFAULT_TIMEOUT;
 	
 	__Type__.add( Script );
 	

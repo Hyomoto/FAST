@@ -6,7 +6,7 @@
 function expression_parse( _string ) {
 	static __pool__	= new ObjectPool();
 	// An expression tree node
-	static __node__	= function( _l, _r, _v, _p ) constructor {
+	static __node__	= function( _l, _r, _v, _t, _p ) constructor {
 		static toString	= function() {
 			var _r	= "";
 			
@@ -47,17 +47,13 @@ function expression_parse( _string ) {
 			// Function to return the hash piece of a function value
 			static __get_hash__	= function( _a ) { return _a[ 1 ]; }
 			
-			if ( is_method( value ))
-				return value( left.evaluate( _lookup ), right.evaluate( _lookup ));
-			if ( is_real( value ))
-				return value;
-			if ( is_array( value ))
-				__parser__.parse( __get_func__( value ) );
-			else if ( string_pos( string_char_at( value, 1 ), "\"'" ) > 0 ) // inefficient but fix later
-				return string_copy( value, 2, string_length( value ) - 2 );
-			else
-				__parser__.parse( value );
-			
+			switch( type ) {
+				case FAST_EXPRESSION_TYPE.OPERATOR	: return value( left.evaluate( _lookup ), right.evaluate( _lookup ));
+				case FAST_EXPRESSION_TYPE.OPERAND	: return value;
+				case FAST_EXPRESSION_TYPE.FUNCTION	: __parser__.parse( __get_func__( value )); break;
+				case FAST_EXPRESSION_TYPE.VARIABLE	: __parser__.parse( value ); break;
+				
+			}
 			if ( is_array( _lookup ) == false ) { _lookup = [ _lookup ]; }
 			var _key	= __parser__.next();
 			
@@ -68,7 +64,7 @@ function expression_parse( _string ) {
 				
 			}
 			// this is a function
-			if ( is_array( value )) {
+			if ( type == FAST_EXPRESSION_TYPE.FUNCTION ) {
 				var _func	= _scope[$ _key ];
 				var _args	= array_create( array_length( value ) - 2);
 				
@@ -134,6 +130,7 @@ function expression_parse( _string ) {
 		value	= _v;
 		left	= _l;
 		right	= _r;
+		type	= _t;
 		
 	}
 	// Function to find precedence of operators.
@@ -193,17 +190,18 @@ function expression_parse( _string ) {
 		throw new __Error__().from_string( "Expression evaluation failed, no operation found for " + string( _op ) + "." );
 		
 	}
-	static make	= function( _l, _r, _v, _pool, _node ) {
+	static make	= function( _l, _r, _v, _t, _pool, _node ) {
 		var _n;
 		
 		if ( _pool.is_empty() ) {
-			_n	= new _node( _l, _r, _v, _pool );
+			_n	= new _node( _l, _r, _v, _t, _pool );
 			
 		} else {
 			_n	= _pool.get();
 			_n.left		= _l;
 			_n.right	= _r;
 			_n.value	= _v;
+			_n.type		= _t;
 			
 		}
 		return _n;
@@ -241,7 +239,7 @@ function expression_parse( _string ) {
 			}
 			__parser__.reset();
 			
-			__values__.push( make( undefined, undefined, real( __parser__.read( _i )), __pool__, __node__ ) );
+			__values__.push( make( undefined, undefined, real( __parser__.read( _i )), FAST_EXPRESSION_TYPE.OPERAND, __pool__, __node__ ) );
             
 		} else if ( _c == "\"" || _c == "'" ) {
 			__parser__.mark();
@@ -250,8 +248,10 @@ function expression_parse( _string ) {
 			
 			__parser__.reset();
 			
-			__values__.push( make( undefined, undefined, _c + __parser__.read( _i ), __pool__, __node__ ) );
+			__values__.push( make( undefined, undefined, __parser__.read( _i - 1 ), FAST_EXPRESSION_TYPE.OPERAND, __pool__, __node__ ) );
             
+			__parser__.advance(1);
+			
 		} else if ( char_is_english( _c )) {
 			static __hash__	= 0;
 			// Current token is a number, push it to stack for numbers.
@@ -307,7 +307,7 @@ function expression_parse( _string ) {
 					}
 					__parser__.pop();
 					
-					__values__.push( make( undefined, undefined, _exp, __pool__, __node__ ) );
+					__values__.push( make( undefined, undefined, _exp, FAST_EXPRESSION_TYPE.FUNCTION, __pool__, __node__ ) );
 					
 					break;
 					
@@ -322,14 +322,14 @@ function expression_parse( _string ) {
 			if ( __parser__.__Level > -1 ) {
 				__parser__.reset();
 				
-				var _v; switch ( __parser__.read( _i )) {
-					case "True"		: _v = 1; break;
-					case "False"	: _v = 0; break;
-					case "Null"		: _v = undefined; break;
-					default			: _v = __parser__.buffer();
+				var _v, _t; switch ( __parser__.read( _i )) {
+					case "True"		: _v = 1; _t = FAST_EXPRESSION_TYPE.OPERAND; break;
+					case "False"	: _v = 0; _t = FAST_EXPRESSION_TYPE.OPERAND; break;
+					case "Null"		: _v = undefined; _t = FAST_EXPRESSION_TYPE.OPERAND; break;
+					default			: _v = __parser__.buffer(); _t = FAST_EXPRESSION_TYPE.VARIABLE;
 					
 				}
-				__values__.push( make( undefined, undefined, _v, __pool__, __node__ ) );
+				__values__.push( make( undefined, undefined, _v, _t, __pool__, __node__ ) );
             
 			}
 		
@@ -340,7 +340,7 @@ function expression_parse( _string ) {
 				var _v1	= __values__.pop();
 				var _op	= __get_operation__( __ops__.pop());
 				
-				__values__.push( make( _v1, _v2, _op, __pool__, __node__ ) );
+				__values__.push( make( _v1, _v2, _op, FAST_EXPRESSION_TYPE.OPERATOR, __pool__, __node__ ) );
 				
 			}
 	        __ops__.pop();
@@ -354,7 +354,7 @@ function expression_parse( _string ) {
 				var _v1	= __values__.pop();
 				var _op	= __get_operation__( __ops__.pop());
 				
-				__values__.push( make( _v1, _v2, _op, __pool__, __node__ ) );
+				__values__.push( make( _v1, _v2, _op, FAST_EXPRESSION_TYPE.OPERATOR, __pool__, __node__ ) );
 				
 			}
 	        // Push current token to 'ops'.
@@ -384,7 +384,7 @@ function expression_parse( _string ) {
 		var _v1	= __values__.pop();
 		var _op	= __get_operation__( __ops__.pop());
 		
-		__values__.push( make( _v1, _v2, _op, __pool__, __node__ ) );
+		__values__.push( make( _v1, _v2, _op, FAST_EXPRESSION_TYPE.OPERATOR, __pool__, __node__ ) );
 		
 	}
 	// Top of 'values' contains result, return it.

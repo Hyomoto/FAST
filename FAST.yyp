@@ -97,7 +97,7 @@
     {"id":{"name":"__Struct__","path":"scripts/__Struct__/__Struct__.yy",},"order":7,},
     {"id":{"name":"char_is_whitespace","path":"scripts/char_is_whitespace/char_is_whitespace.yy",},"order":1,},
     {"id":{"name":"Surface","path":"scripts/Surface/Surface.yy",},"order":0,},
-    {"id":{"name":"ScriptFunctionWrapper","path":"scripts/ScriptFunctionWrapper/ScriptFunctionWrapper.yy",},"order":3,},
+    {"id":{"name":"ScriptFunctionWrapper","path":"scripts/ScriptFunctionWrapper/ScriptFunctionWrapper.yy",},"order":8,},
     {"id":{"name":"Sort","path":"scripts/Sort/Sort.yy",},"order":0,},
     {"id":{"name":"ease_in_out_back","path":"scripts/ease_in_out_back/ease_in_out_back.yy",},"order":1,},
     {"id":{"name":"Vec3","path":"scripts/Vec3/Vec3.yy",},"order":5,},

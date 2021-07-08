@@ -6,6 +6,7 @@
 //	check is not performed but the system will otherwise behave the same.  There is a
 //	to no performance benefit to turning this off.
 #macro FAST_SCRIPT_PROTECT_FUNCTIONS	true
+#macro FAST_SCRIPT_DEFAULT_TIMEOUT		16666
 
 // # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // #							End of User Defines
@@ -109,8 +110,8 @@ function __FAST_script_config__() {
 			__Size	= 0;
 			__String= "";
 		};
-		version		= (0 << 32 ) + (1 << 16);
-		date		= "06/20/2021";
+		version		= (1 << 32 ) + (0 << 16);
+		date		= "07/07/2021";
 		
 	})();
 	return instance;

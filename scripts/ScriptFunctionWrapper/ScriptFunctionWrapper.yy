@@ -2,8 +2,8 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Constructors",
-    "path": "folders/FAST/Scripts/Constructors.yy",
+    "name": "DELETE",
+    "path": "folders/IN_WORK/DELETE.yy",
   },
   "resourceVersion": "1.0",
   "name": "ScriptFunctionWrapper",

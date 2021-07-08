@@ -6,20 +6,39 @@
 
 //var _ex	= expression_parse("a.b * ( b + c ) / d");
 //syslog( "%=%", _ex.toString(), _ex.evaluate({a:{b:100}, b:2, c:12, d:14}) );
-var _n	= new ( function( _value ) constructor {
-	static value	= function() { return __Value; }
-	__Value = _value;
+//var _n	= new ( function( _value ) constructor {
+//	static value	= function() { return __Value; }
+//	__Value = _value;
 	
-})(10);
+//})(10);
 
-var _ex	= expression_parse("n.value() + 10");
-syslog( "%=%", _ex.toString(), _ex.evaluate({n: _n }) );
+//var _ex	= expression_parse("n.value() + 10");
+//syslog( "%=%", _ex.toString(), _ex.evaluate({n: _n }) );
 //expression_parse( "a + ( 2 + 3 )" );
 
-//syslog( string_repeat( "~", 72 ) )
-//syslog( "\t\tDATABASE TEST" );
+/// # TESTING THE DATABASE
+var _string	= @"#define
+value	10
+#endef
+foo = { bar = { dime = 10 }; word = 'ban'}
+bar<-foo = { bar = 2}
+#template foo.bar
+doze = {#copy foo}
+#tempend
+list = {10, 20, 30, 40, 50, 60}
+";
+syslog( string_repeat( "~", 72 ) )
+syslog( "\t\tDATABASE TEST" );
 
-//syslog( string_repeat( "~", 72 ) )
+syslog( string_repeat( "~", 72 ) )
+
+var _data	= new Database().from_string( _string );
+
+show_debug_message( _data.toString() );
+_data.write( "foo.bar", 0, FAST_DB_IDS.NODE );
+_data.write( "foo.bar", "jello world!" );
+//_data.remove( "foo" );
+show_debug_message( _data.toString() );
 
 //var _data	= new Database().from_string( @"
 //foo[
@@ -29,16 +48,9 @@ syslog( "%=%", _ex.toString(), _ex.evaluate({n: _n }) );
 //foo[ bar: 0 ]
 //");
 //show_debug_message( _data.toString() );
-//var _string	= @"#define
-//value	10
-//#endef
-//foo = { bar = { dime = 10 }; word = 'ban'}
-//bar<-foo = { bar = 2}
-//#template foo.bar
-//doze = {#copy foo}
-//#tempend
-//list = {10, 20, 30, 40, 50, 60}
-//";
+
+/// # END OF DATABASE TESTING
+
 //var _p	= new Parser().open( _string );
 //var _q	= new Queue();
 
@@ -53,15 +65,6 @@ syslog( "%=%", _ex.toString(), _ex.evaluate({n: _n }) );
 	
 //}
 
-//var _data	= new Database().from_input( _q );
-
-//show_debug_message( _data.toString() );
-//syslog( "write" );
-//_data.write( "foo.bar", 0, FAST_DB_IDS.NODE );
-//_data.write( "foo.bar", "jello world!" );
-//_data.remove( "foo" );
-//syslog( "output" );
-//show_debug_message( _data.toString() );
 //RenderManager.set_overscan( 0, 64 );
 //RenderManager.set_resolution( 1280, 720 );
 //RenderManager.create_camera( 640, 360 );
@@ -80,20 +83,7 @@ syslog( "%=%", _ex.toString(), _ex.evaluate({n: _n }) );
 //trace 'Done!'
 //");
 //_scr.__Source	= "SCR";
-var _pas	= new Script().from_string("temp a\nwhile a > 0\n  put a - 1 into a").timeout( infinity );
-var _timer	= new Timer();
-var _i		= 0;
-var _l		= 10000;
-var _r		= 1;
-var _f		= 1/60 * 1000000;
 
-repeat( _l ) {
-	if ( _timer.elapsed() > 16666 ) { break; }
-	_pas.execute( _r );
-	++_i;
-}
-_pas.dump();
-syslog(string_formatted( "{} operations took {:1.4f} seconds.", _i * _r * 6, _timer.elapsed()/1000000 ));
 //_pas.__Source	= "PAS";
 //var _scr	= new NuScript().from_string(@"temp a
 //while a > 0

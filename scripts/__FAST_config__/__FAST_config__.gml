@@ -36,6 +36,12 @@ if ( FAST_DISABLE_EVENTS != true ) {
 	room_instance_add( room_first, 0, 0, __FASTtool );
 	
 }
+enum FAST_EXPRESSION_TYPE {
+	OPERATOR,
+	OPERAND,
+	FUNCTION,
+	VARIABLE
+}
 
 /// @func __output_to_stream__
 /// @desc	__output_to_stream__ is a wrapper for the common console output in the GMS IDE. It instantiates
