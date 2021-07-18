@@ -159,3 +159,30 @@ show_debug_message( _data.toString() );
 //	syslog( "%, %", _names[ _i ].last, _names[ _i ].first );
 //	++_i;
 //}
+function a(_a, _b) { // Should be slower
+    _a += _b;
+    return _a;
+}
+
+function b(_a, _b) {
+    var _c = _a;
+    _c += _b;
+    return _c;
+}
+var _timer	= new Timer();
+_timer.reset();
+
+repeat( 100000 ) {
+	a( 10, 20 );
+	
+}
+var _one	= _timer.elapsed();
+
+_timer.reset();
+
+repeat( 100000 ) {
+	b( 10, 20 );
+	
+}
+show_debug_message( _one );
+show_debug_message( _timer.elapsed() );
