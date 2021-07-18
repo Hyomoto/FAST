@@ -31,7 +31,7 @@ function ats_f_arrays(){
 	test( _array() );
 	test_function( [ "array_insertion_sort", __source ], "[ 7,10,23,44,97 ]" );
 	test_throwable( [ "array_insertion_sort", "a" ], InvalidArgumentType, do_function );
-	test_throwable( [ "array_insertion_sort", [], "a" ], InvalidArgumentType, do_function );
+	test_throwable( [ "array_insertion_sort", [0,1,2], "a" ], InvalidArgumentType, do_function );
 	
 	test_function( [ "array_to_string", __source ], "[ 7,10,23,44,97 ]" );
 	test_throwable( [ "array_to_string", "a" ], InvalidArgumentType, do_function );

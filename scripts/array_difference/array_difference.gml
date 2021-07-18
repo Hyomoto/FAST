@@ -11,8 +11,8 @@
 /// @throws InvalidArgumentType
 /// @wiki Core-Index Functions
 function array_difference( _arr1, _arr2 ) {
-	if ( is_array( _arr1 ) == false ) { throw new InvalidArgumentType( "array_intersection", 0, _arr1, "array" ); }
-	if ( is_array( _arr2 ) == false ) { throw new InvalidArgumentType( "array_intersection", 1, _arr2, "array" ); }
+	if ( is_array( _arr1 ) == false ) { throw new InvalidArgumentType( "array_difference", 0, _arr1, "array" ); }
+	if ( is_array( _arr2 ) == false ) { throw new InvalidArgumentType( "array_difference", 1, _arr2, "array" ); }
 	
 	var _hash	= {}
 	

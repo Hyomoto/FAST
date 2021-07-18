@@ -7,7 +7,7 @@
 // # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 FAST.feature( "FREN", "Render", (1 << 32 ) + ( 2 << 16 ) + 1, "06/22/2021" );
 
-#macro RenderManager	( __FAST_render_config__() )
+#macro RenderConfiguration	( __FAST_render_config__() )
 
 function __FAST_render_config__() {
 	static instance	= new ( function() constructor {
@@ -72,7 +72,7 @@ function __FAST_render_config__() {
 			
 			window_scale	= _scale;
 			window_width	= render_width * window_scale;
-			window_height	= render_width * window_scale;
+			window_height	= render_height* window_scale;
 			
 			surface_resize( application_surface, render_width, render_height );
 			

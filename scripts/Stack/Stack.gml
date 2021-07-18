@@ -41,7 +41,7 @@ function Stack() : __Struct__() constructor {
 	/// @desc	Peeks at the top value of the stack and returns it.  If the stack is empty,
 	///		EOS is returned instead.
 	/// @returns mixed or EOS
-	static top	= function() {
+	static peek	= function() {
 		if ( __Size == 0 ) { return EOS; }
 		
 		return __Stack.value;
@@ -57,6 +57,22 @@ function Stack() : __Struct__() constructor {
 	/// @returns int
 	static size	= function() {
 		return __Size;
+		
+	}
+	/// @param {bool} *safe?	Default: true
+	/// @desc	Empties the stack.  If safe is true, the cleanup is memory-managed.  Unsafe cleanup
+	///		is faster on large stacks.
+	/// @returns int
+	static clear	= function( _safe ) {
+		if ( _safe == false ) {
+			__Stack	= undefined;
+			__Size	= 0;
+			return;
+		}
+		repeat( __Size ) {
+			pop();
+			
+		}
 		
 	}
 	/// @desc	Returns the contents of the stack as a string

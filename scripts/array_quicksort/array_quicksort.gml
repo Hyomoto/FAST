@@ -14,17 +14,17 @@
 /// @output [ 4,4,10,12,15,23 ]
 /// @throws InvalidArgumentType
 /// @wiki Core-Index Functions
-function array_quicksort( _array, _sort_or_func, _pivot ) {
-	static __search__	= function( _array, _start, _end, _pivot, _sort_or_func, __self__ ) {
+function array_quicksort( _arr, _sort ) {
+	static __search__	= function( _array, _start, _end, _sort, __self__ ) {
 		// if the start is equal to or less than the end, abort
 		if ( _start >= _end ) { return; }
 		// find the pivot
-		var _value	= ( _pivot == undefined ? _array[ _end ] : _pivot( _array[ _end ] ) );
+		var _value	= _array[ _end ];
 		var _i		= _start - 1;
 		var _hold;
 		
 		var _j = _start; repeat( _end - _start ) {
-			if ( _sort_or_func( _value, _array[ _j ] ) ) {
+			if ( _sort( _value, _array[ _j ] ) ) {
 				_hold	= _array[ ++_i ];
 				
 				_array[@ _i ]	= _array[ _j ];
@@ -39,25 +39,30 @@ function array_quicksort( _array, _sort_or_func, _pivot ) {
 		_array[@ _i ]	= _array[ _end ];
 		_array[@ _end ]	= _hold;
 		
-		__self__( _array, _start, _i - 1, _pivot, _sort_or_func, __self__ );
-		__self__( _array, _i + 1, _end, _pivot, _sort_or_func, __self__ );
+		__self__( _array, _start, _i - 1, _sort, __self__ );
+		__self__( _array, _i + 1, _end, _sort, __self__ );
 		
 	}
-	if ( is_array( _array ) == false ) { throw new InvalidArgumentType( "array_quicksort", 0, _array, "array" ); }
-	
-	if ( array_length( _array ) < 2 ) { return; }
-	
-	switch ( _sort_or_func ) {
-		case undefined:
-		case true:  _sort_or_func = function( _a, _b ) { return _a > _b ? 1 : -1; }; break;
-		case false: _sort_or_func = function( _a, _b ) { return _a < _b ? 1 : -1; }; break;
+	if ( is_array( _arr ) == false )
+		throw new InvalidArgumentType( "array_quicksort", 0, _arr, "array" );
+		
+	if ( array_length( _arr ) < 2 )
+		return;
+		
+	if ( struct_type( _sort, Sort )) {
+		_sort	= _sort.func();
+		
+	} else {
+		switch ( _sort ) {
+	        case undefined :
+	        case true : _sort = function( _a, _b ) { return _a > _b ? 1 : -1; }; break;
+	        case false: _sort = function( _a, _b ) { return _a < _b ? 1 : -1; }; break;
+			
+	    }
+		
 	}
-	if ( is_method( _sort_or_func ) == false ) { throw new InvalidArgumentType( "array_quicksort", 1, _sort_or_func, "method" ); }
+	if ( is_method( _sort ) == false ) { throw new InvalidArgumentType( "array_quicksort", 1, _sort, "method" ); }
 	
-	if ( _pivot == undefined ) { _pivot	= function( _r ) { return _r; }}
-	
-	if ( is_method( _pivot ) == false ) { throw new InvalidArgumentType( "array_quicksort", 2, _pivot, "method" ); }
-	
-	__search__( _array, 0, array_length( _array ) - 1, _pivot, _sort_or_func, __search__ );
+	__search__( _arr, 0, array_length( _arr ) - 1, _sort, __search__ );
 	
 }

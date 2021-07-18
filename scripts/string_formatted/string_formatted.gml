@@ -3,7 +3,7 @@
 /// @param {string}	string		The string to format
 /// @param {mixed}	values...	optional: The values to add to the string
 /// @desc	Formats the provided string with the given values. Insertion points are denoted with
-///		{}, and you can escape with \{.  The format is {[[fill]align][width][.precision][type]}
+///		{}, and you can escape with \{.  The format is {[id][:[[fill]align][width][.precision][type]]}
 ///		where fill is the character used to fill in space when width is greater than the value
 ///		length.  Alignments are <,^,> for left, center and right justify.  Precision is only
 ///		valid for number types and will be ignored for strings.  Lastly, the only type currently
@@ -137,7 +137,7 @@ function string_formatted( _string ) {
 	var _i	= string_pos_ext( "{", _string, 0 );
 	var _a	= 1;
 	
-	while ( _i > 0 ) {
+	while ( _i > 0 && _a < argument_count ) {
 		// skip any escaped {'s
 		if ( string_char_at( _string, _i - 1 ) == "\\" ) {
 			_string	= string_delete( _string, _i-- - 1, 1 );
@@ -200,7 +200,7 @@ function string_formatted( _string ) {
 		_string	= __replace__( _v, _string, _s, _e );
 		
 		// find next bracket
-		_i	= string_pos_ext( "{", _string, _s + string_length( _v ));
+		_i	= string_pos_ext( "{", _string, _s + string_length( _v ) - 1);
 		
 	}
 	return _string;

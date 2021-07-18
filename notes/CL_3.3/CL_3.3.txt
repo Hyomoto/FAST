@@ -54,7 +54,7 @@ FrameEvent
 
 ## RC3
 ### New Features
-Parser
+StringParser
 * Added 'divider' to make it easie to direct the basic parser to break at different places.
 
 FileCSV

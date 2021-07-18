@@ -6,7 +6,7 @@
 //list.from_input( _file );
 /// @output Will open text.txt and read its contents into list
 /// @wiki Core-Index Constructors
-function TextFile( _new ) : __Stream__() constructor {
+function TextFile() : __Stream__() constructor {
 	/// @desc	Reads the next portion of the text file and returns it.  If the file is not open,
 	///		or the file is not opened for reading, IllegalFileOperation will be thrown.
 	/// @throws IllegalFileOperation
@@ -83,7 +83,7 @@ function TextFile( _new ) : __Stream__() constructor {
 		}
 		switch ( _action ) {
 			case FAST_FILE_READ:	__Type__.add( __InputStream__ ); break;
-			default:					__Type__.add( __OutputStream__ ); break;
+			default:				__Type__.add( __OutputStream__ ); break;
 		}
 		__Source	= _filename;
 		__Operation	= _action;

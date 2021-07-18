@@ -15,8 +15,7 @@
 /// @output [ 4,4,10,12,15,23 ]
 /// @throws InvalidArgumentType
 /// @wiki Core-Index Functions
-function array_merge_sort( _arr, _sort_or_func ) {
-	if ( is_array( _arr ) == false ) { throw new InvalidArgumentType( "array_shuffle", 0, _arr, "array" ); }
+function array_merge_sort( _arr, _sort ) {
     // Divide the array into two subarrays, sort them and merge them
     static __sort__    = function( arr, l, r, f, s ) {
         static __merge__    = function( arr, p, q, r, f) {
@@ -31,7 +30,7 @@ function array_merge_sort( _arr, _sort_or_func ) {
                 L[i] = arr[p + i];
             for (var j = 0; j < n2; j++)
                 M[j] = arr[q + 1 + j];
-    
+			
             // Maintain current index of sub-arrays and main array
             var i, j, k;
             i = 0;
@@ -42,11 +41,11 @@ function array_merge_sort( _arr, _sort_or_func ) {
             // elements L and M and place them in the correct position at A[p..r]
             while (i < n1 && j < n2) {
                 if ( f( L[i], M[j]) ) {
-                    arr[@ k] = L[i];
-                    i++;
-                } else {
                     arr[@ k] = M[j];
                     j++;
+                } else {
+					arr[@ k] = L[i];
+                    i++;
                 }
                 k++;
             }
@@ -77,14 +76,26 @@ function array_merge_sort( _arr, _sort_or_func ) {
         }
     
     }
-    switch ( _sort_or_func ) {
-        case undefined :
-        case true : _sort_or_func = function( _a, _b ) { return _a <= _b ? 1 : -1; }; break;
-        case false: _sort_or_func = function( _a, _b ) { return _a >= _b ? 1 : -1; }; break;
-        
-    }
-	if ( is_method( _sort_or_func ) == false ) { throw new InvalidArgumentType( "array_binary_search", 1, _sort_or_func, "method" ); }
+	if ( is_array( _arr ) == false )
+		throw new InvalidArgumentType( "array_merge_sort", 0, _arr, "array" );
+		
+	if ( array_length( _arr ) < 2 )
+		return;
+		
+	if ( struct_type( _sort, Sort )) {
+		_sort	= _sort.func();
+		
+	} else {
+		switch ( _sort ) {
+	        case undefined :
+	        case true : _sort = function( _a, _b ) { return _a > _b ? 1 : -1; }; break;
+	        case false: _sort = function( _a, _b ) { return _a < _b ? 1 : -1; }; break;
+			
+	    }
+		
+	}
+	if ( is_method( _sort ) == false ) { throw new InvalidArgumentType( "array_merge_sort", 1, _sort, "method" ); }
 	
-    __sort__( _arr, 0, array_length( _arr ) - 1, _sort_or_func, __sort__ );
+    __sort__( _arr, 0, array_length( _arr ) - 1, _sort, __sort__ );
     
 }

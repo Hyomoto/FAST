@@ -13,8 +13,12 @@ enum FAST_DB_IDS {
 	STRUCT,
 	LAST
 }
+enum FAST_DB {
+	NORMAL,
+	DEFINE
+}
 
-FAST.feature( "FTDB", "Database", (2 << 32 ) + ( 0 << 16 ) + 0, "06/23/2021" );
+FAST.feature( "FTDB", "Database", (2 << 32 ) + ( 0 << 16 ) + 0, "06/29/2021" );
 
 /// @func __FAST_input_config__
 function __FAST_database_config__() {
@@ -43,6 +47,7 @@ function __FAST_database_config__() {
 				if ( _i == 0 ) {
 					var _c = string_delete( __String, 1, __Last );
 					__Last	= __Size;
+					__Buffer	= _c;
 					return _c;
 					
 				}
@@ -73,4 +78,10 @@ function __FAST_database_config__() {
 	})();
 	return instance;
 	
+}
+/// @func BadDatabaseFormat
+/// @desc	Returned when the database fails to read from an input.
+/// @wiki Database Errors
+function BadDatabaseFormat( _source, _line_number, _line, _value, _msg ) : __Error__() constructor {
+	message	= f( "line {} in {} :\n\tError caused by '{}' in {}.  {}", _line_number, _source, _value, _line, _msg );
 }

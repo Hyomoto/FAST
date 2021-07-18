@@ -1,18 +1,23 @@
+var _pas	= new Script().from_string("temp a\nwhile a > 0\n  put a - 1 into a").timeout( infinity );
 var _timer	= new Timer();
-var _script	= new Script().from_input( new TextFile().open( "test.txt" )).timeout(infinity);
-var _loop	= 100;
-var _total	= 0;
+var _i		= 0;
+var _l		= 10000;
+var _r		= 1;
+var _f		= 1/60 * 1000000;
+var _t		= 0;
+var _c		= 0;
+var _k		= 1;
 
-//repeat( 10 ) {
+repeat( _k ) {
 	_timer.reset();
 	
-	repeat( _loop ) {
-		var _hold	= _script.execute(undefined, undefined, 100 );
-		_script.__pool__.put( _hold );
+	var _i = 0; repeat( _l ) {
+		if ( _timer.elapsed() > 16666 ) { break; }
+		_pas.execute( _r );
+		++_i;
 	}
-	_total	+= _timer.elapsed();
+	_t	+= _timer.elapsed();
+	_c	+= _i * _r * 6;
 	
-	syslog( "ObjectPool size was ", _script.__pool__.size() );
-	
-//
-syslog( "Scripts GML ", _loop * 100,": ", string_from_time( _total/1000000, "$S.SSSS seconds" ));
+}
+syslog(string_formatted( "{} operations took {:1.4f} seconds.", _c / _k, _t/1000000/_k ));

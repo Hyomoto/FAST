@@ -28,26 +28,28 @@ function ScriptEngine() : __Struct__() constructor {
 		if ( _f == undefined || struct_type( _f, Script ) == false )
 			throw new InvalidArgumentType( "ScriptEngine.execute", 0, _script, "Script" );
 		
-		__fast_script_origin__( self ); // set this engine as the script scope
+		var _h	= __fast_script_trace__( __Output ); // set this engine as the script scope
 		try {
+			if ( __Global__ != undefined )
+				_f.use_global( __Global__ );
 			switch ( array_length( _args ) ) {
-				case 0 : _output = _f.execute( __Global__, undefined ); break;
-				case 1 : _output = _f.execute( __Global__, undefined, _args[ 0 ] ); break;
-				case 2 : _output = _f.execute( __Global__, undefined, _args[ 0 ], _args[ 1 ] ); break;
-				case 3 : _output = _f.execute( __Global__, undefined, _args[ 0 ], _args[ 1 ], _args[ 2 ] ); break;
-				case 4 : _output = _f.execute( __Global__, undefined, _args[ 0 ], _args[ 1 ], _args[ 2 ], _args[ 3 ] ); break;
-				case 5 : _output = _f.execute( __Global__, undefined, _args[ 0 ], _args[ 1 ], _args[ 2 ], _args[ 3 ], _args[ 4 ] ); break;
+				case 0 : _output = _f.restrict( __Restrict__.top()).execute(); break;
+				case 1 : _output = _f.restrict( __Restrict__.top()).execute( _args[ 0 ] ); break;
+				case 2 : _output = _f.restrict( __Restrict__.top()).execute( _args[ 0 ], _args[ 1 ] ); break;
+				case 3 : _output = _f.restrict( __Restrict__.top()).execute( _args[ 0 ], _args[ 1 ], _args[ 2 ] ); break;
+				case 4 : _output = _f.restrict( __Restrict__.top()).execute( _args[ 0 ], _args[ 1 ], _args[ 2 ], _args[ 3 ] ); break;
+				case 5 : _output = _f.restrict( __Restrict__.top()).execute( _args[ 0 ], _args[ 1 ], _args[ 2 ], _args[ 3 ], _args[ 4 ] ); break;
 			}
-			if ( _output.state == FAST_SCRIPT_YIELD )
-				__Coroutines__.push( new ScriptCoroutine( _f, _output ));
+			if ( _f.__Lump.state == FAST_SCRIPT_YIELD )
+				__Coroutines__.push( new ScriptCoroutine( _f, _f.__Lump ));
 			
 		} catch ( _ex ) {
 			trace( "ScriptEngine error::\n" + _ex.message );
 			
 		}
-		__fast_script_origin__( undefined ); // unset engine scope
+		__fast_script_trace__( _h ); // unset engine scope
 		
-		return _output.result;
+		return _output;
 		
 	}
 	/// @desc	Used to route calls to the output in this engine, allowing routing of trace
@@ -58,12 +60,12 @@ function ScriptEngine() : __Struct__() constructor {
 	}
 	/// @desc	Calls for the engine to execute any scripts that have yielded.
 	static update	= function() {
-		__fast_script_origin__( self ); // set this engine as the script scope
+		var _h	= __fast_script_trace__( __Output ); // set this engine as the script scope
 		try {
 			repeat( __Coroutines__.size() ) {
 				var _co	= __Coroutines__.pop(0);
 				
-				_co.execute( __Variables__ );
+				_co.execute();
 				
 				if ( _co.is_yielded() )
 					__Coroutines__.push( _co );
@@ -73,7 +75,7 @@ function ScriptEngine() : __Struct__() constructor {
 			trace( "ScriptEngine error::\n" + _ex.message );
 			
 		}
-		__fast_script_origin__( undefined ); // unset engine scope
+		__fast_script_trace__( _h ); // unset engine scope
 		
 	}
 	/// @param {bool}	allow	If false, will not allow global access
@@ -111,17 +113,30 @@ function ScriptEngine() : __Struct__() constructor {
 	/// @desc	Binds the given value to name.  This value will be accessible to scripts that are
 	///		executed from the engine.  You can bind values, functions, methods and Scripts.
 	static bind	= function( _name, _value ) {
-		__Variables__[$ _name ]	= _value;
+		if ( is_method( _value ) || struct_type( _value, Script ))
+			__Variables__[$ _name ]	= _value;
+		else
+			__Variables__[$ _name ]	= method( undefined, _value );
 		
 	}
-	/// @param {string}	name	The name to assign the function to
-	/// @param {method}	value	The function to assign
-	/// @desc	Used to bind script functions to the engine when FAST_SCRIPT_PROTECT_FUNCTIONS is
-	///		true.  Because of how GMS looks up functions internally, a user could reach unintended
-	///		functions in GMS by simply executing numbers as functions.  This will wrap the function
-	///		that reference in ScriptFunctionWrapper which flags this value as acceptable for function calls.
-	static bind_safe	= function( _name, _value ) {
-		__Variables__[$ _name ]	= new ScriptFunctionWrapper( _value );
+	static push_restriction	= function() {
+		var _arr = array_length( argument_count );
+		var _i = 0; repeat( argument_count ) {
+			_arr[ _i ]	= argument[ _i ];
+			++_i;
+		}
+		__Restrict__.push( array_sort( _arr, true ));
+		
+		return self;
+		
+	}
+	static pop_restriction	= function() {
+		if ( __Restrict__.pop() == 1 )
+			throw new __Error__().from_string( "pop_restriction() failed because no restrictions were pushed to stack!" );
+		
+		__Restrict__.pop();
+		
+		return self;
 		
 	}
 	/// @param {__InputStream__}	source	A input stream
@@ -131,31 +146,40 @@ function ScriptEngine() : __Struct__() constructor {
 	///		found, FileNotFound will be thrown.
 	/// @throws InvalidArgumentType, FileNotFound
 	/// @returns method
-	static load_async	= function( _source ) {
+	static load_async	= function( _source, _on_finish ) {
+		if ( struct_type( _source, __Stream__ ))
+			_source	= new __Stream__( _source ).open();
+		
 		if ( __Async__ != undefined ) { return; }
 		
 		static __load__	= new Script().from_string(
-			"func time_, list_, print_\n" +
-			"while list_.finished:: == False\n" +
-			" load list_.read::\n" +
-			" if time_.elapsed:: > 250000\n" +
-			"  yield\n" +
-			"  time_.reset::"
-		).timeout(infinity);
+			"temp time_, list_\n" +
+			"while list_.finished() == False\n" +
+			" temp f as list_.read()\n" +
+			"// trace f\n" +
+			" load f\n" +
+			" if time_.elapsed() > 250000\n" +
+			"  time_.reset()\n" +
+			"  yield"
+		)//.timeout(infinity);
 		
-		if ( struct_type( _source, __InputStream__ ) == false ) { throw new InvalidArgumentType( "ScriptEngine.load", 0, _source, "__InputStream__" ); }
+		if ( struct_type( _source, __InputStream__ ) == false )
+			throw new InvalidArgumentType( "ScriptEngine.load", 0, _source, "__InputStream__" );
 		
-		var _output	= __load__.execute( __Variables__, undefined, new Timer(), _source, new ScriptFunctionWrapper( show_debug_message ));
+		var _output	= __load__.execute( new Timer(), _source );
 		
-		if ( _output.state == FAST_SCRIPT_YIELD ) {
+		if ( __load__.__Lump.state == FAST_SCRIPT_YIELD ) {
 			__Async__ = new FrameEvent( FAST.STEP, 0, function( _p ) {
 				try {
-					_p.execute( __Variables__ );
+					_p.c.execute();
 					
-					if ( not _p.is_yielded() ) {
+					if ( not _p.c.is_yielded() ) {
 						trace( "ScriptEngine load_async complete." );
 						__Async__.discard();
 						__Async__ = undefined;
+						
+						if ( _p.f != undefined )
+							_p.f();
 						
 					}
 					
@@ -164,7 +188,7 @@ function ScriptEngine() : __Struct__() constructor {
 					
 				}
 				
-			}).parameter( new ScriptCoroutine( __load__, _output ));
+			}).parameter({c: new ScriptCoroutine( __load__, __load__.__Lump ), f: _on_finish });
 			
 		}
 		// should return a function that can be used to measure progress, for now just returns if async completed
@@ -206,6 +230,7 @@ function ScriptEngine() : __Struct__() constructor {
 	__Variables__	= {};
 	__Global__		= undefined;
 	__Async__		= undefined;
+	__Restrict__	= new Stack().push([]);
 	
 	__Type__.add( ScriptEngine );
 	

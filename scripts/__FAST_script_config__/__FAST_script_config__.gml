@@ -6,6 +6,7 @@
 //	check is not performed but the system will otherwise behave the same.  There is a
 //	to no performance benefit to turning this off.
 #macro FAST_SCRIPT_PROTECT_FUNCTIONS	true
+#macro FAST_SCRIPT_DEFAULT_TIMEOUT		16666
 
 // # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // #							End of User Defines
@@ -13,44 +14,24 @@
 #macro FAST_SCRIPT_RETURN			0x0
 #macro FAST_SCRIPT_YIELD			0x1
 
-function __fast_script_origin__() {
-	static __set__	= undefined;
-	if ( argument_count > 0 ) { __set__ = argument[ 0 ]; }
+#macro FAST_SCRIPT_TRACE ( __fast_script_trace__() )
+function __fast_script_trace__() {
+	static __set__	= show_debug_message;
+	if ( argument_count > 0 ) {
+		var _set	= argument[ 0 ];
+		var _h		= __set__;
+		
+		if ( struct_type( _set, __OutputStream__ )) {
+			__set__ = method( argument[ 0 ], (argument[ 0 ]).write );
+			return _h;
+		} else if ( is_method( _set ) || ( is_real( _set ) && script_exists( _set )) ) {
+			__set__ = argument[ 0 ];
+			return _h;
+		}
+		throw new InvalidArgumentType( "FAST_SCRIPT_TRACE", 0, _set, "function/__OutputStream__" );
+		
+	}
 	return __set__;
-	
-}
-
-enum FAST_SCRIPT_FLAG {
-	OPENBRACKET, // 0
-	CLOSEBRACKET,// 1
-	
-	POSITIVE,	 // 2
-	NEGATIVE,	 // 3
-	
-	PLUS,		// 4
-	MINUS,		// 5
-	TIMES,		// 6
-	DIVIDE,		// 7
-	
-	GREATERTHAN,		// 8
-	GREATERTHANOREQUAL,	// 9
-	LESSTHAN,			// 10
-	LESSTHANOREQUAL,	// 11
-	EQUAL,				// 12
-	NOTEQUAL,			// 13
-	
-	AND,		// 14
-	OR,			// 15
-	NOT,		// 16
-	
-	NUMBER,		// 17
-	STRING,		// 18
-	VARIABLE,	// 19
-	FUNCTION,	// 20
-	
-	NoInfo,
-	SkipClimbUp,
-	RightAssociative,
 	
 }
 enum FAST_SCRIPT_CODE {
@@ -64,6 +45,7 @@ enum FAST_SCRIPT_CODE {
 	LOAD,	// 7
 	EXECUTE,	// 8
 	TRACE,		// 9
+	EXPRESSION, // 10
 	LAST_BYTE
 }
 enum FAST_SCRIPT_INDEX {
@@ -128,8 +110,8 @@ function __FAST_script_config__() {
 			__Size	= 0;
 			__String= "";
 		};
-		version		= (0 << 32 ) + (1 << 16);
-		date		= "06/20/2021";
+		version		= (1 << 32 ) + (0 << 16);
+		date		= "07/07/2021";
 		
 	})();
 	return instance;

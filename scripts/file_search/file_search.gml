@@ -1,8 +1,8 @@
 /// @func file_search
-/// @param {string}	filetype	The file extension to search for.
-/// @param {string}	directory	The directory to start searching from.
-/// @param {bool}	*sub		optional: If `true`, will include sub-directories.
-/// @param {__Stream__} output	optional: If provided, this output stream will be used
+/// @param {string}		filetype	The file extension to search for.
+/// @param {string}		directory	The directory to start searching from.
+/// @param {bool}		*sub		optional: If `true`, will include sub-directories.
+/// @param {__Stream__} *output		optional: If provided, this output stream will be used
 /// @desc	Searches the given directory for files that match the mask.  If sub is true, all
 ///		sub directories will also be traversed.
 /// @example
@@ -14,8 +14,10 @@ function file_search( _mask, _directory, _sub, _output ) {
 	var _list	= _output == undefined ? new LinkedList() : _output;
 	var _dirs	= new Stack();
 	
-	if ( struct_type( _output, __OutputStream__ ) == false )
-			throw new InvalidArgumentType( "file_search", 0, _output, "__OutputStream__" );
+	//if ( struct_type( _output, __Stream__ ))
+	//	_output	= new __Stream__( _output ).open();
+	//if ( struct_type( _output, __OutputStream__ ) == false )
+	//	throw new InvalidArgumentType( "file_search", 3, _output, "__OutputStream__" );
 	
 	if ( _mask == undefined ) { _mask = "*"; }
 	if ( _directory == undefined ) { _directory = ""; }

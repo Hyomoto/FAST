@@ -51,7 +51,8 @@ function Timer() : __Struct__() constructor {
 	/// @var {int} The time at which the timer was started
 	__Start		= get_timer();
 	
-	if ( is_string( __Format ) == false ) { throw new InvalidArgumentType( "Timer", 0, __Format, "string" ); }
+	if ( is_string( __Format ) == false )
+		throw new InvalidArgumentType( "Timer", 0, __Format, "string" );
 	
 	__Type__.add( Timer );
 	

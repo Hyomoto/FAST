@@ -119,26 +119,30 @@ function __IterableList__() : __Struct__() constructor {
 	///		will be thrown.
 	/// @throws InvalidArgumentType
 	/// @returns {$self}
-	static sort	= function( _sort_or_func ) {
-		var _iter	= new __Self__();
-
+	static sort	= function( _sort ) {
+		if ( size() < 2 )
+			return;
+		
+		if ( struct_type( _sort, Sort )) {
+			_sort	= _sort.func();
+		
+		} else {
+			switch ( _sort ) {
+		        case undefined :
+		        case true : _sort = function( _a, _b ) { return _a > _b ? 1 : -1; }; break;
+		        case false: _sort = function( _a, _b ) { return _a < _b ? 1 : -1; }; break;
+				
+		    }
+			
+		}
+		if ( is_method( _sort ) == false ) { throw new InvalidArgumentType( "sort", 0, _sort, "method" ); }
+		
 		var _array	= to_array();
-
-		switch ( _sort_or_func ) {
-			case undefined:
-			case true:  _sort_or_func = function( _a, _b ) { return _a > _b ? 1 : -1; }; break;
-			case false: _sort_or_func = function( _a, _b ) { return _a < _b ? 1 : -1; }; break;
-		}
-		if ( is_method( _sort_or_func ) == false ) { throw new InvalidArgumentType( "sort", 0, _sort_or_func, "method" ); }
-
-		array_sort( _array, _sort_or_func );
-
-		var _i = 0; repeat( array_length( _array ) ) {
-			_iter.push( _array[ _i++ ] );
-
-		}
-		return _iter;
-
+		
+		array_sort( _array, _sort );
+		
+		return new __Self__().from_array( _array );;
+		
 	}
 	/// @param {method}	*func	optional: A function to determine comparison
 	/// @desc	Returns a new {$self} containing all of the unique entires in this list.  If func is
@@ -473,16 +477,19 @@ function __IterableList__() : __Struct__() constructor {
 	/// @returns Array
 	static to_array	= function( _f ) {
 		if ( _f == undefined ) { _f = function( _v ) { return _v; }}
-		
-		if ( is_method( _f ) == false ) { throw new InvalidArgumentType( "to_array", 0, _f, "method" ); }
-		
 		if ( size() == 0 ) { return []; }
 		
 		index( 0 );
-
-		var _a = array_create( size() ), _i = 0; repeat( size() ) {
-			_a[ _i++ ]	= _f( next() );
-
+		
+		try {
+			var _a = array_create( size() ), _i = 0; repeat( size() ) {
+				_a[ _i++ ]	= _f( next() );
+				
+			}
+			
+		} catch ( _ex ) {
+			throw new InvalidArgumentType( "to_array", 0, _f, "method" );
+			
 		}
 		return _a;
 

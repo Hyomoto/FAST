@@ -6,7 +6,8 @@ function ats_f_strings() {
 		"string_from_time",
 		"string_pad",
 		"string_to_real",
-		"string_trim"
+		"string_trim",
+		"string_formatted"
 	]
 	test_function( [ "string_combine", "a", "b", "c" ], "abc", __returns );
 	
@@ -35,6 +36,10 @@ function ats_f_strings() {
 	test_function( [ "string_to_real", "255" ], 255, __returns );
 	test_throwable( [ "string_to_real", 9 ], InvalidArgumentType, do_function );
 	test_throwable( [ "string_to_real", "apple" ], BadValueFormat, do_function );
+	
+	test_function( [ "string_formatted", "{}{}{}", "a", "b", "c" ], "abc", __returns );
+	test_function( [ "string_formatted", "{} {} {}", "a", "b", "c" ], "a b c", __returns );
+	test_function( [ "string_formatted", "{} {} {}", "a", "b" ], "a b {}", __returns );
 	
 	test_function( [ "string_trim", "\t white space! \t\t\t     " ], "white space!", __returns );
 	test_throwable( [ "string_pad", 9 ], InvalidArgumentType, do_function );
