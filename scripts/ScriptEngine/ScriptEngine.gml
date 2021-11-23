@@ -119,6 +119,7 @@ function ScriptEngine() : __Struct__() constructor {
 			__Variables__[$ _name ]	= method( undefined, _value );
 		
 	}
+	
 	static push_restriction	= function() {
 		var _arr = array_length( argument_count );
 		var _i = 0; repeat( argument_count ) {

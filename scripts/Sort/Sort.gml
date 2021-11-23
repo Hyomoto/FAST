@@ -1,8 +1,7 @@
  /// @func Sort
  /// @desc	Creates a new Sort which can be used by sorting functions. Normal use would be to sort
- ///	an array containing structs or instances and sorting them by key.  However, this behavior
- ///	can be overriden by setting __Seek to a function that returns the variable you wish to use
- ///	for comparison.
+ ///	an array containing structs or instances and by key.  However, this behavior can be overridden
+ ///	by setting __Seek to a function that returns the variable you wish to use for comparison.
 function Sort() : __Struct__() constructor {
 	static func	= function() {
 		return method( self, compare );

@@ -111,7 +111,7 @@ function Logger( _name ) constructor {
 		var _event	= new FrameEvent( FAST_EVENT_GAME_END, 0, function( _list ) {
 			syslog( "Logger :: Closing all opened loggers..." );
 			
-			var _i	= 0; repeat( ds_list_size( _list ) ) {
+			repeat( ds_list_size( _list ) ) {
 				var _target	= ds_list_find_value( _list, 0 );
 				
 				try {
@@ -132,20 +132,20 @@ function Logger( _name ) constructor {
 	})();
 	/// @var {array}	An array of the outputs this Logger writes to.
 	/// @output	Outputs...
-	__Outputs	= array_create( argument_count - 1 );
+	__Outputs	= [];
 	
-	var _i = 0; repeat( argument_count - 1 ) {
-		var _output	= argument[ _i + 1 ];
+	var _i = 1; repeat( argument_count - 1 ) {
+		var _output	= argument[ _i++ ];
 		
 		if ( is_array( _output )) {
 			if ( struct_type( _output[ 1 ], __OutputStream__ ) == false )
 				throw new InvalidArgumentType( "__init__", _i + 1, _output[ 1 ], "__OutputStream__" );
-			__Outputs[ _i ] = new __buffer__( _output[ 0 ], _output[ 1 ] );
+			array_push( __Outputs, new __buffer__( _output[ 0 ], _output[ 1 ] ));
 			
 		} else {
-			if ( struct_type( _output[ 1 ], __OutputStream__ ) == false )
+			if ( struct_type( _output, __OutputStream__ ) == false )
 				throw new InvalidArgumentType( "__init__", _i + 1, _output[ 1 ], "__OutputStream__" );
-			__Outputs[ _i ]	= _output;
+			array_push( __Outputs, _output );
 			
 		}
 		++_i;

@@ -1,4 +1,4 @@
-__run	= function() {
+a__run	= function() {
 	if ( running == undefined ) {
 		var _list;
 		

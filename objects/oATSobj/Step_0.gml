@@ -1,6 +1,7 @@
 x	+= 1;
 y	+= 0.5;
-
+if ( gamepad_button_check_pressed( 0, gp_face1 ))
+	syslog( "BEEP" );
 var _scroll	= mouse_wheel_up() - mouse_wheel_down();
 
 if ( _scroll != 0 ) {

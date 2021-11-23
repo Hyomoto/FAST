@@ -86,7 +86,7 @@ function __FAST_render_config__() {
 			
 			camera_set_view_size( view_camera[ 0 ], render_width, render_height );
 			
-			if ( fullscreen )
+			if ( window_get_fullscreen() )
 				set_fullscreen();
 			else
 				set_windowed();
@@ -102,7 +102,6 @@ function __FAST_render_config__() {
 		overscan_width	= 0;
 		overscan_height	= 0;
 		precision		= 1.0;
-		fullscreen		= window_get_fullscreen();
 		
 	})();
 	return instance;

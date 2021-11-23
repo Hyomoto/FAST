@@ -1,3 +1,4 @@
+gamepad	= new GamepadXbox();
 //var _pf	= infix_to_postfix("(a+b)*(c+d)");
 //syslog( _pf );
 //var _ex	= expression_parse( "( a + b ) * ( c + d )" );
@@ -64,7 +65,7 @@ show_debug_message( _data.toString() );
 //	syslog( _p.word( char_is_whitespace, false ));
 	
 //}
-
+//RenderConfiguration.set_max_scale( 1.0 );
 //RenderManager.set_overscan( 0, 64 );
 //RenderManager.set_resolution( 1280, 720 );
 //RenderManager.create_camera( 640, 360 );

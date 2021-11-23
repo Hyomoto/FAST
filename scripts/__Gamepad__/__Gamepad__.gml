@@ -90,15 +90,16 @@ function __Gamepad__() : __Struct__() constructor {
 		gamepad_set_axis_deadzone( padIndex, _amount );
 		
 	}
-	/// @desc The port this gamepad is plugged into. You can get the port number via port.portId if this gamepad is plugged into a port.
-	port		= GamepadManager.get_port( self );
-	/// @desc The pad index this Gamepad is used.
-	padIndex	= -1;
+	__Type__.add( __Gamepad__ );
 	
+	/// @desc The port this gamepad is plugged into. You can get the port number via port.portId if this gamepad is plugged into a port.
+	port		= GamepadManager.ports.connect_gamepad_to_port( self );
+	// if a gamepad is created and no virtual ports exist, throw error
 	if ( port == undefined ) {
 		throw new NoGamepadVirtualPortAvailable( instanceof( self ) );
 		
 	}
-	__Type__.add( __Gamepad__ );
+	/// @desc The pad index this Gamepad is using.
+	padIndex	= GamepadManager.get_pad();
 	
 }

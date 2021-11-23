@@ -9,8 +9,8 @@
 // #							End of User Defines
 // # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #macro FAST			( __FAST_config__() )
-#macro syslog		( __output_to_stream__() ).write
-#macro SystemOutput	( __output_to_stream__() )
+#macro syslog		__output_to_stream__().write
+#macro SystemOutput	__output_to_stream__()
 
 #macro __FAST_version__	"3.5.2"
 #macro __FAST_date__	"06/29/2021"

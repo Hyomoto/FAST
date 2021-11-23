@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Constructors",
-    "path": "folders/FAST/Core/Constructors/Publisher/Constructors.yy",
+    "name": "Gamepad",
+    "path": "folders/FAST/Input Handling/Gamepad.yy",
   },
   "resourceVersion": "1.0",
-  "name": "Publisher",
+  "name": "GamepadAxis",
   "tags": [],
   "resourceType": "GMScript",
 }
