@@ -12,8 +12,8 @@
 #macro syslog		__output_to_stream__().write
 #macro SystemOutput	__output_to_stream__()
 
-#macro __FAST_version__	"3.5.2"
-#macro __FAST_date__	"06/29/2021"
+#macro __FAST_version__	"3.5.3"
+#macro __FAST_date__	"11/23/2021"
 
 #macro EVENT	function()
 
