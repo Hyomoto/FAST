@@ -109,7 +109,7 @@ function Vec3( _x, _y, _z ) : __Struct__() constructor {
 	/// @desc Used to normalise the vector to unit length.
 	static normalize	= function() {
 		var _len		= sqr_len();
-		if (_len == 0) 
+		if (_len == 0) {
 			throw new DivisionByZero("normalize");
 		}
 		_len	= sqrt( _len );
