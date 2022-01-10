@@ -252,3 +252,7 @@ function ReservedKeyword( _call, _value ) : __Error__() constructor {
 function IllegalStreamOperation( _call, _msg ) : __Error__() constructor {
 	message	= f( "The function {} failed because {}.", _call, _msg );
 }
+
+function DivisionByZero( _call ) : __Error__() constructor {
+	message	= f( "Divide by zero encountered. {}", _call, _msg );
+}

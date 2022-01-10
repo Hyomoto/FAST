@@ -4,9 +4,9 @@
 /// @param {real} z The z component in this vector
 /// @desc A simple, garbage-collected three-dimensional vector.
 /// @example
-//var _vec3 = new Vec3( 32, 20, 12 );
+//var _vec = new Vec3( 32, 20, 12 );
 /// @wiki Core-Index
-function Vec3( _x, _y, _z ) constructor {
+function Vec3( _x, _y, _z ) : __Struct__() constructor {
 	/// @param {real} x The x component to set this vector
 	/// @param {real} y The y component to set this vector
 	/// @param {real} z The z component to set this vector
@@ -23,78 +23,109 @@ function Vec3( _x, _y, _z ) constructor {
 	}
 	/// @returns real
 	/// @desc Used to get the vectors squared length.
-	static lensqr	= function() {
+	static sqr_len	= function() {
 		return (x * x + y * y + z * z);	
 	}
 	/// @param {Vec3} Vec3 The vector to add to this one.
 	/// @returns Vec3
-	static add	= function( _Vec3 ) { return new Vec3( x + _Vec3.x, y + _Vec3.y, z + _Vec3.z ); }
+	static add	= function( _vec ) {
+		if (not struct_type(_vec, Vec3)) {
+			throw new UnexpectedTypeMismatch("add", _vec, "Vec3");	
+		}
+		return set( x + _vec.x, y + _vec.y, z + _vec.z ); 
+	}
 	/// @param {Vec3} Vec3 The vector to subtract from this one.
 	/// @returns Vec3
-	static subtract	= function( _Vec3 ) {
-		return new Vec3(  x	- _Vec3.x, y - _Vec3.y, z - _Vec3.z );
-		
+	static subtract	= function( _vec ) {
+		if (not struct_type(_vec, Vec3)) {
+			throw new UnexpectedTypeMismatch("subtract", _vec, "Vec3");	
+		}
+		return set(  x	- _vec.x, y - _vec.y, z - _vec.z );
 	}
 	/// @param {Vec3} Vec3 The vector to multiply this one component wise with.
 	/// @returns Vec3
-	static multiply	= function( _Vec3 ) {
-		return new Vec3( x * _Vec3.x, y * _Vec3.y, z * _Vec3.z );
-		
+	static componentwise_multiply = function( _vec ) {
+		if (not struct_type(_vec, Vec3)) {
+			throw new UnexpectedTypeMismatch("componentwise_multiply", _vec, "Vec3");	
+		}
+		return set( x * _vec.x, y * _vec.y, z * _vec.z );
 	}
 	/// @param {Vec3} Vec3 The vector to divide this one one component wise by.
 	/// @returns Vec3
-	static divide	= function( _Vec3 ) {
-		return new Vec3( x / _Vec3.x, y / _Vec3.y, z / _Vec3.z );
-		
+	static componentwise_divide	= function( _vec ) {
+		if (not struct_type(_vec, Vec3)) {
+			throw new UnexpectedTypeMismatch("componentwise_divide", _vec, "Vec3");	
+		}
+		if (_vec.x == 0 || _vec.y == 0 || _vec.z == 0) {
+			throw new DivisionByZero("componentwise_divide");
+		}
+		return new Vec3( x / _vec.x, y / _vec.y, z / _vec.z );
 	}
 	/// @param {Vec3} Vec3 The vector to get the dot product with.
 	/// @returns real
-	static dot	= function( _Vec3 ) {
-		return x * _Vec3.x + y * _Vec3.y + z * _Vec3.z;
-		
+	static dot	= function( _vec ) {
+		if (not struct_type(_vec, Vec3)) {
+			throw new UnexpectedTypeMismatch("dot", _vec, "Vec3");	
+		}
+		return x * _vec.x + y * _vec.y + z * _vec.z;
 	}
 	/// @param {Vec3} Vec3 The vector to get the cross product with.
 	/// @returns Vec3
-	static cross	= function( _Vec3 ) {
-		var _x = y * _Vec3.z - z * _Vec3.y;
-		var _y = z * _Vec3.x - x * _Vec3.z;
-		var _z = x * _Vec3.y - y * _Vec3.x;
+	static cross	= function( _vec ) {
+		if (not struct_type(_vec, Vec3)) {
+			throw new UnexpectedTypeMismatch("cross", _vec, "Vec3");	
+		}
+		var _x = y * _vec.z - z * _vec.y;
+		var _y = z * _vec.x - x * _vec.z;
+		var _z = x * _vec.y - y * _vec.x;
 		return new Vec3(_x, _y, _z);
 	}
 	/// @param {Vec3} Vec3 The vector to get the distance to.
 	/// @returns real
-	static dist_to	= function( _Vec3 ) {
+	static dist_to	= function( _vec ) {
+		if (not struct_type(_vec, Vec3)) {
+			throw new UnexpectedTypeMismatch("dist_to", _vec, "Vec3");	
+		}
 		return sqrt(
-			(x - _Vec3.x) * (x - _Vec3.x) +
-			(y - _Vec3.y) * (y - _Vec3.y) +
-			(z - _Vec3.z) * (z - _Vec3.z)
+			(x - _vec.x) * (x - _vec.x) +
+			(y - _vec.y) * (y - _vec.y) +
+			(z - _vec.z) * (z - _vec.z)
 		);
 	}	
 	/// @param {Vec3} Vec3 The vector to get the squared distance to.
 	/// @returns real
-	static dist_to_sqr	= function( _Vec3 ) {
+	static sqr_dist_to	= function( _vec ) {
+		if (not struct_type(_vec, Vec3)) {
+			throw new UnexpectedTypeMismatch("sqr_dist_to", _vec, "Vec3");	
+		}
 		return ( 
-			(x - _Vec3.x) * (x - _Vec3.x) +
-			(y - _Vec3.y) * (y - _Vec3.y) +
-			(z - _Vec3.z) * (z - _Vec3.z)
+			(x - _vec.x) * (x - _vec.x) +
+			(y - _vec.y) * (y - _vec.y) +
+			(z - _vec.z) * (z - _vec.z)
 		);
 	}
 
 	/// @returns Vec3
 	/// @desc Used to normalise the vector to unit length.
 	static normalize	= function() {
-		var _len		= 0;
-			_len	= sqrt( _len );
-			
-			set( x / _len, y / _len, z / _len);
-
-		return self;
+		var _len		= sqr_len();
+		if (_len == 0) 
+			throw new DivisionByZero("normalize");
+		}
+		_len	= sqrt( _len );
+		return set( x / _len, y / _len, z / _len);
 	}
 	/// @returns Vec3
-	/// @desc Used to get the vectors unit length.
+	/// @desc Used to get the vectors as unit length.
 	static normalized	= function() {
-		var _len		= 0;
-			_len	= sqrt( _len );
+		if (not struct_type(_vec, Vec3)) {
+			throw new UnexpectedTypeMismatch("normalized", _vec, "Vec3");	
+		}
+		var _len = sqr_len();
+		if ( _len == 0 ) {
+			throw new DivisionByZero("normalize");
+		}
+		_len = sqrt( _len );
 			
 		return new Vec3( x / _len, y / _len, z / _len);
 	}
@@ -110,10 +141,7 @@ function Vec3( _x, _y, _z ) constructor {
 		return string( x ) + ", " + string( y ) + ", " + string( z );
 		
 	}
-	static is		= function( _data_type ) {
-		return _data_type == Vec3;
-		
-	}
+
 	/// @desc the x component of this vector
 	x	= 0;
 	/// @desc the y component of this vector
@@ -122,4 +150,5 @@ function Vec3( _x, _y, _z ) constructor {
 	z	= 0;
 	set( _x, _y, _z );
 	
+	__Type__.add( Vec3 );
 }
