@@ -48,6 +48,7 @@
     {"id":{"name":"DatabaseExpression","path":"scripts/DatabaseExpression/DatabaseExpression.yy",},"order":1,},
     {"id":{"name":"__FAST_UI_config__","path":"scripts/__FAST_UI_config__/__FAST_UI_config__.yy",},"order":1,},
     {"id":{"name":"string_explode","path":"scripts/string_explode/string_explode.yy",},"order":2,},
+    {"id":{"name":"ats_Vec2","path":"scripts/ats_Vec2/ats_Vec2.yy",},"order":1,},
     {"id":{"name":"Parser","path":"scripts/Parser/Parser.yy",},"order":3,},
     {"id":{"name":"ease_in_sine","path":"scripts/ease_in_sine/ease_in_sine.yy",},"order":1,},
     {"id":{"name":"ease_in_elastic","path":"scripts/ease_in_elastic/ease_in_elastic.yy",},"order":0,},

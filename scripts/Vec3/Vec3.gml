@@ -30,7 +30,7 @@ function Vec3( _x, _y, _z ) : __Struct__() constructor {
 	/// @returns Vec3
 	static add	= function( _vec ) {
 		if (not struct_type(_vec, Vec3)) {
-			throw new UnexpectedTypeMismatch("add", _vec, "Vec3");	
+			throw new InvalidArgumentType("add", _vec, "Vec3");	
 		}
 		return set( x + _vec.x, y + _vec.y, z + _vec.z ); 
 	}
@@ -38,7 +38,7 @@ function Vec3( _x, _y, _z ) : __Struct__() constructor {
 	/// @returns Vec3
 	static subtract	= function( _vec ) {
 		if (not struct_type(_vec, Vec3)) {
-			throw new UnexpectedTypeMismatch("subtract", _vec, "Vec3");	
+			throw new InvalidArgumentType("subtract", _vec, "Vec3");	
 		}
 		return set(  x	- _vec.x, y - _vec.y, z - _vec.z );
 	}
@@ -46,7 +46,7 @@ function Vec3( _x, _y, _z ) : __Struct__() constructor {
 	/// @returns Vec3
 	static componentwise_multiply = function( _vec ) {
 		if (not struct_type(_vec, Vec3)) {
-			throw new UnexpectedTypeMismatch("componentwise_multiply", _vec, "Vec3");	
+			throw new InvalidArgumentType("componentwise_multiply", _vec, "Vec3");	
 		}
 		return set( x * _vec.x, y * _vec.y, z * _vec.z );
 	}
@@ -54,7 +54,7 @@ function Vec3( _x, _y, _z ) : __Struct__() constructor {
 	/// @returns Vec3
 	static componentwise_divide	= function( _vec ) {
 		if (not struct_type(_vec, Vec3)) {
-			throw new UnexpectedTypeMismatch("componentwise_divide", _vec, "Vec3");	
+			throw new InvalidArgumentType("componentwise_divide", _vec, "Vec3");	
 		}
 		if (_vec.x == 0 || _vec.y == 0 || _vec.z == 0) {
 			throw new DivisionByZero("componentwise_divide");
@@ -65,7 +65,7 @@ function Vec3( _x, _y, _z ) : __Struct__() constructor {
 	/// @returns real
 	static dot	= function( _vec ) {
 		if (not struct_type(_vec, Vec3)) {
-			throw new UnexpectedTypeMismatch("dot", _vec, "Vec3");	
+			throw new InvalidArgumentType("dot", _vec, "Vec3");	
 		}
 		return x * _vec.x + y * _vec.y + z * _vec.z;
 	}
@@ -73,7 +73,7 @@ function Vec3( _x, _y, _z ) : __Struct__() constructor {
 	/// @returns Vec3
 	static cross	= function( _vec ) {
 		if (not struct_type(_vec, Vec3)) {
-			throw new UnexpectedTypeMismatch("cross", _vec, "Vec3");	
+			throw new InvalidArgumentType("cross", _vec, "Vec3");	
 		}
 		var _x = y * _vec.z - z * _vec.y;
 		var _y = z * _vec.x - x * _vec.z;
@@ -84,7 +84,7 @@ function Vec3( _x, _y, _z ) : __Struct__() constructor {
 	/// @returns real
 	static dist_to	= function( _vec ) {
 		if (not struct_type(_vec, Vec3)) {
-			throw new UnexpectedTypeMismatch("dist_to", _vec, "Vec3");	
+			throw new InvalidArgumentType("dist_to", _vec, "Vec3");	
 		}
 		return sqrt(
 			(x - _vec.x) * (x - _vec.x) +
@@ -96,7 +96,7 @@ function Vec3( _x, _y, _z ) : __Struct__() constructor {
 	/// @returns real
 	static sqr_dist_to	= function( _vec ) {
 		if (not struct_type(_vec, Vec3)) {
-			throw new UnexpectedTypeMismatch("sqr_dist_to", _vec, "Vec3");	
+			throw new InvalidArgumentType("sqr_dist_to", _vec, "Vec3");	
 		}
 		return ( 
 			(x - _vec.x) * (x - _vec.x) +
@@ -119,7 +119,7 @@ function Vec3( _x, _y, _z ) : __Struct__() constructor {
 	/// @desc Used to get the vectors as unit length.
 	static normalized	= function() {
 		if (not struct_type(_vec, Vec3)) {
-			throw new UnexpectedTypeMismatch("normalized", _vec, "Vec3");	
+			throw new InvalidArgumentType("normalized", _vec, "Vec3");	
 		}
 		var _len = sqr_len();
 		if ( _len == 0 ) {
