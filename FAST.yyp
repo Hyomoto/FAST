@@ -211,7 +211,6 @@
     {"id":{"name":"infix_to_postfix","path":"scripts/infix_to_postfix/infix_to_postfix.yy",},},
     {"id":{"name":"ScriptEngine","path":"scripts/ScriptEngine/ScriptEngine.yy",},},
     {"id":{"name":"__Randomizer__","path":"scripts/__Randomizer__/__Randomizer__.yy",},},
-    {"id":{"name":"Note7","path":"notes/Note7/Note7.yy",},},
     {"id":{"name":"StringExpression","path":"scripts/StringExpression/StringExpression.yy",},},
     {"id":{"name":"array_intersection","path":"scripts/array_intersection/array_intersection.yy",},},
     {"id":{"name":"__FAST_input_config__","path":"scripts/__FAST_input_config__/__FAST_input_config__.yy",},},
