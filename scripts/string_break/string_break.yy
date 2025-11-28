@@ -1,12 +1,11 @@
 {
-  "isDnD": false,
+  "resourceType": "GMScript",
+  "resourceVersion": "1.0",
+  "name": "string_break",
   "isCompatibility": false,
+  "isDnD": false,
   "parent": {
     "name": "string",
     "path": "folders/FAST/Core/Functions/string.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "string_break",
-  "tags": [],
-  "resourceType": "GMScript",
 }
