@@ -1,10 +1,9 @@
 {
+  "resourceType": "GMNotes",
+  "resourceVersion": "1.1",
+  "name": "Note5",
   "parent": {
     "name": "FAST",
     "path": "FAST.yyp",
   },
-  "resourceVersion": "1.1",
-  "name": "Note5",
-  "tags": [],
-  "resourceType": "GMNotes",
 }

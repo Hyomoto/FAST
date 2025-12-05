@@ -1,12 +1,11 @@
 {
-  "isDnD": false,
+  "resourceType": "GMScript",
+  "resourceVersion": "1.0",
+  "name": "ease_out_quad",
   "isCompatibility": false,
+  "isDnD": false,
   "parent": {
     "name": "Quad",
     "path": "folders/FAST/Numbers/Functions/ease/Quad.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "ease_out_quad",
-  "tags": [],
-  "resourceType": "GMScript",
 }
