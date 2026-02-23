@@ -1,11 +1,7 @@
-/// @func include
-/// @param {int}	object_index	The object to inject from
-/// @desc	Will run the currently running event from `object_index`.  For example, if called during the
-//		step event, this would inject the step event from the given object into the current code.
-/// @example
-//include( oMonsterAI );
-/// @wiki Core-Index Functions
-function include( _object ){
+/// @param {Asset.GMObject}	_object the object index to include
+/// @desc	Includes the current event from the specified object.
+function include( _object ) {
+	gml_pragma( "forceinline" );
 	event_perform_object( _object, event_type, event_number );
 	
 }

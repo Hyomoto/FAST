@@ -1,128 +1,104 @@
-/// @func Surface
-/// @param {int} width	The width of the surface
-/// @param {int} height	The height of the surface
-/// @desc	A wrapper for the built-in GML surface type. Provides several quality of life improvements
-///		such as automatic recreation of the surface should it goes missing, as well as reduced syntax
-///		verbosity.  The surface can also be made to only update when requested by the user by using
-///		the update function to check if it should be redrawn.  The example demonstrates this feature.
-/// @example
-//if ( surface.update() ) {
-//	draw_clear( c_white );
-//}
-//surface.draw( 0, 0 );
-/// @output The surface will be cached as white, and drawn
-/// @wiki Core-Index Constructors
 function Surface( _width, _height ) constructor {
-	/// @param {int}	width	The width of the surface
-	/// @param {int}	height	The height of the surface
-	/// @desc	Resizes the internal surface, will also trigger a redraw of the surface.  If the provided
-	///		arguments are not integers, InvalidArgumentType will be thrown.
-	/// @returns self
-	static resize	= function( _width, _height ) {
-		if ( is_numeric( _width ) == false ) { throw new InvalidArgumentType( "resize", 0, _width, "integer" ); }
-		if ( is_numeric( _height ) == false ) { throw new InvalidArgumentType( "resize", 1, _height, "integer" ); }
+	/// @param {bool} _force Optional. Forces this function to return true. Default: false.
+	/// @desc Returns whether or not the surface needs to be regenerated,
+	///		and if so, sets it as the current draw target and returns true.
+	///		This can be forced by setting _force to true, or by setting
+	///		the dirty flag to true.
+	static needsUpdate	= function( _force = dirty ) {
+		if ( surface_exists( surface ) == false ) {
+			surface	= surface_create( width, height );
+			_force	= true;
+			
+		}
+		dirty	= false;
 		
+		if ( _force )
+			surface_set_target( surface );
+		return _force;
+		
+	}
+	/// @desc Sets the surface to be the current draw target.
+	static set	= function() {
+		needsUpdate();
+		if ( surface_get_target() != surface )
+			surface_set_target( surface );
+		return self;
+		
+	}
+	/// @desc Resets the surface from being the current draw target.
+	static reset	= function() {
+		if ( surface_get_target() == surface )
+			surface_reset_target();
+		return self;
+		
+	}
+	/// @param {real} _x
+	/// @param {real} _y
+	/// @desc Draws the surface at the given coordinates.
+	static draw		= function( _x, _y ) {
+		reset();
+		draw_surface( surface, _x, _y );
+		
+		return self;
+		
+	}
+	/// @param {real} _x
+	/// @param {real} _y
+	/// @param {real} _l
+	/// @param {real} _t
+	/// @param {real} _w
+	/// @param {real} _h
+	/// @desc Draws the surface at the given coordinates.
+	static drawPart		= function( _x, _y, _l, _t, _w, _h ) {
+		reset();
+		draw_surface_part( surface, _l, _t, _w, _h, _x, _y );
+		
+		return self;
+		
+	}
+	/// @param {real} _width
+	/// @param {real} _height
+	/// @desc	Resizes the surface to the given dimensions.
+	static resize	= function( _width, _height ) {
 		width	= _width;
 		height	= _height;
+		if ( surface_exists( surface ))
+			surface_free( surface );
+		return self;
 		
-		surface_free( __Surface );
+	}
+	/// @param {real,Constant.Color} _color	Optional. Used to override style.
+	/// @param {real} _alpha Optional. Used to override style.
+	static clear	= function( _color = color, _alpha = alpha) {
+		if ( surface_get_target() == surface )
+			draw_clear_alpha( _color, _alpha );
+		return self;
+		
+	}
+	/// @param {real,Constant.Color} _color
+	/// @param {real} _alpha
+	static style	= function( _color, _alpha ) {
+		color	= _color;
+		alpha	= _alpha;
 		
 		return self;
 		
 	}
-	/// @param {bool} *forced	optional: Whether to force an update
-	/// @desc	Returns whether or not this surface needs to be updated.  This will return true
-	///		if the internal surface has not been created, has been freed, redraw is flagged, or
-	///		`forced` is set to true.
-	/// @returns bool
-	static update	= function( _forced ) {
-		if ( _forced || surface_exists( __Surface ) == false ) {
-			__Redraw	= true;
-			
-		}
-		if ( __Redraw == true ) {
-			__Redraw	= false;
-			
-			set();
-			
-			return true;
-			
-		}
-		return false;
-		
-	}
-	/// @desc	Flags the surface to be redrawn next time update is checked.
-	/// @returns self
-	static redraw	= function() {
-		__Redraw	= true;
-		
+	/// @desc Frees the surface from memory. Note it will be regenerated
+	///		if you call set() or needsUpdate() on this struct.  This
+	///		function is normally used before you would discard this
+	///		struct.
+	static destroy	= function() {
+		if ( surface_exists( surface ))
+			surface_free( surface );
 		return self;
 		
 	}
-	/// @param {real}	x	A x position
-	/// @param {real}	y	A y position
-	/// @desc	Draws the surface at the given coordinates.
-	/// @returns self
-	static draw	= function( _x, _y ) {
-		if ( surface_exists( __Surface ) == false ) { return; }
-		
-		reset();
-		
-		draw_surface( __Surface, _x, _y );
-		
-		return self;
-		
-	}
-	/// @desc	If the internal surface exists, returns the id to it.  Otherwise, undefined is returned.
-	/// @returns undefined or int
-	static get	= function() {
-		if ( surface_exists( __Surface ) ) { return __Surface; }
-		
-		return undefined;
-		
-	}
-	/// @desc The same as calling `surface_set_target( surface.get() )`
-	/// @returns self
-	static set	= function() {
-		if ( surface_exists( __Surface ) == false ) {
-			surface_free( __Surface );
-			
-			__Surface	= surface_create( width, height );
-			
-		}
-		if ( surface_get_target() != __Surface )
-			surface_set_target( __Surface );
-		
-		return self;
-		
-	}
-	/// @desc The same as calling `surface_reset_target()`
-	/// @returns self
-	static reset	= function() {
-		if ( surface_get_target() == __Surface )
-			surface_reset_target();
-		
-		return self;
-		
-	}
-	/// @desc	Frees the internal surface.  Note, if you attempt to use the surface again
-	///		it will be recreated.
-	/// @returns self
-	static free		= function() {
-		if ( surface_exists( __Surface ) ) {
-			surface_free( __Surface );
-			
-		}
-		return self;
-		
-	}
-	/// @var {int}	A pointer to the internal surface
-	__Surface		= -1;
-	/// @var {bool} when set to `true`, will trigger a surface redraw on the next frame
-	__Redraw		= false;
-	/// @var {int}	The width of the surface.  Changing this will not resize the surface, use resize() instead.
-	width		= _width;
-	/// @var {int}	The height of the surface.  Changing this will not resize the surface, use resize() instead.
-	height		= _height;
+	surface	= -1;
+	width	= _width;
+	height	= _height;
+	dirty	= false;
+	color	= c_white;
+	alpha	= 0.0;
 	
 }

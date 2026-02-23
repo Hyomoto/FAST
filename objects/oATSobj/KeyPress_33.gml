@@ -1,2 +1,0 @@
-start	+= lines;
-surface.redraw();

@@ -1,5 +1,0 @@
-#define
-foo "bar"
-#endef
-#import *.dat
-bar = @foo

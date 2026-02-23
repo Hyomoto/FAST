@@ -1,0 +1,155 @@
+# Camera Setup Manual
+
+A short guide to the FAST camera pipeline: **window_scale** → **Viewport** or **objCamera** → **Camera**. Use this to set up a view and control position, zoom, and angle.
+
+#### Contents
+1. [Quick Start](#quick-start)
+2. [Component Breakdown](#component-breakdown)
+3. [Two Ways to Setup a Camera](#two-ways-to-setup-a-camera)
+4. [objCamera](#objcamera)
+5. [Inheriting objCamera](#inheriting-objcamera)
+
+---
+
+## Quick Start
+
+**1.** Set window and resolution first (e.g. in a persistent controller, first room or during GML's pragma phase):
+
+```gml
+window_scale( 1920, 1080, 0.8 );  // base size, use up to 80% of display
+```
+
+**2.** Either create a viewport in code or use the camera object:
+
+- **Path A – Viewport** (script-based, one-off setup):
+
+```gml
+var vp = new Viewport( 0, 0, 0, 1920, 1080 );
+vp.camera.setPosition( 100, 100 );
+vp.camera.setBounds( 0, 0, room_width, room_height );
+```
+
+- **Path B – objCamera** (drag-and-drop, follow + animations):
+
+Place **objCamera** in the room, resize the instance to the desired view size, set **viewport** (0–7) and other variable definitions. Reference the instance to call `pointAt()`, `panTo()`, `zoomTo()`, etc.
+
+
+## Component Breakdown
+
+### * window_scale
+
+Call this first to set the game window and resolution.  If your game runs in a window, this is an easy way to resize it to a comfortable size for the user's monitor.  If you want to do a full screen app, you can use 1.0 to fill the whole screen.  The aspect ratio is taken into consideration.  This can be thought of as the window or monitor resolution.
+
+```gml
+scaled_by = window_scale(640, 480, 0.5);
+```
+
+- **Signature:** `window_scale( _width, _height, _value = 0.8 )`
+    - **_width**, **_height** are your game resolution, if it's 640x360, that's what you put here.
+    - **_value** - how much of the monitor to fill, 0.8 means it will try to scale the window to fill 80% of the monitor, preserving the given aspect ratio.
+- **Returns:** The integer scale factor used.
+---
+### * Viewport
+
+Constructor that configures a GM view and creates a **Camera** for it.  Generally you would use this when the room starts.
+
+```gml
+new Viewport(0, 0, 0, 640, 480);
+```
+
+- **Signature:** `Viewport( _view, _x, _y, _width, _height, _cameraWidth = undefined, _cameraHeight = undefined )`
+    - **_view** is the GM view index (0–7) to setup.
+    - **_x, _y, _width, _height** setup the port position and size on screen (where the view is drawn).  Normally the same as your game resolution.
+- **_cameraWidth, _cameraHeight** Optional. If your camera size is different from your game resolution, you can set this up here.
+
+**Properties:**
+
+- **view** – The view index.
+- **camera** – The **Camera** struct; use this to access and control this viewport's camera.
+---
+### Camera
+
+Low-level struct wrapping the GM camera. **Viewport** creates it; **objCamera** uses it internally. You typically access it via `viewportInstance.camera` or `objCameraInstance.camera`.
+
+**Methods:**
+
+| Method | Description |
+|--------|-------------|
+| `setPosition( _x, _y )` | Move camera (respects bounds and offset). Returns self. |
+| `setAngle( _value )` | Set rotation in degrees. Returns self. |
+| `changeAngle( _amount )` | Add to current angle. Returns self. |
+| `setScale( _value )` | Set zoom multiplier. Returns self. |
+| `mulScale( _amount )` | Multiply scale. Returns self. |
+| `divScale( _amount )` | Divide scale. Returns self. |
+| `setBounds( _left, _top, _right, _bottom )` | Clamp camera position. Defaults: top/right/bottom can be omitted (infinity). Returns self. |
+
+**Properties:**
+
+- **x, y** – Clamped camera position in the room.
+- **rawX, rawY** – Position before clamping.
+- **angle** – Current angle (degrees).
+- **scale** – Zoom (1.0 = no zoom).
+- **offsetH, offsetV** – Anchor for position (0.0–1.0; 0.5 = center).
+- **bbox_left, bbox_top, bbox_right, bbox_bottom** – Bounds used by `setPosition`.
+
+---
+
+## Two Ways to Setup a Camera
+
+Because all games are different, FAST provides a bit of granularity over how you use it's tools.  The thoughtless drag and drop approach is to just use the objCamera and it's interfaces, but if you need a bit more control but still want to benefit from streamlining the process, you can use Viewport or even Camera itself.
+
+### Path A – Viewport
+
+Use when you want a **script-only** setup: no room object, full control over where the view draws and how the camera is created.
+
+1. Call `new Viewport( _view, _x, _y, _width, _height [, _cameraWidth [, _cameraHeight ]] )`.
+2. Use the returned struct's **`.camera`** property (a **Camera** instance) to move, zoom, rotate, and set bounds.
+
+### Path B – objCamera
+
+Use when you want **drag-and-drop**, **follow** behaviour, or **animated** pan/zoom/angle. The object creates a Viewport and syncs the Camera every step.
+
+1. Place **objCamera** in the room.
+2. Resize the instance (sprite size) to the viewport size you want.
+3. Set variable definitions (**viewport** = GM view index 0–7, **keepInBounds**, **useDeltaTime**, **offsetH**, **offsetV**).
+4. Use the instance id to call `pointAt()`, `panTo()`, `zoomTo()`, `angleTo()`, `setValues()`, or `resize()`.
+
+---
+
+## objCamera
+
+Room object that wraps **Viewport** and **Camera**. Resize the instance in the room to set the viewport size (uses sprite width/height). Good for follow cams and keyframe-style pan/zoom/angle.
+
+**Variable definitions:**
+
+| Variable | Description |
+|----------|-------------|
+| **keepInBounds** | If true, camera is clamped to the room (0, 0, room_width, room_height). |
+| **useDeltaTime** | If **true**, time args in `panTo`/`zoomTo`/`angleTo` are in **seconds**. If **false**, they are in **frames**. |
+| **offsetH** | Horizontal anchor 0.0–1.0 (e.g. 0.5 = center). |
+| **offsetV** | Vertical anchor 0.0–1.0. |
+| **viewport** | The GM view index (0–7) this camera uses. |
+
+**Runtime variables:** **x**, **y**, **angle**, **zoom**, **follow** (instance to follow, or noone), **view** (Viewport struct), **camera** (Camera struct).
+
+**Methods:**
+
+| Method | Description |
+|--------|-------------|
+| `pointAt( _x_or_id, _y )` | Point at coordinates or an instance. If one argument and it's an instance, the camera **follows** it each step. |
+| `setValues( _x_or_id, _y, _zoom, _angle )` | Set position (or follow), zoom, and angle in one call. All args optional. |
+| `panTo( _time, _x_or_id, _y, _curve )` | Pan to position or instance over _time. _curve default `"EaseOut"`. |
+| `zoomTo( _time, _zoom, _curve )` | Zoom to _zoom over _time. _curve default `"EaseOut"`. |
+| `angleTo( _time, _angle, _clockwise, _curve )` | Rotate to _angle over _time. _clockwise default true, _curve default `"EaseOut"`. |
+| `resize( _w, _h )` | Rebuild the viewport with new size (updates view and camera). |
+
+**Follow:** Call `pointAt( someInstance )` with a single instance id; the camera will track it every step until you call `pointAt` with coordinates or another target.
+
+---
+
+## Inheriting objCamera
+
+Create a child object of **objCamera** and override variable definitions (e.g. default **viewport**, **keepInBounds**, **offsetH**/**offsetV**) or override Create/Step events to customize behaviour. The child still uses the same Viewport and Camera pipeline.  This can be useful when you want to use the existing camera behaviors but need to inject your own.
+
+---
+

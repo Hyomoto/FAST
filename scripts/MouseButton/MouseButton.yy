@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Mouse",
-    "path": "folders/FAST/Input Handling/Mouse.yy",
+  "$GMScript":"v1",
+  "%Name":"MouseButton",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"MouseButton",
+  "parent":{
+    "name":"Input",
+    "path":"folders/FAST/Input.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "MouseButton",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

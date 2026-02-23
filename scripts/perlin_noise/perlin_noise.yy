@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"perlin_noise",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"perlin_noise",
+  "parent":{
+    "name":"Functions",
+    "path":"folders/FAST/General/Functions.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

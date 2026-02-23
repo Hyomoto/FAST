@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Keyboard",
-    "path": "folders/FAST/Input Handling/Keyboard.yy",
+  "$GMScript":"v1",
+  "%Name":"KeyboardKey",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"KeyboardKey",
+  "parent":{
+    "name":"Input",
+    "path":"folders/FAST/Input.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "KeyboardKey",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

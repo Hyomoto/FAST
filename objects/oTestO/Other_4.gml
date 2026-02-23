@@ -1,1 +1,0 @@
-RenderManager.camera.follow( id );

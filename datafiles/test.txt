@@ -1,5 +1,0 @@
-func a
-while a > 0
- trace a
- put a - 1 into a
-trace "Done!"

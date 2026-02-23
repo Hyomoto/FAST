@@ -1,0 +1,163 @@
+# Input Manual
+
+The FAST input system lets you define logical actions (e.g. "jump", "fire") and bind them to keyboard, mouse, and gamepad in one place. You then poll by action name and get **pressed**, **released**, and **held** without caring which physical input triggered it. This manual explains the approach first, then the keyboard and mouse bindings, and finally the gamepad as its own topic—including how to use the included Xinput gamepad and how to set up a gamepad for other controllers (e.g. PS5).
+
+#### Contents
+1. [Quick Start](#quick-start)
+2. [InputDevice and InputSource](#inputdevice-and-inputsource)
+3. [The Binding Protocol](#the-binding-protocol)
+4. [Keyboard and Mouse](#keyboard-and-mouse)
+5. [Gamepad](#gamepad)
+6. [Example: Putting It Together](#example-putting-it-together)
+
+---
+
+## Quick Start
+
+Create an **InputDevice** with one name per logical action, then bind each action to the inputs you want. Anything that implements **pressed()**, **released()**, and **held()** (no arguments, return bool) can be a binding.
+
+```gml
+var input = new InputDevice( "jump", "fire" );
+
+input.jump.bind( new KeyboardKey( "space" ), new MouseButton( "left" ) );
+input.fire.bind( new KeyboardKey( "z" ) );
+
+// In Step:
+if ( input.jump.pressed() )  { /* jump */ }
+if ( input.fire.held() )    { /* keep firing */ }
+```
+
+To add gamepad, you create a gamepad struct (e.g. **XinputGamepad**), bind its buttons or stick directions to your actions, and if you use sticks or triggers you call **pad.update()** each step. The [Gamepad](#gamepad) section covers that and how to build a gamepad for your controller.
+
+---
+
+## InputDevice and InputSource
+
+**InputDevice** is a container for named actions. You construct it with a list of action names (strings); each name becomes a property on the returned struct, and each property is an **InputSource**.
+
+**InputSource** is one logical action. It holds a list of **bindings**—each binding is something that can report "pressed this frame," "released this frame," or "held." When you call **input.myAction.pressed()**, the source asks each of its bindings; if *any* binding returns true, the action is considered pressed. So one action can be "keyboard Space or mouse left or gamepad A" and you don't care which one the player used.
+
+You create a device once (e.g. at game start or when a controller is assigned), then call **.actionName.bind( ... )** to attach the bindings you want for that action. **bind(...)** replaces the previous bindings for that action. Poll the device each step with **.actionName.pressed()**, **.actionName.released()**, **.actionName.held()**, and optionally **.actionName.double( _speed )** for double-tap.
+
+- **InputDevice( name1, name2, ... )** – Variable arguments; each string is an action name. Returns a struct whose properties are InputSources.
+- **InputSource** (created by InputDevice) – **bind( ... )** sets the list of bindings; **pressed()**, **released()**, **held()** return true if any binding does; **double( _speed )** returns true if the action was pressed twice within _speed seconds.
+
+---
+
+## The Binding Protocol
+
+Anything you pass to **InputSource.bind(...)** must implement three callables with no arguments that return a boolean:
+
+- **pressed()** – true on the frame the input went down.
+- **released()** – true on the frame the input went up.
+- **held()** – true while the input is down.
+
+**KeyboardKey** and **MouseButton** (see [Keyboard and Mouse](#keyboard-and-mouse)) implement this. So do gamepad pieces: **GamepadButton**, **GamepadPressureInput**, and the stick direction objects (**pad.lstick.left**, etc.). So you can mix and match: one action can be "keyboard A or D-pad left or left stick left."
+
+---
+
+## Keyboard and Mouse
+
+These are the simple binding types that don't require any setup beyond the key or button you want.
+
+### * KeyboardKey
+
+Binding for a single key. Accepts a **string** (e.g. `"a"`, `"shift"`, `"f1"`, `"left"`, `"numpad0"`) or a **real** keycode. Strings are resolved once at construction; unknown strings throw.
+
+- **Signature:** `KeyboardKey( _keycode )` – _keycode is a string or a virtual key constant.
+- **Methods:** `pressed()`, `released()`, `held()` (no arguments).
+
+Supported string names include single characters, modifiers (shift, alt, control, left/right variants), F1–F12, arrow keys (up, down, left, right), page up/down, tab, caps lock, return/enter, insert, delete, and numpad (num0–num9, num+, num-, etc.). Case-insensitive where applicable.
+
+### * MouseButton
+
+Binding for a single mouse button. Accepts a **string** or a **constant** (e.g. mb_left). Strings: `"left"`, `"right"`, `"middle"`, `"back"` / `"side1"`, `"forward"` / `"side2"`.
+
+- **Signature:** `MouseButton( _code )` – _code is a string or a mouse button constant.
+- **Methods:** `pressed()`, `released()`, `held()` (no arguments).
+
+---
+
+## Gamepad
+
+The gamepad side of the system is designed to **integrate with InputDevice**—you create a gamepad struct, then pass its buttons and stick directions into **input.someAction.bind( ... )**—but you can **also use a gamepad by itself** (e.g. poll **pad.a.pressed()** without ever using an InputDevice). To use any gamepad, you need a struct that represents one controller: it holds a device index (**.pad**) and a set of inputs (buttons, sticks, triggers) that follow the binding protocol. How you get that struct depends on the controller you intend to support.
+
+### Setting up a gamepad for your controller
+
+GameMaker exposes gamepad state via device index and constants (e.g. **gp_face1**, **gp_axislh**). The mapping from "physical button" to "constant" depends on the driver and the controller. FAST includes **XinputGamepad**, which wires up an Xbox-style layout and works with many devices (Xbox pads, many PC controllers that use Xinput). For other controllers—for example a PlayStation 5 pad—you would build your own gamepad struct: extend or mimic **Gamepad**, then assign **GamepadButton**, **GamepadPressureInput**, and **GamepadDualAxis** to the correct constants and axes for that controller. That requires knowing the GM constants and (if needed) your platform's mapping for that device; it's outside quick-start territory but follows the same pattern as XinputGamepad.
+
+### Gamepad (base)
+
+Minimal base struct: **pad** (device index, 0–3 typically), **isConnected()** (returns whether that device is connected), and an empty **update()**. Subtypes (e.g. XinputGamepad) add buttons, sticks, and triggers and override **update()** to refresh analog state.
+
+### XinputGamepad (included)
+
+**XinputGamepad** extends **Gamepad** and wires up one device with an Xbox-style layout. Use it when your target is Xbox or an Xinput-compatible controller.
+
+- **Signature:** `XinputGamepad( _id = 0, _threshold = 0.1 )` – _id is the gamepad index; _threshold is used for stick dead zone and optionally triggers.
+- **D-pad:** left, right, up, down (GamepadButton) – no **update()** needed.
+- **Face:** a, b, x, y (GamepadButton).
+- **Other buttons:** back, menu, lb, rb, lclick, rclick (GamepadButton).
+- **Sticks:** lstick, rstick (GamepadDualAxis) – use **.left**, **.right**, **.up**, **.down** for the binding protocol; **horizontal()**, **vertical()**, **value()**, **angle()** for raw values. Require **pad.update()** each step for pressed/held/released to be valid.
+- **Triggers:** lt, rt (GamepadPressureInput) – **value()** for raw, **pressed()** / **held()** / **released()** for thresholded; require **pad.update()** each step.
+- **update()** – Call once per step if you use sticks or triggers; updates lstick, rstick, lt, rt. Returns self.
+
+### GamepadButton
+
+Binding for a digital gamepad button. Requires the gamepad struct (with **.pad**) and a **gamepad button constant** (e.g. gp_face1, gp_padl).
+
+- **Signature:** `GamepadButton( _source, _button )` – _source is the gamepad, _button is a constant such as gp_face1, gp_padl, gp_stickl.
+- **Methods:** `pressed()`, `released()`, `held()` (no arguments).
+
+### GamepadPressureInput
+
+Binding for an analog trigger (or any button that reports a value). Implements pressed/held/released by comparing the value to a **threshold**; you must call **update()** on it each frame (or via the gamepad's **update()**) for those states to be correct.
+
+- **Signature:** `GamepadPressureInput( _source, _button, _threshold = 0.4 )` – _source is the gamepad, _button is the trigger constant (e.g. gp_shoulderlb), _threshold is the value above which the input is considered "on."
+- **Methods:** `pressed()`, `released()`, `held()` (no arguments), **value()** (raw 0–1), **update()** (call once per frame).
+
+### GamepadDualAxis (sticks)
+
+One stick (two axes). **horizontal()**, **vertical()**, **value()**, and **angle()** work without **update()**. For the binding protocol, the stick has **.left**, **.right**, **.up**, **.down**—each has **pressed()**, **released()**, **held()**. Those direction states are updated only when you call **stick.update()** (or the gamepad's **update()**), so you must call **pad.update()** each step if you use stick directions as bindings.
+
+- **Signature:** `GamepadDualAxis( _source, _haxis, _vaxis, _threshold = 0.1 )` – _source is the gamepad, _haxis/_vaxis are the axis constants (e.g. gp_axislh, gp_axislv). _threshold can be a real or [ horizontal, vertical ].
+- **Methods (stick):** **horizontal()**, **vertical()**, **value()**, **angle()**, **update()**.
+- **Properties (binding protocol):** **left**, **right**, **up**, **down** – each has **pressed()**, **released()**, **held()**. Use e.g. **pad.lstick.left** in **input.someAction.bind(...)**.
+
+---
+
+## Example: Putting It Together
+
+Two actions, "left" and "right," bound to keyboard, mouse, and one Xinput gamepad (D-pad and left stick):
+
+```gml
+var input = new InputDevice( "left", "right" );
+var pad   = new XinputGamepad( 0 );
+
+input.left.bind(
+    new KeyboardKey( "a" ),
+    new KeyboardKey( "left" ),
+    new MouseButton( "left" ),
+    pad.left,
+    pad.lstick.left
+);
+input.right.bind(
+    new KeyboardKey( "d" ),
+    new KeyboardKey( "right" ),
+    new MouseButton( "right" ),
+    pad.right,
+    pad.lstick.right
+);
+
+// In Step:
+pad.update();   // required for stick (and trigger) state
+if ( input.left.pressed() )   { /* start moving left */ }
+if ( input.left.held() )      { /* keep moving left */ }
+if ( input.left.released() ) { /* stop left */ }
+// ... same for right
+```
+
+If you only use D-pad and face buttons (no sticks or triggers), you can omit **pad.update()**.
+
+---
+

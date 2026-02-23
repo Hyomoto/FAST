@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"GamepadPressureInput",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"GamepadPressureInput",
+  "parent":{
+    "name":"Input",
+    "path":"folders/FAST/Input.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

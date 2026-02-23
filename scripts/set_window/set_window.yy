@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"set_window",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"set_window",
+  "parent":{
+    "name":"Functions",
+    "path":"folders/FAST/General/Functions.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

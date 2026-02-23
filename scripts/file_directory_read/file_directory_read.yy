@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"file_directory_read",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"file_directory_read",
+  "parent":{
+    "name":"Functions",
+    "path":"folders/FAST/General/Functions.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,186 @@
+# Catena Manual
+
+Catena means "chain." The Catena system simplifies animation and sequenced behaviour by unifying start, update, and completion in one pattern. In game code you typically run a chain each step and clear it when done. With **CatenaQueue** (sequence) and **CatenaList** (parallel) you can build complex animations from smaller pieces.
+
+#### Contents
+1. [Quick Start](#quick-start)
+2. [The Update Pattern](#the-update-pattern)
+3. [Chaining and Follow-up Catenae](#chaining-and-follow-up-catenae)
+4. [Component Breakdown](#component-breakdown)
+5. [Queue and List](#queue-and-list)
+6. [Building Chains](#building-chains)
+
+---
+
+## Quick Start
+
+**1.** Create a chain (e.g. a queue of steps or a single keyframe):
+
+```gml
+catena = new CatenaQueue(
+    new CatenaWait( 30 ),                                    // wait 30 frames
+    new CatenaKeyframe( 60, 0, 100, undefined, function( arr ) { x = arr[ 0 ]; })
+).after( function() { show_message( "Done" ); });
+```
+
+**2.** Each step, update and clear when finished:
+
+```gml
+if ( catena && catena.update().isFinished() )
+    catena = undefined;
+```
+
+That handles start (you assign the chain), update (you call `update()` every frame), and completion (you clear the variable when `isFinished()` is true, and optionally use `after()` for a callback). If you use `after()` to assign a **follow-up** chain into the same variable, use the pattern in [Chaining and Follow-up Catenae](#chaining-and-follow-up-catenae) so you don't clear the new chain by mistake.
+
+---
+
+## The Update Pattern
+
+Every Catenable supports the same interface:
+
+- **`update()`** – Advance the chain by one frame. Call once per step. Returns `self` so you can chain `catena.update().isFinished()`.
+- **`isFinished()`** – Returns whether the chain is done. When true, you can clear your reference and run any cleanup.
+- **`after( _function )`** – Set a callback (function or method array) to run when the chain finishes. Optional.
+
+So the standard game loop is: create a chain, store it in a variable, each step call `update()`, and when `isFinished()` is true set the variable to `undefined` (and optionally rely on `after()` for side effects).
+
+---
+
+## Chaining and Follow-up Catenae
+
+A common pattern is to start the next chain when the current one finishes, by assigning it in `after()`:
+
+```gml
+catena = new CatenaQueue( ... ).after( function() {
+    catena = new CatenaQueue( ... );  // follow-up chain
+});
+```
+
+The simple clear pattern does not work here. On the frame the queue finishes, `update()` runs, the queue empties and runs your `after()` callback, and the callback sets `catena` to the new chain. Then `update()` returns and you evaluate `isFinished()` on the old chain (true). If you then do `catena = undefined`, you overwrite the new chain you just assigned.
+
+Use the **identity-comparison** pattern instead: capture the chain you're updating, then only clear if the variable still holds that same chain after the update. If `after()` set a new chain, the variable now holds a different reference, so you leave it alone.
+
+```gml
+var _c = catena;
+if ( _c && _c.update().isFinished() )
+    catena = ( _c == catena ) ? undefined : catena;
+```
+
+So: clear only when the chain that just finished is still the one in your variable. That gives you a safe path for both "one chain then done" and "chain then follow-up chain in the same variable."
+
+---
+
+## Component Breakdown
+
+### * Catenable
+
+Abstract base for all catena types. You don't construct it directly; use **CatenaWait**, **CatenaKeyframe**, **CatenaQueue**, or **CatenaList**. Each implements `update()` and `isFinished()` and inherits `after()`.
+
+---
+
+### * CatenaWait
+
+Waits for a duration (frames or seconds) or until a condition is true. Use it for fixed delays or "wait until" (e.g. wait until the player touches a wall).
+
+**Duration:** Pass a number. When **\_use_delta** is false (default), the value is frames. When true, the value is seconds. The chain counts down and finishes when the count hits zero.
+
+**Condition:** Pass a callable (function or method) that takes no arguments and returns a boolean. Each frame the chain's `isFinished()` is that predicate; when it returns true, the wait is done. No countdown; the chain just polls the condition.
+
+```gml
+new CatenaWait( 60 );                                    // 60 frames
+new CatenaWait( 1.5, true );                             // 1.5 seconds
+new CatenaWait( function() { return place_meeting( x, y, objWall ); });  // until touching wall
+```
+
+- **Signature:** `CatenaWait( _time_or_predicate, _use_delta = CATENA_USE_DELTA_BY_DEFAULT )`
+    - **_time_or_predicate** – A number (duration in frames or seconds) or a callable that returns true when the wait is over.
+    - **_use_delta** – For numeric duration only. If true, _time is in seconds; if false, frames. Ignored when the first argument is a callable.
+- **Methods:** `update()`, `isFinished()`, `after()`.
+
+---
+
+### * CatenaKeyframe
+
+A tween over a duration with optional easing. You give start and end values (single numbers or arrays); each frame the interpolated value(s) are passed to your function. Uses the **animEase** curve asset; pass a channel name (e.g. `"EaseOut"`) or omit for Linear.
+
+```gml
+new CatenaKeyframe( 30, 0, 100, "EaseOut", function( arr ) { x = arr[ 0 ]; });
+new CatenaKeyframe( 1.0, [ x, y ], [ target_x, target_y ], undefined, function( arr ) {
+    x = arr[ 0 ];
+    y = arr[ 1 ];
+}, true );  // 1 second, delta time
+```
+
+- **Signature:** `CatenaKeyframe( _time, _start, _end, _ease = undefined, _function = function() {}, _use_delta = CATENA_USE_DELTA_BY_DEFAULT )`
+    - **_time** – Duration in frames (default) or seconds when _use_delta is true.
+    - **_start**, **_end** – Starting and ending values. Use two numbers or two arrays of the same length to tween multiple values at once.
+    - **_ease** – Name of a channel in the animEase curve (e.g. `"EaseOut"`), or undefined for Linear.
+    - **_function** – Called each frame with the current interpolated value (or array of values).
+    - **_use_delta** – If true, _time is in seconds; if false, frames.
+- **Methods:** `update()`, `isFinished()`, `after()`.
+
+---
+
+### * CatenaQueue
+
+Runs items **one after another** (sequence). Each frame it advances the current item; when that item is finished, it moves to the next. When the queue is empty, the queue is finished.
+
+You can push:
+
+- **Catenable** – Another chain; its `update()` is called each frame until `isFinished()`.
+- **Real** – Turned into **CatenaWait(** _value **)** (frames).
+- **Function/method** – Run once (one frame), represented as `[ 1, _call ]`.
+- **Array** – Format `[ frames, call, args... ]`. Runs `call` with `args` each frame for `frames` frames.
+
+```gml
+var q = new CatenaQueue(
+    new CatenaWait( 15 ),
+    new CatenaKeyframe( 20, 0, 1, "EaseIn", function( arr ) { image_alpha = arr[ 0 ]; }),
+    function() { alarm[ 0 ] = 30; },
+    new CatenaWait( function() { return global.cutscene_done; })
+);
+```
+
+- **Signature:** `CatenaQueue( [ items... ] )` – Optional initial items (Catenable, real, function, or array).
+- **Methods:**
+    | Method | Description |
+    |--------|-------------|
+    | `update()` | Advance the current item by one frame; move to next when finished. Returns self. |
+    | `isFinished()` | True when the queue has no items left. |
+    | `push( ... )` | Append one or more items (same types as constructor). Returns self. |
+    | `insert( ... )` | Insert one or more items at the beginning of the queue. Returns self. |
+    | `first()`, `last()` | Return the first or last item in the queue. |
+    | `next()` | Remove the first item. |
+    | `after()` | As on Catenable. |
+
+---
+
+### * CatenaList
+
+Like **CatenaQueue**, but runs **all** items **every** frame (parallel). Each frame it calls `update()` on every Catenable in the list and removes any that are finished. When the list is empty, the list is finished. Use it when you want several animations or waits to run at the same time.
+
+- **Signature:** `CatenaList( [ items... ] )` – Optional initial items (same types as CatenaQueue).
+- **Methods:** Same as CatenaQueue for construction and chaining: `push()`, `after()`, etc. Only **`update()`** behaviour differs: all items are updated each frame instead of one at a time.
+
+---
+
+## Queue and List
+
+- **CatenaQueue** – Sequence. One item runs until it finishes, then the next. Good for: "wait, then tween, then run once, then wait until condition."
+- **CatenaList** – Parallel. Every item is updated every frame. Good for: "run these tweens and waits at once."
+
+Both accept the same item types: Catenables, frame counts (reals, turned into CatenaWait), one-shot functions, and arrays `[ frames, call, args... ]`. You can nest queues and lists (e.g. a queue that contains a list of simultaneous tweens).
+
+---
+
+## Building Chains
+
+1. **Single step** – Use **CatenaWait** or **CatenaKeyframe** and run the update pattern (and the identity pattern if you use follow-up chains).
+2. **Sequence** – Use **CatenaQueue** and push or pass a list of steps; use **CatenaWait(** n **)** or a real for waits.
+3. **Parallel** – Use **CatenaList** and push or pass steps that should run together.
+4. **Nested** – Push a **CatenaQueue** or **CatenaList** into another queue or list to combine sequences and parallel blocks.
+
+Always call **`update()`** once per step. When **`isFinished()`** is true, clear your variable so the chain can be garbage-collected—unless you assigned a follow-up chain in `after()`, in which case use the identity-comparison pattern so you only clear when the variable still holds the chain that just finished. Use **`after()`** for completion callbacks and for starting the next chain in the same variable.
+
+---
+

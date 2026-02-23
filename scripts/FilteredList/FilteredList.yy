@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"FilteredList",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"FilteredList",
+  "parent":{
+    "name":"Constructors",
+    "path":"folders/FAST/General/Constructors.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

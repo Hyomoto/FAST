@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Drawing",
-    "path": "folders/FAST/Core/Constructors/Drawing.yy",
+  "$GMScript":"v1",
+  "%Name":"Surface",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"Surface",
+  "parent":{
+    "name":"Constructors",
+    "path":"folders/FAST/General/Constructors.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "Surface",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

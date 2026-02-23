@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"CatenaQueue",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"CatenaQueue",
+  "parent":{
+    "name":"Catena",
+    "path":"folders/FAST/Catena.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

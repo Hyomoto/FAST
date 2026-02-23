@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"XinputGamepad",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"XinputGamepad",
+  "parent":{
+    "name":"Input",
+    "path":"folders/FAST/Input.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"window_scale",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"window_scale",
+  "parent":{
+    "name":"Functions",
+    "path":"folders/FAST/General/Functions.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

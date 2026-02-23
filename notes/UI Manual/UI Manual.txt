@@ -1,0 +1,197 @@
+# UI Manual
+
+The UI scripts provide a small set of constructors for drawing and handling mouse interaction. Elements are added to a **UILayer** (or **UILayerCached**); you draw the layer and feed it mouse coordinates so it can run hover (enter/leave/step) and click/wheel handlers. The library does not provide a room object or input wiring—you create a layer, add elements, and in your own object call `layer.draw()`, `layer.update( mouse_x, mouse_y )`, and `layer.call( "left", mouse_x, mouse_y )` (or similar) as needed.
+
+#### Contents
+1. [Quick Start](#quick-start)
+2. [How the UI is driven](#how-the-ui-is-driven)
+3. [Hierarchy](#hierarchy)
+4. [Component breakdown](#component-breakdown)
+
+---
+
+## Quick Start
+
+**1.** Create a layer and add elements. Elements that need mouse input must be **UIInteraction** (e.g. UIRectangle, UISprite) and be added with `_active = true` if they should receive hover and click events.
+
+```gml
+layer = new UILayer( 0, 0, 640, 480 );
+layer.add( "bg", 0, new UIRectangle( 0, 0, 640, 480 ), true, false );   // draw-only, no interaction
+layer.add( "btn", 1, new UIRectangle( 100, 100, 200, 40, function( _x, _y ) { /* left click */ } ), true, true );
+```
+
+**2.** In your Draw event, draw the layer (typically in a GUI context):
+
+```gml
+layer.draw( 0, 0 );
+```
+
+**3.** In your Step (or equivalent), pass mouse position for hover and pass-through for clicks:
+
+```gml
+layer.update( mouse_x, mouse_y );
+if ( mouse_check_button_pressed( mb_left ))
+    layer.call( "left", mouse_x, mouse_y );
+```
+
+For **UILayerCached**, set `layer.redraw = true` whenever you change the layer's contents (add, remove, visibility) so the cache is refreshed on the next draw.
+
+---
+
+## How the UI is driven
+
+- **Drawing:** You call `layer.draw( _x, _y )`. The layer sorts elements by depth, then for each visible element either calls `element.draw( _x, _y )` or, if the element is a method array, invokes it with `_x, _y` appended. Coordinates are in layer space (layer's x,y added to your draw origin).
+- **Hover:** You call `layer.update( _x, _y )` with the current mouse (or other) position. The layer checks if the point is inside the layer; if so, it finds the topmost **UIInteraction** in depth order that is active and contains the point, runs enter/leave/step as needed, and stores that element as the current "last" for the next step.
+- **Clicks / wheel:** You call `layer.call( _what, _x, _y )` with the event name (e.g. `"left"`, `"right"`, `"middle"`, `"wheelUp"`, `"wheelDown"`) and the same coordinates. The layer finds the topmost active UIInteraction under the point and calls that element's handler for `_what`. Coordinates passed to the handler are in the **element's** space (relative to the element's x,y).
+- **before / after:** Many elements support `before( _function )` and `after( _function )`. These run once around the element's draw (e.g. for shader setup and teardown). You can pass a function or a method array; only the first entry is invoked (as with `method_call( beforeDraw[ 0 ], beforeDraw, 1 )`).
+
+---
+
+## Hierarchy
+
+- **UIElement** – Base. Defines `draw( _x, _y )`, `before( _function )`, `after( _function )`. Subclasses override `draw` and may use before/after.
+- **UIInteraction** – Extends UIElement. Adds hit-testing and event callbacks: `isInside( _x, _y )`, `call( _what, _x, _y )`, and setters `onEnter`, `onLeave`, `onLeftClick`, `onRightClick`, `onMiddleClick`, `onWheelUp`, `onWheelDown`, `onStep`, `onEvent( _name, _callback )`. The constructor argument is the left-click callback. Callbacks receive coordinates in element space (relative to the element's x,y).
+- **UIObject** – Extends UIElement. Wraps an instance; `draw` runs the instance's Draw event (with before/after).
+- **UIText** – Extends UIElement. Draws text at a position; no interaction.
+- **UIRectangle**, **UISprite**, **UISpritePart**, **UISpriteStretched**, **UILayer** – Extend UIInteraction. Rectangles and sprites define `isInside` and `draw`; UILayer is a container that holds other elements and implements `update` and `call`.
+- **UILayerCached** – Extends UILayer. Draws into a surface and blits it; you set `redraw = true` when content changes.
+
+---
+
+## Component breakdown
+
+### * UIElement
+
+Base constructor. You do not construct it directly; other UI types inherit from it.
+
+- **draw( _x = 0, _y = 0 )** – No-op here; subclasses override. All draw coordinates are passed through from the layer.
+- **before( _function )** – Set the function (or single-entry method array) run before the element's draw. Returns self.
+- **after( _function )** – Set the function (or single-entry method array) run after the element's draw. Returns self.
+
+Instance variables: **beforeDraw**, **afterDraw** (undefined or set by before/after). If an array is passed, only the first element is ever called.
+
+---
+
+### * UIInteraction
+
+Extends UIElement. Base for anything that can be hit-tested and receive events. Constructor argument is the **left** (left-click) callback.
+
+- **isInside( _x, _y )** – Default returns false; subclasses override. Coordinates are in element space (caller subtracts element x,y before calling).
+- **call( _what, _x = 0, _y = 0 )** – Invoke the handler for event name `_what` (e.g. `"left"`, `"right"`, `"enter"`, `"leave"`, `"step"`, `"wheelUp"`, `"wheelDown"`). Coordinates are converted to element space inside `call`. If the handler is a method array, it is called with `method_call`; otherwise it is called as `_call( _x, _y )`. Returns the callback result or true if no handler.
+- **onEnter( _enter )**, **onLeave( _leave )**, **onLeftClick( _left )**, **onRightClick( _right )**, **onMiddleClick( _middle )**, **onWheelUp( _wheel )**, **onWheelDown( _wheel )**, **onStep( _step )** – Set the corresponding handler. Each returns self.
+- **onEvent( _name, _callback )** – Set an arbitrary event handler by name (e.g. custom events). Returns self.
+
+Instance variables: **left**, **right**, **middle**, **enter**, **leave**, **wheelUp**, **wheelDown**, **step** (and any set via onEvent). **x**, **y** are set by subclasses (UIRectangle, UISprite, etc.) and used when converting coordinates to element space in `call`.
+
+---
+
+### * UIObject
+
+Wraps a Game Maker instance so its Draw event runs as part of the UI. Use when you want an object to be drawn inside a UILayer.
+
+- **Signature:** `UIObject( _id )`
+    - **_id** – Instance id. The object's Draw event (ev_draw_normal) is performed when this element is drawn.
+- **draw( _x = 0, _y = 0 )** – Runs beforeDraw (if set), then `event_perform( ev_draw, ev_draw_normal )` in the instance, then afterDraw.
+- **Instance variable:** **instance** – The wrapped instance id.
+
+---
+
+### * UIText
+
+Draws text at a fixed position. Extends UIElement (no interaction). Text can be a string or a method (called with no arguments each draw).
+
+- **Signature:** `UIText( _x, _y, _text, _kwargs = {} )`
+    - **_x, _y** – Position.
+    - **_text** – String or method returning string.
+    - **_kwargs** – Optional struct: **font**, **color**, **width** (wrap width), **halign**, **valign**.
+- **draw( _x = 0, _y = 0 )** – Saves then restores font, color, halign, valign. Draws text at (x + _x, y + _y). If **width** is set, uses `draw_text_ext` with `string_height( "A" )` as line separation; otherwise `draw_text`. Supports before/after.
+- **style( _font, _color, _width, _halign, _valign )** – Set style options. Any argument undefined leaves the current value. Returns self.
+- **Instance variables:** **x**, **y**, **text**, **font**, **color**, **width**, **halign**, **valign**.
+
+---
+
+### * UIRectangle
+
+Axis-aligned rectangle with optional left-click callback and draw-time color/outline.
+
+- **Signature:** `UIRectangle( _x, _y, _width, _height, _callback = undefined )`
+    - **_callback** – Left-click handler (element-space coordinates).
+- **isInside( _x, _y )** – True when the point is inside the rectangle (0, 0, w, h in element space).
+- **draw( _x = 0, _y = 0, _color = c_white, _outline = true )** – Draws the rectangle. Supports before/after.
+- **Instance variables:** **x**, **y**, **w**, **h**, **r** (x + width - 1), **b** (y + height - 1).
+
+---
+
+### * UISprite
+
+Sprite at a position. Hit-test uses the sprite's bbox. Supports scale and animation.
+
+- **Signature:** `UISprite( _x, _y, _sprite, _index = 0, _callback = undefined, _kwargs = {} )`
+    - **_callback** – Left-click handler.
+    - **_kwargs** – Optional: **color**, **width** (scale X), **height** (scale Y), **animate** (bool).
+- **isInside( _x, _y )** – Uses sprite bbox in element space (sprite_get_bbox_*).
+- **draw( _x = 0, _y = 0 )** – If animate, advances index by (get_timer() - start) / 1_000_000 * sprite_get_speed(sprite). Draws with draw_sprite_ext. Supports before/after.
+- **style( _animate, _color, _scaleX = 1, _scaleY = 1 )** – Set animate, color, width/height scale. Returns self.
+- **reset()** – Sets start = get_timer(). Returns self.
+- **set( _sprite, _index )** – Set sprite and index.
+- **Instance variables:** **x**, **y**, **sprite**, **index**, **start**, **color**, **width**, **height**, **animate**.
+
+---
+
+### * UISpritePart
+
+Draws a part of a sprite (e.g. a slice). Same event and style/reset/set pattern as UISprite; draw uses `draw_sprite_part_ext` with left, top, width, height in sprite coordinates.
+
+- **Signature:** `UISpritePart( _x, _y, _sprite, _index = 0, _left = 0, _top = 0, _width = undefined, _height = undefined, _callback = undefined )`
+    - **_left, _top** – Top-left of the part in the sprite. **_width**, **_height** default to sprite width/height.
+- **isInside( _x, _y )** – Uses sprite bbox (same as UISprite).
+- **draw( _x = 0, _y = 0 )** – draw_sprite_part_ext with offset adjustment (x + _x - sprite_get_xoffset, y + _y - sprite_get_yoffset). Supports before/after.
+- **style( _animate, _color, _scaleX = 1, _scaleY = 1 )** – Same as UISprite. **width** and **height** here are the drawn part dimensions (and scale in style).
+- **Instance variables:** **left**, **top**, **width**, **height** (sprite part), **color**, **animate**, plus **sprite**, **index**, **start**, **x**, **y**.
+
+---
+
+### * UISpriteStretched
+
+Extends UISprite. Draws the sprite stretched to a fixed pixel width and height. Hit-test is the rectangle (0, 0, width - 1, height - 1) in element space.
+
+- **Signature:** `UISpriteStretched( _x, _y, _width, _height, _sprite, _index = 0, _callback = undefined )`
+- **isInside( _x, _y )** – Point in rectangle (0, 0, width - 1, height - 1).
+- **draw( _x = 0, _y = 0 )** – Same animation as UISprite (sprite_get_speed). draw_sprite_stretched_ext. Supports before/after.
+- **style( _animate, _color )** – No scale args. Returns self.
+- **Instance variables:** **width**, **height** (pixel size); inherits **sprite**, **index**, **start**, **color**, **animate**, **x**, **y** from UISprite.
+
+---
+
+### * UILayer
+
+Container: holds named elements with depth, visibility, and active state. Draws them in depth order; routes hover (enter/leave/step) and click/wheel to the topmost active UIInteraction under the cursor. Extends UIInteraction (so a layer can be inside another layer).
+
+- **Signature:** `UILayer( _x = 0, _y = 0, _width = infinity, _height = infinity, _callback = undefined )`
+    - **_x, _y** – Layer origin. **_width**, **_height** – Layer size (used for isInside).
+- **add( _name, _depth, _thing, _visible = true, _active = false )** – Add an element. **_name** is the key for get/set/remove. **_thing** can be a UIElement, an instance id, a method (wrapped as [ method ]), or an array (invoked as method with _x, _y appended). **_visible** – drawn when true. **_active** – only UIInteraction elements with active true participate in update() and call(). Returns _thing. Sets dirty.
+- **remove( _name )** – Remove the element by name. Sets dirty.
+- **get( _what )** – Return the **thing** for the given name. The name must exist (no undefined check).
+- **set( _what, _visible = undefined, _active = undefined )** – Set visible and/or active for the named element. Undefined leaves current value. Sets dirty. Returns the entry struct.
+- **setVisible( _what, _visible = true )** – Set visibility. Sets dirty. Returns the entry.
+- **setActive( _what, _active = true )** – Set active. Returns the entry.
+- **draw( _x, _y )** – Sorts by depth if dirty, builds sorted list of visible elements, then for each: if thing is an array, method_call with _x, _y appended; else thing.draw( _x, _y ). Coordinates passed in are added to the layer's x,y. Supports before/after.
+- **update( _x, _y )** – Call once per step with mouse (or focus) position. If the point is not inside the layer, returns false. Otherwise converts to layer-local coordinates and scans elements in reverse depth order; the topmost active UIInteraction that contains the point gets enter/leave/step: if it's already **last**, call its **step**; else call **leave** on the previous last, then **enter** on the new one and set last. If no element is under the point, leave is called on last and last is cleared. Returns false when the point is outside the layer.
+- **call( _what, _x, _y )** – Call with event name (e.g. "left", "right", "wheelUp") and coordinates. Finds topmost active UIInteraction under the point and calls its handler for _what in element space. Returns true if a handler was called, false otherwise.
+- **size()** – Returns number of elements (array_length( byId )).
+- **Instance variables:** **x**, **y**, **w**, **h**, **byId** (array of entries), **byKey** (name → entry), **sorted** (cached visible list), **dirty**, **last** (last UIInteraction under cursor, or noone).
+
+Each entry is a struct: **thing**, **depth**, **visible**, **active**.
+
+---
+
+### * UILayerCached
+
+Extends UILayer. Draws the layer into a surface and blits the surface (or a part of it) so the layer does not redraw every frame. You must set **redraw = true** whenever the layer's content or visibility changes; the next draw will clear the surface, redraw the layer into it, then blit.
+
+- **Signature:** `UILayerCached( _x, _y, _width, _height, _callback = undefined )`
+- **draw( _x = 0, _y = 0 )** – If the surface needs update (redraw), clears the surface with **color** and **alpha**, draws the layer content into it (via UILayer.draw at offset -x, -y), sets redraw = false. Then draws the surface at ( _x + x, _y + y ).
+- **drawPart( _x = 0, _y = 0, _l = 0, _t = 0, _w = width, _h = height )** – Same as draw but blits only a part of the surface (surface.drawPart). Use to scroll or show a region.
+- **style( _color = color, _alpha = alpha )** – Set clear color and alpha. Returns self.
+- **destroy()** – Calls surface.destroy().
+- **Instance variables:** **width**, **height**, **surface** (Surface instance), **redraw**, **color** (clear color), **alpha** (clear alpha). **redraw** is not set automatically—set it to true when you add, remove, or change visibility of elements.

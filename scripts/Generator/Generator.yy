@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"Generator",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"Generator",
+  "parent":{
+    "name":"Constructors",
+    "path":"folders/FAST/General/Constructors.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

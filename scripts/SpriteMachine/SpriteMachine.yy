@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"SpriteMachine",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"SpriteMachine",
+  "parent":{
+    "name":"Constructors",
+    "path":"folders/FAST/General/Constructors.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

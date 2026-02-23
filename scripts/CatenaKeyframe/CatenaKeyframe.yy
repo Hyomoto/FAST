@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"CatenaKeyframe",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"CatenaKeyframe",
+  "parent":{
+    "name":"Catena",
+    "path":"folders/FAST/Catena.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"UISpritePart",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"UISpritePart",
+  "parent":{
+    "name":"UI",
+    "path":"folders/FAST/UI.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

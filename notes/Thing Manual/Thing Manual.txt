@@ -1,0 +1,182 @@
+# Thing Format Manual
+
+Things are a plain-text format for declaring data structures. They support templating, inheritance, type checking, asset lookup, and a few static values to keep large data sets simple. You parse a thing string with **parse_thing** or load many thing definitions from files with **parse_things**.
+
+#### Contents
+1. [Quick Start](#quick-start)
+2. [Format Overview](#format-overview)
+3. [Line 1 – Type Declaration](#line-1--type-declaration)
+4. [Line 2 – Name Declaration](#line-2--name-declaration)
+5. [Line 3 – Data Declaration](#line-3--data-declaration)
+6. [Value Types](#value-types)
+7. [Parsing Functions](#parsing-functions)
+8. [Thing Constructor](#thing-constructor)
+
+---
+
+## Quick Start
+
+**1.** Define a thing as three logical parts: type (or from/extend), name, and data. Newlines and commas are mostly ignored; the format is lax.
+
+**2.** Parse a single definition with **parse_thing**; pass a lookup struct if you use **from**, **extend**, or **import**:
+
+```gml
+var def = parse_thing( "Thing water name Wet density 4", {} );
+```
+
+**3.** Load many definitions from disk with **parse_things**. Pass a path/mask for **file_search** and a struct to write into (and to resolve from/extend/import):
+
+```gml
+parse_things( "data/things/*.txt", global.database );
+```
+
+Each parsed thing is stored in that struct under its **uid** (e.g. `thing#water`). The same struct is used as the lookup when later definitions use **from**, **extend**, or **import**.
+
+---
+
+## Format Overview
+
+A single thing declaration has three logical lines:
+
+```
+line 1   type, or from/extend, plus optional imports
+line 2   name
+line 3   fields (property value, arrays, structs)
+```
+
+Whitespace and newlines are flexible; commas are allowed and ignored. There are no escape characters; single and double quotes both enclose strings. A single word that cannot be converted to a number or a static value is treated as a string. Comments start with `//` and run to the end of the line.
+
+---
+
+## Line 1 – Type Declaration
+
+Line 1 must resolve to a GML constructor, or use **from** or **extend** with a lookup key. If you use **from**, **extend**, or **import**, **parse_thing** must be given a second argument: a struct whose keys are uids (e.g. `template#sword`). **parse_things** passes the same struct it writes to, so definitions can reference others already in that struct (or from earlier in the same run).
+
+### Type (constructor)
+
+A single word that is the name of a script that is a constructor. The thing is created as `new Type()`. The type must start with a letter or underscore. Examples: `Thing`, `Weapon`, `Metal`.
+
+### from *uid*
+
+Clone an existing entry from the lookup. The thing starts as a copy of that entry; line 2 sets **name** and **uid**, and line 3 overwrites or adds fields. Use when you want a full copy of another thing and then customize it.
+
+```gml
+from template#sword
+```
+
+### extend *uid*
+
+Create a **new** instance of the same constructor as the extended entry, with that entry’s data merged in as a base. Then line 2 sets name/uid and line 3 adds or overrides fields. Lists and structs are merged (shallow); you can override that with **!** after `[` or `{` (see Line 3). Use when you want inheritance from a template of the same type.
+
+```gml
+extend weapon#template
+```
+
+### import *uid*
+
+After the type (or extend), you can repeat **import** *uid* to merge another entry into the current thing. Same merge rules as extend: structs and lists are appended; only final (non-struct, non-array) values overwrite. Shallow copy; nested structures keep their references.
+
+```gml
+Thing import template#base
+```
+
+---
+
+## Line 2 – Name Declaration
+
+The name is a string. If it is a single word you can omit quotes; otherwise use `'` or `"`. The thing’s **uid** is derived from the type and this name: `type#name`, lowercased, with spaces in the name replaced by `-`. If you used **from** or **extend**, the type part of the uid comes from the extended/cloned entry’s type. The name cannot be blank.
+
+Examples: `Iron`, `"Sword of Magnus"` → uid `thing#iron`, `thing#sword-of-magnus`.
+
+---
+
+## Line 3 – Data Declaration
+
+Line 3 holds all properties. Format is **property value**. Commas and newlines are ignored; you can break lines freely.
+
+| Pattern | Meaning |
+|--------|--------|
+| `name value` | Set property to the value (parsed as in [Value Types](#value-types)). |
+| `name.` | Short form: set property to `true`. |
+| `name[ ... ]` | Array. Contents are values or nested `[ ]` / `{ }`. |
+| `name{ ... }` | Struct. Contents are `key value` or nested `[ ]` / `{ }`. |
+| `name[! ... ]` or `name{! ... }` | Same, but do not merge from an extended/imported template; start a new array or struct. |
+
+When a thing **extends** (or uses **import**), existing arrays and structs from the template are merged by default. Use **!** after `[` or `{` to replace instead of merge.
+
+Examples:
+
+```gml
+hp 10
+tags[ white yellow ]
+colors{ white #ffffff black #000000 }
+big. small True value Nil
+overwrite[! first second ]
+```
+
+Property names must start with a letter or underscore.
+
+---
+
+## Value Types
+
+Values in the data section are parsed as follows:
+
+| Input | Result |
+|-------|--------|
+| `'...'` or `"..."` | String (no escape characters). |
+| Number (digits, optional `-`) | Real. |
+| `#rrggbb` | Hex colour as real (exactly six hex digits). |
+| `@assetname` | Asset name resolved with `asset_get_index` (must exist). |
+| `True` / `False` | Boolean. |
+| `Nil` | `undefined`. |
+| Other single token | String. |
+
+---
+
+## Parsing Functions
+
+### * parse_thing
+
+Parses a single thing definition and returns the resulting struct/instance.
+
+- **Signature:** `parse_thing( _item, _import = {} )`
+    - **_item** – String containing one thing definition.
+    - **_import** – Struct used to resolve **from**, **extend**, and **import** keys (uid → thing). Optional when the definition does not use those.
+- **Returns:** The constructed thing (with **name** and **uid** set, plus all line 3 fields).
+- **Throws:** Exception with message including line number and scan position when parsing fails (unknown type, missing lookup, invalid token, etc.).
+
+```gml
+var t = parse_thing( "Thing water name Wet density 4", {} );
+var t2 = parse_thing( "extend weapon#template name Dagger damage 5", global.db );
+```
+
+### * parse_things
+
+Finds files matching a path/mask, reads them, and parses thing definitions into a struct. Uses **file_search** for the path; each file can contain multiple definitions separated by `--` (double hyphen). Strings are respected so `--` inside quotes does not split. Each parsed thing is stored as `_to[ thing.uid ]`. The same struct is passed to **parse_thing** as the lookup, so **from** / **extend** / **import** resolve from already-loaded things. Definitions that fail because a lookup is missing are retried in a later pass; if some never resolve, an exception is thrown listing the files.
+
+- **Signature:** `parse_things( _from, _to )`
+    - **_from** – Path/mask for **file_search** (e.g. `"data/weapons/*.txt"`).
+    - **_to** – Struct to write things to and to use as the lookup for **from** / **extend** / **import**.
+- **Returns:** `_to` (the struct with all parsed things added).
+- **Throws:** Exception if parsing fails (with file name appended) or if definitions remain unresolved after all passes.
+
+```gml
+parse_things( "weapons/*.txt", global.database );
+```
+
+---
+
+## Thing Constructor
+
+The **Thing** script is a minimal constructor used as the default type for thing data. Instances have:
+
+| Method | Description |
+|--------|-------------|
+| `clone()` | Returns `variable_clone( self )`. |
+| `type()` | Returns `asset_get_index( instanceof( self ) )` (the asset index of the constructor). |
+
+You can use **Thing** as the type in a definition, or use any other script that is a constructor; the parser instantiates it and then sets **name**, **uid**, and all line 3 properties on the result.
+
+---
+

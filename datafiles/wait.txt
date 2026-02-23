@@ -1,2 +1,0 @@
-temp a as 0
-return a

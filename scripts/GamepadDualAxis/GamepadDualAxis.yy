@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"GamepadDualAxis",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"GamepadDualAxis",
+  "parent":{
+    "name":"Input",
+    "path":"folders/FAST/Input.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

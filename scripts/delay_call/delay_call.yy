@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"delay_call",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"delay_call",
+  "parent":{
+    "name":"Functions",
+    "path":"folders/FAST/General/Functions.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

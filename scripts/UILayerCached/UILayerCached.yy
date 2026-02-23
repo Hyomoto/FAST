@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"UILayerCached",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"UILayerCached",
+  "parent":{
+    "name":"UI",
+    "path":"folders/FAST/UI.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

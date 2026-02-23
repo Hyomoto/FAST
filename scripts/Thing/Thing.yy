@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"Thing",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"Thing",
+  "parent":{
+    "name":"Things",
+    "path":"folders/FAST/Things.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

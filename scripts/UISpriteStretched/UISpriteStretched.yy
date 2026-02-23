@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"UISpriteStretched",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"UISpriteStretched",
+  "parent":{
+    "name":"UI",
+    "path":"folders/FAST/UI.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

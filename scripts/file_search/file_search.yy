@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "file",
-    "path": "folders/FAST/Core/Functions/file.yy",
+  "$GMScript":"v1",
+  "%Name":"file_search",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"file_search",
+  "parent":{
+    "name":"Functions",
+    "path":"folders/FAST/General/Functions.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "file_search",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }
